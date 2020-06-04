@@ -1,0 +1,44 @@
+<cxr-spinner *ngIf="isLoading"></cxr-spinner>
+<div class="signInContainer">
+  <mat-card class="signIn">
+    <h2>Sign In</h2>
+    <div *ngIf="errorMessage" class="error">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <form #authForm="ngForm" (ngSubmit)="onSignIn(authForm)">
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          name="email"
+          placeholder="Email"
+          required
+          [(ngModel)]="auth.email"
+          value=""
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          name="password"
+          type="password"
+          required
+          [(ngModel)]="auth.password"
+          placeholder=""
+          value=""
+          minlength="5"
+        />
+      </mat-form-field>
+      <div class="button-row text-right">
+        <button mat-stroked-button routerLink="/auth/register" type="button">
+          Sign Up
+        </button>
+        <button mat-flat-button color="primary" type="submit">
+          Sign In
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>
