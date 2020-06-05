@@ -3,3 +3,37 @@
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+
+mat-toolbar {
+  background-color: #434343;
+}
+
+mat-icon {
+  color: #f8f8f8;
+  font-size: 2.5vh;
+  margin-right: 2.5vh;
+}
+
+p {
+  margin-top: 3px;
+  padding-left: 7px;
+  font-size: 1.7vh;
+  color: #f8f8f8;
+  font-weight: lighter;
+  border-left: 1px solid #f8f8f8;
+}
+
+.account_icon {
+  font-size: 4vh;
+  color: #7ca5ae;
+  margin-bottom: 0.5rem;
+}
+
+a[mat-menu-item] span {
+  margin-top: 2px;
+}
+
+// :host ::ng-deep .material-icons {
+//   margin: 4px 0px 0px;
+//   color: #818181;
+// }

@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/module/auth/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "src/app/module/auth/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'cxr-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  selector: "cxr-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit {
   isAuth = false;
-  constructor(private authService: AuthService) {}
+  doctorName = 'Dr.Adam';
+  constructor(private authService: AuthService, public router: Router) {}
 
   ngOnInit(): void {
     this.initialize();
