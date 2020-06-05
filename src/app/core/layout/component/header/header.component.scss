@@ -10,30 +10,21 @@ mat-toolbar {
 
 mat-icon {
   color: #f8f8f8;
-  font-size: 2.5vh;
-  margin-right: 2.5vh;
+  font-size: 1.3rem;
+  margin-right: 1.2rem;
 }
 
-p {
-  margin-top: 3px;
-  padding-left: 7px;
-  font-size: 1.7vh;
+.user-name {
+  padding-left: 0.5rem;
+  font-size: 0.8rem;
   color: #f8f8f8;
   font-weight: lighter;
   border-left: 1px solid #f8f8f8;
 }
 
 .account_icon {
-  font-size: 4vh;
+  font-size: 1.9rem;
   color: #7ca5ae;
   margin-bottom: 0.5rem;
 }
 
-a[mat-menu-item] span {
-  margin-top: 2px;
-}
-
-// :host ::ng-deep .material-icons {
-//   margin: 4px 0px 0px;
-//   color: #818181;
-// }

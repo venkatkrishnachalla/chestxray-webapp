@@ -3,18 +3,26 @@
   background: #eee;
   height: 100%;
   width: 13%;
-  background-color: #52808a;
+  background-color: #285C68;
 }
 
 button {
   color: white;
   text-align: left;
   height: 3rem;
-  font-size: 12px;
+  font-size: 0.8rem;
   width: 100%;
 }
 
 .material-icons {
-  margin-right: 10px;
-  font-size: 16px;
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
 }
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .example-container {
+    width: 20%;
+  }
+}
+
