@@ -10,12 +10,8 @@ alt="CXR_Logo" width="100%" height="35px">
   <mat-icon
     *ngIf="router.url != '/auth/login'"
     class="pointer"
-    [matMenuTriggerFor]="notificationMenu"
     >notifications</mat-icon
   >
-<mat-menu #notificationMenu="matMenu" yPosition="below" xPosition="before">
-  <button mat-menu-item>Item 1</button>
-</mat-menu>
   <span class="user-name" *ngIf="router.url == '/home'">{{ doctorName }}</span>
   <mat-icon
     *ngIf="router.url != '/auth/login'"
