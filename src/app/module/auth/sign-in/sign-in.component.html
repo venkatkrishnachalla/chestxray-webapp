@@ -1,44 +1,69 @@
 <cxr-spinner *ngIf="isLoading"></cxr-spinner>
 <div class="signInContainer">
-  <mat-card class="signIn">
-    <h2>Sign In</h2>
-    <div *ngIf="errorMessage" class="error">
-      <p>{{ errorMessage }}</p>
-    </div>
-
-    <form #authForm="ngForm" (ngSubmit)="onSignIn(authForm)">
-      <mat-form-field class="example-full-width">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          name="email"
-          placeholder="Email"
-          required
-          [(ngModel)]="auth.email"
-          value=""
-        />
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          name="password"
-          type="password"
-          required
-          [(ngModel)]="auth.password"
-          placeholder=""
-          value=""
-          minlength="5"
-        />
-      </mat-form-field>
-      <div class="button-row text-right">
-        <button mat-stroked-button routerLink="/auth/register" type="button">
-          Sign Up
-        </button>
-        <button mat-flat-button color="primary" type="submit">
-          Sign In
-        </button>
+  <!-- <br> -->
+  <mat-grid-list cols="2" rowHeight="1:1">
+    <!-- Left side illustration image code -->
+    <mat-grid-tile>
+      <div>
+        <img src="../../../../assets/illustration.png" alt="" height="100%" width="95%">
       </div>
-    </form>
-  </mat-card>
+    </mat-grid-tile>
+
+    <!-- Sign in Form code -->
+    <mat-grid-tile>
+
+      <mat-card class="signIn">
+
+        <!-- Profile icon and text -->
+        <div class="profile-icon">
+          <img src="../../../../assets/profile icon.png" alt="" height="60px" width="60px">
+          <p style="font-size: 12px; color: #818181;">Welcome! Please login to your account.</p>
+        </div>
+
+        <!-- Login form fields -->
+        <form #authForm="ngForm" (ngSubmit)="onSignIn(authForm)">
+          <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input matInput name="email" placeholder="Username" required [(ngModel)]="auth.email" value="" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput name="password" type="password" required [(ngModel)]="auth.password" placeholder="" value=""
+              minlength="5" />
+          </mat-form-field>
+
+          <!-- Validation message -->
+          <div *ngIf="errorMessage" class="error" style="text-align: center; color: #ff0000;">
+            <p>{{ errorMessage }}</p>
+          </div>
+
+          <!-- Login button -->
+          <div class="button-row">
+            <button mat-flat-button color="primary" type="submit">
+              LOGIN
+            </button>
+          </div>
+
+          <!-- Remember me and forgot password -->
+          <div style="margin: 10px 0px 0px;" cols="2" rowHeight="1:1">
+            <mat-checkbox>Remember me!</mat-checkbox>
+            <span style="float: right; margin: 6px 0px 0px; color: #4392FD;">Forgot password ?</span>
+          </div>
+
+        </form>
+      </mat-card>
+    </mat-grid-tile>
+    <!-- <br><br> -->
+  </mat-grid-list>
+  <!-- <br><br> -->
+
+  <!-- Social media icon in footer -->
+  <div rowHeight="1:1">
+    <img src="../../../../assets/instagram.png" alt="instagram" title="Instagram">
+    <img src="../../../../assets/twitter.png" alt="twitter" title="Twitter">
+    <img src="../../../../assets/facebook.png" alt="facebook" title="Facebook">
+    <img src="../../../../assets/web.png" alt="web" title="Web">
+    <span>Powered by LTTS</span>
+  </div>
+  <br>
 </div>
