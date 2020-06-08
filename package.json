@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run combine && ng serve --live-reload=true",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --code-coverage --sourceMap=true  --watch=true",
     "lint": "ng lint",
     "pretty-quick": "pretty-quick",
     "e2e": "ng e2e"

@@ -1,0 +1,23 @@
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+span {
+  padding: 3px 25px;
+  font-size: 16px;
+}
+
+.header {
+  background-color: #434343;
+  color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.sign-in-text {
+  border: 1px solid #a5c3c9;
+  border-radius: 5px;
+  background-color: #a5c3c9;
+}

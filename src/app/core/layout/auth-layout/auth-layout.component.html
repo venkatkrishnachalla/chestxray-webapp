@@ -1,2 +1,19 @@
-<cxr-header></cxr-header>
+<mat-toolbar class="header">
+  <span style="margin-top: 10px; margin-left: 0px; padding-left: 5px;"
+    ><img
+      src="../../../../../assets/CXR.png"
+      alt="CXR_Logo"
+      width="100%"
+      height="35px"
+  /></span>
+
+  <span class="fill-remaining-space"></span>
+  <span>About</span>
+  <span>Product</span>
+  <span>Contact Us</span>
+  <span class="sign-in-text">Sign In</span>
+  <mat-icon *ngIf="isAuth" class="pointer" (click)="onLogout()"
+    >logout</mat-icon
+  >
+</mat-toolbar>
 <router-outlet></router-outlet>

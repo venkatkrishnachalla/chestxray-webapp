@@ -1,19 +1,65 @@
+// Login form main container
 .signInContainer {
+  background-image: url("src/assets/Background.png");
+  height: 100%;
+  width: auto;
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  // Login Form alignment
   .signIn {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 400px;
+    max-width: 300px;
+    border-radius: 10px;
 
+    // profile icon in login form
+    .profile-icon {
+      text-align: center;
+    }
+
+    mat-form-field {
+      padding: 8px 0px;
+    }
+
+    //Login button
     .button-row {
       display: flex;
       flex-direction: row;
-      justify-content: flex-end;
-
-      button:not(:last-child) {
-        margin-right: 8px;
-      }
+      justify-content: center;
+    }
+    .mat-flat-button.mat-primary {
+      color: #212221;
+      padding: 0px 125px;
+      background-color: #e0edfe;
+      border: 1px solid #a0a0a0;
     }
   }
+}
+
+// Social media icon alignment
+.signInContainer > div > img {
+  padding: 10px 20px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
+// Powered by text alignment
+.signInContainer > div > span {
+  display: flex;
+  justify-content: center;
+  margin-top: -45px;
+  padding: 10px 0px;
+  color: #fefefe;
+}
+
+// In checkbox Remember me text alignment and color coding
+:host ::ng-deep .mat-checkbox-label {
+  margin: 4px 0px 0px;
+  color: #818181;
 }

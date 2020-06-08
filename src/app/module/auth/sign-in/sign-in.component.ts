@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { SnackbarService } from 'src/app/core/service/snackbar.service';
-import { AuthService } from '../auth.service';
-import { ConsoleService } from 'src/app/core/service/console.service';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { SnackbarService } from "src/app/core/service/snackbar.service";
+import { AuthService } from "../auth.service";
+import { ConsoleService } from "src/app/core/service/console.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'cxr-sign-in',
-  templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.scss'],
+  selector: "cxr-sign-in",
+  templateUrl: "./sign-in.component.html",
+  styleUrls: ["./sign-in.component.scss"],
 })
 export class SignInComponent implements OnInit {
-  isLoading = false;
-  auth: { email: string; password: string } = { email: '', password: '' };
-  errorMessage = '';
+  isLoading: boolean = false;
+  auth: { email: string; password: string } = { email: "", password: "" };
+  errorMessage: string = "";
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,
@@ -27,21 +27,22 @@ export class SignInComponent implements OnInit {
     if (form.valid) {
       this.isLoading = true;
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
-        (authResponse) => {
+        (authResponse: any) => {
           this.isLoading = false;
           this.console.log(authResponse);
-          this.router.navigate(['/home']);
+          this.router.navigate(["/home"]);
         },
-        (errorMessage) => {
+        (errorMessage: any) => {
           this.isLoading = false;
-          this.errorMessage = errorMessage;
-          this.alert.open(this.errorMessage, 'ERROR');
+          // this.errorMessage = errorMessage;
+          this.errorMessage = "Invalid Username or Password";
+          this.alert.open(this.errorMessage, "ERROR");
           form.reset();
         }
       );
     } else {
-      this.errorMessage = 'Enter all the required fields';
-      this.alert.open(this.errorMessage, 'ERROR');
+      this.errorMessage = "Enter all the required fields";
+      this.alert.open(this.errorMessage, "ERROR");
     }
   }
 }
