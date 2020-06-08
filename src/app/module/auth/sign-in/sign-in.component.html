@@ -1,11 +1,10 @@
 <cxr-spinner *ngIf="isLoading"></cxr-spinner>
 <div class="signInContainer">
-  <!-- <br> -->
   <mat-grid-list cols="2" rowHeight="1:1">
     <!-- Left side illustration image code -->
     <mat-grid-tile>
       <div>
-        <img src="../../../../assets/illustration.png" alt="" height="100%" width="95%">
+        <img src="../../../../assets/illustration.png" alt="" height="10%" width="100%">
       </div>
     </mat-grid-tile>
 
@@ -24,7 +23,7 @@
         <form #authForm="ngForm" (ngSubmit)="onSignIn(authForm)">
           <mat-form-field>
             <mat-label>Username</mat-label>
-            <input matInput name="email" placeholder="Username" required [(ngModel)]="auth.email" value="" />
+            <input matInput name="email" required [(ngModel)]="auth.email" value="" />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Password</mat-label>
@@ -53,17 +52,14 @@
         </form>
       </mat-card>
     </mat-grid-tile>
-    <!-- <br><br> -->
   </mat-grid-list>
-  <!-- <br><br> -->
 
   <!-- Social media icon in footer -->
   <div rowHeight="1:1">
-    <img src="../../../../assets/instagram.png" alt="instagram" title="Instagram">
-    <img src="../../../../assets/twitter.png" alt="twitter" title="Twitter">
-    <img src="../../../../assets/facebook.png" alt="facebook" title="Facebook">
-    <img src="../../../../assets/web.png" alt="web" title="Web">
+    <img src="../../../../assets/instagram.png" alt="Instagram" title="Instagram">
+    <img src="../../../../assets/twitter.png" alt="Twitter" title="Twitter">
+    <img src="../../../../assets/facebook.png" alt="Facebook" title="Facebook">
+    <img src="../../../../assets/web.png" alt="Web" title="Web">
     <span>Powered by LTTS</span>
   </div>
-  <br>
 </div>

@@ -18,8 +18,8 @@ export class ApiEndPointService {
   }
 
   private getUrl(action: string, pathVariables: any[] = []): string {
-    if (pathVariables.length === 0) return [this.baseUrl, action].join('/');
-    let encodedPathVariablesUrl: string = '';
+    if (pathVariables.length === 0) { return [this.baseUrl, action].join('/'); }
+    let encodedPathVariablesUrl = '';
     // Push extra path variables
     for (const pathVariable of pathVariables) {
       if (pathVariable !== null) {
