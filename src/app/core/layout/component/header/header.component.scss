@@ -15,7 +15,7 @@ mat-icon {
 }
 
 .user-name {
-  padding-left: 0.5rem;
+  padding:0.5rem 0 0 0.5rem;
   font-size: 0.8rem;
   color: #f8f8f8;
   font-weight: lighter;
@@ -25,6 +25,20 @@ mat-icon {
 .account_icon {
   font-size: 1.9rem;
   color: #7ca5ae;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.icon-styles{
+  height: 100%;
+}
+
+.icon-styles mat-icon{
+  padding-top: 1.5rem;
+  padding-left: 1rem;
+}
+
+.icon-styles:hover {     
+  border-bottom: 7px solid white;   
+  background-color: #818181;
 }
 
