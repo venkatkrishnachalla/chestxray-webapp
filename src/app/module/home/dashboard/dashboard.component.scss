@@ -1,0 +1,42 @@
+//Need to remove once responsiveness added
+#at-id-patientTable{
+    width: 87%;
+    margin-left: 13%;
+}
+// #myGrid{
+//     margin-top: -45px !important;
+// }
+#at-input-searchPatient{
+    width: 45%;
+    margin-bottom: -35px;
+    // z-index: 9999 !important;
+    // margin-left: 25% !important;
+}
+.text-center{
+    text-align: center;
+}
+.tableBgColor, ::ng-deep .ag-header{
+    background-color: #ADD8E6 !important;
+}
+::ng-deep .ag-header{
+    margin-top: 35px !important;
+}
+.searchBar {
+    margin: 0 !important;
+    padding-bottom: 15px !important;
+}
+::ng-deep .mat-form-field-outline{
+    background-color: white !important;
+    border-radius: 5px !important;
+}
+.search-input{
+    margin-bottom: 3px !important;
+    padding-left: 10px !important;
+}
+::ng-deep .ag-paging-panel{
+    position: absolute;
+    right: 0;
+    border-top: none !important;
+    width: 100%;
+    background-color: #ADD8E6 !important;
+}

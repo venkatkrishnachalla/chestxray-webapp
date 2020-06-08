@@ -6,6 +6,7 @@ import { SignUpComponent } from './module/auth/sign-up/sign-up.component';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 import { HomeComponent } from './module/home/home.component';
 import { AuthGuard } from './core/guard/auth.guard';
+import { DashboardComponent } from './module/home/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -42,7 +43,7 @@ const routes: Routes = [
     path: 'home',
     canActivate: [AuthGuard],
     component: MainLayoutComponent,
-    children: [{ path: '', component: HomeComponent }],
+    children: [{ path: 'dashboard', component: DashboardComponent }],
   },
   {
     path: '',
