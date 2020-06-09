@@ -16,7 +16,7 @@ alt="CXR_Logo" width="100%" height="35px">
     >notifications</mat-icon
   >
   </span>
-  <span class="user-name" *ngIf="router.url == '/home'">{{ doctorName }}</span>
+  <span class="user-name" *ngIf="router.url != '/auth/login'">{{ doctorName }}</span>
   <mat-icon
     *ngIf="router.url != '/auth/login'"
     class="pointer account_icon"
