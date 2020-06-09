@@ -10,7 +10,11 @@ export const home_Constants = {
             {headerName: 'Date & Time', field: 'dateTime', sortable: true, resizable: true },
             {headerName: 'Description', field: 'description', sortable: true, resizable: true },
             {headerName: 'Report Status', field: 'reportStatus', sortable: true, resizable: true },
-            {headerName: 'Action', field: 'action' }
+            {headerName: 'Action', field: 'action', pinned: 'right', width:95, 
+            cellRenderer: (data) => {
+                return `<mat-icon style="cursor: pointer; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
+                preview</mat-icon>`;
+            }  }
         ],
         sampleData:[
             { 

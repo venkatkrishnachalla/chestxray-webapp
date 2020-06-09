@@ -8,7 +8,7 @@ button {
   text-align: left;
   height: 3rem;
   font-size: 0.8rem;
-  width: 95%;
+  width: 100%;
   border-radius: 0;
 }
 
@@ -17,19 +17,23 @@ button {
   font-size: 1.2rem;
 }
 
-button:hover{
-  border-left: 5px solid white;
-}
+// button:hover {
+//   border-left: 5px solid white;
+// }
 
 .bottom-content {
   color: white;
   font-size: 0.8rem;
   left: 25%;
-  top: 55%;
-  position: inherit;
+  top: 82%;
+  position: absolute;
 }
 .mat-drawer-content {
   overflow: hidden !important;
+}
+button.is-active {
+  background: hsla(0, 0%, 100%, 0.2) !important;
+  border-left: 5px solid white;
 }
 
 
