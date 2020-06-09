@@ -11,9 +11,9 @@ import { Router } from "@angular/router";
   styleUrls: ["./sign-in.component.scss"],
 })
 export class SignInComponent implements OnInit {
-  isLoading: boolean = false;
+  isLoading = false;
   auth: { email: string; password: string } = { email: "", password: "" };
-  errorMessage: string = "";
+  errorMessage = "";
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,

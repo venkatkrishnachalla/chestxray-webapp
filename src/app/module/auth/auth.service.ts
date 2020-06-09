@@ -41,7 +41,7 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(this.endpoint.getSingInURL(), {
         doctorName: email,
-        password: password,
+        password,
         returnSecureToken: true,
       })
       .pipe(

@@ -2,7 +2,7 @@ import { SignInComponent } from "./sign-in.component";
 import { NgForm } from "@angular/forms";
 import { of, throwError } from "rxjs";
 
-describe("SignInComponent", () => {
+fdescribe("SignInComponent", () => {
   let component: SignInComponent;
   const alertSpy = jasmine.createSpyObj("SnackbarService", ["open"]);
   const authServiceSpy = jasmine.createSpyObj("AuthService", ["signIn"]);
@@ -40,13 +40,13 @@ describe("SignInComponent", () => {
         loginMessage: "login is successful",
       };
       authServiceSpy.signIn.and.returnValue(of(signInResponse));
-      const testForm = <NgForm>{
+      const testForm = {
         value: {
           email: "test",
           password: "test@123",
         },
         valid: true,
-      };
+      } as NgForm;
       component.onSignIn(testForm);
     });
     it("should call onSignIn function, when login is successful", () => {
@@ -63,13 +63,14 @@ describe("SignInComponent", () => {
   describe("#onSignIn", () => {
     beforeEach(() => {
       const signInErrorResponse = { status: 401 };
-      const testForm = <NgForm>{
+      const testForm = {
         value: {
           email: "test",
           password: "test@123",
         },
         valid: true,
-      };
+        resetForm: () => null,
+      } as NgForm;
       authServiceSpy.signIn.and.returnValue(throwError(signInErrorResponse));
       component.onSignIn(testForm);
     });
@@ -84,13 +85,13 @@ describe("SignInComponent", () => {
 
   describe("#onSignIn", () => {
     beforeEach(() => {
-      const testForm = <NgForm>{
+      const testForm = {
         value: {
           email: "test",
           password: "test@123",
         },
         valid: false,
-      };
+      } as NgForm;
       component.onSignIn(testForm);
     });
     it("should call onSignIn function, when form is invalid", () => {
