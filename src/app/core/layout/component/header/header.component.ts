@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
   isAuth = false;
-  doctorName = 'Dr.Adam';
+  doctorName = "Dr.Adam";
   constructor(private authService: AuthService, public router: Router) {}
 
   ngOnInit(): void {
