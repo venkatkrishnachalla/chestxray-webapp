@@ -19,9 +19,9 @@ import { HomeModule} from './module/home/home.module';
     AppRoutingModule,
     CoreModule,
     HomeModule,
-    AuthModule, // Load AuthModule with the app
+    AuthModule, // Load AuthModule with the app,
   ],
-  providers: [
+  providers: [,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

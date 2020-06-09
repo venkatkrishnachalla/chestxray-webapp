@@ -30,7 +30,7 @@ export class SignInComponent implements OnInit {
         (authResponse) => {
           this.isLoading = false;
           this.console.log(authResponse);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home/dashboard']);
         },
         (errorMessage) => {
           this.isLoading = false;
