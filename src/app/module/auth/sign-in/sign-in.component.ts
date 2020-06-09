@@ -1,19 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { SnackbarService } from "src/app/core/service/snackbar.service";
-import { AuthService } from "../auth.service";
-import { ConsoleService } from "src/app/core/service/console.service";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { SnackbarService } from 'src/app/core/service/snackbar.service';
+import { AuthService } from '../auth.service';
+import { ConsoleService } from 'src/app/core/service/console.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "cxr-sign-in",
-  templateUrl: "./sign-in.component.html",
-  styleUrls: ["./sign-in.component.scss"],
+  selector: 'cxr-sign-in',
+  templateUrl: './sign-in.component.html',
+  styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent implements OnInit {
   isLoading = false;
-  auth: { email: string; password: string } = { email: "", password: "" };
-  errorMessage = "";
+  auth: { email: string; password: string } = { email: '', password: '' };
+  errorMessage = '';
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,
@@ -30,19 +30,19 @@ export class SignInComponent implements OnInit {
         (authResponse: any) => {
           this.isLoading = false;
           this.console.log(authResponse);
-          this.router.navigate(["/home"]);
+          this.router.navigate(['/home']);
         },
         (errorMessage: any) => {
           this.isLoading = false;
           // this.errorMessage = errorMessage;
-          this.errorMessage = "Invalid Username or Password";
-          this.alert.open(this.errorMessage, "ERROR");
+          this.errorMessage = 'Invalid Username or Password';
+          this.alert.open(this.errorMessage, 'ERROR');
           form.reset();
         }
       );
     } else {
-      this.errorMessage = "Enter all the required fields";
-      this.alert.open(this.errorMessage, "ERROR");
+      this.errorMessage = 'Enter all the required fields';
+      this.alert.open(this.errorMessage, 'ERROR');
     }
   }
 }

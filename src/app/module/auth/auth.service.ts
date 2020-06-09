@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { catchError, tap } from "rxjs/operators";
-import { throwError, Subject, BehaviorSubject, Observable } from "rxjs";
-import User from "./user.modal";
-import { Router } from "@angular/router";
-import { ApiEndPointService } from "src/app/core/service/api-end-point.service";
-export const FIREBASE_API_KEY = "AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError, Subject, BehaviorSubject, Observable } from 'rxjs';
+import User from './user.modal';
+import { Router } from '@angular/router';
+import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
+export const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
 const FIREBASE_SIGN_IN_ENDPOINT =
-  "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
+  'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
   FIREBASE_API_KEY;
 interface AuthResponseData {
   idToken: string;
@@ -18,7 +18,7 @@ interface AuthResponseData {
   registered?: boolean;
 }
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AuthService {
   public userSubject: BehaviorSubject<User>;
@@ -59,8 +59,8 @@ export class AuthService {
 
   logOut() {
     this.userSubject.next(null);
-    this.router.navigate(["/auth/login"]);
-    localStorage.removeItem("userAuthData");
+    this.router.navigate(['/auth/login']);
+    localStorage.removeItem('userAuthData');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -76,7 +76,7 @@ export class AuthService {
       id: string;
       _token: string;
       _tokenExpirationDate: string;
-    } = JSON.parse(localStorage.getItem("userAuthData"));
+    } = JSON.parse(localStorage.getItem('userAuthData'));
     if (!authData) {
       return;
     }
@@ -149,34 +149,34 @@ export class AuthService {
     this.autoSessionTimeOut(expiresIn * 1000);
     // Or refresh token, if you decide to keep the session active.
     // this.refreshTokenTimeOut(user.token, expiresIn * 1000);
-    localStorage.setItem("userAuthData", JSON.stringify(user));
+    localStorage.setItem('userAuthData', JSON.stringify(user));
   }
 
   private handleAuthError(errorResponse: HttpErrorResponse) {
-    let errorMessage = "Unknown error occurred";
+    let errorMessage = 'Unknown error occurred';
     if (!errorResponse.error || !errorResponse.error.error) {
       return throwError(errorMessage);
     }
 
     switch (errorResponse.error.error.message) {
-      case "EMAIL_NOT_FOUND":
-        errorMessage = "This email does not exist";
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exist';
         break;
-      case "INVALID_PASSWORD":
-        errorMessage = "Invalid Password";
+      case 'INVALID_PASSWORD':
+        errorMessage = 'Invalid Password';
         break;
-      case "USER_DISABLED":
-        errorMessage = "User Disabled";
+      case 'USER_DISABLED':
+        errorMessage = 'User Disabled';
         break;
-      case "EMAIL_EXISTS":
-        errorMessage = "This email exists already";
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email exists already';
         break;
-      case "OPERATION_NOT_ALLOWED":
-        errorMessage = "Password sign-in is disabled";
+      case 'OPERATION_NOT_ALLOWED':
+        errorMessage = 'Password sign-in is disabled';
         break;
-      case "TOO_MANY_ATTEMPTS_TRY_LATER":
+      case 'TOO_MANY_ATTEMPTS_TRY_LATER':
         errorMessage =
-          "We have blocked all requests from this device due to unusual activity. Try again later";
+          'We have blocked all requests from this device due to unusual activity. Try again later';
         break;
 
       default:

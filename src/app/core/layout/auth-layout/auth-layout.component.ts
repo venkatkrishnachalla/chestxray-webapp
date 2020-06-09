@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { AuthService } from "src/app/module/auth/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/module/auth/auth.service';
 
 @Component({
-  selector: "cxr-auth-layout",
-  templateUrl: "./auth-layout.component.html",
-  styleUrls: ["./auth-layout.component.scss"],
+  selector: 'cxr-auth-layout',
+  templateUrl: './auth-layout.component.html',
+  styleUrls: ['./auth-layout.component.scss'],
 })
 export class AuthLayoutComponent implements OnInit {
   isAuth = false;

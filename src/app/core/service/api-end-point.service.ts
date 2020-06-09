@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { environment } from "../../../environments/environment";
-import { HttpParams } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { HttpParams } from '@angular/common/http';
 
 type QueryParams = {
   key: string;
   value: string;
 };
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ApiEndPointService {
   private baseUrl: string;
@@ -19,9 +19,9 @@ export class ApiEndPointService {
 
   private getUrl(action: string, pathVariables: any[] = []): string {
     if (pathVariables.length === 0) {
-      return [this.baseUrl, action].join("/");
+      return [this.baseUrl, action].join('/');
     }
-    let encodedPathVariablesUrl = "";
+    let encodedPathVariablesUrl = '';
     // Push extra path variables
     for (const pathVariable of pathVariables) {
       if (pathVariable !== null) {
@@ -30,7 +30,7 @@ export class ApiEndPointService {
         )}`;
       }
     }
-    return `${[this.baseUrl, action].join("/")}${encodedPathVariablesUrl}`;
+    return `${[this.baseUrl, action].join('/')}${encodedPathVariablesUrl}`;
   }
 
   private getHttpQueryParams(params: QueryParams[]): HttpParams {
@@ -46,9 +46,9 @@ export class ApiEndPointService {
 
   public getSingInURL(): string {
     if (environment.isMockAPI) {
-      return "/auth";
+      return '/auth';
     }
-    return "https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/Dicom/Login";
+    return 'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/Dicom/Login';
     // const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
     // return (
     //   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
@@ -58,22 +58,22 @@ export class ApiEndPointService {
 
   public getSingUpURL(): string {
     if (environment.isMockAPI) {
-      return "/auth";
+      return '/auth';
     }
-    const FIREBASE_API_KEY = "AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI";
+    const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
     return (
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" +
+      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +
       FIREBASE_API_KEY
     );
   }
 
   public getRefreshToken(): string {
     if (environment.isMockAPI) {
-      return "/auth";
+      return '/auth';
     }
-    const FIREBASE_API_KEY = "AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI";
+    const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
     return (
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=" +
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=' +
       FIREBASE_API_KEY
     );
   }
