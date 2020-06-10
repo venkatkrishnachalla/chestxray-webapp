@@ -1,10 +1,10 @@
 <cxr-spinner *ngIf="isLoading"></cxr-spinner>
 <div class="signInContainer">
-  <mat-grid-list cols="2" rowHeight="1:1">
+  <mat-grid-list [cols]="breakpoint" rowHeight="1:1" (window:resize)="onResize($event)">
     <!-- Left side illustration image code -->
     <mat-grid-tile>
-      <div>
-        <img src="../../../../assets/illustration.png" alt="" height="10%" width="100%">
+      <div class="leftSideImage">
+        <img src="../../../../assets/illustration.png" alt="">
       </div>
     </mat-grid-tile>
 
@@ -56,10 +56,11 @@
 
   <!-- Social media icon in footer -->
   <div rowHeight="1:1">
-    <img src="../../../../assets/instagram.png" alt="Instagram" title="Instagram">
-    <img src="../../../../assets/twitter.png" alt="Twitter" title="Twitter">
-    <img src="../../../../assets/facebook.png" alt="Facebook" title="Facebook">
-    <img src="../../../../assets/web.png" alt="Web" title="Web">
+    <img src="../../../../assets/instagram.png" width="20px" height="20px" alt="Instagram" title="Instagram">
+    <img src="../../../../assets/twitter.png" width="20px" height="20px" alt="Twitter" title="Twitter">
+    <img src="../../../../assets/facebook.png" width="20px" height="20px" alt="Facebook" title="Facebook">
+    <img src="../../../../assets/web.png" width="20px" height="20px" alt="Web" title="Web">
     <span>Powered by LTTS</span>
+    <!-- <img src="../../../../assets/powered by LTTS@2x.png" alt="Copyright"> -->
   </div>
 </div>

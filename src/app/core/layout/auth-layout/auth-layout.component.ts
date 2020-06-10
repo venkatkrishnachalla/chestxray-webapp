@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/module/auth/auth.service';
+import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'cxr-auth-layout',
@@ -8,7 +10,8 @@ import { AuthService } from 'src/app/module/auth/auth.service';
 })
 export class AuthLayoutComponent implements OnInit {
   isAuth = false;
-  constructor(private authService: AuthService) {}
+  isHandset: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.Handset);
+  constructor(private authService: AuthService, private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
     this.initialize();
