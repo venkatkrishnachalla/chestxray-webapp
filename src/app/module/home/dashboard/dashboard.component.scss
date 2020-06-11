@@ -1,11 +1,9 @@
-// #myGrid{
-//     margin-top: -45px !important;
-// }
+.grid-width{
+    width: 100% !important
+}
 #at-input-searchPatient{
     width: 45%;
     margin-bottom: -35px;
-    // z-index: 9999 !important;
-    // margin-left: 25% !important;
 }
 .text-center{
     text-align: center;
@@ -24,7 +22,7 @@
     background-color: white !important;
     border-radius: 5px !important;
 }
-.search-input{
+.search-patient{
     margin-bottom: 3px !important;
     padding-left: 10px !important;
 }
