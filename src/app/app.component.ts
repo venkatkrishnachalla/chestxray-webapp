@@ -9,6 +9,7 @@ import { AuthService } from './module/auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'cxr-web-app';
   constructor(private authService: AuthService) {}
+
   ngOnInit(): void {
     this.loginOnBrowserRefresh();
   }

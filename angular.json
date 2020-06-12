@@ -117,5 +117,8 @@
       }
     }
   },
-  "defaultProject": "cxr-web-app"
+  "defaultProject": "cxr-web-app",
+  "cli": {
+    "analytics": "a334f4ab-d8b5-4ded-ba5b-a4fa6b67793b"
+  }
 }

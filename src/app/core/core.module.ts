@@ -6,6 +6,7 @@ import { SideNavComponent } from './layout/component/side-nav/side-nav.component
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material.module';
+import { GridcolsDirective } from '../module/shared/gridcols.directive';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { MaterialModule } from '../material.module';
     MainLayoutComponent,
     HeaderComponent,
     SideNavComponent,
+    GridcolsDirective,
   ],
   imports: [CommonModule, RouterModule, MaterialModule],
   exports: [],
