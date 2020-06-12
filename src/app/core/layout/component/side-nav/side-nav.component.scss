@@ -1,9 +1,10 @@
 .example-container {
+  width: 100%;
   height: 100%;
-  background-color: #285C68;
+  position: absolute;
 }
 
-button {
+mat-sidenav button {
   color: white;
   text-align: left;
   height: 3rem;
@@ -12,14 +13,25 @@ button {
   border-radius: 0;
 }
 
-.material-icons {
+.route-component{
+  position: relative;
+  left: 15%;
+}
+
+
+:host ::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+  visibility: hidden;
+}
+
+mat-sidenav{
+  width: 15%;
+  background-color: #285C68;
+}
+
+.sidenav-icons {
   margin-right: 0.5rem;
   font-size: 1.2rem;
 }
-
-// button:hover {
-//   border-left: 5px solid white;
-// }
 
 .bottom-content {
   color: white;
@@ -35,5 +47,30 @@ button.is-active {
   background: hsla(0, 0%, 100%, 0.2) !important;
   border-left: 5px solid white;
 }
+
+button.is-active {
+  background: hsla(0, 0%, 100%, 0.2) !important;
+  border-left: 5px solid white;
+}
+
+@media only screen and (max-width: 768px) {
+  mat-sidenav{
+      width: 40%;
+      background-color: #285C68;
+  }
+}
+
+// .example-sidenav-content {
+//   display: flex;
+//   height: 100%;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// .example-sidenav {
+//   padding: 20px;
+// }
+
+
 
 
