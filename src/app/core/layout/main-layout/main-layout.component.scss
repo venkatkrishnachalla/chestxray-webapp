@@ -5,106 +5,103 @@
 // }
 
 // .route-component{
-    // width: 85%;
-    // position: relative;
-    // left: 15%;
-    // height: 100%;
-    // background-color: #ADD8E6 !important;
-    // overflow-y: scroll;
-// }   
+// width: 85%;
+// position: relative;
+// left: 15%;
+// height: 100%;
+// background-color: #ADD8E6 !important;
+// overflow-y: scroll;
+// }
 
 .example-container {
-    width: 100%;
-    height: 90%;
-    position: absolute;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-  }
-  
-  // .example-sidenav-content {
-  //   display: flex;
-  //   height: 100%;
-  //   align-items: center;
-  //   justify-content: center;
-  // }
-  
-  // .example-sidenav {
-  //   padding: 20px;
-  // }
+  width: 100%;
+  height: 90%;
+  position: absolute;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
 
-  mat-sidenav{
-      width: 15%;
-      background-color: #285C68;
-  }
+// .example-sidenav-content {
+//   display: flex;
+//   height: 100%;
+//   align-items: center;
+//   justify-content: center;
+// }
 
-  mat-sidenav button {
-    color: white;
-    text-align: left;
-    height: 3rem;
-    font-size: 0.8rem;
-    width: 100%;
-    border-radius: 0;
-  }
+// .example-sidenav {
+//   padding: 20px;
+// }
 
-  .sidenav-icons {
-    margin-right: 0.5rem;
-    font-size: 1.2rem;
-  }
+mat-sidenav {
+  width: 15%;
+  background-color: #285c68;
+}
 
-  .bottom-content {
-    color: white;
-    font-size: 0.8rem;
-    margin-left: 5rem;
-    // left: 25%;
-    // top: 82%;
-    // position: absolute;
-  }
+mat-sidenav button {
+  color: white;
+  text-align: left;
+  height: 3rem;
+  font-size: 0.8rem;
+  width: 100%;
+  border-radius: 0;
+}
 
-  button.is-active {
-    background: hsla(0, 0%, 100%, 0.2) !important;
-    border-left: 5px solid white;
-  }
+.sidenav-icons {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
 
-  mat-card{
-    position: absolute;
-    background-color: #212221;
-    bottom: 0%;
-  }
+.bottom-content {
+  color: white;
+  font-size: 0.8rem;
+  margin-left: 5rem;
+  // left: 25%;
+  // top: 82%;
+  // position: absolute;
+}
 
-  mat-card button{
-    color: white;
-    text-align: left;
-    height: 1.4rem;
-    font-size: 0.6rem;
-    width: 100%;
-    border-radius: 0;
-  }
-  
-  mat-card p{
-    // margin-left: 2rem;
-    text-align: center;
-  }
+button.is-active {
+  background: hsla(0, 0%, 100%, 0.2) !important;
+  border-left: 5px solid white;
+}
 
-  .social-media{
-    color: white;
-    text-align: center;
-    font-size: 1rem;
-    border-radius: 0;
-    margin-left: 1rem;
-  }
+mat-card {
+  position: absolute;
+  background-color: #212221;
+  bottom: 0%;
+}
 
+mat-card button {
+  color: white;
+  text-align: left;
+  height: 1.4rem;
+  font-size: 0.6rem;
+  width: 100%;
+  border-radius: 0;
+}
 
-  @media only screen and (max-width: 768px) {
-    mat-sidenav{
-        width: 50%;
-        background-color: #285C68;
-    }
-  }
+mat-card p {
+  // margin-left: 2rem;
+  text-align: center;
+}
 
-  @media only screen and (max-width: 600px) {
-    mat-sidenav{
-        width: 70%;
-        background-color: #285C68;
-    }
+.social-media {
+  color: white;
+  text-align: center;
+  font-size: 1rem;
+  border-radius: 0;
+  margin-left: 1rem;
+}
+
+@media only screen and (max-width: 768px) {
+  mat-sidenav {
+    width: 50%;
+    background-color: #285c68;
   }
-  
-  
+}
+
+@media only screen and (max-width: 600px) {
+  mat-sidenav {
+    width: 70%;
+    background-color: #285c68;
+  }
+}
