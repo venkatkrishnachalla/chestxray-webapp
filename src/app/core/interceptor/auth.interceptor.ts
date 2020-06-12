@@ -6,13 +6,17 @@ import {
   HttpInterceptor,
   HttpParams,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { take, exhaustMap } from 'rxjs/operators';
+import { SnackbarService } from '../service/snackbar.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private alert: SnackbarService
+  ) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -30,7 +34,6 @@ export class AuthInterceptor implements HttpInterceptor {
         // Enable either above or below.
         // Below example - adding token to Headers
         // const reqWithToken = this.addTokenToHeader(request, user.token);
-
         return next.handle(reqWithToken);
       })
     );

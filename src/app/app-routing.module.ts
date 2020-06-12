@@ -46,13 +46,13 @@ const routes: Routes = [
     path: 'home',
     canActivate: [AuthGuard],
     component: MainLayoutComponent,
-    children: [ 
-                { path: 'dashboard', component: DashboardComponent },
-                { path: 'my-account', component: MyAccountComponent },
-                { path: 'chat-room', component: ChatRoomComponent },
-                { path: 'calendar', component: CalendarComponent  },
-                { path: 'settings', component: SettingsComponent  }
-              ],
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'my-account', component: MyAccountComponent },
+      { path: 'chat-room', component: ChatRoomComponent },
+      { path: 'calendar', component: CalendarComponent },
+      { path: 'settings', component: SettingsComponent },
+    ],
   },
   {
     path: '',
@@ -60,7 +60,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   // Fallback when no prior routes is matched
-  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
+  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
 ];
 
 @NgModule({
