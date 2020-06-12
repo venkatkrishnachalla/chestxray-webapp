@@ -4,13 +4,12 @@ import { AuthLayoutComponent } from './core/layout/auth-layout/auth-layout.compo
 import { SignInComponent } from './module/auth/sign-in/sign-in.component';
 import { SignUpComponent } from './module/auth/sign-up/sign-up.component';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
-import { HomeComponent } from './module/home/home.component';
 import { AuthGuard } from './core/guard/auth.guard';
-import { DashboardComponent } from './core/layout/component/dashboard/dashboard.component';
-import { MyAccountComponent } from './core/layout/component/my-account/my-account.component';
-import { ChatRoomComponent } from './core/layout/component/chat-room/chat-room.component';
-import { CalendarComponent } from './core/layout/component/calendar/calendar.component';
-import { SettingsComponent } from './core/layout/component/settings/settings.component';
+import { DashboardComponent } from './module/home/dashboard/dashboard.component';
+import { MyAccountComponent } from './module/home/my-account/my-account.component';
+import { ChatRoomComponent } from './module/home/chat-room/chat-room.component';
+import { CalendarComponent } from './module/home/calendar/calendar.component';
+import { SettingsComponent } from './module/home/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -47,37 +46,13 @@ const routes: Routes = [
     path: 'home',
     canActivate: [AuthGuard],
     component: MainLayoutComponent,
-    children: [{ path: '', component: HomeComponent }],
-  },
-  {
-    path: 'home',
-    canActivate: [AuthGuard],
-    component: MainLayoutComponent,
-    children: [{ path: 'dashboard', component: DashboardComponent }],
-  },
-  {
-    path: 'home',
-    canActivate: [AuthGuard],
-    component: MainLayoutComponent,
-    children: [{ path: 'my-account', component: MyAccountComponent}]
-  },
-  {
-    path: 'home',
-    canActivate: [AuthGuard],
-    component: MainLayoutComponent,
-    children: [{path: 'chat-room', component: ChatRoomComponent}]
-  },
-  {
-    path: 'home',
-    canActivate: [AuthGuard],
-    component: MainLayoutComponent,
-    children: [{path: 'calendar', component: CalendarComponent}]
-  },
-  {
-    path: 'home',
-    canActivate: [AuthGuard],
-    component: MainLayoutComponent,
-    children: [{path: 'settings', component: SettingsComponent}]
+    children: [ 
+                { path: 'dashboard', component: DashboardComponent },
+                { path: 'my-account', component: MyAccountComponent },
+                { path: 'chat-room', component: ChatRoomComponent },
+                { path: 'calendar', component: CalendarComponent  },
+                { path: 'settings', component: SettingsComponent  }
+              ],
   },
   {
     path: '',
