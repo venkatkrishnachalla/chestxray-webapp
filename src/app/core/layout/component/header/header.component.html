@@ -1,7 +1,41 @@
-<mat-toolbar color="primary">
-  <span>CXR</span>
+<mat-toolbar>
+  <!-- <button (click)="toggleSidenav()" class="menu_icon" mat-button>
+    <span class="material-icons">
+    menu</span>
+  </button> -->
+  <span class="header_logo">
+    <img src="../../../../../assets/images/CXR.png"
+      alt="CXR_Logo" width="100%" height="35px">
+  </span>
   <span class="fill-remaining-space"></span>
-  <mat-icon *ngIf="isAuth" class="pointer" (click)="onLogout()"
-    >logout</mat-icon
+  <span class="icon-styles">
+    <mat-icon *ngIf="router.url != '/auth/login'" 
+      class="pointer">person_add_alt_1
+    </mat-icon>
+  </span>
+  <span class="icon-styles">
+      <mat-icon
+      *ngIf="router.url != '/auth/login'"
+      class="pointer"
+      >notifications</mat-icon>
+  </span>
+  <span class="user-name" *ngIf="router.url != '/auth/login'">
+    {{ doctorName }}</span>
+  <mat-icon
+    *ngIf="router.url != '/auth/login'"
+    class="pointer account_icon"
+    [matMenuTriggerFor]="aboveMenu"
+    >account_circle</mat-icon
   >
+  <mat-menu #aboveMenu="matMenu" xPosition="before">
+    <button mat-menu-item>
+      <span class="material-icons">person</span>My Account
+    </button>
+    <button mat-menu-item>
+      <span class="material-icons">supervisor_account</span>Switch User
+    </button>
+    <button mat-menu-item (click)="onLogout()">
+      <span class="material-icons">logout</span>Logout
+    </button>
+  </mat-menu>
 </mat-toolbar>
