@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
 
 const materialModules = [
   MatCardModule,
@@ -25,6 +27,9 @@ const materialModules = [
   MatSidenavModule,
   MatGridListModule,
   MatSlideToggleModule,
+  MatGridListModule,
+  MatCheckboxModule,
+  MatListModule
 ];
 
 @NgModule({

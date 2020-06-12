@@ -9,6 +9,8 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
 import { HomeModule } from './module/home/home.module';
+import { LayoutModule } from '@angular/cdk/layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -20,6 +22,8 @@ import { HomeModule } from './module/home/home.module';
     CoreModule,
     HomeModule,
     AuthModule, // Load AuthModule with the app,
+    LayoutModule,
+    FlexLayoutModule
   ],
   providers: [
     ,

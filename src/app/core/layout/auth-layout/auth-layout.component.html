@@ -1,19 +1,40 @@
 <mat-toolbar class="header">
-  <span style="margin-top: 10px; margin-left: 0px; padding-left: 5px;"
-    ><img
-      src="../../../../../assets/CXR.png"
-      alt="CXR_Logo"
-      width="100%"
-      height="35px"
-  /></span>
-
+  <span style="margin-top: 10px; margin-left: 0px; padding-left: 5px;"><img src="../../../../../assets/CXR.png"
+      alt="CXR_Logo" width="100%" height="35px"></span>
   <span class="fill-remaining-space"></span>
   <span>About</span>
   <span>Product</span>
   <span>Contact Us</span>
   <span class="sign-in-text">Sign In</span>
-  <mat-icon *ngIf="isAuth" class="pointer" (click)="onLogout()"
-    >logout</mat-icon
-  >
+  <mat-icon *ngIf="isAuth" class="pointer" (click)="onLogout()">logout</mat-icon>
 </mat-toolbar>
+
+<!-- <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+  #drawer
+  class="sidenav"
+  fixedInViewport="false"
+  [attr.role]="isHandset ? 'dialog' : 'navigation'"
+  [mode]="(isHandset | async)!.matches ? 'over' : 'side'"
+  [opened]="!(isHandset | async)!.matches">
+
+<mat-toolbar color="primary">Menu</mat-toolbar>
+<mat-nav-list>
+  <a href="">Pramod</a>
+  <a href="">Pramod</a>
+  <a href="">Pramod</a>
+</mat-nav-list>
+</mat-sidenav>
+
+<mat-sidenav-content>
+  <mat-toolbar color="primary">
+    <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="(isHandset | async)!matches">
+      <mat-icon aria-label="side nav toggle icon">menu</mat-icon>
+    </button>
+    <span>Application title</span>
+  </mat-toolbar>
+  <ng-content></ng-content>
+</mat-sidenav-content>
+</mat-sidenav-container> -->
+
 <router-outlet></router-outlet>
