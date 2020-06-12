@@ -14,6 +14,7 @@ export class SignInComponent implements OnInit {
   isLoading = false;
   auth: { email: string; password: string } = { email: '', password: '' };
   errorMessage = '';
+
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,
@@ -21,9 +22,10 @@ export class SignInComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   onSignIn(form: NgForm) {
+    const networkStatus = navigator.onLine;
     if (form.valid) {
       this.isLoading = true;
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
@@ -34,8 +36,13 @@ export class SignInComponent implements OnInit {
         },
         (errorMessage: any) => {
           this.isLoading = false;
-          // this.errorMessage = errorMessage;
-          this.errorMessage = 'Invalid Username or Password';
+          this.errorMessage = errorMessage;
+          if (networkStatus === false) {
+            this.errorMessage =
+              'You are not connected to a network. Check your network connections and try again.';
+          } else {
+            this.errorMessage = 'Invalid Username or Password';
+          }
           this.alert.open(this.errorMessage, 'ERROR');
           form.reset();
         }

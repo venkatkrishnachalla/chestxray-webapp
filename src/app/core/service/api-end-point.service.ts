@@ -46,7 +46,7 @@ export class ApiEndPointService {
 
   public getSingInURL(): string {
     if (environment.isMockAPI) {
-      return '/auth';
+      return environment.mockApiEndPoint + '/auth';
     }
     return 'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/Dicom/Login';
     // const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
@@ -56,20 +56,9 @@ export class ApiEndPointService {
     // );
   }
 
-  public getSingUpURL(): string {
-    if (environment.isMockAPI) {
-      return '/auth';
-    }
-    const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
-    return (
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +
-      FIREBASE_API_KEY
-    );
-  }
-
   public getRefreshToken(): string {
     if (environment.isMockAPI) {
-      return '/auth';
+      return environment.mockApiEndPoint + '/auth';
     }
     const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
     return (

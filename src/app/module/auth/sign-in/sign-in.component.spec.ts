@@ -54,32 +54,40 @@ fdescribe('SignInComponent', () => {
         .signIn('test', 'test@123')
         .subscribe((authResponse: any) => {
           expect(component.isLoading).toEqual(false);
-          expect(consoleServiceSpy.log).toHaveBeenCalledWith(authResponse);
           expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
         });
     });
   });
 
   describe('#onSignIn', () => {
+    const testForm = {
+      value: {
+        email: 'test',
+        password: 'test@123',
+      },
+      valid: true,
+      resetForm: () => null,
+    } as NgForm;
     beforeEach(() => {
       const signInErrorResponse = { status: 401 };
-      const testForm = {
-        value: {
-          email: 'test',
-          password: 'test@123',
-        },
-        valid: true,
-        resetForm: () => null,
-      } as NgForm;
       authServiceSpy.signIn.and.returnValue(throwError(signInErrorResponse));
-      component.onSignIn(testForm);
     });
     it('should call onSignIn function, when login error', () => {
+      spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(true);
+      component.onSignIn(testForm);
       expect(component.isLoading).toEqual(false);
       expect(alertSpy.open).toHaveBeenCalledWith(
         'Invalid Username or Password',
         'ERROR'
       );
+    });
+    it('should call onSignIn function, when login error, when network is false', () => {
+      spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(false);
+      component.onSignIn(testForm);
+      const networkmessage =
+        'You are not connected to a network. Check your network connections and try again.';
+      expect(component.isLoading).toEqual(false);
+      expect(alertSpy.open).toHaveBeenCalledWith(networkmessage, 'ERROR');
     });
   });
 

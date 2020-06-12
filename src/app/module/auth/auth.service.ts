@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError, Subject, BehaviorSubject, Observable } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
 import User from './user.modal';
 import { Router } from '@angular/router';
 import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
@@ -22,7 +22,6 @@ interface AuthResponseData {
 })
 export class AuthService {
   public userSubject: BehaviorSubject<User>;
-
   private tokenExpirationTimer: any;
   private refreshTokenTimer: any;
 
@@ -37,10 +36,11 @@ export class AuthService {
   public get user(): User {
     return this.userSubject.value;
   }
+
   signIn(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(this.endpoint.getSingInURL(), {
-        doctorName: email,
+        email,
         password,
         returnSecureToken: true,
       })
@@ -122,7 +122,7 @@ export class AuthService {
   //
   autoSessionTimeOut(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
-      // this.logOut();
+      this.logOut();
     }, expirationDuration);
   }
 
