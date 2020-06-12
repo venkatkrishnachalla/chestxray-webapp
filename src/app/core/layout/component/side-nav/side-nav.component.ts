@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatSidenav } from '@angular/material/sidenav';
+import {FormControl} from '@angular/forms';
+import {MatSidenav} from '@angular/material/sidenav';
 
 @Component({
   selector: 'cxr-side-nav',
@@ -14,24 +14,24 @@ export class SideNavComponent implements OnInit {
 
   mode = new FormControl('over');
 
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some((h) =>
-    h.test(window.location.host)
-  );
+  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
   constructor() {}
 
-  @HostListener('window:resize', [])
-  public onResize() {
-    this.sidenavDisplay();
+  
+  @HostListener("window:resize", [])
+    public onResize() {
+      this.sidenavDisplay();
   }
 
   ngOnInit() {
     this.sidenavDisplay();
   }
 
-  sidenavDisplay() {
-    if (window.innerWidth <= 768) {
+  sidenavDisplay(){
+    if(window.innerWidth <= 768){
       this.sideNavToggle = true;
-    } else {
+    }
+    else{
       this.sideNavToggle = false;
     }
   }

@@ -14,7 +14,7 @@ import { GridcolsDirective } from '../module/shared/gridcols.directive';
     MainLayoutComponent,
     HeaderComponent,
     SideNavComponent,
-    GridcolsDirective,
+    GridcolsDirective
   ],
   imports: [CommonModule, RouterModule, MaterialModule],
   exports: [],

@@ -13,18 +13,19 @@ mat-sidenav button {
   border-radius: 0;
 }
 
-.route-component {
+.route-component{
   position: relative;
   left: 15%;
 }
+
 
 :host ::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
   visibility: hidden;
 }
 
-mat-sidenav {
+mat-sidenav{
   width: 15%;
-  background-color: #285c68;
+  background-color: #285C68;
 }
 
 .sidenav-icons {
@@ -53,9 +54,9 @@ button.is-active {
 }
 
 @media only screen and (max-width: 768px) {
-  mat-sidenav {
-    width: 40%;
-    background-color: #285c68;
+  mat-sidenav{
+      width: 40%;
+      background-color: #285C68;
   }
 }
 
@@ -69,3 +70,7 @@ button.is-active {
 // .example-sidenav {
 //   padding: 20px;
 // }
+
+
+
+

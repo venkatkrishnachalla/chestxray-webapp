@@ -10,18 +10,7 @@
   "users": [
     {
       "id": 0,
-      "email": "sandy"
-    },
-    {
-      "id": 1,
-      "email": "test1",
-      "password": "test1@123"
-    },
-    {
-      "email": "test1",
-      "password": "test1@123",
-      "returnSecureToken": true,
-      "id": 2
+      "name": "sandy"
     }
   ]
 }
