@@ -1,7 +1,7 @@
 export const home_Constants = {
     patientDashboard : {
         headers: [
-            {headerName: 'Patient ID', field: 'patientId', sortable: true, resizable: true },
+            {headerName: 'Patient Id', field: 'patientId', sortable: true, resizable: true },
             {headerName: 'Patient Name', field: 'patientName', sortable: true, resizable: true },
             {headerName: 'Gender', field: 'gender', sortable: true, resizable: true },
             {headerName: 'Age', field: 'age', sortable: true, resizable: true },
