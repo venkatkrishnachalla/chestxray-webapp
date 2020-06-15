@@ -18,7 +18,9 @@ export class ApiEndPointService {
   }
 
   private getUrl(action: string, pathVariables: any[] = []): string {
-    if (pathVariables.length === 0) { return [this.baseUrl, action].join('/'); }
+    if (pathVariables.length === 0) {
+      return [this.baseUrl, action].join('/');
+    }
     let encodedPathVariablesUrl = '';
     // Push extra path variables
     for (const pathVariable of pathVariables) {
@@ -44,29 +46,19 @@ export class ApiEndPointService {
 
   public getSingInURL(): string {
     if (environment.isMockAPI) {
-      return '/auth';
+      return environment.mockApiEndPoint + '/auth';
     }
-    const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
-    return (
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
-      FIREBASE_API_KEY
-    );
-  }
-
-  public getSingUpURL(): string {
-    if (environment.isMockAPI) {
-      return '/auth';
-    }
-    const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
-    return (
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +
-      FIREBASE_API_KEY
-    );
+    return 'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/Dicom/Login';
+    // const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
+    // return (
+    //   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
+    //   FIREBASE_API_KEY
+    // );
   }
 
   public getRefreshToken(): string {
     if (environment.isMockAPI) {
-      return '/auth';
+      return environment.mockApiEndPoint + '/auth';
     }
     const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
     return (

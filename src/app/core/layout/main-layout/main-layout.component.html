@@ -1,3 +1,71 @@
 <cxr-header></cxr-header>
-<cxr-side-nav></cxr-side-nav>
-<router-outlet></router-outlet>
+<cxr-side-nav *ngIf="!sideNavToggle"></cxr-side-nav>
+<mat-sidenav-container class="example-container" *ngIf="sideNavToggle">
+  <mat-sidenav #sidenavbar (keydown.escape)="close()">
+    <button
+      mat-button
+      (click)="close()"
+      [routerLink]="['/home/dashboard']"
+      routerLinkActive="is-active"
+    >
+      <span class="material-icons sidenav-icons">dashboard</span>Dashboard
+    </button>
+    <button
+      mat-button
+      (click)="close()"
+      [routerLink]="['/home/my-account']"
+      routerLinkActive="is-active"
+    >
+      <span class="material-icons sidenav-icons">person</span>My Account
+    </button>
+    <button
+      mat-button
+      (click)="close()"
+      [routerLink]="['/home/chat-room']"
+      routerLinkActive="is-active"
+    >
+      <span class="material-icons sidenav-icons">question_answer</span>Chat Room
+    </button>
+    <button
+      mat-button
+      (click)="close()"
+      [routerLink]="['/home/calendar']"
+      routerLinkActive="is-active"
+    >
+      <span class="material-icons sidenav-icons">date_range</span>Calendar
+    </button>
+    <button
+      mat-button
+      (click)="close()"
+      [routerLink]="['/home/settings']"
+      routerLinkActive="is-active"
+    >
+      <span class="material-icons sidenav-icons">settings</span>Settings
+    </button>
+
+    <mat-card>
+      <p>
+        <span class="material-icons social-media">date_range</span>
+        <span class="material-icons social-media">date_range</span>
+        <span class="material-icons social-media">date_range</span>
+        <span class="material-icons social-media">date_range</span>
+      </p>
+      <button mat-button>ABOUT</button>
+      <button mat-button>HELP</button>
+      <button mat-button>TERMS</button>
+      <button mat-button>GUIDELINES</button>
+      <span class="bottom-content">powered by LTTS</span>
+    </mat-card>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <button style="color: black;" mat-button (click)="sidenav.toggle()">
+      <span class="material-icons">
+        menu
+      </span>
+    </button>
+    <div class="route-component">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

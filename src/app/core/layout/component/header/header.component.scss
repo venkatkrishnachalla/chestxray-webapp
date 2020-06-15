@@ -1,0 +1,71 @@
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.header_logo {
+  margin-top: 10px;
+  margin-left: 0px;
+  padding-left: 5px;
+}
+
+.menu_icon {
+  color: white;
+  display: none;
+}
+
+mat-toolbar {
+  background-color: #434343;
+}
+
+mat-icon {
+  color: #f8f8f8;
+  font-size: 1.3rem;
+  margin-right: 1.2rem;
+}
+
+.user-name {
+  padding: 0.5rem 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: #f8f8f8;
+  font-weight: lighter;
+  border-left: 1px solid #f8f8f8;
+}
+
+.account_icon {
+  font-size: 1.9rem;
+  color: #7ca5ae;
+  margin-bottom: 0.2rem;
+}
+
+.icon-styles {
+  height: 100%;
+}
+
+.icon-styles mat-icon {
+  padding-top: 1.5rem;
+  padding-left: 1rem;
+}
+
+.icon-styles:hover {
+  border-bottom: 7px solid white;
+  background-color: #818181;
+}
+
+@media only screen and (max-width: 600px) {
+  .user-name {
+    display: none;
+  }
+  .icon-styles {
+    display: none;
+  }
+  .account_icon {
+    display: block;
+  }
+  .menu_icon {
+    color: white;
+    display: block;
+  }
+  mat-toolbar {
+    background-color: #285c68 !important;
+  }
+}

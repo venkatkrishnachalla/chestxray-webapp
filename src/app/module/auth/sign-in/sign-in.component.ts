@@ -4,7 +4,6 @@ import { SnackbarService } from 'src/app/core/service/snackbar.service';
 import { AuthService } from '../auth.service';
 import { ConsoleService } from 'src/app/core/service/console.service';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'cxr-sign-in',
   templateUrl: './sign-in.component.html',
@@ -37,17 +36,24 @@ export class SignInComponent implements OnInit {
   }
 
   onSignIn(form: NgForm) {
+    const networkStatus = navigator.onLine;
     if (form.valid) {
       this.isLoading = true;
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
-        (authResponse) => {
+        (authResponse: any) => {
           this.isLoading = false;
           this.console.log(authResponse);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home/dashboard']);
         },
-        (errorMessage) => {
+        (errorMessage: any) => {
           this.isLoading = false;
           this.errorMessage = errorMessage;
+          if (networkStatus === false) {
+            this.errorMessage =
+              'You are not connected to a network. Check your network connections and try again.';
+          } else {
+            this.errorMessage = 'Invalid Username or Password';
+          }
           this.alert.open(this.errorMessage, 'ERROR');
           form.reset();
         }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './module/auth/auth.service';
 
 @Component({
@@ -6,9 +6,10 @@ import { AuthService } from './module/auth/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'cxr-web-app';
   constructor(private authService: AuthService) {}
+
   ngOnInit(): void {
     this.loginOnBrowserRefresh();
   }

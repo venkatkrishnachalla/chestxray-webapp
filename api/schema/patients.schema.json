@@ -1,0 +1,52 @@
+{
+  "definitions": {
+    "name": {
+      "type": "string",
+      "faker": {
+        "fake": "{{name.lastName}}, {{name.firstName}} {{name.suffix}}"
+      }
+    }
+  },
+  "type": "object",
+  "required": ["patients"],
+  "additionalProperties": false,
+  "properties": {
+    "patients": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 10,
+      "items": {
+        "patientID": {
+          "type": "number",
+          "multipleOf": 1,
+          "unique": true,
+          "minimum": 1
+        },
+        "name": { "$ref": "#/definitions/name" },
+        "gender": {
+          "type": "string",
+          "enum": ["M", "F"]
+        },
+        "age": {
+          "type": "number",
+          "minimum": 20,
+          "maximum": 100,
+          "multipleOf": 1
+        },
+        "referenceDoctor": { "$ref": "#/definitions/name" },
+        "date": {
+          "type": "string",
+          "faker": "date.past"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["new", "in-process", "completed"]
+        },
+        "instanceID": {
+          "type": "string",
+          "faker": "random.uuid"
+        }
+      }
+    }
+  }
+}
