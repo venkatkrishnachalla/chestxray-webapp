@@ -51,7 +51,7 @@ mat-icon {
   background-color: #818181;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
   .user-name {
     display: none;
   }
@@ -64,6 +64,7 @@ mat-icon {
   .menu_icon {
     color: white;
     display: block;
+    height: 100%;
   }
   mat-toolbar {
     background-color: #285c68 !important;

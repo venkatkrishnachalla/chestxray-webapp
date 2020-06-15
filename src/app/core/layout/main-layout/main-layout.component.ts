@@ -35,4 +35,8 @@ export class MainLayoutComponent implements OnInit {
       this.sideNavToggle = false;
     }
   }
+
+  toggleSidenavBar(valueEmitted) {
+    this.sidenav.toggle();
+  }
 }

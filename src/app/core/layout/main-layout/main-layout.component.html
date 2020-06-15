@@ -1,4 +1,4 @@
-<cxr-header></cxr-header>
+<cxr-header (buttonClicked)="toggleSidenavBar($event)"></cxr-header>
 <cxr-side-nav *ngIf="!sideNavToggle"></cxr-side-nav>
 <mat-sidenav-container class="example-container" *ngIf="sideNavToggle">
   <mat-sidenav #sidenavbar (keydown.escape)="close()">
@@ -45,10 +45,38 @@
 
     <mat-card>
       <p>
-        <span class="material-icons social-media">date_range</span>
-        <span class="material-icons social-media">date_range</span>
-        <span class="material-icons social-media">date_range</span>
-        <span class="material-icons social-media">date_range</span>
+        <span class="social-media"
+          ><img
+            src="../../../../assets/images/instagram.png"
+            alt="facebook"
+            width="15px"
+            height="15px"
+          />
+        </span>
+        <span class="material-icons social-media"
+          ><img
+            src="../../../../assets/images/twitter.png"
+            alt="facebook"
+            width="15px"
+            height="15px"
+          />
+        </span>
+        <span class="material-icons social-media"
+          ><img
+            src="../../../../assets/images/facebook.png"
+            alt="facebook"
+            width="15px"
+            height="15px"
+          />
+        </span>
+        <span class="material-icons social-media"
+          ><img
+            src="../../../../assets/images/web.png"
+            alt="facebook"
+            width="15px"
+            height="15px"
+          />
+        </span>
       </p>
       <button mat-button>ABOUT</button>
       <button mat-button>HELP</button>
@@ -59,11 +87,6 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <button style="color: black;" mat-button (click)="sidenav.toggle()">
-      <span class="material-icons">
-        menu
-      </span>
-    </button>
     <div class="route-component">
       <router-outlet></router-outlet>
     </div>
