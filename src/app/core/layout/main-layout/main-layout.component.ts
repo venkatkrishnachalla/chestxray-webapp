@@ -8,9 +8,6 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class MainLayoutComponent implements OnInit {
   sideNavToggle: boolean;
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some((h) =>
-    h.test(window.location.host)
-  );
 
   @ViewChild('sidenavbar') sidenav: MatSidenav;
 
@@ -35,9 +32,8 @@ export class MainLayoutComponent implements OnInit {
       this.sideNavToggle = false;
     }
   }
-  
+
   toggleSidenavBar(valueEmitted){
-    console.log(valueEmitted);
     this.sidenav.toggle();
   }
 }

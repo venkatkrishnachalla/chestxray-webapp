@@ -1,7 +1,7 @@
 import { ApiEndPointService } from './api-end-point.service';
 import { environment } from '../../../environments/environment';
 
-fdescribe('ApiEndPointService', () => {
+describe('ApiEndPointService', () => {
   let apiEndPointService: ApiEndPointService;
 
   beforeEach(() => {

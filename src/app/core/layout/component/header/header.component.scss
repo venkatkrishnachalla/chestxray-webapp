@@ -52,20 +52,21 @@ mat-icon {
 }
 
 @media only screen and (max-width: 768px) {
-  .user-name{
+  .user-name {
     display: none;
   }
-  .icon-styles{
+  .icon-styles {
     display: none;
   }
-  .account_icon{
+  .account_icon {
     display: block;
   }
-  .menu_icon{
+  .menu_icon {
     color: white;
+    height: 100%;
     display: block;
   }
   mat-toolbar {
-    background-color: #285C68 !important;
+    background-color: #285c68 !important;
   }
 }
