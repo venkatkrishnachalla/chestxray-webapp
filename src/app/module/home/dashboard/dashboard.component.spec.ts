@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
 
-describe('DashboardComponent', () => {
+fdescribe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
@@ -20,5 +20,15 @@ describe('DashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+    it('should call ngOnIit function', () => {
+      const result = component.ngOnInit();
+      expect(component.ngOnInit).toBeDefined();
+    });
   });
 });

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MainLayoutComponent } from './main-layout.component';
 
-describe('MainLayoutComponent', () => {
+fdescribe('MainLayoutComponent', () => {
   let component: MainLayoutComponent;
   let fixture: ComponentFixture<MainLayoutComponent>;
 
@@ -20,5 +20,33 @@ describe('MainLayoutComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#onResize', () => {
+    beforeEach(() => {
+      spyOn(component, 'sidenavDisplay');
+      component.onResize();
+    });
+    it('should call ngOnIit function', () => {
+      expect(component.sidenavDisplay).toHaveBeenCalled();
+    });
+  });
+
+  describe('#close', () => {
+    beforeEach(() => {
+      component.close();
+    });
+    it('should call close function', () => {
+     
+    });
+  });
+
+  describe('#sidenavDisplay', () => {
+    beforeEach(() => {
+      component.sidenavDisplay();
+    });
+    it('should call sidenavDisplay function', () => {
+      expect(component.sidenavDisplay).toBeDefined();
+    });
   });
 });

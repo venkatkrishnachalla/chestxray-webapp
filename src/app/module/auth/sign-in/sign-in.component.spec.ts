@@ -22,6 +22,20 @@ fdescribe('SignInComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('#onResize', () => {
+    beforeEach(() => {
+      const event = {
+        target: {
+          innerWidth: 275,
+        }
+      };
+      component.onResize(event);
+    });
+    it('should call onResize function', () => {
+      expect(component.onResize).toBeDefined();
+    });
+  });
+
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
@@ -54,7 +68,7 @@ fdescribe('SignInComponent', () => {
         .signIn('test', 'test@123')
         .subscribe((authResponse: any) => {
           expect(component.isLoading).toEqual(false);
-          expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
+          expect(routerSpy.navigate).toHaveBeenCalledWith(['/home/dashboard']);
         });
     });
   });
@@ -66,7 +80,7 @@ fdescribe('SignInComponent', () => {
         password: 'test@123',
       },
       valid: true,
-      resetForm: () => null,
+      resetForm: () => null
     } as NgForm;
     beforeEach(() => {
       const signInErrorResponse = { status: 401 };

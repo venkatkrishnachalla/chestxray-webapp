@@ -40,13 +40,21 @@ export class AuthService {
   signIn(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(this.endpoint.getSingInURL(), {
-        email,
+        doctorName: email,
         password,
         returnSecureToken: true,
       })
       .pipe(
         catchError(this.handleAuthError),
         tap((responseDate) => {
+          responseDate = {
+            idToken: '22373588',
+            email: 'Nayeli_Adams0@gmail.com',
+            refreshToken: '79660343',
+            expiresIn: '30000',
+            localId: 'non incididunt ut laborum fugiat',
+            registered: true,
+          };
           this.handleAuthentication(
             responseDate.email,
             responseDate.localId,
