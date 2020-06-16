@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { home_Constants } from 'src/app/constants/homeConstants';
+import { homeConstants } from 'src/app/constants/homeConstants';
 
 @Component({
   selector: 'cxr-dashboard',
@@ -9,12 +9,12 @@ import { home_Constants } from 'src/app/constants/homeConstants';
 export class DashboardComponent implements OnInit {
   columnDefs: any;
   rowData: any;
-  searchValue: string = '';
+  searchValue: string;
   gridApi: any;
   gridColumnApi: any;
   pageSize: any;
   domLayout: any;
-  readonly constants = home_Constants;
+  readonly constants = homeConstants;
   defaultColDef: any;
   constructor() {}
 

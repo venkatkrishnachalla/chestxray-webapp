@@ -1,4 +1,4 @@
-export const home_Constants = {
+export const homeConstants = {
   patientDashboard: {
     headers: [
       {

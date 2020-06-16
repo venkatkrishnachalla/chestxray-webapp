@@ -1,78 +1,30 @@
 <cxr-header (buttonClicked)="toggleSidenavBar($event)"></cxr-header>
-<cxr-side-nav *ngIf="!sideNavToggle"></cxr-side-nav>
-<mat-sidenav-container class="example-container" *ngIf="sideNavToggle">
+<!-- <cxr-side-nav *ngIf="!sideNavToggle"></cxr-side-nav> -->
+<!-- *ngIf="sideNavToggle" -->
+<mat-sidenav-container class="example-container">
   <mat-sidenav #sidenavbar (keydown.escape)="close()">
-    <button
-      mat-button
-      (click)="close()"
-      [routerLink]="['/home/dashboard']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">dashboard</span>Dashboard
-    </button>
-    <button
-      mat-button
-      (click)="close()"
-      [routerLink]="['/home/my-account']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">person</span>My Account
-    </button>
-    <button
-      mat-button
-      (click)="close()"
-      [routerLink]="['/home/chat-room']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">question_answer</span>Chat Room
-    </button>
-    <button
-      mat-button
-      (click)="close()"
-      [routerLink]="['/home/calendar']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">date_range</span>Calendar
-    </button>
-    <button
-      mat-button
-      (click)="close()"
-      [routerLink]="['/home/settings']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">settings</span>Settings
-    </button>
-
+    <div class="sidenav-content">
+      <button
+        mat-button
+        (click)="close()"
+        *ngFor="let sidenavButtons of sidenavButton"
+        [routerLink]="sidenavButtons.routerLink"
+        routerLinkActive="is-active"
+      >
+        <span class="material-icons sidenav-icons">{{
+          sidenavButtons.icons
+        }}</span
+        >{{ sidenavButtons.label }}
+      </button>
+    </div>
     <mat-card>
       <p>
-        <span class="social-media"
+        <span
+          class="social-media"
+          *ngFor="let socialMediaImages of socialMediaImage"
           ><img
-            src="../../../../assets/images/instagram.png"
-            alt="facebook"
-            width="15px"
-            height="15px"
-          />
-        </span>
-        <span class="material-icons social-media"
-          ><img
-            src="../../../../assets/images/twitter.png"
-            alt="facebook"
-            width="15px"
-            height="15px"
-          />
-        </span>
-        <span class="material-icons social-media"
-          ><img
-            src="../../../../assets/images/facebook.png"
-            alt="facebook"
-            width="15px"
-            height="15px"
-          />
-        </span>
-        <span class="material-icons social-media"
-          ><img
-            src="../../../../assets/images/web.png"
-            alt="facebook"
+            [src]="socialMediaImages.image"
+            [alt]="socialMediaImages.alt"
             width="15px"
             height="15px"
           />
@@ -82,13 +34,11 @@
       <button mat-button>HELP</button>
       <button mat-button>TERMS</button>
       <button mat-button>GUIDELINES</button>
-      <span class="bottom-content">powered by LTTS</span>
+      <p class="bottom-content">powered by LTTS</p>
     </mat-card>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="route-component">
-      <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

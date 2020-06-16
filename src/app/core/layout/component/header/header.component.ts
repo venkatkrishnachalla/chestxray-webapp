@@ -11,7 +11,7 @@ import { SidenavService } from 'src/app/core/service/sidenav.service';
 export class HeaderComponent implements OnInit {
   isAuth = false;
   doctorName = 'Dr.Adam';
-  toggleActive: boolean = false;
+  toggleActive: boolean;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
 
@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.toggleActive = false;
     this.initialize();
   }
 
