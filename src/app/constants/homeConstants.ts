@@ -1,4 +1,4 @@
-export const home_Constants = {
+export const homeConstants = {
   patientDashboard: {
     headers: [
       {
@@ -54,10 +54,12 @@ export const home_Constants = {
         headerName: 'Action',
         field: 'action',
         pinned: 'right',
-        width: 95,
+        width: 120,
         cellRenderer: (data) => {
           return `<mat-icon style="cursor: pointer; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
-                preview</mat-icon>`;
+                error_outline</mat-icon>
+                <mat-icon style="cursor: pointer; padding-left:15px; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
+                edit</mat-icon>`;
         },
       },
     ],
