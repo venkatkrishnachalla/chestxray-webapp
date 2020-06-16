@@ -10,29 +10,30 @@
 
 .menu_icon {
   color: white;
-  display: none;
+  display: block;
+  height: 100%;
 }
 
 mat-toolbar {
   background-color: #434343;
 }
 
-mat-icon {
-  color: #f8f8f8;
-  font-size: 1.3rem;
-  margin-right: 1.2rem;
-}
+// mat-icon {
+//   color: #f8f8f8;
+//   font-size: 1.3rem;
+//   margin-right: 1.2rem;
+// }
 
 .user-name {
   padding: 0.5rem 0 0 0.5rem;
-  font-size: 0.8rem;
+  font-size: 1.3rem;
   color: #f8f8f8;
   font-weight: lighter;
   border-left: 1px solid #f8f8f8;
 }
 
 .account_icon {
-  font-size: 1.9rem;
+  font-size: 2.8rem;
   color: #7ca5ae;
   margin-bottom: 0.2rem;
 }
@@ -42,8 +43,11 @@ mat-icon {
 }
 
 .icon-styles mat-icon {
-  padding-top: 1.5rem;
+  padding-top: 2rem;
   padding-left: 1rem;
+  font-size: 2rem;
+  color: #f8f8f8;
+  margin-right: 2.8rem;
 }
 
 .icon-styles:hover {
@@ -51,7 +55,7 @@ mat-icon {
   background-color: #818181;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
   .user-name {
     display: none;
   }
@@ -64,6 +68,7 @@ mat-icon {
   .menu_icon {
     color: white;
     display: block;
+    height: 100%;
   }
   mat-toolbar {
     background-color: #285c68 !important;

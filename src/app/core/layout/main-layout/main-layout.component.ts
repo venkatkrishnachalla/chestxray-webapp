@@ -1,5 +1,7 @@
-import { Component, ViewChild, OnInit, HostListener } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { sideNavConstants } from '../../../constants/sidenavConstants';
+import { SideNavComponent } from '../component/side-nav/side-nav.component';
 
 @Component({
   selector: 'cxr-main-layout',
@@ -8,31 +10,33 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class MainLayoutComponent implements OnInit {
   sideNavToggle: boolean;
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some((h) =>
-    h.test(window.location.host)
-  );
+  readonly constants = sideNavConstants;
 
   @ViewChild('sidenavbar') sidenav: MatSidenav;
 
-  @HostListener('window:resize', [])
-  public onResize() {
-    this.sidenavDisplay();
-  }
+  sidenavButton: {
+    icons: string;
+    label: string;
+    routerLink: string;
+  }[];
+  socialMediaImage: {
+    image: string;
+    alt: string;
+  }[];
+  bottomContent: string[];
+
   constructor() {}
 
   ngOnInit() {
-    this.sidenavDisplay();
+    this.sidenavButton = this.constants.sidenavContent;
+    this.socialMediaImage = this.constants.socialMedia;
   }
 
   close() {
     this.sidenav.close();
   }
 
-  sidenavDisplay() {
-    if (window.innerWidth <= 768) {
-      this.sideNavToggle = true;
-    } else {
-      this.sideNavToggle = false;
-    }
+  toggleSidenavBar(valueEmitted) {
+    this.sidenav.toggle();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { home_Constants } from 'src/app/constants/homeConstants';
+import { home_constants } from 'src/app/constants/homeConstants';
 import { HttpClient } from "@angular/common/http";
 import PerfectScrollbar from "perfect-scrollbar";
 import {DashboardService} from 'src/app/service/dashboard.service';
@@ -17,7 +17,7 @@ export class PatientListComponent implements OnInit {
   columnDefs;
   defaultColDef;
   rowData= [];
-  readonly constants = home_Constants;
+  readonly constants = home_constants;
   domLayout: any;
   searchValue:String = '';
   isLoading: boolean = false;
