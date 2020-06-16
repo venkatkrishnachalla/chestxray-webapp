@@ -26,6 +26,7 @@ fdescribe('AppComponent', () => {
       });
     });
     it('should call ngOnIit function', () => {
+      component.isLoading = false;
       component.ngOnInit();
       expect(component.loginOnBrowserRefresh).toHaveBeenCalled();
     });

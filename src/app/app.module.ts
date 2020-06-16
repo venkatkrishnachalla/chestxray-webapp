@@ -28,7 +28,6 @@ import { SharedModule } from './module/shared/shared.module';
     SharedModule
   ],
   providers: [
-    ,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

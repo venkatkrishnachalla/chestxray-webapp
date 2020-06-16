@@ -37,7 +37,7 @@ fdescribe('ApiEndPointService', () => {
       apiEndPointService.getSingInURL();
       const result = apiEndPointService.getSingInURL();
       expect(result).toEqual(
-        'http://localhost:300/auth'
+        'http://localhost:3000/auth'
       );
     });
   });

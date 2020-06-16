@@ -5,7 +5,6 @@ import { throwError, BehaviorSubject } from 'rxjs';
 import User from './user.modal';
 import { Router } from '@angular/router';
 import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
-import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 export const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
 const FIREBASE_SIGN_IN_ENDPOINT =
   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
