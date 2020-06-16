@@ -1,26 +1,2 @@
-<div id="at-id-patientTable">
-  <!-- <p class="text-center tableBgColor searchBar"> -->
-    <mat-form-field id="at-input-searchPatient" appearance="outline">
-      <mat-icon matPrefix>search</mat-icon>
-      <input
-        matInput
-        type="search"
-        [(ngModel)]="searchValue"
-        placeholder="Search Patient"
-        class="search-patient"
-      />
-    </mat-form-field>
-  <!-- </p> -->
-  <ag-grid-angular
-    id="myGrid"
-    #agGrid
-    class="ag-theme-material grid-width"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
-    [pagination]="true"
-    [quickFilterText]="searchValue"
-    [domLayout]="domLayout"
-    rowSelection="multiple"
-  >
-  </ag-grid-angular>
-</div>
+
+<cxr-patient-list></cxr-patient-list>

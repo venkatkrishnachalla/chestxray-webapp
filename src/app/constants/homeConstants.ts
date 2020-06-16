@@ -57,6 +57,7 @@ export const home_Constants = {
         width: 95,
         cellRenderer: (data) => {
           return `<mat-icon style="cursor: pointer; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
+                info</mat-icon><mat-icon style="cursor: pointer;margin-left:10px; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
                 preview</mat-icon>`;
         },
       },

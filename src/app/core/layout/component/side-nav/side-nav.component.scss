@@ -46,7 +46,7 @@ mat-sidenav {
 }
 
 .mat-drawer-content {
-  overflow: auto !important;
+  overflow: hidden!important;
   position: relative;
   display: block;
   height: 100%;
