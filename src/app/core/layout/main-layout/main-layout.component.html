@@ -1,8 +1,13 @@
 <cxr-header (buttonClicked)="toggleSidenavBar($event)"></cxr-header>
 <!-- <cxr-side-nav *ngIf="!sideNavToggle"></cxr-side-nav> -->
 <!-- *ngIf="sideNavToggle" -->
-<mat-sidenav-container class="example-container">
-  <mat-sidenav #sidenavbar (keydown.escape)="close()">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    mode="side"
+    class="sidenav"
+    #sidenavbar
+    (keydown.escape)="close()"
+  >
     <div class="sidenav-content">
       <button
         mat-button
@@ -17,7 +22,7 @@
         >{{ sidenavButtons.label }}
       </button>
     </div>
-    <mat-card>
+    <mat-card class="social-media-card">
       <p>
         <span
           class="social-media"
