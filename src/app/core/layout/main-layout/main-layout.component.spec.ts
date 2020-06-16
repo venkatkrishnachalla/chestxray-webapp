@@ -22,31 +22,12 @@ fdescribe('MainLayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('#onResize', () => {
-    beforeEach(() => {
-      spyOn(component, 'sidenavDisplay');
-      component.onResize();
-    });
-    it('should call ngOnIit function', () => {
-      expect(component.sidenavDisplay).toHaveBeenCalled();
-    });
-  });
-
   describe('#close', () => {
     beforeEach(() => {
       component.close();
     });
     it('should call close function', () => {
-     
-    });
-  });
-
-  describe('#sidenavDisplay', () => {
-    beforeEach(() => {
-      component.sidenavDisplay();
-    });
-    it('should call sidenavDisplay function', () => {
-      expect(component.sidenavDisplay).toBeDefined();
+      
     });
   });
 });

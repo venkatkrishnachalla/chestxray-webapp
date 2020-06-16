@@ -18,41 +18,70 @@
           <form #authForm="ngForm" (ngSubmit)="onSignIn(authForm)">
             <mat-form-field>
               <mat-label>Username</mat-label>
-              <input matInput name="email" required [(ngModel)]="auth.email" value="" />
+              <input
+                matInput
+                name="email"
+                required
+                [(ngModel)]="auth.email"
+                value=""
+              />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Password</mat-label>
-              <input matInput name="password" type="password" required [(ngModel)]="auth.password" placeholder=""
-                value="" minlength="5" />
+              <input
+                matInput
+                name="password"
+                type="password"
+                required
+                [(ngModel)]="auth.password"
+                placeholder=""
+                value=""
+                minlength="5"
+              />
             </mat-form-field>
-
             <!-- Validation message -->
-            <div *ngIf="errorMessage" class="error" style="text-align: center; color: #ff0000;">
+            <div
+              *ngIf="errorMessage"
+              class="error"
+              style="text-align: center; color: #ff0000;"
+            >
               <p>{{ errorMessage }}</p>
             </div>
-
             <mat-card-actions>
               <!-- Login button -->
-              <button mat-flat-button style="width: 96%; margin-left: 2%" color="primary" type="submit">
+              <button
+                mat-flat-button
+                style="width: 96%; margin-left: 2%;"
+                color="primary"
+                type="submit"
+              >
                 LOGIN
               </button>
             </mat-card-actions>
-            
           </form>
         </mat-card-content>
-
         <mat-card-actions>
           <!-- <mat-checkbox>Remember me!</mat-checkbox> -->
-          <a style="text-decoration: none; color: #2781FC; margin-left: 2%;">Forgot password ?</a>
+          <a style="text-decoration: none; color: #2781fc; margin-left: 2%;"
+            >Forgot password ?</a
+          >
         </mat-card-actions>
       </mat-card>
     </div>
   </section>
   <section class="footer">
     <div class="social-links">
-      <img src="../../../../assets/instagram.png" alt="Instagram" title="Instagram" />
+      <img
+        src="../../../../assets/instagram.png"
+        alt="Instagram"
+        title="Instagram"
+      />
       <img src="../../../../assets/twitter.png" alt="Twitter" title="Twitter" />
-      <img src="../../../../assets/facebook.png" alt="Facebook" title="Facebook" />
+      <img
+        src="../../../../assets/facebook.png"
+        alt="Facebook"
+        title="Facebook"
+      />
       <img src="../../../../assets/web.png" alt="Web" title="Web" />
     </div>
     <div class="copyright-msg">

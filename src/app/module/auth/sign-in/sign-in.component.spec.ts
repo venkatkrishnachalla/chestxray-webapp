@@ -23,21 +23,7 @@ fdescribe('SignInComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  describe('#onResize', () => {
-    beforeEach(() => {
-      const event = {
-        target: {
-          innerWidth: 275,
-        }
-      };
-      component.onResize(event);
-    });
-    it('should call onResize function', () => {
-      expect(component.onResize).toBeDefined();
-    });
-  });
-
+  
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
