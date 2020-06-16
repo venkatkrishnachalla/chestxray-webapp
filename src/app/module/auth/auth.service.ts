@@ -5,6 +5,7 @@ import { throwError, BehaviorSubject } from 'rxjs';
 import User from './user.modal';
 import { Router } from '@angular/router';
 import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
+import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 export const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
 const FIREBASE_SIGN_IN_ENDPOINT =
   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
@@ -40,21 +41,13 @@ export class AuthService {
   signIn(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(this.endpoint.getSingInURL(), {
-        doctorName: email,
+        email,
         password,
         returnSecureToken: true,
       })
       .pipe(
         catchError(this.handleAuthError),
         tap((responseDate) => {
-          responseDate = {
-            idToken: '22373588',
-            email: 'Nayeli_Adams0@gmail.com',
-            refreshToken: '79660343',
-            expiresIn: '30000',
-            localId: 'non incididunt ut laborum fugiat',
-            registered: true,
-          };
           this.handleAuthentication(
             responseDate.email,
             responseDate.localId,
