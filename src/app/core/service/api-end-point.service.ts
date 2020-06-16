@@ -66,4 +66,11 @@ export class ApiEndPointService {
       FIREBASE_API_KEY
     );
   }
+
+  public getPatientList(): string {
+    if (environment.isMockAPI) {
+      return environment.mockApiEndPoint + '/patients';
+    }
+    return 'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/getPatientListByDoctorId'
+  }
 }

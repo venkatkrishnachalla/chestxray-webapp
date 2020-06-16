@@ -10,6 +10,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { MaterialModule } from 'src/app/material.module';
 import { FormsModule } from '@angular/forms';
 import { ImplicitReceiver } from '@angular/compiler';
+import { PatientListComponent } from './patient-list/patient-list.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ImplicitReceiver } from '@angular/compiler';
     ChatRoomComponent,
     MyAccountComponent,
     SettingsComponent,
+    PatientListComponent,
   ],
   imports: [
     MaterialModule,
