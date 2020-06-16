@@ -1,66 +1,60 @@
 <cxr-spinner *ngIf="isLoading"></cxr-spinner>
 <div class="signInContainer">
-  <mat-grid-list [cols]="breakpoint" rowHeight="1:1" (window:resize)="onResize($event)">
-    <!-- Left side illustration image code -->
-    <mat-grid-tile>
-      <div class="leftSideImage">
-        <img src="../../../../assets/illustration.png" alt="">
-      </div>
-    </mat-grid-tile>
-
-    <!-- Sign in Form code -->
-    <mat-grid-tile>
-
-      <mat-card class="signIn">
-
+  <section class="signInSection">
+    <div class="left-image-container">
+      <img src="../../../../assets/illustration.png" alt="" />
+    </div>
+    <div class="right-form-container">
+      <!-- Login form fields -->
+      <mat-card>
         <!-- Profile icon and text -->
-        <div class="profile-icon">
-          <img src="../../../../assets/profile icon.png" alt="" height="60px" width="60px">
-          <p style="font-size: 12px; color: #818181;">Welcome! Please login to your account.</p>
+        <div class="form-header">
+          <img src="../../../../assets/profile icon.png" alt="profile-icon" />
+          <p>
+            Welcome! Please login to your account.
+          </p>
         </div>
 
-        <!-- Login form fields -->
-        <form #authForm="ngForm" (ngSubmit)="onSignIn(authForm)">
-          <mat-form-field>
-            <mat-label>Username</mat-label>
-            <input matInput name="email" required [(ngModel)]="auth.email" value="" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input matInput name="password" type="password" required [(ngModel)]="auth.password" placeholder="" value=""
-              minlength="5" />
-          </mat-form-field>
+        <mat-card-content>
+          <form #authForm="ngForm" (ngSubmit)="onSignIn(authForm)">
+            <mat-form-field>
+              <mat-label>Username</mat-label>
+              <input matInput name="email" required [(ngModel)]="auth.email" value="" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Password</mat-label>
+              <input matInput name="password" type="password" required [(ngModel)]="auth.password" placeholder=""
+                value="" minlength="5" />
+            </mat-form-field>
 
-          <!-- Validation message -->
-          <div *ngIf="errorMessage" class="error" style="text-align: center; color: #ff0000;">
-            <p>{{ errorMessage }}</p>
-          </div>
-
+            <!-- Validation message -->
+            <div *ngIf="errorMessage" class="error" style="text-align: center; color: #ff0000;">
+              <p>{{ errorMessage }}</p>
+            </div>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
           <!-- Login button -->
-          <div class="button-row">
-            <button mat-flat-button color="primary" type="submit">
-              LOGIN
-            </button>
-          </div>
-
-          <!-- Remember me and forgot password -->
-          <div style="margin: 10px 0px 0px;" cols="2" rowHeight="1:1">
-            <mat-checkbox>Remember me!</mat-checkbox>
-            <span style="float: right; margin: 6px 0px 0px; color: #4392FD;">Forgot password ?</span>
-          </div>
-
-        </form>
+          <button mat-flat-button style="width: 96%; margin-left: 2%" color="primary" type="submit">
+            LOGIN
+          </button>
+        </mat-card-actions>
+        <mat-card-actions>
+          <!-- <mat-checkbox>Remember me!</mat-checkbox> -->
+          <a style="text-decoration: none; color: #2781FC; margin-left: 2%;">Forgot password ?</a>
+        </mat-card-actions>
       </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
-
-  <!-- Social media icon in footer -->
-  <div rowHeight="1:1">
-    <img src="../../../../assets/instagram.png" width="20px" height="20px" alt="Instagram" title="Instagram">
-    <img src="../../../../assets/twitter.png" width="20px" height="20px" alt="Twitter" title="Twitter">
-    <img src="../../../../assets/facebook.png" width="20px" height="20px" alt="Facebook" title="Facebook">
-    <img src="../../../../assets/web.png" width="20px" height="20px" alt="Web" title="Web">
-    <span>Powered by LTTS</span>
-    <!-- <img src="../../../../assets/powered by LTTS@2x.png" alt="Copyright"> -->
-  </div>
+    </div>
+  </section>
+  <section class="footer">
+    <div class="social-links">
+      <img src="../../../../assets/instagram.png" alt="Instagram" title="Instagram" />
+      <img src="../../../../assets/twitter.png" alt="Twitter" title="Twitter" />
+      <img src="../../../../assets/facebook.png" alt="Facebook" title="Facebook" />
+      <img src="../../../../assets/web.png" alt="Web" title="Web" />
+    </div>
+    <div class="copyright-msg">
+      <span>Powered by LTTS</span>
+    </div>
+  </section>
 </div>

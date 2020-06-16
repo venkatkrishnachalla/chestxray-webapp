@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { home_Constants } from 'src/app/constants/homeConstants';
 import { HttpClient } from "@angular/common/http";
 import PerfectScrollbar from "perfect-scrollbar";
-import {DashboardService} from 'src/app/service/dashboard.service'
+import {DashboardService} from 'src/app/service/dashboard.service';
 
 @Component({
   selector: 'cxr-patient-list',
@@ -10,8 +10,10 @@ import {DashboardService} from 'src/app/service/dashboard.service'
   styleUrls: ['./patient-list.component.scss']
 })
 export class PatientListComponent implements OnInit {
+
   private gridApi;
   private gridColumnApi;
+
   columnDefs;
   defaultColDef;
   rowData= [];
@@ -21,6 +23,7 @@ export class PatientListComponent implements OnInit {
   isLoading: boolean = false;
   doctorId: any;
   errorMessage:any;
+  ShowError:boolean = false;
 
   constructor(private http: HttpClient, 
               private elementRef: ElementRef,
@@ -33,6 +36,7 @@ export class PatientListComponent implements OnInit {
     this.defaultColDef = { width: 200 };
     // this.rowData = this.constants.patientDashboard.sampleData;
     this.columnDefs = this.constants.patientDashboard.headers;
+    this.getPatientList();
   }
 
   onGridReady(params) {
@@ -45,11 +49,28 @@ export class PatientListComponent implements OnInit {
     }
     this.autoSizeAll(false);
   }
+
   autoSizeAll(skipHeader) {
     var allColumnIds = [];
     this.gridColumnApi.getAllColumns().forEach(function(column) {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
+  }
+
+  getPatientList(){
+      const networkStatus = navigator.onLine;
+        this.isLoading = true;
+        this.dashboardService.getPatientList().subscribe(
+          (patientsList: any) => {
+            this.ShowError = false;
+            this.rowData = patientsList;
+          },
+          (errorMessage: any) => {
+            this.ShowError = true;
+            this.isLoading = false;
+            this.errorMessage = errorMessage;
+          }
+        );
   }
 }

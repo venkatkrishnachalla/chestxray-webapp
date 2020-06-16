@@ -29,7 +29,7 @@ const materialModules = [
   MatSlideToggleModule,
   MatGridListModule,
   MatCheckboxModule,
-  MatListModule
+  MatListModule,
 ];
 
 @NgModule({
