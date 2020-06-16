@@ -31,14 +31,17 @@
             <div *ngIf="errorMessage" class="error" style="text-align: center; color: #ff0000;">
               <p>{{ errorMessage }}</p>
             </div>
+
+            <mat-card-actions>
+              <!-- Login button -->
+              <button mat-flat-button style="width: 96%; margin-left: 2%" color="primary" type="submit">
+                LOGIN
+              </button>
+            </mat-card-actions>
+            
           </form>
         </mat-card-content>
-        <mat-card-actions>
-          <!-- Login button -->
-          <button mat-flat-button style="width: 96%; margin-left: 2%" color="primary" type="submit">
-            LOGIN
-          </button>
-        </mat-card-actions>
+
         <mat-card-actions>
           <!-- <mat-checkbox>Remember me!</mat-checkbox> -->
           <a style="text-decoration: none; color: #2781FC; margin-left: 2%;">Forgot password ?</a>

@@ -22,17 +22,6 @@ export class SignInComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.breakpoint = (window.innerWidth <= 400) ? 1 : 1;
-    this.breakpoint = (window.innerWidth <= 1200) ? 1 : 2;
-    this.breakpoint = (window.innerWidth <= 850) ? 1 : 2;
-  }
-
-  onResize(event) {
-    // this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 1;
-    this.breakpoint = (event.target.innerWidth <= 1200) ? 1 : 2;
-    this.console.log(event.target.innerWidth);
-    this.breakpoint = (event.target.innerWidth <= 850) ? 1 : 2;
-
   }
 
   onSignIn(form: NgForm) {
