@@ -1,6 +1,9 @@
 @import './theme.scss';
+@import './abstracts/variable';
+@import './base/typography';
+@import './base/utilities';
+@import './base/base';
 @import './custom-material.scss';
-@import './utils.scss';
 @import './grid.scss';
 @import '../../node_modules/ag-grid-community/src/styles/ag-grid.scss';
 @import '../../node_modules/ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin.scss';
