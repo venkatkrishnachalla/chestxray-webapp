@@ -1,11 +1,9 @@
 .grid-width {
   width: 100% !important;
-  margin-top: -79px;
 }
 #at-input-searchPatient {
-  width: 40%;
-  z-index: 999;
-  margin-left: 23%;
+  width: 45%;
+  margin-bottom: -35px;
 }
 .text-center {
   text-align: center;
@@ -15,7 +13,7 @@
   background-color: #add8e6 !important;
 }
 ::ng-deep .ag-header {
-  margin-top: 52px !important;
+  margin-top: 35px !important;
 }
 .searchBar {
   margin: 0 !important;
@@ -35,11 +33,7 @@
   border-top: none !important;
   width: 100%;
   background-color: #add8e6 !important;
-  margin-top:10px !important;
 }
 ::ng-deep .ag-header-cell.ag-column-hover {
   background-color: #add8e6 !important;
-}
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 0.5em 0 0.5em 0 !important;
 }
