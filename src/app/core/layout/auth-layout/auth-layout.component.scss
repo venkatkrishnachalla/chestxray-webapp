@@ -11,7 +11,7 @@
   }
 
   .menu-items {
-    flex: 11auto;
+    flex: 1 1 auto;
   }
 
   @media (max-width: 900px) {
@@ -39,7 +39,7 @@
   }
 
   .sign-in-text {
-    border: 1pxsolid#A5C3C9;
+    border: 1px solid #A5C3C9;
     border-radius: 5px;
     background-color: #a5c3c9;
   }
