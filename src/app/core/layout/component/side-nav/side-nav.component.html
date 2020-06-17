@@ -1,39 +1,15 @@
-<mat-sidenav-container class="example-container" *ngIf="!sideNavToggle">
+<!-- <mat-sidenav-container class="example-container" *ngIf="!sideNavToggle">
   <mat-sidenav #sidenav opened>
     <button
       mat-button
-      [routerLink]="['/home/dashboard']"
+      *ngFor="let sidenavButtons of sidenavButton"
+      [routerLink]="sidenavButtons.routerLink"
       routerLinkActive="is-active"
     >
-      <span class="material-icons sidenav-icons">dashboard</span>Dashboard
-    </button>
-    <button
-      mat-button
-      [routerLink]="['/home/my-account']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">person</span>My Account
-    </button>
-    <button
-      mat-button
-      [routerLink]="['/home/chat-room']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">question_answer</span>Chat Room
-    </button>
-    <button
-      mat-button
-      [routerLink]="['/home/calendar']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">date_range</span>Calendar
-    </button>
-    <button
-      mat-button
-      [routerLink]="['/home/settings']"
-      routerLinkActive="is-active"
-    >
-      <span class="material-icons sidenav-icons">settings</span>Settings
+      <span class="material-icons sidenav-icons">{{
+        sidenavButtons.icons
+      }}</span
+      >{{ sidenavButtons.label }}
     </button>
     <p class="bottom-content">powered by LTTS</p>
   </mat-sidenav>
@@ -43,4 +19,4 @@
       <router-outlet></router-outlet>
     </span>
   </mat-sidenav-content>
-</mat-sidenav-container>
+</mat-sidenav-container> -->

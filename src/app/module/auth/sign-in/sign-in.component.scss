@@ -4,20 +4,14 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: calc(
-    100% - 64px
-  ); // 64px is the height of app bar
+  height: calc(100% - 64px); // 64px is the height of app bar
 
   @media (max-width: 900px) {
-    height: calc(
-      100% - 128px
-    );
+    height: calc(100% - 128px);
   }
 
   @media (max-width: 600px) {
-    height: calc(
-      100% - 112px
-    );
+    height: calc(100% - 112px);
   }
 
   .signInSection {
@@ -82,7 +76,7 @@
     display: flex;
     .social-links {
       width: 45%;
-      
+
       img {
         width: 2rem;
         height: 2rem;

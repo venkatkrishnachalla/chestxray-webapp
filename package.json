@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --code-coverage --sourceMap=true  --watch=true",
     "lint": "ng lint",
     "generate-mock-data": "node api/generate-mock-data",
     "prestart-mock-api": "npm run generate-mock-data",
@@ -34,6 +34,7 @@
     "ag-grid-angular": "^23.1.1",
     "ag-grid-community": "^23.1.1",
     "lodash": "^4.17.15",
+    "perfect-scrollbar": "^1.5.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

@@ -1,6 +1,13 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  HostListener,
+  Input,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
+import { sideNavConstants } from '../../../../constants/sidenavConstants';
 
 @Component({
   selector: 'cxr-side-nav',
@@ -10,13 +17,12 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class SideNavComponent implements OnInit {
   @ViewChild('sidenav') sidenav: MatSidenav;
 
-  sideNavToggle: boolean;
+  @Input() sideNavToggle: boolean;
+  readonly constants = sideNavConstants;
 
   mode = new FormControl('over');
+  sidenavButton: { icons: string; label: string; routerLink: string }[];
 
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some((h) =>
-    h.test(window.location.host)
-  );
   constructor() {}
 
   @HostListener('window:resize', [])
@@ -25,6 +31,7 @@ export class SideNavComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sidenavButton = this.constants.sidenavContent;
     this.sidenavDisplay();
   }
 
