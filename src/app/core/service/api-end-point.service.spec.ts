@@ -1,5 +1,4 @@
 import { ApiEndPointService } from './api-end-point.service';
-import { environment } from '../../../environments/environment';
 
 fdescribe('ApiEndPointService', () => {
   let apiEndPointService: ApiEndPointService;
@@ -38,7 +37,7 @@ fdescribe('ApiEndPointService', () => {
       apiEndPointService.getSingInURL();
       const result = apiEndPointService.getSingInURL();
       expect(result).toEqual(
-        'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/Dicom/Login'
+        'http://localhost:3000/auth'
       );
     });
   });
