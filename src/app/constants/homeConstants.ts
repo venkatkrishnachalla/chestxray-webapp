@@ -37,13 +37,16 @@ export const home_constants = {
         field: 'date',
         sortable: true,
         resizable: true,
+        cellRenderer: (data) => {
+          return data.value ? (new Date(data.value)).toLocaleString() : '';
+     }
       },
-      {
-        headerName: 'Description',
-        field: 'desc',
-        sortable: true,
-        resizable: true,
-      },
+      // {
+      //   headerName: 'Description',
+      //   field: 'desc',
+      //   sortable: true,
+      //   resizable: true,
+      // },
       {
         headerName: 'Report Status',
         field: 'status',
