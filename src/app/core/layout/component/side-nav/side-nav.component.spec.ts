@@ -21,4 +21,14 @@ describe('SideNavComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('#onResize', () => {
+    beforeEach(() => {
+      spyOn(component, 'sidenavDisplay');
+      component.onResize();
+    });
+    it('should call onResize function', () => {
+      expect(component.sidenavDisplay).toHaveBeenCalled();
+    });
+  });
 });

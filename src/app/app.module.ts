@@ -10,7 +10,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
 import { HomeModule } from './module/home/home.module';
 import { LayoutModule } from '@angular/cdk/layout';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from './module/shared/shared.module';
+import { XRayModule } from './module/x-ray/x-ray.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -23,10 +24,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     HomeModule,
     AuthModule, // Load AuthModule with the app,
     LayoutModule,
-    FlexLayoutModule
+    SharedModule,
+    XRayModule,
   ],
   providers: [
-    ,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

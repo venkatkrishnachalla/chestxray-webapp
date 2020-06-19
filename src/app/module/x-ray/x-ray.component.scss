@@ -1,0 +1,169 @@
+.x-ray-container {
+  button img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .mat-button,
+  .mat-icon-button,
+  .mat-stroked-button,
+  .mat-flat-button {
+    min-width: 0px;
+  }
+
+  background-color: #f5f5f5;
+  display: flex;
+  height: calc(100% - 64px);
+
+  .action-panel {
+    flex-basis: 8%;
+    margin: 1rem 0.5rem;
+
+    .topIcon .askAi {
+      padding: 0.75rem;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .topIcon .askAi:hover {
+      background-color: rgb(241, 235, 235);
+      border-radius: 5px;
+    }
+
+    .topIcon .askAi img {
+      float: right;
+    }
+
+    .actionItems {
+      margin: 2rem 0rem;
+      // width: 10%;
+
+      // .item1 {
+      //   display: flex;
+      //   justify-content: space-between;
+      //   flex-wrap: wrap;
+      //   width: 50%;
+      // }
+      .item1 {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .item2 {
+        margin: 2rem 0rem;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .item3 {
+        margin: 2rem 0rem;
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  .xray-panel {
+    background-color: #000000;
+    flex-basis: 75%;
+  }
+
+  .info-panel {
+    flex-basis: 17%;
+    overflow-y: scroll;
+
+    .patient-info,
+    .findings,
+    .impression,
+    .slider {
+      margin: 1rem;
+      height: auto;
+      width: 95%;
+      box-shadow: 5px 0 20px 0 #ababab;
+      border-radius: 10px;
+      background-color: #fff;
+      h4 {
+        font-weight: bold !important;
+        text-align: center;
+        margin: 0 0 0.5rem;
+      }
+      .Patient-content {
+        margin: 0;
+        height: 30%;
+        padding-left: 5px;
+      }
+      p {
+        margin: 0;
+        font-size: 1.3rem;
+      }
+      .patient-info-header {
+        display: flex;
+        justify-content: center;
+        font-weight: bold;
+        text-align: center;
+        .material-icons {
+          font-size: 2.5rem;
+          color: white;
+          border-radius: 2px;
+          background-color: #7ca5ae;
+        }
+      }
+      mat-label {
+        font-weight: bold;
+        padding-right: 5px;
+      }
+      .gender_info {
+        font-weight: normal;
+        margin: 0.5rem;
+      }
+    }
+    .findings {
+      height: 30%;
+      .update-icon {
+        float: right;
+      }
+    }
+    .impression {
+      height: 15%;
+    }
+    .slider {
+      background-color: #e5e5e5;
+      height: 15%;
+      text-align: center;
+      margin: 1rem;
+      padding: 0;
+      overflow: hidden;
+      .slideImage {
+        padding: 5px;
+        #matCarouselSlide {
+          position: relative;
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+    }
+
+    button {
+      width: 92%;
+      margin: 5px 10px;
+      background-color: #b6d2d8;
+    }
+  }
+}
+::ng-deep .carousel-indicators {
+  display: flex;
+  position: absolute;
+  bottom: -1px !important;
+  z-index: 1;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  outline: 0;
+}
+
+::ng-deep .carousel-indicators > button {
+  border-radius: 5px;
+  width: 5rem !important;
+  height: 10px;
+  margin: 1px !important;
+}

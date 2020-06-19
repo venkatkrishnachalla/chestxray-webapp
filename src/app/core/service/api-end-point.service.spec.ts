@@ -1,5 +1,4 @@
 import { ApiEndPointService } from './api-end-point.service';
-import { environment } from '../../../environments/environment';
 
 describe('ApiEndPointService', () => {
   let apiEndPointService: ApiEndPointService;
@@ -37,9 +36,7 @@ describe('ApiEndPointService', () => {
     it('should call getSingInURL function', () => {
       apiEndPointService.getSingInURL();
       const result = apiEndPointService.getSingInURL();
-      expect(result).toEqual(
-        'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/Dicom/Login'
-      );
+      expect(result).toEqual('http://localhost:3000/auth');
     });
   });
 

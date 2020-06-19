@@ -4,21 +4,65 @@ import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [HeaderComponent],
-    }).compileComponents();
-  }));
+  const authServiceSpy = jasmine.createSpyObj('AuthService', [
+    'user',
+    'logOut',
+  ]);
+  const routerSpy = jasmine.createSpyObj('Router', ['']);
+  const sidenavServiceSpy = jasmine.createSpyObj('SidenavService', [
+    'toggle',
+    'toggleSidenav',
+  ]);
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new HeaderComponent(
+      authServiceSpy,
+      routerSpy,
+      sidenavServiceSpy
+    );
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      spyOn(component as any, 'initialize');
+      component.ngOnInit();
+    });
+    it('should call ngOnIit function', () => {
+      const result = component.ngOnInit();
+      expect(component.ngOnInit).toBeDefined();
+      expect((component as any).initialize).toHaveBeenCalled();
+    });
+  });
+
+  describe('#initialize', () => {
+    beforeEach(() => {
+      (component as any).initialize();
+    });
+    it('should call initialize function', () => {
+      const result = (component as any).ngOnInit();
+      expect((component as any).ngOnInit).toBeDefined();
+    });
+  });
+
+  describe('#onLogout', () => {
+    beforeEach(() => {
+      component.onLogout();
+    });
+    it('should call onLogout function', () => {
+      expect(authServiceSpy.logOut).toHaveBeenCalled();
+    });
+  });
+
+  describe('#toggleSidenav', () => {
+    beforeEach(() => {
+      component.toggleSidenav();
+    });
+    it('should call toggleSidenav function', () => {
+      expect(sidenavServiceSpy.toggleSidenav).toHaveBeenCalled();
+    });
   });
 });

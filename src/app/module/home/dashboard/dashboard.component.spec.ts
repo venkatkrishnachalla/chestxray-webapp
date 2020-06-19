@@ -21,4 +21,14 @@ describe('DashboardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+    it('should call ngOnIit function', () => {
+      const result = component.ngOnInit();
+      expect(component.ngOnInit).toBeDefined();
+    });
+  });
 });

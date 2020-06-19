@@ -1,34 +1,55 @@
 <mat-toolbar>
-  <button (click)="toggleSidenav()" class="menu_icon" mat-button>
-    <span class="material-icons">
-    menu</span>
+  <button
+    *ngIf="router.url != '/x-ray'"
+    (click)="toggleSidenav()"
+    class="menu_icon"
+    mat-button
+  >
+    <span class="material-icons"> menu</span>
   </button>
   <span class="header_logo">
     <img
       src="../../../../../assets/images/CXR.png"
       alt="CXR_Logo"
-      width="100%"
-      height="35px"
+      width="150px"
+      height="30px"
     />
   </span>
+  <span *ngIf="router.url == '/x-ray'" class="navigate-index">
+    <i class="material-icons arrow">
+      keyboard_arrow_left
+    </i>
+    <span class="prev-text">Previous</span>
+    <button mat-button class="navigate-button">
+      <mat-radio-button></mat-radio-button>
+      ID: {{ patient_ID }}
+    </button>
+    <span class="next-text">Next</span>
+    <i class="material-icons arrow">
+      keyboard_arrow_right
+    </i>
+  </span>
+  <span *ngIf="router.url == '/x-ray'" class="search-box-outer">
+    <mat-form-field appearance="outline">
+      <i class="material-icons" matPrefix>search</i>
+      <input matInput type="search" class="search-box-inner" />
+    </mat-form-field>
+  </span>
   <span class="fill-remaining-space"></span>
+
   <span class="icon-styles">
-    <mat-icon *ngIf="router.url != '/auth/login'" class="pointer"
+    <mat-icon *ngIf="router.url != '/x-ray'" class="pointer"
       >person_add_alt_1
+    </mat-icon>
+    <mat-icon *ngIf="router.url == '/x-ray'" class="pointer"
+      >dashboard
     </mat-icon>
   </span>
   <span class="icon-styles">
-    <mat-icon *ngIf="router.url != '/auth/login'" class="pointer"
-      >notifications</mat-icon
-    >
+    <mat-icon class="pointer">notifications</mat-icon>
   </span>
-  <span class="user-name" *ngIf="router.url != '/auth/login'">
-    {{ doctorName }}</span
-  >
-  <mat-icon
-    *ngIf="router.url != '/auth/login'"
-    class="pointer account_icon"
-    [matMenuTriggerFor]="aboveMenu"
+  <span class="user-name"> {{ doctorName }}</span>
+  <mat-icon class="pointer account_icon" [matMenuTriggerFor]="aboveMenu"
     >account_circle</mat-icon
   >
   <mat-menu #aboveMenu="matMenu" xPosition="before">
@@ -43,3 +64,4 @@
     </button>
   </mat-menu>
 </mat-toolbar>
+<router-outlet></router-outlet>

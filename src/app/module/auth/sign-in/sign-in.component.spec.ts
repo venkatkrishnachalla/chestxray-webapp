@@ -2,19 +2,24 @@ import { SignInComponent } from './sign-in.component';
 import { NgForm } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
-fdescribe('SignInComponent', () => {
+describe('SignInComponent', () => {
   let component: SignInComponent;
   const alertSpy = jasmine.createSpyObj('SnackbarService', ['open']);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['signIn']);
   const consoleServiceSpy = jasmine.createSpyObj('ConsoleService', ['log']);
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
+    'show',
+    'hide',
+  ]);
 
   beforeEach(() => {
     component = new SignInComponent(
       alertSpy,
       authServiceSpy,
       consoleServiceSpy,
-      routerSpy
+      routerSpy,
+      spinnerServiceSpy
     );
   });
 
@@ -53,8 +58,7 @@ fdescribe('SignInComponent', () => {
       authServiceSpy
         .signIn('test', 'test@123')
         .subscribe((authResponse: any) => {
-          expect(component.isLoading).toEqual(false);
-          expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
+          expect(routerSpy.navigate).toHaveBeenCalledWith(['/home/dashboard']);
         });
     });
   });
@@ -75,7 +79,6 @@ fdescribe('SignInComponent', () => {
     it('should call onSignIn function, when login error', () => {
       spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(true);
       component.onSignIn(testForm);
-      expect(component.isLoading).toEqual(false);
       expect(alertSpy.open).toHaveBeenCalledWith(
         'Invalid Username or Password',
         'ERROR'
@@ -84,10 +87,9 @@ fdescribe('SignInComponent', () => {
     it('should call onSignIn function, when login error, when network is false', () => {
       spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(false);
       component.onSignIn(testForm);
-      const networkmessage =
+      const networktext =
         'You are not connected to a network. Check your network connections and try again.';
-      expect(component.isLoading).toEqual(false);
-      expect(alertSpy.open).toHaveBeenCalledWith(networkmessage, 'ERROR');
+      expect(alertSpy.open).toHaveBeenCalledWith(networktext, 'ERROR');
     });
   });
 

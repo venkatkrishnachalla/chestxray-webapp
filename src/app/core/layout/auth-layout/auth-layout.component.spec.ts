@@ -6,9 +6,12 @@ describe('AuthLayoutComponent', () => {
     'user',
     'logOut',
   ]);
+  const breakpointObserverSpy = jasmine.createSpyObj('BreakpointObserver', [
+    'observe',
+  ]);
 
   beforeEach(() => {
-    component = new AuthLayoutComponent(authServiceSpy);
+    component = new AuthLayoutComponent(authServiceSpy, breakpointObserverSpy);
   });
 
   it('should create', () => {

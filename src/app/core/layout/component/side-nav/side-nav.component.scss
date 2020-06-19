@@ -37,16 +37,17 @@ mat-sidenav {
   color: white;
   font-size: 0.8rem;
   left: 25%;
-  top: 82%;
+  top: 95%;
   position: absolute;
 }
 
-:host ::ng-deep .mat-drawer-inner-container, .mat-drawer{
+:host ::ng-deep .mat-drawer-inner-container,
+.mat-drawer {
   overflow: hidden !important;
 }
 
 .mat-drawer-content {
-  overflow: auto !important;
+  overflow: hidden!important;
   position: relative;
   display: block;
   height: 100%;

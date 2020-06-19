@@ -13,6 +13,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCarouselModule } from '@ngmodule/material-carousel';
 
 const materialModules = [
   MatCardModule,
@@ -29,7 +31,9 @@ const materialModules = [
   MatSlideToggleModule,
   MatGridListModule,
   MatCheckboxModule,
-  MatListModule
+  MatListModule,
+  MatRadioModule,
+  MatCarouselModule,
 ];
 
 @NgModule({

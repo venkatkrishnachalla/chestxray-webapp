@@ -1,35 +1,43 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
+  let component: AppComponent;
+  const authServiceSpy = jasmine.createSpyObj('AuthService', [
+    'autoLoginOnRefresh',
+  ]);
+  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
+    'getLoaderData',
+  ]);
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  beforeEach(() => {
+    component = new AppComponent(authServiceSpy, spinnerServiceSpy);
   });
 
-  it(`should have as title 'cxr-web-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('cxr-web-app');
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('cxr-web-app app is running!');
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      spyOn(component, 'loginOnBrowserRefresh');
+      spinnerServiceSpy.getLoaderData.and.callFake(() => {
+        return of(false);
+      });
+    });
+    it('should call ngOnIit function', () => {
+      component.isLoading = false;
+      component.ngOnInit();
+      expect(component.loginOnBrowserRefresh).toHaveBeenCalled();
+    });
+  });
+
+  describe('#loginOnBrowserRefresh', () => {
+    beforeEach(() => {
+      component.loginOnBrowserRefresh();
+    });
+    it('should call loginOnBrowserRefresh function', () => {
+      expect(authServiceSpy.autoLoginOnRefresh).toHaveBeenCalled();
+    });
   });
 });
