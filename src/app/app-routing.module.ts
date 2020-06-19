@@ -10,6 +10,7 @@ import { MyAccountComponent } from './module/home/my-account/my-account.componen
 import { ChatRoomComponent } from './module/home/chat-room/chat-room.component';
 import { CalendarComponent } from './module/home/calendar/calendar.component';
 import { SettingsComponent } from './module/home/settings/settings.component';
+import { CanvasImageComponent } from './module/x-ray/canvas-image/canvas-image.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,12 @@ const routes: Routes = [
       { path: 'calendar', component: CalendarComponent },
       { path: 'settings', component: SettingsComponent },
     ],
+  },
+  {
+    path: 'xray',
+    canActivate: [AuthGuard],
+    component: CanvasImageComponent,
+    children: [],
   },
   {
     path: '',

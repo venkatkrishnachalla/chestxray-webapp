@@ -3,6 +3,7 @@ import { home_constants } from 'src/app/constants/homeConstants';
 import { HttpClient } from '@angular/common/http';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { DashboardService } from 'src/app/service/dashboard.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cxr-patient-list',
@@ -27,7 +28,8 @@ export class PatientListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private elementRef: ElementRef,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private router: Router
   ) {}
   ngOnInit() {
     this.doctorId = localStorage.getItem('userAuthData');

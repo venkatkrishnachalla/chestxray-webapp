@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SpinnerComponent } from './spinner.component';
+import { CanvasImageComponent } from './canvas-image.component';
 
-xdescribe('SpinnerComponent', () => {
-  let component: SpinnerComponent;
-  let fixture: ComponentFixture<SpinnerComponent>;
+xdescribe('CanvasImageComponent', () => {
+  let component: CanvasImageComponent;
+  let fixture: ComponentFixture<CanvasImageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SpinnerComponent],
+      declarations: [CanvasImageComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpinnerComponent);
+    fixture = TestBed.createComponent(CanvasImageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

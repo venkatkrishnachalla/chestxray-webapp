@@ -48,7 +48,6 @@ export class SignInComponent implements OnInit {
         }
       );
     } else {
-      this.spinnerService.hide();
       this.errorMessage = 'Enter all the required fields';
       this.alert.open(this.errorMessage, 'ERROR');
     }
