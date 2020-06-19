@@ -1,68 +1,117 @@
 .x-ray-container {
 
-  button img {
-    height: 20px;
-    width: 20px;
-  }
+  background-color: #f5f5f5;
+  display: flex;
+  height: calc(100% - 64px);
 
   .mat-button,
   .mat-icon-button,
   .mat-stroked-button,
   .mat-flat-button {
     min-width: 0px;
+    padding: 0px 5px;
   }
-
-  background-color: #f5f5f5;
-  display: flex;
-  height: calc(100% - 64px);
 
   .action-panel {
     flex-basis: 8%;
     margin: 1rem 0.5rem;
 
-    .topIcon .askAi {
-      padding: 0.75rem;
-      font-size: 12px;
-      font-weight: 500;
+    .topIcon {
+      button {
+        font-size: 12px;
+        padding: 0px;
+        width: 100%;
+        font-weight: 500;
+        color: #434343;
+
+        img {
+          height: 16px;
+          width: 16px;
+          margin-top: 10px;
+          float: right;
+        }
+      }
     }
 
-    .topIcon .askAi:hover {
-      background-color: rgb(241, 235, 235);
-      border-radius: 5px;
+    .actionItem {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+
+      .actions {
+        width: calc(50% - 10px);
+        margin-left: 5px;
+        margin-top: 10px;
+        text-align: center;
+        height: 28px;
+
+        img {
+          height: 16px;
+          width: 16px;
+          cursor: pointer;
+        }
+      }
+
     }
 
-    .topIcon .askAi img {
-      float: right;
+    .middleItems {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+
+      .menus {
+        width: calc(50% - 10px);
+        margin-left: 5px;
+        margin-top: 10px;
+        text-align: center;
+        height: 25px;
+
+        img {
+          height: 16px;
+          width: 16px;
+          cursor: pointer;
+        }
+      }
+
     }
 
-    .actionItems {
-      margin: 2rem 0rem;
-      // width: 10%;
+    .sliderItems {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
 
-      // .item1 {
-      //   display: flex;
-      //   justify-content: space-between;
-      //   flex-wrap: wrap;
-      //   width: 50%;
-      // }
-      .item1 {
-        display: flex;
-        flex-wrap: wrap;
+      .slider {
+        height: 140px;
+        width: calc(50% - 10px);
+        ::ng-deep .ng5-slider .ng5-slider-pointer {
+          cursor: pointer;
+          width: 16px;
+          height: 16px;
+          background-color: #285c68;
+          z-index: 3;
+          border-radius: 16px;
+        }
+
+        // Slider inside white color background removed(Make it to display:none)
+        ::ng-deep .ng5-slider .ng5-slider-pointer:after {
+          display: none;
+        }
+
+        // Slider verticle bar aligned
+        ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+          left: -6px !important;
+          top: auto;
+          bottom: 0;
+        }
+
+        // Displaying number 0 to 100 make to display:none
+        ::ng-deep .ng5-slider.vertical .ng5-slider-bubble {
+          display: none;
+          left: 16px !important;
+          bottom: 0;
+        }
+
       }
-
-      .item2 {
-        margin: 2rem 0rem;
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      .item3 {
-        margin: 2rem 0rem;
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-
     }
 
   }
@@ -96,6 +145,11 @@
     button {
       width: 92%;
       margin: 5px 10px;
+
+      img {
+        height: 20px;
+        width: 20px;
+      }
     }
   }
 }
