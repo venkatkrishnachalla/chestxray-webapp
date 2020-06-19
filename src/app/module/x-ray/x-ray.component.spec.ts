@@ -1,18 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SpinnerComponent } from './spinner.component';
 
-describe('SpinnerComponent', () => {
-  let component: SpinnerComponent;
-  let fixture: ComponentFixture<SpinnerComponent>;
+import { XRayComponent } from './x-ray.component';
+
+describe('XRayComponent', () => {
+  let component: XRayComponent;
+  let fixture: ComponentFixture<XRayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SpinnerComponent],
+      declarations: [XRayComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpinnerComponent);
+    fixture = TestBed.createComponent(XRayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
