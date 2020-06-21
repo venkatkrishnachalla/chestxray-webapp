@@ -1,0 +1,21 @@
+import { Component, OnInit } from '@angular/core';
+import { Options } from 'ng5-slider';
+
+@Component({
+  selector: 'cxr-x-ray',
+  templateUrl: './x-ray.component.html',
+  styleUrls: ['./x-ray.component.scss']
+})
+export class XRayComponent implements OnInit {
+  value = 50;
+  options: Options = {
+    floor: 10,
+    ceil: 100,
+    vertical: true
+  };
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

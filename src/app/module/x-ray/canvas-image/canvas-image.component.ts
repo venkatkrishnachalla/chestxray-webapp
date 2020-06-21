@@ -20,7 +20,7 @@ export class CanvasImageComponent implements OnInit {
   scaleY: number;
   show = false;
 
-  constructor(private loaderService: SpinnerService, private router: Router) {}
+  constructor(private spinnerService: SpinnerService, private router: Router) {}
 
   @HostListener('window:resize', [])
   public onResize() {
@@ -29,8 +29,8 @@ export class CanvasImageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.spinnerService.show();
     this.canvas = new fabric.Canvas('c');
-    this.loaderService.show();
     this.patientId = localStorage.getItem('InstanceUID');
     if (!this.PatientImage) {
       this.getPatientImage(this.patientId);
@@ -75,7 +75,7 @@ export class CanvasImageComponent implements OnInit {
     sessionStorage.setItem('PatientImage', this.PatientImage);
     this.setCanvasDimension();
     this.generateCanvas();
-    this.loaderService.hide();
+    this.spinnerService.hide();
   }
 
   generateCanvas() {

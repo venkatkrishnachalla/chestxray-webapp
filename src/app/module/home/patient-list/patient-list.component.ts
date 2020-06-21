@@ -28,8 +28,7 @@ export class PatientListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private elementRef: ElementRef,
-    private dashboardService: DashboardService,
-    private router: Router
+    private dashboardService: DashboardService
   ) {}
   ngOnInit() {
     this.doctorId = localStorage.getItem('userAuthData');

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PatientListComponent } from './patient-list.component';
 
-fdescribe('PatientListComponent', () => {
+describe('PatientListComponent', () => {
   let component: PatientListComponent;
   const httpSpy = jasmine.createSpyObj('HttpClient', ['get']);
   const elementRefSpy = jasmine.createSpyObj('ElementRef', ['nativeElement']);
@@ -15,7 +15,7 @@ fdescribe('PatientListComponent', () => {
     component = new PatientListComponent(
       httpSpy,
       elementRefSpy,
-      dashboardServiceSpy
+      dashboardServiceSpy,
     );
   });
 
