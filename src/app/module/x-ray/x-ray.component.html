@@ -1,6 +1,6 @@
 <div class="x-ray-container">
   <!-- left Side Action Items -->
-  <div class="action-panel">
+  <!-- <section class="action-panel">
     <div class="topItem">
       <button mat-button>
         Ask AI <img src="../../../assets/images/askAI.png" alt="Ask AI" />
@@ -62,7 +62,6 @@
       </div>
     </div>
 
-    <!-- Middle Icons -->
 
     <div class="middleItems">
       <div class="menus">
@@ -112,7 +111,6 @@
       </div>
     </div>
 
-    <!-- Bottom slider -->
     <div class="sliderItems">
       <div class="slider">
         <ng5-slider [(value)]="value" [options]="options"></ng5-slider>
@@ -130,20 +128,23 @@
         <img src="../../../assets/images/Contrast@2x.png" alt="Select Icon" />
       </div>
     </div>
-  </div>
+  </section> -->
+  <section class="action-panel">
+    <cxr-action-panel></cxr-action-panel>
+  </section>
 
-  <!-- Main Content X-Ray Aspect Ratio Part -->
-  <div class="xray-panel">
+  <!-- Main Content, X-Ray Aspect Ratio Part -->
+  <section class="xray-panel">
     <img
       src="../../../assets/images/download.jpg"
       height="100%"
       width="100%"
       alt=""
     />
-  </div>
+  </section>
 
   <!-- Right Side Content -->
-  <div class="info-panel">
+  <section class="info-panel">
     <div class="patient-info">
       <img
         src="../../../assets/images/Icon patientdetails@2x.png"
@@ -173,5 +174,5 @@
     <button mat-flat-button color="primary" type="submit">
       SUBMIT <img src="../../../assets/images/submit icon@2x.png" alt="" />
     </button>
-  </div>
+  </section>
 </div>
