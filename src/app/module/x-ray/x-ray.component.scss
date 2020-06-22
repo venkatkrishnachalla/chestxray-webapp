@@ -20,7 +20,7 @@
     .topItem {
       button {
         font-size: 12px;
-        padding: 0px;
+        padding-left: 5px;
         width: 100%;
         text-align: left;
         font-weight: 500;
@@ -66,7 +66,7 @@
         margin-left: 5px;
         margin-top: 10px;
         text-align: center;
-        height: 25px;
+        height: 28px;
 
         img {
           height: 2rem;
@@ -88,8 +88,8 @@
 
         ::ng-deep .ng5-slider .ng5-slider-pointer {
           cursor: pointer;
-          width: 18px;
-          height: 18px;
+          width: 20px;
+          height: 20px;
           background-color: #285c68;
           z-index: 3;
           border-radius: 16px;
@@ -102,7 +102,7 @@
 
         // Slider verticle bar aligned
         ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-          left: -6px !important;
+          left: 3px !important;
           top: auto;
           bottom: 0;
         }
@@ -110,8 +110,8 @@
         // round circle green color on verticle bar
         ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
           bottom: 0;
-          left: auto;
-          width: 5px;
+          left: 25px;
+          width: 8px;
           height: 100%;
         }
 
@@ -122,31 +122,72 @@
           bottom: 0;
         }
 
+        @media (max-width: 1060px) {
+          ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+            bottom: 0;
+            left: 19px;
+            width: 8px;
+            height: 100%;
+          }
+
+          ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+            left: -3px !important;
+            top: auto;
+            bottom: 0;
+          }
+        }
+
+        @media (min-width: 1241px) {
+          ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+            bottom: 0;
+            left: 17px;
+            width: 8px;
+            height: 100%;
+          }
+
+          ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+            left: -5px !important;
+            top: auto;
+            bottom: 0;
+          }
+        }
+
       }
     }
 
     .brightness {
       display: flex;
       flex-wrap: wrap;
-      .contrast img {
+
+      .contrast {
         width: calc(50% - 10px);
-        margin-left: 15px;
+        margin-left: 5px;
         margin-top: 10px;
         text-align: center;
-        height: 2rem;
-        width: 2rem;
+
+        img {
+          height: 2rem;
+          width: 2rem;
+          cursor: pointer;
+        }
       }
+
     }
+
     @media (max-width: 1240px) and (min-width: 991px) {
       flex-basis: 12%;
     }
 
     @media (max-width: 990px) {
-      flex-basis: 14%;
+      flex-basis: 15%;
     }
 
-    @media (max-width: 840px) {
+    @media (max-width: 880px) {
       flex-basis: 18%;
+    }
+
+    @media (max-width: 800px) {
+      flex-basis: 21%;
     }
 
   }
