@@ -87,6 +87,6 @@ export const home_constants = {
                 preview</mat-icon>`;
         },
       },
-    ],
-  },
+    ]
+  }
 };
