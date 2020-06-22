@@ -22,12 +22,12 @@ describe('MainLayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('#close', () => {
-    beforeEach(() => {
-      component.close();
-    });
-    it('should call close function', () => {
+  // describe('#close', () => {
+  //   beforeEach(() => {
+  //     component.close();
+  //   });
+  //   it('should call close function', () => {
       
-    });
-  });
+  //   });
+  // });
 });

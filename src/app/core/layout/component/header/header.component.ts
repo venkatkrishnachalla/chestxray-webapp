@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
   isAuth = false;
   doctorName = 'Dr.Adam';
   toggleActive: boolean;
+  patient_ID = '1004';
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
 
