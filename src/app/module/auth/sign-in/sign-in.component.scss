@@ -41,6 +41,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
       mat-card {
         max-width: 300px;
         border-radius: 10px;
@@ -48,11 +49,13 @@
 
       .form-header {
         text-align: center;
+
         img {
           height: 60px;
           width: 60px;
         }
       }
+
       @media (max-width: 900px) {
         width: 100%;
       }
@@ -67,6 +70,7 @@
       }
     }
   }
+
   .footer {
     width: 100%;
     padding: 1rem 3rem;
@@ -74,6 +78,7 @@
     left: 0;
     bottom: 0;
     display: flex;
+
     .social-links {
       width: 45%;
 
@@ -82,6 +87,7 @@
         height: 2rem;
         margin-right: 3rem;
       }
+
       @media (max-width: 900px) {
         img {
           width: 2rem;
@@ -90,6 +96,7 @@
         }
       }
     }
+
     .copyright-msg {
       width: 55%;
       color: #fff;

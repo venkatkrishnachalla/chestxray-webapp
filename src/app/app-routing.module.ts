@@ -58,7 +58,7 @@ const routes: Routes = [
   },
   {
     path: 'x-ray',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     component: HeaderComponent,
     children: [
       { path: '', component: XRayComponent },

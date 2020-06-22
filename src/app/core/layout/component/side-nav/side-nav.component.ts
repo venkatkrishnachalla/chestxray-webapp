@@ -19,8 +19,6 @@ export class SideNavComponent implements OnInit {
 
   @Input() sideNavToggle: boolean;
   readonly constants = sideNavConstants;
-
-  // mode = new FormControl('over');
   
   sidenavButton: { icons: string; label: string; routerLink: string }[];
 
