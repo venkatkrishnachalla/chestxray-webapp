@@ -19,6 +19,7 @@ export class MainLayoutComponent implements OnInit {
     label: string;
     routerLink: string;
   }[];
+
   socialMediaImage: {
     image: string;
     alt: string;

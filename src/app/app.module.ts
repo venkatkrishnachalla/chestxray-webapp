@@ -25,7 +25,7 @@ import { XRayModule } from './module/x-ray/x-ray.module';
     AuthModule, // Load AuthModule with the app,
     LayoutModule,
     SharedModule,
-    XRayModule,
+    XRayModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

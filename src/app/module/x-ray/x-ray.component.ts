@@ -12,7 +12,7 @@ export class XRayComponent implements OnInit {
   PatientName = 'Shilpa R.';
   PatientGender = 'F';
   PatientAge = '45yrs';
-  Ref_Physician = 'Dr.Adam Walt';
+  refPhysician = 'Dr.Adam Walt';
   Date = '18-05-2020';
   Time = '16:15:30';
   History =

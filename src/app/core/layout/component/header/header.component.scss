@@ -35,10 +35,9 @@ mat-toolbar {
 }
 .icon-styles mat-icon {
   padding-top: 2rem;
-  padding-left: 1rem;
   font-size: 2rem;
   color: #f8f8f8;
-  margin-right: 2.8rem;
+  margin-right: 3rem;
 }
 .icon-styles:hover {
   border-bottom: 7px solid white;
@@ -66,8 +65,8 @@ mat-toolbar {
 }
 .navigate-button {
   background-color: black;
-  width: 120px;
   color: #ffffff;
+  font-size: 1.7rem;
 }
 .search-box-outer {
   width: 25%;

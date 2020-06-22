@@ -1,0 +1,66 @@
+{
+  "definitions": {
+    "name": {
+      "type": "string",
+      "faker": {
+        "fake": "{{name.lastName}}, {{name.firstName}} {{name.suffix}}"
+      }
+    },
+    "refName": {
+      "type": "string",
+      "faker": {
+        "fake": "{{name.suffix}} {{name.firstName}}"
+      }
+    }
+  },
+  "type": "object",
+  "required": ["patients"],
+  "additionalProperties": false,
+  "properties": {
+    "patients": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 100,
+      "items": {
+        "patientId": {
+          "type": "number",
+          "multipleOf": 1,
+          "unique": true,
+          "minimum": 1
+        },
+        "name": { "$ref": "#/definitions/refName" },
+        "gender": {
+          "type": "string",
+          "enum": ["M", "F"]
+        },
+        "age": {
+          "type": "number",
+          "minimum": 20,
+          "maximum": 100,
+          "multipleOf": 1
+        },
+        "priority":{
+          "type": "string",
+          "enum": ["Emergency", "Minor", "Major"]
+        },
+        "referenceDoctor": { "$ref": "#/definitions/name" },
+        "date": {
+          "type": "string",
+          "faker": "date.past"
+        },
+        "desc": {
+          "type": "string",
+          "enum": ["Testing"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["new", "in-process", "completed"]
+        },
+        "instanceID": {
+          "type": "string",
+          "faker": "random.uuid"
+        }
+      }
+    }
+  }
+}

@@ -12,6 +12,6 @@ export class DashboardService {
   ) { }
 
   getPatientList() {
-    return this.http.get(this.endpoint.getPatientList(),{})
+    return this.http.get(this.endpoint.getPatientList(), {});
   }
 }
