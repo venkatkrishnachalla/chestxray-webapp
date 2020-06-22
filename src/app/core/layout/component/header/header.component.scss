@@ -16,6 +16,10 @@
 
 mat-toolbar {
   background-color: #434343;
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  z-index: 9999;
 }
 
 // mat-icon {

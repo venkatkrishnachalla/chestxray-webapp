@@ -7,9 +7,16 @@ import { Options } from 'ng5-slider';
   styleUrls: ['./x-ray.component.scss']
 })
 export class XRayComponent implements OnInit {
-  value = 50;
+  value = 70;
   options: Options = {
-    floor: 10,
+    floor: 0,
+    ceil: 100,
+    vertical: true
+  };
+
+  values = 50;
+  option: Options = {
+    floor: 0,
     ceil: 100,
     vertical: true
   };
