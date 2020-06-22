@@ -41,7 +41,7 @@
         },
         "priority":{
           "type": "string",
-          "enum": ["Emergency", "Minor", "Major"]
+          "enum": ["Emergency", "Normal"]
         },
         "referenceDoctor": { "$ref": "#/definitions/name" },
         "date": {
@@ -54,7 +54,7 @@
         },
         "status": {
           "type": "string",
-          "enum": ["new", "in-process", "completed"]
+          "enum": ["Drafted", "Unreported", "Reported"]
         },
         "instanceID": {
           "type": "string",

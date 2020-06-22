@@ -36,6 +36,7 @@ export class PatientListComponent implements OnInit {
     // this.rowData = this.constants.patientDashboard.sampleData;
     this.columnDefs = this.constants.patientDashboard.headers;
     this.getPatientList();
+    this.gridApi.sizeColsToFit();
   }
 
   onGridReady(params) {
