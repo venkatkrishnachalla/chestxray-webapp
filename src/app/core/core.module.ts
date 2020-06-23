@@ -6,7 +6,6 @@ import { SideNavComponent } from './layout/component/side-nav/side-nav.component
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material.module';
-import { XRayHeaderComponent } from './layout/component/header/components/x-ray-header/x-ray-header.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +13,6 @@ import { XRayHeaderComponent } from './layout/component/header/components/x-ray-
     MainLayoutComponent,
     HeaderComponent,
     SideNavComponent,
-    XRayHeaderComponent,
   ],
   imports: [CommonModule, RouterModule, MaterialModule],
   exports: [],

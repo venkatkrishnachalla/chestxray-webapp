@@ -1,7 +1,7 @@
 import { ConsoleService } from './console.service';
 import { environment } from 'src/environments/environment';
 
-describe('ConsoleService', () => {
+fdescribe('ConsoleService', () => {
   let consoleService: ConsoleService;
 
   beforeEach(() => {

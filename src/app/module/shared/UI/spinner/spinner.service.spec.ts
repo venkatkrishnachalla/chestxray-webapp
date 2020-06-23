@@ -2,7 +2,7 @@ import { SpinnerService } from './spinner.service';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-describe('SpinnerService', () => {
+fdescribe('SpinnerService', () => {
   let service: SpinnerService;
 
   beforeEach(() => {

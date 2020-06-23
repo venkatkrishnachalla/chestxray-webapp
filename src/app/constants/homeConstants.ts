@@ -1,4 +1,4 @@
-export const homeConstants = {
+export const home_constants = {
   patientDashboard: {
     headers: [
       {
@@ -6,47 +6,47 @@ export const homeConstants = {
         field: 'patientId',
         sortable: true,
         resizable: true,
-        minWidth: 100
+        minWidth:100
       },
       {
         headerName: 'Patient Name',
         field: 'name',
         sortable: true,
         resizable: true,
-        minWidth: 150
+        minWidth:150
       },
       {
         headerName: 'Gender',
         field: 'gender',
         sortable: true,
         resizable: true,
-        minWidth: 100
+        minWidth:100
       },
       { headerName: 'Age', 
         field: 'age', 
         sortable: true, 
         resizable: true,
-        minWidth: 100 },
+        minWidth:100 },
       {
         headerName: 'Priority',
         field: 'priority',
         sortable: true,
         resizable: true,
-        minWidth: 100
+        minWidth:100
       },
       {
         headerName: 'Ref. Doctor',
         field: 'referenceDoctor',
         sortable: true,
         resizable: true,
-        minWidth: 100
+        minWidth:100
       },
       {
         headerName: 'Date & Time',
         field: 'date',
         sortable: true,
         resizable: true,
-        minWidth: 100,
+        minWidth:100,
         cellRenderer: (data) => {
           return data.value ? (new Date(data.value)).toLocaleString() : '';
      }
@@ -62,7 +62,7 @@ export const homeConstants = {
         field: 'status',
         sortable: true,
         resizable: true,
-        minWidth: 120,
+        minWidth:120,
       },
       {
         headerName: 'Action',

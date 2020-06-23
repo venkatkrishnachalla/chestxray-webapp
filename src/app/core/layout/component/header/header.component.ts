@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
+import { SidenavService } from 'src/app/core/service/sidenav.service';
 
 @Component({
   selector: 'cxr-header',
@@ -8,19 +9,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  isAuth: boolean;
-  doctorName: string;
-  patientID: string;
-  xrayRoute: boolean;
+  isAuth = false;
+  doctorName = 'Dr.Adam';
+  toggleActive: boolean;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private authService: AuthService, public router: Router) {}
+  constructor(
+    private authService: AuthService,
+    public router: Router,
+    private sidenav: SidenavService
+  ) {}
 
   ngOnInit(): void {
-    this.isAuth = false;
-    this.doctorName = 'Dr.Adam';
-    this.patientID = '1004';
+    this.toggleActive = false;
     this.initialize();
   }
 

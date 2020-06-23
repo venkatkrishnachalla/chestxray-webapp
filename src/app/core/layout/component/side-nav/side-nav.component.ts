@@ -19,6 +19,7 @@ export class SideNavComponent implements OnInit {
 
   @Input() sideNavToggle: boolean;
   readonly constants = sideNavConstants;
+  
   sidenavButton: { icons: string; label: string; routerLink: string }[];
 
   constructor() {}

@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { homeConstants } from 'src/app/constants/homeConstants';
+import { home_constants } from 'src/app/constants/homeConstants';
 import { HttpClient } from '@angular/common/http';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { DashboardService } from 'src/app/service/dashboard.service';
@@ -16,13 +16,13 @@ export class PatientListComponent implements OnInit {
   columnDefs;
   defaultColDef;
   rowData = [];
-  readonly constants = homeConstants;
+  readonly constants = home_constants;
   domLayout: any;
-  searchValue: string;
-  isLoading: boolean;
+  searchValue: String = '';
+  isLoading: boolean = false;
   doctorId: any;
   errorMessage: any;
-  ShowError: boolean;
+  ShowError: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -51,8 +51,8 @@ export class PatientListComponent implements OnInit {
   }
 
   autoSizeAll(skipHeader) {
-    const allColumnIds = [];
-    this.gridColumnApi.getAllColumns().forEach(column => {
+    var allColumnIds = [];
+    this.gridColumnApi.getAllColumns().forEach(function (column) {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);

@@ -71,6 +71,6 @@ export class ApiEndPointService {
     if (environment.isMockAPI) {
       return environment.mockApiEndPoint + '/patients';
     }
-    return 'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/getPatientListByDoctorId';
+    return 'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/getPatientListByDoctorId'
   }
 }

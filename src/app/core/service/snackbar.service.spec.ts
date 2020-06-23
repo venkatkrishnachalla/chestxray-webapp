@@ -1,6 +1,6 @@
 import { SnackbarService } from './snackbar.service';
 
-describe('SnackbarService', () => {
+fdescribe('SnackbarService', () => {
   let snackbarService: SnackbarService;
   const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
 

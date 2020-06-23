@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DashboardService } from './dashboard.service';
 
-describe('DashboardService', () => {
+fdescribe('DashboardService', () => {
   let service: DashboardService;
   const httpSpy = jasmine.createSpyObj('HttpClient', ['get']);
   const endPointSpy = jasmine.createSpyObj('ApiEndPointService', [

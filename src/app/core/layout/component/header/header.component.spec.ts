@@ -9,9 +9,14 @@ fdescribe('HeaderComponent', () => {
     'logOut',
   ]);
   const routerSpy = jasmine.createSpyObj('Router', ['']);
+  const sidenavServiceSpy = jasmine.createSpyObj('SidenavService', ['toggle', 'toggleSidenav']);
 
   beforeEach(() => {
-    component = new HeaderComponent(authServiceSpy, routerSpy);
+    component = new HeaderComponent(
+      authServiceSpy,
+      routerSpy,
+      sidenavServiceSpy
+    );
   });
 
   it('should create', () => {
@@ -53,6 +58,8 @@ fdescribe('HeaderComponent', () => {
     beforeEach(() => {
       component.toggleSidenav();
     });
-    it('should call toggleSidenav function', () => {});
+    it('should call toggleSidenav function', () => {
+      expect(sidenavServiceSpy.toggleSidenav).toHaveBeenCalled();
+    });
   });
 });

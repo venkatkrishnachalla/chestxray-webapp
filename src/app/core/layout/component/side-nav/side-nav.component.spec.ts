@@ -25,41 +25,10 @@ fdescribe('SideNavComponent', () => {
   describe('#onResize', () => {
     beforeEach(() => {
       spyOn(component, 'sidenavDisplay');
-      spyOnProperty(window, 'innerWidth').and.returnValue('800');
       component.onResize();
     });
     it('should call onResize function', () => {
       expect(component.sidenavDisplay).toHaveBeenCalled();
-      expect(component.sideNavToggle).toBe(false);
-    });
-  });
-  describe('#onResize', () => {
-    beforeEach(() => {
-      spyOn(component, 'sidenavDisplay');
-      spyOnProperty(window, 'innerWidth').and.returnValue('500');
-      component.onResize();
-    });
-    it('should call onResize function', () => {
-      expect(component.sidenavDisplay).toHaveBeenCalled();
-      expect(component.sideNavToggle).toBe(false);
-    });
-  });
-  describe('#sidenavDisplay', () => {
-    beforeEach(() => {
-      spyOnProperty(window, 'innerWidth').and.returnValue('500');
-      component.onResize();
-    });
-    it('should call onResize function', () => {
-      expect(component.sideNavToggle).toBe(true);
-    });
-  });
-  describe('#sidenavDisplay', () => {
-    beforeEach(() => {
-      spyOnProperty(window, 'innerWidth').and.returnValue('800');
-      component.onResize();
-    });
-    it('should call onResize function', () => {
-      expect(component.sideNavToggle).toBe(false);
     });
   });
 });
