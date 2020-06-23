@@ -24,6 +24,7 @@ export class PatientListComponent implements OnInit {
   doctorId: any;
   errorMessage: any;
   ShowError: boolean = false;
+  frameworkComponents: any;
 
   constructor(
     private http: HttpClient,

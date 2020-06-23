@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { ImplicitReceiver } from '@angular/compiler';
 import { PatientListComponent } from './patient-list/patient-list.component';
 
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -20,7 +21,7 @@ import { PatientListComponent } from './patient-list/patient-list.component';
     ChatRoomComponent,
     MyAccountComponent,
     SettingsComponent,
-    PatientListComponent,
+    PatientListComponent
   ],
   imports: [
     MaterialModule,
