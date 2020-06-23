@@ -132,68 +132,10 @@
 
   <!-- Right Side Content -->
   <div class="x-ray-item info-panel">
-    <mat-card class="patient-info">
-      <h4 class="patient-info-header">
-        <span class="material-icons Patient-info-icon">
-          person
-        </span>
-        <span class="Patient-content">Patient Details</span>
-      </h4>
-      <p>
-        <mat-label>Name:</mat-label>{{ PatientName }}
-        <mat-label class="gender_info">[{{ PatientGender }}]</mat-label>
-        <mat-label class="gender_info">{{ PatientAge }}</mat-label>
-      </p>
-      <p><mat-label>Ref.Physician:</mat-label>{{ refPhysician }}</p>
-      <p><mat-label>Date of creation:</mat-label>{{ Date }}</p>
-      <p><mat-label>Time:</mat-label>{{ Time }}</p>
-      <p>
-        <mat-label>Clinical History:</mat-label>
-        <mat-card-content>{{ History }}</mat-card-content>
-      </p>
-    </mat-card>
-
-    <mat-card class="slider">
-      <mat-carousel
-        [autoplay]="false"
-        color="black"
-        maxWidth="100%"
-        maxHeight="100%"
-        proportion="40"
-        slides="5"
-        [loop]="false"
-        [hideIndicators]="false"
-        [useKeyboard]="true"
-        [useMouseWheel]="false"
-        orientation="ltr"
-      >
-        <mat-carousel-slide
-          #matCarouselSlide
-          *ngFor="let slide of slides; let i = index"
-          [image]="slide.img"
-          overlayColor="#00000040"
-          [hideOverlay]="true"
-        ></mat-carousel-slide>
-      </mat-carousel>
-    </mat-card>
-
-    <mat-card class="findings">
-      <h4>
-        <span class="patient-findings">FINDINGS</span>
-        <img
-          class="update-icon"
-          src="../../../assets/update default.png"
-          alt="update"
-        />
-      </h4>
-    </mat-card>
-
-    <mat-card class="impression">
-      <h4 class="patient-info-header">
-        <span>IMPRESSIONS</span>
-      </h4>
-    </mat-card>
-
+    <cxr-patient-details></cxr-patient-details>
+    <cxr-image-sliding></cxr-image-sliding>
+    <cxr-findings></cxr-findings>
+    <cxr-impression></cxr-impression>
     <button mat-flat-button type="submit">
       REPORT <img src="../../../assets/report icon@2x.png" alt="" />
     </button>

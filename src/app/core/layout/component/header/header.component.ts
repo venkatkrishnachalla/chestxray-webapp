@@ -8,15 +8,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  isAuth = false;
-  doctorName = 'Dr.Adam';
-  patientID = '1004';
+  isAuth: boolean;
+  doctorName: string;
+  patientID: string;
+  xrayRoute: boolean;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private authService: AuthService, public router: Router) {}
 
   ngOnInit(): void {
+    this.isAuth = false;
+    this.doctorName = 'Dr.Adam';
+    this.patientID = '1004';
     this.initialize();
   }
 
