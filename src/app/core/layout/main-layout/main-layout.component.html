@@ -2,16 +2,14 @@
 <!-- <cxr-side-nav *ngIf="!sideNavToggle"></cxr-side-nav> -->
 <!-- *ngIf="sideNavToggle" -->
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    mode="side" opened
+  <mat-sidenav opened
+    mode="side"
     class="sidenav"
     #sidenavbar
-    (keydown.escape)="close()"
   >
     <div class="sidenav-content">
       <button
         mat-button
-        (click)="close()"
         *ngFor="let sidenavButtons of sidenavButton"
         [routerLink]="sidenavButtons.routerLink"
         routerLinkActive="is-active"
