@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <button (click)="toggleSidenav()" class="menu_icon" mat-button>
+  <button (click)="toggleSidenav()" *ngIf="router.url !='/x-ray'" class="menu_icon" mat-button>
     <span class="material-icons"> menu</span>
   </button>
   <span class="header_logo">
@@ -44,3 +44,4 @@
     </button>
   </mat-menu>
 </mat-toolbar>
+<router-outlet *ngIf="router.url == '/x-ray'"></router-outlet>

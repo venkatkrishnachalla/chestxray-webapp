@@ -1,0 +1,71 @@
+.x-ray-container {
+  background-color: #f5f5f5;
+  display: flex;
+  height: calc(100% - 64px);
+
+  .mat-button,
+  .mat-icon-button,
+  .mat-stroked-button,
+  .mat-flat-button {
+    min-width: 0px;
+    padding: 0px 5px;
+  }
+
+  .action-panel {
+    overflow-y: auto;
+    flex-basis: 10%;
+    @media (max-width: 1240px) and (min-width: 1040px) {
+      flex-basis: 12%;
+    }
+
+    @media (max-width: 1039px) {
+      flex-basis: 15%;
+    }
+
+    @media (max-width: 930px) {
+      flex-basis: 18%;
+    }
+
+    @media (max-width: 830px) {
+      flex-basis: 22%;
+    }
+  }
+
+  .xray-panel {
+    height: calc(100%-64px);
+    background-color: #000000;
+    flex-basis: 70%;
+  }
+
+  .info-panel {
+    flex-basis: 20%;
+
+    .patient-info {
+      margin: 1rem;
+      padding: 1rem 0rem;
+      height: 200px;
+      width: 260px;
+      box-shadow: 5px 0 20px 0 #ababab;
+      border-radius: 10px;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+
+      span {
+        padding: 0.35rem 1rem;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+
+    button {
+      width: 92%;
+      margin: 5px 10px;
+
+      img {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
+}
