@@ -13,180 +13,21 @@
 
   .action-panel {
     overflow-y: auto;
-    flex-basis: 9%;
-    margin: 1rem 0.5rem;
-
-    .topItem {
-      button {
-        font-size: 12px;
-        padding-left: 5px;
-        width: 100%;
-        text-align: left;
-        font-weight: 500;
-        color: #434343;
-
-        img {
-          height: 2rem;
-          width: 2rem;
-          margin: 10px 12px 0px 0px;
-          float: right;
-        }
-      }
-    }
-
-    .actionItem {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 2.5rem;
-
-      .actions {
-        width: calc(50% - 10px);
-        margin-left: 5px;
-        margin-top: 10px;
-        text-align: center;
-        height: 28px;
-
-        img {
-          height: 2rem;
-          width: 2rem;
-          cursor: pointer;
-        }
-      }
-    }
-
-    .middleItems {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 2.5rem;
-
-      .menus {
-        width: calc(50% - 10px);
-        margin-left: 5px;
-        margin-top: 10px;
-        text-align: center;
-        height: 28px;
-
-        img {
-          height: 2rem;
-          width: 2rem;
-          cursor: pointer;
-        }
-      }
-    }
-
-    .sliderItems {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 2.5rem;
-
-      .slider {
-        height: 140px;
-        margin-left: 5px;
-        margin-top: 10px;
-        width: calc(50% - 10px);
-
-        ::ng-deep .ng5-slider .ng5-slider-pointer {
-          cursor: pointer;
-          width: 20px;
-          height: 20px;
-          background-color: #285c68;
-          z-index: 3;
-          border-radius: 16px;
-        }
-
-        // Slider inside white color background removed(Make it to display:none)
-        ::ng-deep .ng5-slider .ng5-slider-pointer:after {
-          display: none;
-        }
-
-        // Slider verticle bar pointer aligned
-        ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-          left: -5px !important;
-          top: auto;
-          bottom: 0;
-        }
-
-        // round circle green color on verticle bar
-        ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
-          bottom: 0;
-          left: 18px;
-          width: 8px;
-          height: 100%;
-        }
-
-        // Displaying number 0 to 100 make to display:none
-        ::ng-deep .ng5-slider.vertical .ng5-slider-bubble {
-          display: none;
-          left: 16px !important;
-          bottom: 0;
-        }
-
-
-        // Media queries based on screen width and height
-        @media (max-width: 1160px) {
-          ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
-            bottom: 0;
-            left: 18px;
-            width: 8px;
-            height: 100%;
-          }
-
-          ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-            left: -4px !important;
-            top: auto;
-            bottom: 0;
-          }
-        }
-
-        @media (max-width: 1059px) {
-          ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
-            bottom: 0;
-            left: 15px;
-            width: 8px;
-            height: 100%;
-          }
-
-          ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-            left: -7px !important;
-            top: auto;
-            bottom: 0;
-          }
-        }
-      }
-    }
-
-    .brightness {
-      display: flex;
-      flex-wrap: wrap;
-
-      .contrast {
-        width: calc(50% - 10px);
-        margin-left: 5px;
-        margin-top: 10px;
-        text-align: center;
-
-        img {
-          height: 2rem;
-          width: 2rem;
-          cursor: pointer;
-        }
-      }
-    }
-
-    @media (max-width: 1240px) and (min-width: 991px) {
+    flex-basis: 10%;
+    @media (max-width: 1240px) and (min-width: 1040px) {
       flex-basis: 12%;
     }
 
-    @media (max-width: 990px) {
+    @media (max-width: 1039px) {
       flex-basis: 15%;
     }
 
-    @media (max-width: 880px) {
+    @media (max-width: 930px) {
       flex-basis: 18%;
     }
 
-    @media (max-width: 800px) {
-      flex-basis: 21%;
+    @media (max-width: 830px) {
+      flex-basis: 22%;
     }
   }
 
@@ -199,99 +40,39 @@
   .info-panel {
     flex-basis: 20%;
     overflow-y: scroll;
-
-    .patient-info,
-    .findings,
-    .impression,
-    .slider {
-      margin: 1rem;
-      height: auto;
-      width: 95%;
-      box-shadow: 5px 0 20px 0 #ababab;
-      border-radius: 10px;
-      background-color: #fff;
-      h4 {
-        font-weight: bold !important;
-        text-align: center;
-        margin: 0 0 0.5rem;
-      }
-      .Patient-content {
-        margin: 0;
-        height: 30%;
-        padding-left: 5px;
-      }
-      p {
-        margin: 0;
-        font-size: 1.3rem;
-      }
-      .patient-info-header {
-        display: flex;
-        justify-content: center;
-        font-weight: bold;
-        text-align: center;
-        .material-icons {
-          font-size: 2.5rem;
-          color: white;
-          border-radius: 2px;
-          background-color: #7ca5ae;
-        }
-      }
-      mat-label {
-        font-weight: bold;
-        padding-right: 5px;
-      }
-      .gender_info {
-        font-weight: normal;
-        margin: 0.5rem;
-      }
-    }
-    .findings {
-      height: 30%;
-      .update-icon {
-        float: right;
-      }
-    }
-    .impression {
-      height: 15%;
-    }
-    .slider {
-      background-color: #e5e5e5;
-      height: 15%;
-      text-align: center;
-      margin: 1rem;
-      padding: 0;
-      overflow: hidden;
-      .slideImage {
-        padding: 5px;
-        #matCarouselSlide {
-          position: relative;
-          width: 100% !important;
-          height: 100% !important;
-        }
-      }
+    position: relative;
+    @media (max-width: 1253px) and (min-width: 1040px) {
+      flex-basis: 23%;
     }
 
+    @media (max-width: 1134px) {
+      flex-basis: 27%;
+    }
+
+    @media (max-width: 1074px) {
+      flex-basis: 30%;
+    }
+    @media (max-width: 957px) {
+      flex-basis: 35%;
+    }
+    @media (max-width: 875px) {
+      flex-basis: 40%;
+    }
+    @media (max-width: 812px) {
+      flex-basis: 45%;
+    }
     button {
       width: 92%;
       margin: 5px 10px;
       background-color: #b6d2d8;
+      span {
+        font-weight: bold;
+        padding-right: 10px;
+      }
+      img {
+        height: 20px;
+        width: 20px;
+      }
     }
   }
-}
-::ng-deep .carousel-indicators {
-  display: flex;
-  position: absolute;
-  bottom: -1px !important;
-  z-index: 1;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  outline: 0;
-}
-
-::ng-deep .carousel-indicators > button {
-  border-radius: 5px;
-  width: 5rem !important;
-  height: 10px;
-  margin: 1px !important;
 }

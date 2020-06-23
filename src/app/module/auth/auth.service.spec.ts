@@ -2,7 +2,7 @@ import { AuthService } from './auth.service';
 import { throwError, Observable, of } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 
-describe('AuthService', () => {
+fdescribe('AuthService', () => {
   let authService: AuthService;
   const mockHttpClient = jasmine.createSpyObj('HttpClient', ['get', 'post']);
   const endpointSpy = jasmine.createSpyObj('ApiEndPointService', [

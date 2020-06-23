@@ -12,7 +12,6 @@ export class HeaderComponent implements OnInit {
   isAuth = false;
   doctorName = 'Dr.Adam';
   toggleActive: boolean;
-  patient_ID = '1004';
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
 
@@ -23,6 +22,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.doctorName = localStorage.getItem('loggedInUser');
     this.toggleActive = false;
     this.initialize();
   }

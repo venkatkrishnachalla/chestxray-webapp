@@ -8,10 +8,7 @@ fdescribe('SignInComponent', () => {
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['signIn']);
   const consoleServiceSpy = jasmine.createSpyObj('ConsoleService', ['log']);
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
-    'show',
-    'hide',
-  ]);
+  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', ['show', 'hide']);
 
   beforeEach(() => {
     component = new SignInComponent(
@@ -26,7 +23,7 @@ fdescribe('SignInComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
+  
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();

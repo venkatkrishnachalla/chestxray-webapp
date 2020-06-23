@@ -32,6 +32,7 @@ export class SignInComponent implements OnInit {
         (authResponse: any) => {
           this.spinnerService.hide();
           this.console.log(authResponse);
+          localStorage.setItem('loggedInUser', this.auth.email);
           this.router.navigate(['/home/dashboard']);
         },
         (errorMessage: any) => {

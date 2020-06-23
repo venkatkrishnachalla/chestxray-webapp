@@ -11,7 +11,8 @@
     "prestart-mock-api": "npm run generate-mock-data",
     "start-mock-api": "json-server api/db.json -w true -r api/routes.json -m api/middleware.js",
     "pretty-quick": "pretty-quick",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "sonar": "sonar-scanner"
   },
   "husky": {
     "hooks": {

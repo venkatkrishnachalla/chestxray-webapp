@@ -1,6 +1,6 @@
 import { ApiEndPointService } from './api-end-point.service';
 
-describe('ApiEndPointService', () => {
+fdescribe('ApiEndPointService', () => {
   let apiEndPointService: ApiEndPointService;
 
   beforeEach(() => {
@@ -36,7 +36,9 @@ describe('ApiEndPointService', () => {
     it('should call getSingInURL function', () => {
       apiEndPointService.getSingInURL();
       const result = apiEndPointService.getSingInURL();
-      expect(result).toEqual('http://localhost:3000/auth');
+      expect(result).toEqual(
+        'http://localhost:3000/auth'
+      );
     });
   });
 

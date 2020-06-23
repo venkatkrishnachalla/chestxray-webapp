@@ -1,0 +1,36 @@
+<div class="navigate-index">
+  <section class="navigate">
+    <button class="prev-button">
+      <img
+        class="pre-image"
+        src="../../../../../../../assets/images/arrow back.png"
+        alt="back_arrow"
+        width="10px"
+        height="15px"
+      />
+      <span>&nbsp;Previous</span>
+    </button>
+    <button mat-button class="navigate-button">
+      <button class="status"></button>
+      ID: {{ patientID }}
+    </button>
+    <button class="prev-button">
+      <span>Next&nbsp;</span>
+      <img
+        src="../../../../../../../assets/images/arrow next.png"
+        alt="next_arrow"
+        width="10px"
+        height="15px"
+      />
+    </button>
+  </section>
+
+  <section class="search">
+    <span class="search-box-outer">
+      <mat-form-field appearance="outline">
+        <i class="material-icons" matPrefix>search</i>
+        <input matInput type="search" class="search-box-inner" />
+      </mat-form-field>
+    </span>
+  </section>
+</div>

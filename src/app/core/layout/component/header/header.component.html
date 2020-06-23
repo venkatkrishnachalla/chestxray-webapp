@@ -1,7 +1,7 @@
 <mat-toolbar>
   <button
-    *ngIf="router.url != '/x-ray'"
     (click)="toggleSidenav()"
+    *ngIf="router.url != '/x-ray'"
     class="menu_icon"
     mat-button
   >
@@ -15,48 +15,31 @@
       height="30px"
     />
   </span>
-  <span *ngIf="router.url == '/x-ray'" class="navigate-index">
-    <i class="material-icons arrow">
-      keyboard_arrow_left
-    </i>
-    <span class="prev-text">Previous</span>
-    <button mat-button class="navigate-button">
-      <mat-radio-button></mat-radio-button>
-      ID: {{ patient_ID }}
-    </button>
-    <span class="next-text">Next</span>
-    <i class="material-icons arrow">
-      keyboard_arrow_right
-    </i>
-  </span>
-  <span *ngIf="router.url == '/x-ray'" class="search-box-outer">
-    <mat-form-field appearance="outline">
-      <i class="material-icons search" matPrefix>search</i>
-      <input matInput type="search" class="search-box-inner" />
-    </mat-form-field>
-  </span>
+
+  <ng-container>
+    <cxr-x-ray-header *ngIf="router.url == '/x-ray'"></cxr-x-ray-header>
+  </ng-container>
+
   <span class="fill-remaining-space"></span>
 
-  <span class="icon-styles">
-    <mat-icon *ngIf="router.url != '/x-ray'" class="pointer"
-      >person_add_alt_1
-    </mat-icon>
-    <mat-icon *ngIf="router.url == '/x-ray'" class="pointer"
-      >dashboard
-    </mat-icon>
-  </span>
-  <span class="icon-styles">
-    <mat-icon class="pointer">notifications</mat-icon>
-  </span>
+  <button class="icon-styles" *ngIf="router.url != '/x-ray'">
+    <span class="material-icons">person_add_alt_1</span>
+  </button>
+  <button class="icon-styles" *ngIf="router.url == '/x-ray'">
+    <span class="material-icons">dashboard</span>
+  </button>
+  <button class="icon-styles notification-icon">
+    <span class="material-icons">notifications</span>
+  </button>
+
   <span class="user-name"> {{ doctorName }}</span>
   <mat-icon class="pointer account_icon" [matMenuTriggerFor]="aboveMenu"
     >account_circle</mat-icon
   >
+
   <mat-menu #aboveMenu="matMenu" xPosition="before">
     <button mat-menu-item>
-      <div>
-        <span class="material-icons">person</span><span>My Account</span>
-      </div>
+      <span class="material-icons">person</span>My Account
     </button>
     <button mat-menu-item>
       <span class="material-icons">supervisor_account</span>Switch User
@@ -66,4 +49,4 @@
     </button>
   </mat-menu>
 </mat-toolbar>
-<router-outlet *ngIf="router.url =='/x-ray'"></router-outlet>
+<router-outlet *ngIf="router.url == '/x-ray'"></router-outlet>
