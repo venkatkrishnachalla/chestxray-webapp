@@ -16,34 +16,18 @@
 
   <!-- Right Side Content -->
   <section class="info-panel">
-    <div class="patient-info">
-      <img
-        src="../../../assets/images/Icon patientdetails@2x.png"
-        alt=""
-        height="25px"
-        width="25px"
-      />
-      <span>Patient Details</span>
-    </div>
-
-    <div class="patient-info">
-      <div class="">
-        <span>FINDINGS</span>
-      </div>
-    </div>
-
-    <div class="patient-info">
-      <div class="">
-        <span>IMPRESSION</span>
-      </div>
-    </div>
-
-    <button mat-flat-button color="primary" type="submit">
-      REPORT <img src="../../../assets/images/report icon@2x.png" alt="" />
+    <cxr-patient-details></cxr-patient-details>
+    <cxr-image-sliding></cxr-image-sliding>
+    <cxr-findings></cxr-findings>
+    <cxr-impression></cxr-impression>
+    <button mat-flat-button type="submit">
+      <span>REPORT</span>
+      <img src="../../../assets/images/report icon@2x.png" alt="report" />
     </button>
 
-    <button mat-flat-button color="primary" type="submit">
-      SUBMIT <img src="../../../assets/images/submit icon@2x.png" alt="" />
+    <button mat-flat-button type="submit">
+      <span>SUBMIT</span>
+      <img src="../../../assets/images/submit icon@2x.png" alt="submit" />
     </button>
   </section>
 </div>

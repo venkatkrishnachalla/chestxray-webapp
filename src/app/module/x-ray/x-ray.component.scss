@@ -39,29 +39,36 @@
 
   .info-panel {
     flex-basis: 20%;
-
-    .patient-info {
-      margin: 1rem;
-      padding: 1rem 0rem;
-      height: 200px;
-      width: 260px;
-      box-shadow: 5px 0 20px 0 #ababab;
-      border-radius: 10px;
-      background-color: #fff;
-      display: flex;
-      justify-content: center;
-
-      span {
-        padding: 0.35rem 1rem;
-        font-size: 16px;
-        font-weight: 500;
-      }
+    overflow-y: scroll;
+    position: relative;
+    @media (max-width: 1253px) and (min-width: 1040px) {
+      flex-basis: 23%;
     }
 
+    @media (max-width: 1134px) {
+      flex-basis: 27%;
+    }
+
+    @media (max-width: 1074px) {
+      flex-basis: 30%;
+    }
+    @media (max-width: 957px) {
+      flex-basis: 35%;
+    }
+    @media (max-width: 875px) {
+      flex-basis: 40%;
+    }
+    @media (max-width: 812px) {
+      flex-basis: 45%;
+    }
     button {
       width: 92%;
       margin: 5px 10px;
-
+      background-color: #b6d2d8;
+      span {
+        font-weight: bold;
+        padding-right: 10px;
+      }
       img {
         height: 20px;
         width: 20px;

@@ -1,0 +1,20 @@
+<mat-card class="patient-info">
+  <mat-card-title class="patient-info-header">
+    <span class="material-icons Patient-info-icon">
+      person
+    </span>
+    <span class="Patient-content">Patient Details</span>
+  </mat-card-title>
+  <p>
+    <mat-label>Name:</mat-label>{{ PatientName }}
+    <mat-label class="gender_info">[{{ PatientGender }}]</mat-label>
+    <mat-label class="gender_info">{{ PatientAge }}</mat-label>
+  </p>
+  <p><mat-label>Ref.Physician:</mat-label>{{ refPhysician }}</p>
+  <p><mat-label>Date of creation:</mat-label>{{ Date }}</p>
+  <p><mat-label>Time:</mat-label>{{ Time }}</p>
+  <p>
+    <mat-label>Clinical History:</mat-label>
+    <mat-card-content>{{ history }}</mat-card-content>
+  </p>
+</mat-card>
