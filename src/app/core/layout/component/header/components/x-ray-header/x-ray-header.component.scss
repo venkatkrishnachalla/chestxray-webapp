@@ -12,13 +12,13 @@
         @media (max-width: 1400px) {
             width: 35%;
         }
-        @media (max-width: 1130px) {
+        @media (max-width: 1228px) {
             width: 45%;
         }
-        @media (max-width: 963px) {
+        @media (max-width: 1022px) {
             width: 55%;
         }
-        @media (max-width: 846px) {
+        @media (max-width: 898px) {
             width: 65%;
         }
         .prev-button{
@@ -33,15 +33,9 @@
             }
             img{
                 margin: 0 3px;
-                // @media (max-width: 768px) {
-                //     margin: 0 1px;
-                // }
-                // @media (max-width: 1400px) {
-                //     margin: 0 5px;
-                // }
-                // @media (max-width: 1025px) {
-                //     margin: 0 5px;
-                // }
+                @media (max-width: 768px) {
+                    margin: 0 1px;
+                }
             }
         }
         
@@ -70,7 +64,7 @@
     .search{
         width: 40%;
         @media (max-width: 1400px) {
-            width: 30%;
+            width: 35%;
         }
         @media (max-width: 840px) {
             width: 30%;
