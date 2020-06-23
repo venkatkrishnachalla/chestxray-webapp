@@ -2,95 +2,95 @@ export const actionPanelConstants = {
   actionPanelTop: [
     {
       image: '../../../../assets/images/select icon active@2x.png',
-      alt: 'instagram',
+      alt: 'Select Icon',
     },
     {
       image: '../../../../assets/images/Fit to screen active@2x.png',
-      alt: 'instagram',
+      alt: 'Fit to Screen',
     },
     {
       image: '../../../../assets/images/Icon feather-zoom-in@2x.png',
-      alt: 'instagram',
+      alt: 'Zoom In',
     },
     {
       image: '../../../../assets/images/zoom out@2x.png',
-      alt: 'instagram',
+      alt: 'Zoom Out',
     },
     {
       image: '../../../../assets/images/rotate clockwise active@2x.png',
-      alt: 'instagram',
+      alt: 'Rotate Clockwise',
     },
     {
       image: '../../../../assets/images/rotate anticlockwise@2x.png',
-      alt: 'instagram',
+      alt: 'Rotate Anticlockwise',
     },
     {
       image: '../../../../assets/images/Flip Horizontal@2x.png',
-      alt: 'instagram',
+      alt: 'Flip Horizontal',
     },
     {
       image: '../../../../assets/images/Flip Vertical@2x.png',
-      alt: 'instagram',
+      alt: 'Flip Vertical',
     },
   ],
   actionPanelMiddle: [
     {
       image: '../../../../assets/images/undo active@2x.png',
-      alt: 'instagram',
+      alt: 'Undo Active',
     },
     {
       image: '../../../../assets/images/redo active@2x.png',
-      alt: 'instagram',
+      alt: 'Redo Active',
     },
     {
       image: '../../../../assets/images/ellipse@3x.png',
-      alt: 'instagram',
+      alt: 'Ellipse',
     },
     {
       image: '../../../../assets/images/pen tool@2x.png',
-      alt: 'instagram',
+      alt: 'Pen Tool',
     },
     {
       image: '../../../../assets/images/measure length active@2x.png',
-      alt: 'instagram',
+      alt: 'Measure Length',
     },
     {
       image: '../../../../assets/images/measure angle active@2x.png',
-      alt: 'instagram',
+      alt: 'Measure Angle',
     },
     {
       image: '../../../../assets/images/arrow active@2x.png',
-      alt: 'instagram',
+      alt: 'Arrow',
     },
     {
       image: '../../../../assets/images/text active@2x.png',
-      alt: 'instagram',
+      alt: 'Text',
     },
     {
       image: '../../../../assets/images/save active@2x.png',
-      alt: 'instagram',
+      alt: 'Save',
     },
     {
       image: '../../../../assets/images/erase tool active@2x.png',
-      alt: 'instagram',
+      alt: 'Erase Tool',
     },
     {
       image: '../../../../assets/images/settings active@2x.png',
-      alt: 'instagram',
+      alt: 'Settings',
     },
     {
       image: '../../../../assets/images/delete active@2x.png',
-      alt: 'instagram',
+      alt: 'Delete',
     },
   ],
   actionPanelBrightness: [
     {
       image: '../../../../assets/images/Brightness@2x.png',
-      alt: 'instagram',
+      alt: 'Brightness',
     },
     {
       image: '../../../../assets/images/Contrast@2x.png',
-      alt: 'instagram',
+      alt: 'Contrast',
     },
   ],
 };

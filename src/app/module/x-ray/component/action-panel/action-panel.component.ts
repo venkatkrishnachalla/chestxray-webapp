@@ -12,14 +12,24 @@ export class ActionPanelComponent implements OnInit {
   options: Options = {
     floor: 0,
     ceil: 100,
-    vertical: true
+    vertical: true,
+    showSelectionBar: true,
+    selectionBarGradient: {
+      from: '#285c68',
+      to: '#285c68'
+    }
   };
 
   values = 50;
   option: Options = {
     floor: 0,
     ceil: 100,
-    vertical: true
+    vertical: true,
+    showSelectionBar: true,
+    selectionBarGradient: {
+      from: '#285c68',
+      to: '#285c68'
+    }
   };
 
   readonly constants = actionPanelConstants;
