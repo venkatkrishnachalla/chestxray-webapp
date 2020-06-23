@@ -1,7 +1,7 @@
 import { AppComponent } from './app.component';
 import { of } from 'rxjs';
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let component: AppComponent;
   const authServiceSpy = jasmine.createSpyObj('AuthService', [
     'autoLoginOnRefresh',

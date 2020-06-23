@@ -10,9 +10,7 @@ fdescribe('HomeComponent', () => {
   ]);
 
   beforeEach(() => {
-    component = new HomeComponent(
-      authServiceSpy
-    );
+    component = new HomeComponent(authServiceSpy);
   });
 
   it('should create', () => {

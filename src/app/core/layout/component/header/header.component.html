@@ -1,35 +1,43 @@
 <mat-toolbar>
-  <button (click)="toggleSidenav()" *ngIf="router.url !='/x-ray'" class="menu_icon" mat-button>
+  <button
+    *ngIf="router.url != '/x-ray'"
+    (click)="toggleSidenav()"
+    class="menu_icon"
+    mat-button
+  >
     <span class="material-icons"> menu</span>
   </button>
+
   <span class="header_logo">
     <img
       src="../../../../../assets/images/CXR.png"
       alt="CXR_Logo"
-      width="100%"
-      height="35px"
+      width="150px"
+      height="30px"
     />
   </span>
+
+  <ng-container *ngIf="router.url == '/x-ray'">
+    <cxr-x-ray-header></cxr-x-ray-header>
+  </ng-container>
+
   <span class="fill-remaining-space"></span>
-  <span class="icon-styles">
-    <mat-icon *ngIf="router.url != '/auth/login'" class="pointer"
-      >person_add_alt_1
-    </mat-icon>
-  </span>
-  <span class="icon-styles">
-    <mat-icon *ngIf="router.url != '/auth/login'" class="pointer"
-      >notifications</mat-icon
-    >
-  </span>
-  <span class="user-name" *ngIf="router.url != '/auth/login'">
-    {{ doctorName }}</span
-  >
-  <mat-icon
-    *ngIf="router.url != '/auth/login'"
-    class="pointer account_icon"
-    [matMenuTriggerFor]="aboveMenu"
+  
+  <button class="icon-styles" *ngIf="router.url != '/x-ray'">
+    <span class="material-icons">person_add_alt_1</span>
+  </button>  
+  <button class="icon-styles" *ngIf="router.url == '/x-ray'">
+    <span class="material-icons ">dashboard</span>
+  </button>
+  <button class="icon-styles notification-icon">
+    <span class="material-icons ">notifications</span>
+  </button>
+
+  <span class="user-name"> {{ doctorName }}</span>
+  <mat-icon class="pointer account_icon" [matMenuTriggerFor]="aboveMenu"
     >account_circle</mat-icon
   >
+
   <mat-menu #aboveMenu="matMenu" xPosition="before">
     <button mat-menu-item>
       <span class="material-icons">person</span>My Account
