@@ -4,8 +4,7 @@ export const home_constants = {
       {
         headerName: '',
         field: 'priority',
-        // sortable: true,
-        maxWidth: 15,
+        maxWidth:15,
         cellRenderer: (data) => {
           return '';
         },
@@ -62,33 +61,37 @@ export const home_constants = {
         headerName: 'Patient Id',
         field: 'patientId',
         sortable: true,
-        minWidth: 126,
+        minWidth:102,
       },
       {
         headerName: 'Patient Name',
         field: 'name',
         sortable: true,
-        minWidth: 148,
+        minWidth:124,
       },
       {
         headerName: 'Gender',
         field: 'gender',
         sortable: true,
-        width: 20,
-        minWidth: 113,
+        minWidth:89,
+      },
+      { headerName: 'Age', 
+        field: 'age', 
+        sortable: true, 
+        minWidth:72,
       },
       { headerName: 'Age', field: 'age', sortable: true, minWidth: 96 },
       {
         headerName: 'Ref. Doctor',
         field: 'referenceDoctor',
         sortable: true,
-        minWidth: 135,
+        minWidth:111,
       },
       {
         headerName: 'Date & Time',
         field: 'date',
         sortable: true,
-        minWidth: 148,
+        minWidth:117,
         cellRenderer: (data) => {
           return data.value ? new Date(data.value).toLocaleString() : '';
         },
@@ -97,8 +100,10 @@ export const home_constants = {
         headerName: 'Actions',
         field: 'action',
         pinned: 'right',
-        cellStyle: function (params) {
-          return { width: 'auto !important' };
+        resizable: true,
+        minWidth:100,
+        cellStyle: function(params) {
+          return {width: 'auto !important'}
         },
         cellRenderer: (data) => {
           return `<mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px; margin-right:10px" title="Patient Info" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">

@@ -1,9 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { home_constants } from 'src/app/constants/homeConstants';
-import { HttpClient } from '@angular/common/http';
-import PerfectScrollbar from 'perfect-scrollbar';
 import { DashboardService } from 'src/app/service/dashboard.service';
-import { Router } from '@angular/router';
+import { AuthService} from 'src/app/module/auth/auth.service';
 
 @Component({
   selector: 'cxr-patient-list',
@@ -13,42 +11,35 @@ import { Router } from '@angular/router';
 export class PatientListComponent implements OnInit {
   private gridApi;
   private gridColumnApi;
-
   columnDefs;
   defaultColDef;
   rowData = [];
   readonly constants = home_constants;
   domLayout: any;
-  searchValue: String = '';
-  isLoading: boolean = false;
-  doctorId: any;
-  errorMessage: any;
-  ShowError: boolean = false;
-  frameworkComponents: any;
+  searchValue: String;
+  doctorId: string;
+  errorMessage: string;
+  showError: boolean;
+
 
   constructor(
-    private http: HttpClient,
     private elementRef: ElementRef,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private authService: AuthService
   ) {}
   ngOnInit() {
-    this.doctorId = localStorage.getItem('userAuthData');
+    this.showError = false;
+    this.doctorId = this.authService.user.id;
     this.defaultColDef = { width: 200 };
-    // this.rowData = this.constants.patientDashboard.sampleData;
     this.columnDefs = this.constants.patientDashboard.headers;
     this.getPatientList();
-    this.gridApi.sizeColsToFit();
   }
 
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    const agBodyViewport: HTMLElement = this.elementRef.nativeElement.querySelector(
-      '.ag-body-viewport'
-    );
-    if (agBodyViewport) {
-      const ps = new PerfectScrollbar(agBodyViewport);
-      ps.update();
+    window.onresize = (e) => {
+      this.gridApi.sizeColumnsToFit();
     }
     this.autoSizeAll(false);
   }
@@ -62,16 +53,13 @@ export class PatientListComponent implements OnInit {
   }
 
   getPatientList() {
-    const networkStatus = navigator.onLine;
-    this.isLoading = true;
-    this.dashboardService.getPatientList().subscribe(
+    this.dashboardService.getPatientList(this.doctorId).subscribe(
       (patientsList: any) => {
-        this.ShowError = false;
+        this.showError = false;
         this.rowData = patientsList;
       },
       (errorMessage: any) => {
-        this.ShowError = true;
-        this.isLoading = false;
+        this.showError = true;
         this.errorMessage = errorMessage;
       }
     );

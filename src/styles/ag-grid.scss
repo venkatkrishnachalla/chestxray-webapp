@@ -1,27 +1,28 @@
 ag-grid-angular{
     margin-top: -75px !important;
     height: 100% !important;
-}
-::ng-deep .ag-header {
-    margin-top: 52px !important;
-    background-color: #add8e6 !important;
-}
-::ng-deep .mat-form-field-outline {
-    background-color: white !important;
-    border-radius: 5px !important;
-}
-::ng-deep .ag-paging-panel {
-    position: absolute;
-    right: 0;
-    border-top: none !important;
-    width: 100%;
-    background-color: #add8e6 !important;
-    margin-top:10px !important;
-}
-::ng-deep .ag-header-cell.ag-column-hover {
-    background-color: #add8e6 !important;
-}
-.ag-body-viewport {
-    position: relative;
-    overflow: hidden !important;
+    width: 100% !important; 
+    ::ng-deep .ag-header {
+        margin-top: 52px !important;
+        background-color: #add8e6 !important;
+    }
+    ::ng-deep .mat-form-field-outline {
+        background-color: white !important;
+        border-radius: 5px !important;
+    }
+    ::ng-deep .ag-paging-panel {
+        position: absolute;
+        right: 0;
+        border-top: none !important;
+        width: 100%;
+        background-color: #add8e6 !important;
+        margin-top:10px !important;
+    }
+    ::ng-deep .ag-header-cell.ag-column-hover {
+        background-color: #add8e6 !important;
+    }
+    .ag-body-viewport {
+        position: relative;
+        overflow: hidden !important;
+    }
 }

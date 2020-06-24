@@ -1,14 +1,16 @@
+
+@import '../../../../styles/ag-grid.scss';
 #at-id-patientTable{
   height: 100% !important;
-}
-#at-input-searchPatient {
-  width: 40%;
-  z-index: 999;
-  margin-left: 23%;
-}
-.search-patient {
-  margin-bottom: 3px !important;
-  padding-left: 10px !important;
+  #at-input-searchPatient {
+    width: 40%;
+    z-index: 999;
+    margin-left: 23%;
+  }
+  .search-patient {
+    margin-bottom: 3px !important;
+    padding-left: 10px !important;
+  }
 }
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 0.5em 0 0.5em 0 !important;
@@ -16,33 +18,6 @@
 ::ng-deep .mat-form-field-outline{
   background-color: white !important;
   border-radius: 5px !important;
-}
-ag-grid-angular{
-  margin-top: -75px !important;
-  height: 100% !important;
-  ::ng-deep .ag-header {
-    margin-top: 52px !important;
-    background-color: #add8e6 !important;
-  }
-  ::ng-deep .mat-form-field-outline {
-    background-color: white !important;
-    border-radius: 5px !important;
-  }
-  ::ng-deep .ag-paging-panel {
-    position: absolute;
-    right: 0;
-    border-top: none !important;
-    width: 100%;
-    background-color: #add8e6 !important;
-    margin-top:10px !important;
-  }
-  ::ng-deep .ag-header-cell.ag-column-hover {
-    background-color: #add8e6 !important;
-  }
-  .ag-body-viewport {
-    position: relative;
-    overflow: hidden !important;
-  }
 }
 ::ng-deep .material-icons:hover{
   color: #707070 !important;
@@ -57,5 +32,12 @@ ag-grid-angular{
       padding-bottom: 30px !important;
     }
   }
+}
+::ng-deep .ag-theme-material .ag-cell, ::ng-deep .ag-header-cell{
+  padding-right: 0px !important;
+  width: auto !important;
+}
+::ng-deep .ag-center-cols-container{
+  width: auto !important;
 }
   
