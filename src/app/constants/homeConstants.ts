@@ -80,7 +80,6 @@ export const home_constants = {
         sortable: true, 
         minWidth:72,
       },
-      { headerName: 'Age', field: 'age', sortable: true, minWidth: 96 },
       {
         headerName: 'Ref. Doctor',
         field: 'referenceDoctor',
