@@ -40,6 +40,7 @@ export class PatientListComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
     window.onresize = (e) => {
       this.gridApi.sizeColumnsToFit();
+      this.autoSizeAll(false);
     }
     this.autoSizeAll(false);
   }
@@ -53,7 +54,7 @@ export class PatientListComponent implements OnInit {
   }
 
   getPatientList() {
-    this.dashboardService.getPatientList(this.doctorId).subscribe(
+    this.dashboardService.getPatientList().subscribe(
       (patientsList: any) => {
         this.showError = false;
         this.rowData = patientsList;
