@@ -8,6 +8,7 @@ import { FindingsComponent } from './component/findings/findings.component';
 import { ImageSlidingComponent } from './component/image-sliding/image-sliding.component';
 import { ImpressionComponent } from './component/impression/impression.component';
 import { PatientDetailsComponent } from './component/patient-details/patient-details.component';
+import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { PatientDetailsComponent } from './component/patient-details/patient-det
     ImageSlidingComponent,
     ImpressionComponent,
     PatientDetailsComponent,
+    CanvasImageComponent
   ],
   imports: [CommonModule, MaterialModule, Ng5SliderModule],
 })

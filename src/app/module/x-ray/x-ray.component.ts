@@ -24,5 +24,4 @@ export class XRayComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

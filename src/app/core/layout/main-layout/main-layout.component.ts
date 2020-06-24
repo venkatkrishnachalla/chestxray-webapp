@@ -32,9 +32,9 @@ export class MainLayoutComponent implements OnInit {
     this.socialMediaImage = this.constants.socialMedia;
   }
 
-  // close() {
-  //   this.sidenav.close();
-  // }
+  close() {
+    this.sidenav.close();
+  }
 
   toggleSidenavBar(valueEmitted) {
     this.sidenav.toggle();

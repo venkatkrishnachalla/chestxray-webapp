@@ -48,10 +48,13 @@ fdescribe('SignInComponent', () => {
           password: 'test@123',
         },
         valid: true,
+        resetForm: () => null,
+        reset: () => null,
       } as NgForm;
       component.onSignIn(testForm);
     });
     it('should call onSignIn function, when login is successful', () => {
+      expect(spinnerServiceSpy.show).toHaveBeenCalled();
       authServiceSpy
         .signIn('test', 'test@123')
         .subscribe((authResponse: any) => {
@@ -67,7 +70,8 @@ fdescribe('SignInComponent', () => {
         password: 'test@123',
       },
       valid: true,
-      resetForm: () => null
+      resetForm: () => null,
+      reset: () => null,
     } as NgForm;
     beforeEach(() => {
       const signInErrorResponse = { status: 401 };
@@ -76,6 +80,7 @@ fdescribe('SignInComponent', () => {
     it('should call onSignIn function, when login error', () => {
       spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(true);
       component.onSignIn(testForm);
+      expect(spinnerServiceSpy.hide).toHaveBeenCalled();
       expect(alertSpy.open).toHaveBeenCalledWith(
         'Invalid Username or Password',
         'ERROR'
@@ -84,9 +89,9 @@ fdescribe('SignInComponent', () => {
     it('should call onSignIn function, when login error, when network is false', () => {
       spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(false);
       component.onSignIn(testForm);
-      const networktext =
+      const message =
         'You are not connected to a network. Check your network connections and try again.';
-      expect(alertSpy.open).toHaveBeenCalledWith(networktext, 'ERROR');
+      expect(alertSpy.open).toHaveBeenCalledWith(message, 'ERROR');
     });
   });
 
@@ -98,6 +103,8 @@ fdescribe('SignInComponent', () => {
           password: 'test@123',
         },
         valid: false,
+        resetForm: () => null,
+        reset: () => null,
       } as NgForm;
       component.onSignIn(testForm);
     });

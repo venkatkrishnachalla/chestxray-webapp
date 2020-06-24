@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.doctorName = localStorage.getItem('loggedInUser');
     this.toggleActive = false;
     this.initialize();
   }

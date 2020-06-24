@@ -18,7 +18,7 @@ fdescribe('PatientListComponent', () => {
     component = new PatientListComponent(
       httpSpy,
       elementRefSpy,
-      dashboardServiceSpy
+      dashboardServiceSpy,
     );
   });
 
