@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { actionPanelConstants } from '../../../../constants/actionPanelConstants';
 import { Options } from 'ng5-slider';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cxr-action-panel',
@@ -36,7 +37,7 @@ export class ActionPanelComponent implements OnInit {
   actionPanel: { image: string; alt: string; }[];
   middlePanel: { image: string; alt: string; }[];
   brightnessPanel: { image: string; alt: string; }[];
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.actionPanel = this.constants.actionPanelTop;
