@@ -1,3 +1,28 @@
 <div class="ask-ai-container">
-  Ask Ai Works!
+  <div class="card">
+    <div class="card-header">AI Output</div>
+    <div class="card-body">
+      <label>FINDINGS</label>
+      <div class="findings">
+        <ul>
+          <li *ngFor="let findings of finding">> {{ findings.text }}</li>
+        </ul>
+      </div>
+      <label>IMPRESSION</label>
+      <div class="impression">
+        <ul>
+          <li *ngFor="let impressions of impression">
+            > {{ impressions.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button mat-raised-button>ACCEPT</button>
+      <button mat-raised-button (click)="rejectAI()">REJECT</button>
+    </div>
+  </div>
+
+  <!-- <div class="meow">
+</div> -->
 </div>
