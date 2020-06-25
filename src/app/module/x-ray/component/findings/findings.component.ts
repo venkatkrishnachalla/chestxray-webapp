@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./findings.component.scss'],
 })
 export class FindingsComponent implements OnInit {
+  findings = ['hello', 'hello', 'hello']
   constructor() {}
 
   ngOnInit(): void {}

@@ -16,7 +16,7 @@ export class DashboardService {
     private endpoint: ApiEndPointService,
   ) { }
 
-  getPatientList(doctorId: string) {
+  getPatientList() {
     return this.http.get<patientData>(this.endpoint.getPatientList(),
     // {
     //   doctorId

@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import User from './user.modal';
@@ -12,8 +16,8 @@ const FIREBASE_SIGN_IN_ENDPOINT =
 interface AuthResponseData {
   idToken: string;
   email: string;
-  refreshToken: string;
-  expiresIn: string;
+  token: string;
+  expiration: string;
   localId: string;
   registered?: boolean;
 }
@@ -38,20 +42,19 @@ export class AuthService {
   }
 
   signIn(email: string, password: string) {
+    const params = new HttpParams()
+      .set('UserName', email)
+      .set('Password', password);
     return this.http
-      .post<AuthResponseData>(this.endpoint.getSingInURL(), {
-        email,
-        password,
-        returnSecureToken: true,
-      })
+      .post<AuthResponseData>(this.endpoint.getSingInURL(), params)
       .pipe(
         catchError(this.handleAuthError),
         tap((responseDate) => {
           this.handleAuthentication(
             responseDate.email,
             responseDate.localId,
-            responseDate.idToken,
-            +responseDate.expiresIn
+            responseDate.token,
+            responseDate.expiration
           );
         })
       );
@@ -140,13 +143,17 @@ export class AuthService {
     email: string,
     userID: string,
     token: string,
-    expiresIn: number
+    expiresIn: any
   ) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    //  const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const expirationDate = new Date(expiresIn);
     const user = new User(email, userID, token, expirationDate);
 
     this.userSubject.next(user);
-    this.autoSessionTimeOut(expiresIn * 1000);
+
+    const date = new Date(expiresIn);
+    const convertedDate = date.getTime();
+    this.autoSessionTimeOut(30000 * 1000);
     // Or refresh token, if you decide to keep the session active.
     // this.refreshTokenTimeOut(user.token, expiresIn * 1000);
     localStorage.setItem('userAuthData', JSON.stringify(user));

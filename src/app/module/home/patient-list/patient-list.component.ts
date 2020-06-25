@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { home_constants } from 'src/app/constants/homeConstants';
 import { DashboardService } from 'src/app/service/dashboard.service';
-import { AuthService} from 'src/app/module/auth/auth.service';
+import { AuthService } from 'src/app/module/auth/auth.service';
 
 @Component({
   selector: 'cxr-patient-list',
@@ -21,7 +21,6 @@ export class PatientListComponent implements OnInit {
   errorMessage: string;
   showError: boolean;
 
-
   constructor(
     private elementRef: ElementRef,
     private dashboardService: DashboardService,
@@ -40,7 +39,7 @@ export class PatientListComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
     window.onresize = (e) => {
       this.gridApi.sizeColumnsToFit();
-    }
+    };
     this.autoSizeAll(false);
   }
 
@@ -53,8 +52,9 @@ export class PatientListComponent implements OnInit {
   }
 
   getPatientList() {
-    this.dashboardService.getPatientList(this.doctorId).subscribe(
+    this.dashboardService.getPatientList().subscribe(
       (patientsList: any) => {
+        console.log('patientsList', patientsList);
         this.showError = false;
         this.rowData = patientsList;
       },
