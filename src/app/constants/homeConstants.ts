@@ -108,7 +108,6 @@ export const home_constants = {
                 preview</mat-icon>`;
         },
         onCellClicked: function make(params) {
-          debugger;
           const patientId = params.data.id;
           localStorage.setItem('InstanceUID', patientId);
           window.location.assign('/x-ray');

@@ -26,6 +26,23 @@ export class xrayImageService {
         })
       );
   }
+
+  getPatientInstanceId(id) {
+    const body = {
+      'content-type': 'application/json',
+    };
+    return this.http
+      .get(this.endpoint.getPatientInstanceId(id), {
+        headers: body,
+        responseType: 'json',
+      })
+      .pipe(
+        catchError(this.handleError),
+        tap((responseData) => {
+          return responseData;
+        })
+      );
+  }
   private handleError(errorResponse: HttpErrorResponse) {
     return throwError(errorResponse.error.error.message);
   }

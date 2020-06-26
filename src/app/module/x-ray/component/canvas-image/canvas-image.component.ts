@@ -12,7 +12,7 @@ import { xrayImageService } from 'src/app/service/canvasImage';
 })
 export class CanvasImageComponent implements OnInit {
   isLoading: boolean;
-  patientId: string;
+  studiesId: string;
   PatientImage: any;
   canvas: any;
   canvasDynamicWidth: number;
@@ -21,6 +21,9 @@ export class CanvasImageComponent implements OnInit {
   scaleX: number;
   scaleY: number;
   show = false;
+  patientImage: any;
+  instanceId: any;
+  patientId: string;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -39,12 +42,25 @@ export class CanvasImageComponent implements OnInit {
     this.spinnerService.show();
     this.canvas = new fabric.Canvas('c');
     this.patientId = localStorage.getItem('InstanceUID');
-    if (!this.PatientImage) {
-      this.getPatientImage(this.patientId);
+    if(!this.instanceId){
+      this.getPatientInstanceId(this.patientId);
+    }
+    else if(!this.patientImage) {
+      this.getPatientImage(this.instanceId);
     } else {
       this.setCanvasDimension();
       this.setCanvasBackground();
     }
+  }
+
+  getPatientInstanceId(id){
+    this.xRayService
+    .getPatientInstanceId(id)
+    .subscribe((patientInstanceIdResponse: any) => {
+      this.instanceId = patientInstanceIdResponse[0].seriesList[0].instanceList[0].id;
+      this.spinnerService.hide();
+      this.getPatientImage(this.instanceId);
+    });
   }
 
   setCanvasDimension() {
@@ -70,7 +86,7 @@ export class CanvasImageComponent implements OnInit {
       .getPatientImage(instanceID)
       .subscribe((PatientImageResponse: any) => {
         this.PatientImage = 'data:image/png;base64,' + PatientImageResponse;
-        console.log(this.PatientImage);
+        console.log("this.PatientImage", this.PatientImage)
         this.setCanvasDimension();
         this.generateCanvas();
         this.spinnerService.hide();
