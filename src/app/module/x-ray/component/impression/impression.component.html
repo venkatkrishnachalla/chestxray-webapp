@@ -2,4 +2,11 @@
   <mat-card-title class="patient-info-header">
     IMPRESSIONS
   </mat-card-title>
+  <mat-card-content
+    class="impression-content"
+    *ngFor="let impressions of impression; let i = index"
+  >
+    <button [style.background-color]="abnormalityColor[i]"></button>
+    <input matInput [value]="impressions" />
+  </mat-card-content>
 </mat-card>

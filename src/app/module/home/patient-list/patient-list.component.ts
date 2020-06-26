@@ -45,7 +45,7 @@ export class PatientListComponent implements OnInit {
 
   autoSizeAll(skipHeader) {
     var allColumnIds = [];
-    this.gridColumnApi.getAllColumns().forEach(function (column) {
+    this.gridColumnApi.getAllColumns().forEach(function(column) {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
@@ -54,7 +54,6 @@ export class PatientListComponent implements OnInit {
   getPatientList() {
     this.dashboardService.getPatientList().subscribe(
       (patientsList: any) => {
-        console.log('patientsList', patientsList);
         this.showError = false;
         this.rowData = patientsList;
       },

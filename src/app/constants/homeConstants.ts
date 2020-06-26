@@ -76,7 +76,7 @@ export const home_constants = {
         minWidth: 89,
       },
       { headerName: 'Age', field: 'age', sortable: true, minWidth: 72 },
-      { headerName: 'Age', field: 'age', sortable: true, minWidth: 96 },
+      // { headerName: 'Age', field: 'age', sortable: true, minWidth: 96 },
       {
         headerName: 'Ref. Doctor',
         field: 'referenceDoctor',
@@ -108,7 +108,8 @@ export const home_constants = {
                 preview</mat-icon>`;
         },
         onCellClicked: function make(params) {
-          const patientId = params.data.patientId;
+          debugger;
+          const patientId = params.data.id;
           localStorage.setItem('InstanceUID', patientId);
           window.location.assign('/x-ray');
         },

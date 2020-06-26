@@ -7,19 +7,8 @@
       alt="update"
     />
   </mat-card-title>
-  <mat-card-content style="margin-left: 2rem;">
-    <ul
-      style="font-size: 2rem; display: flex;"
-      *ngFor="let finding of findings"
-    >
-      <li>
-        <input
-          [value]="finding"
-          class="finding-input"
-          matInput
-          style="border: 0;"
-        />
-      </li>
-    </ul>
+  <mat-card-content class="findings-content" *ngFor="let finding of findings">
+    <button></button>
+    <input matInput [value]="finding" style="word-break: break-all;" />
   </mat-card-content>
 </mat-card>

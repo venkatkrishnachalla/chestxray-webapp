@@ -48,13 +48,7 @@ export class ApiEndPointService {
     if (environment.isMockAPI) {
       return environment.mockApiEndPoint + '/auth';
     }
-    // return 'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/Dicom/Login/';
-    return 'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login';
-    // const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
-    // return (
-    //   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
-    //   FIREBASE_API_KEY
-    // );
+    return 'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login/';
   }
 
   public getRefreshToken(): string {
@@ -72,7 +66,14 @@ export class ApiEndPointService {
     if (environment.isMockAPI) {
       return environment.mockApiEndPoint + '/patients';
     }
-    // return 'https://chestxrayqa.southindia.cloudapp.azure.com/ChestXRayNew/api/getPatientListByDoctorId'
-    return 'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient';
+    return 'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/';
+  }
+
+  public getPatientImage(id): any {
+    return (
+      'http://chestxrayqa.southindia.cloudapp.azure.com/api/instance/' +
+      id +
+      '/image'
+    );
   }
 }

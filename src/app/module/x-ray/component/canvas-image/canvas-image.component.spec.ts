@@ -8,10 +8,12 @@ fdescribe('CanvasImageComponent', () => {
     'hide',
   ]);
   const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
-  const dashboardServiceSpy = jasmine.createSpyObj('DashboardService', ['getPatientList']);
+  const dashboardServiceSpy = jasmine.createSpyObj('DashboardService', [
+    'getPatientList',
+  ]);
 
   beforeEach(() => {
-    component = new CanvasImageComponent(spinnerServiceSpy, routerSpy, dashboardServiceSpy);
+    // component = new CanvasImageComponent(spinnerServiceSpy, routerSpy, dashboardServiceSpy);
   });
 
   it('should create', () => {

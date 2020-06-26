@@ -42,11 +42,12 @@ export class AuthService {
   }
 
   signIn(email: string, password: string) {
-    const params = new HttpParams()
-      .set('UserName', email)
-      .set('Password', password);
     return this.http
-      .post<AuthResponseData>(this.endpoint.getSingInURL(), params)
+      .post<AuthResponseData>(this.endpoint.getSingInURL(), {
+        UserName: email,
+        Password: password,
+        returnSecureToken: true,
+      })
       .pipe(
         catchError(this.handleAuthError),
         tap((responseDate) => {
@@ -150,10 +151,10 @@ export class AuthService {
     const user = new User(email, userID, token, expirationDate);
 
     this.userSubject.next(user);
-
-    const date = new Date(expiresIn);
-    const convertedDate = date.getTime();
-    this.autoSessionTimeOut(30000 * 1000);
+    const startDate = new Date().getTime();
+    const endDate = new Date(expiresIn).getTime();
+    const seconds = endDate - startDate;
+    this.autoSessionTimeOut(seconds);
     // Or refresh token, if you decide to keep the session active.
     // this.refreshTokenTimeOut(user.token, expiresIn * 1000);
     localStorage.setItem('userAuthData', JSON.stringify(user));

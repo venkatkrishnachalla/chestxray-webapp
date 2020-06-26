@@ -30,7 +30,6 @@ export class SignInComponent implements OnInit {
       this.spinnerService.show();
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
         (authResponse: any) => {
-          debugger;
           this.spinnerService.hide();
           this.console.log(authResponse);
           localStorage.setItem('loggedInUser', this.auth.email);
