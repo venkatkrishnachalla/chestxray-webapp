@@ -89,7 +89,6 @@ export class CanvasImageComponent implements OnInit {
         console.log("this.PatientImage", this.PatientImage)
         this.setCanvasDimension();
         this.generateCanvas();
-        this.spinnerService.hide();
       });
   }
 
@@ -100,44 +99,38 @@ export class CanvasImageComponent implements OnInit {
     });
   }
 
-  getWidthFirst(imageaspectratio, containeraspectratio) {
-    return imageaspectratio > containeraspectratio;
-  }
-
   setCanvasBackground() {
-    let canvaswidth, canvasheight;
-    const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
-    const containerAspectRatio =
-      this.canvasDynamicWidth / this.canvasDynamicHeight;
-    let widthFirst = this.getWidthFirst(imageAspectRatio, containerAspectRatio);
-    if (widthFirst) {
-      canvaswidth = this.canvasDynamicWidth;
-      canvasheight = canvaswidth / imageAspectRatio;
+    const canvasAspect = this.canvasDynamicWidth / this.canvasDynamicHeight;
+    const imgAspect = this.xRayImage.width / this.xRayImage.height;
+    let left, top, scaleFactor;
+
+    if (this.xRayImage.width > this.xRayImage.height) {
+      scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
+      left = 0;
+      top = -((this.xRayImage.height * scaleFactor) - this.canvasDynamicHeight) / 2;
     } else {
-      canvasheight = this.canvasDynamicHeight;
-      canvaswidth = canvasheight * imageAspectRatio;
+      scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
+      top = 0;
+      left = -((this.xRayImage.width * scaleFactor) - this.canvasDynamicWidth) / 2;
     }
-    const center = this.canvas.getCenter();
-    this.xRayImage.set({
-      opacity: 1,
-      width: canvaswidth,
-      height: canvasheight,
-      scaleX: 1,
-      scaleY: 1,
-      top: center.top,
-      left: center.left,
-      originX: 'center',
-      originY: 'center',
-    });
+
     this.canvas.setBackgroundImage(
       this.xRayImage,
       this.canvas.requestRenderAll.bind(this.canvas),
       {
+        opacity: 1,
         backgroundImageStretch: false,
         backgroundImageOpacity: 1,
-        crossOrigin: 'anonymous',
+        crossOrigin: "anonymous",
+        top: top,
+        left: left,
+        originX: 'left',
+        originY: 'top',
+        scaleX: scaleFactor,
+        scaleY: scaleFactor,
       }
     );
+    this.spinnerService.hide();
   }
 
   onProcessClickHandler() {
