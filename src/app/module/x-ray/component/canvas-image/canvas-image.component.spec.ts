@@ -1,7 +1,7 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of, throwError } from 'rxjs';
 
-fdescribe('CanvasImageComponent', () => {
+describe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',

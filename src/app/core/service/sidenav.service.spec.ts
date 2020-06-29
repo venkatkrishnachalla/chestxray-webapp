@@ -1,7 +1,7 @@
 import { SidenavService } from './sidenav.service';
 import { MatSidenav } from '@angular/material/sidenav';
 
-fdescribe('SidenavService', () => {
+describe('SidenavService', () => {
   let service: SidenavService;
 
   beforeEach(() => {
