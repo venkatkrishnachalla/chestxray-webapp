@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { findingsAndImpression } from 'src/app/constants/findingsAndImpression';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
   selector: 'cxr-ask-ai',
@@ -12,11 +13,17 @@ export class AskAiComponent implements OnInit {
   finding: { text: string }[];
   impression: { name: string }[];
 
-  constructor() {}
+  constructor(private xrayService: XRayService) {}
 
   ngOnInit(): void {
     this.finding = this.constants.findings;
     this.impression = this.constants.impressions;
+    const PatientImage = sessionStorage.getItem('PatientImage');
+    this.xrayService.getAskAiDetails(PatientImage).subscribe(
+      (imageResponse: any) => {
+      },
+      (errorMessage: any) => {}
+    );
   }
 
   rejectAI() {
