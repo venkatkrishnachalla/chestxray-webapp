@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActionPanelComponent } from './action-panel.component';
+import { AskAiComponent } from './ask-ai.component';
 
-describe('ActionPanelComponent', () => {
-  let component: ActionPanelComponent;
+describe('AskAiComponent', () => {
+  let component: AskAiComponent;
 
   beforeEach(() => {
-    component = new ActionPanelComponent(
+    component = new AskAiComponent(
     );
   });
 
@@ -24,15 +24,14 @@ describe('ActionPanelComponent', () => {
     });
   });
 
-  describe('#askAI', () => {
+  describe('#rejectAI', () => {
     beforeEach(() => {
       // spyOn(component, 'askAIEvent').and.callThrough();
-      component.askAI();
+      component.rejectAI();
     });
-    it('should call askAI function', () => {
-      const result = component.askAI();
-      expect(component.askAI).toBeDefined();
+    it('should call rejectAI function', () => {
+      const result = component.rejectAI();
+      expect(component.rejectAI).toBeDefined();
     });
   });
-
 });

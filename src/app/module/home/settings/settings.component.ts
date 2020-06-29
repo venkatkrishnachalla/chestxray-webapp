@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { findingsAndImpression } from 'src/app/constants/findingsAndImpression';
 
 @Component({
   selector: 'cxr-settings',
@@ -6,7 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
+  readonly constants = findingsAndImpression;
+  finding: { text: string; }[];
+  impression: { name: string; }[];
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.finding = this.constants.findings;
+    this.impression = this.constants.impressions;
+  }
 }

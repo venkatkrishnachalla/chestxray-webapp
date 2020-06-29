@@ -7,6 +7,7 @@ import { Options } from 'ng5-slider';
   styleUrls: ['./x-ray.component.scss'],
 })
 export class XRayComponent implements OnInit {
+  showAskAI = false;
   value = 70;
   options: Options = {
     floor: 0,
@@ -21,11 +22,14 @@ export class XRayComponent implements OnInit {
     vertical: true,
   };
 
-  showError: boolean;
-  patientId: string;
-  patientImage: any;
-  errorMessage: string;
-  constructor() {}
+  ngOnInit(): void {
+  }
 
-  ngOnInit(): void {}
+  openAskAI(event) {
+    this.showAskAI = !this.showAskAI;
+  }
+
+  rejectAI(event) {
+    this.showAskAI = event;
+  }
 }

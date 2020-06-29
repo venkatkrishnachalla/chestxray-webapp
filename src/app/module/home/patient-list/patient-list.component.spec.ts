@@ -5,7 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpTestingController} from '@angular/common/http/testing';
 import { DashboardService } from 'src/app/service/dashboard.service';
 
-fdescribe('PatientListComponent', () => {
+describe('PatientListComponent', () => {
   let component: PatientListComponent;
   const httpSpy = jasmine.createSpyObj('HttpClient', ['get']);
   const elementRefSpy = jasmine.createSpyObj('ElementRef', ['nativeElement']);

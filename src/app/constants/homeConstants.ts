@@ -34,7 +34,7 @@ export const home_constants = {
         headerName: 'Report Status',
         field: 'status',
         sortable: true,
-        minWidth: 178,
+        minWidth: 124,
         cellRenderer: function (params) {
           if (params.value === 'Drafted') {
             return (
@@ -75,8 +75,11 @@ export const home_constants = {
         sortable: true,
         minWidth: 89,
       },
-      { headerName: 'Age', field: 'age', sortable: true, minWidth: 72 },
-      // { headerName: 'Age', field: 'age', sortable: true, minWidth: 96 },
+      { headerName: 'Age', 
+        field: 'age', 
+        sortable: true, 
+        minWidth:72,
+      },
       {
         headerName: 'Ref. Doctor',
         field: 'referenceDoctor',
@@ -105,7 +108,7 @@ export const home_constants = {
           return `<mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px; margin-right:10px" title="Patient Info" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
                 error_outline</mat-icon>
                 <mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
-                preview</mat-icon>`;
+                arrow_forward_ios</mat-icon>`;
         },
         onCellClicked: function make(params) {
           const patientId = params.data.id;

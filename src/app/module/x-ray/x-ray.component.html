@@ -1,12 +1,12 @@
 <div class="x-ray-container">
   <!-- left Side Action Items -->
   <section class="action-panel">
-    <cxr-action-panel></cxr-action-panel>
+    <cxr-action-panel (askAIEvent)="openAskAI($event)"></cxr-action-panel>
   </section>
 
   <!-- Main Content, X-Ray Aspect Ratio Part -->
   <section class="xray-panel">
-      <cxr-canvas-image></cxr-canvas-image>
+    <cxr-canvas-image></cxr-canvas-image>
   </section>
 
   <!-- Right Side Content -->
@@ -25,4 +25,8 @@
       <img src="../../../assets/images/submit icon@2x.png" alt="submit" />
     </button>
   </section>
+
+  <div class="askAIPopup" *ngIf="showAskAI">
+    <cxr-ask-ai (rejectAiEvent)=rejectAI($event)></cxr-ask-ai>
+  </div>
 </div>
