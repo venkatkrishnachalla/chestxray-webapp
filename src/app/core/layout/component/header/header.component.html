@@ -17,7 +17,7 @@
   </span>
 
   <ng-container>
-    <cxr-x-ray-header *ngIf="router.url == '/x-ray'"></cxr-x-ray-header>
+    <cxr-x-ray-header *ngIf="router.url == '/x-ray' || router.url == '/x-ray/ask-ai'"></cxr-x-ray-header>
   </ng-container>
 
   <span class="fill-remaining-space"></span>
@@ -25,7 +25,7 @@
   <button class="icon-styles" *ngIf="router.url != '/x-ray'">
     <span class="material-icons">person_add_alt_1</span>
   </button>
-  <button class="icon-styles" *ngIf="router.url == '/x-ray'" [routerLink]="['/home/dashboard']" routerLinkActive="router-link-active" >
+  <button class="icon-styles" [routerLink]="['/home/dashboard']" routerLinkActive="router-link-active"  *ngIf="router.url == '/x-ray'">
     <span class="material-icons">dashboard</span>
   </button>
   <button class="icon-styles notification-icon">
@@ -49,4 +49,4 @@
     </button>
   </mat-menu>
 </mat-toolbar>
-<router-outlet *ngIf="router.url == '/x-ray'"></router-outlet>
+<router-outlet *ngIf="router.url == '/x-ray' || router.url == '/x-ray/ask-ai'"></router-outlet>

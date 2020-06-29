@@ -4,7 +4,7 @@ export const home_constants = {
       {
         headerName: '',
         field: 'priority',
-        maxWidth:15,
+        maxWidth: 15,
         cellRenderer: (data) => {
           return '';
         },
@@ -59,21 +59,21 @@ export const home_constants = {
       },
       {
         headerName: 'Patient Id',
-        field: 'patientId',
+        field: 'hospitalPatientId',
         sortable: true,
-        minWidth:102,
+        minWidth: 102,
       },
       {
         headerName: 'Patient Name',
         field: 'name',
         sortable: true,
-        minWidth:124,
+        minWidth: 124,
       },
       {
         headerName: 'Gender',
-        field: 'gender',
+        field: 'sex',
         sortable: true,
-        minWidth:89,
+        minWidth: 89,
       },
       { headerName: 'Age', 
         field: 'age', 
@@ -84,13 +84,13 @@ export const home_constants = {
         headerName: 'Ref. Doctor',
         field: 'referenceDoctor',
         sortable: true,
-        minWidth:111,
+        minWidth: 111,
       },
       {
         headerName: 'Date & Time',
         field: 'date',
         sortable: true,
-        minWidth:117,
+        minWidth: 117,
         cellRenderer: (data) => {
           return data.value ? new Date(data.value).toLocaleString() : '';
         },
@@ -99,9 +99,10 @@ export const home_constants = {
         headerName: 'Actions',
         field: 'action',
         pinned: 'right',
-        minWidth:100,
-        cellStyle: function(params) {
-          return {width: 'auto !important'}
+        resizable: true,
+        minWidth: 100,
+        cellStyle: function (params) {
+          return { width: 'auto !important' };
         },
         cellRenderer: (data) => {
           return `<mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px; margin-right:10px" title="Patient Info" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
@@ -110,7 +111,7 @@ export const home_constants = {
                 arrow_forward_ios</mat-icon>`;
         },
         onCellClicked: function make(params) {
-          const patientId = params.data.patientId;
+          const patientId = params.data.id;
           localStorage.setItem('InstanceUID', patientId);
           window.location.assign('/x-ray');
         },

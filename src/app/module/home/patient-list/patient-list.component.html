@@ -1,25 +1,26 @@
 <div id="at-id-patientTable" *ngIf="!showError">
-    <mat-form-field id="at-input-searchPatient" appearance="outline">
-      <mat-icon matPrefix>search</mat-icon>
-      <input
-        matInput
-        type="search"
-        [(ngModel)]="searchValue"
-        placeholder="Search Patient"
-        class="search-patient"
-      />
-    </mat-form-field>
-    <ag-grid-angular
-        id="patientGrid"
-        class="ag-theme-material"
-        [columnDefs]="columnDefs"
-        [defaultColDef]="defaultColDef"
-        [rowData]="rowData"
-        (gridReady)="onGridReady($event)"
-        [pagination]=true
-        [quickFilterText]="searchValue"
-      ></ag-grid-angular>
-  </div>
-  <div class="errorBlock" *ngIf="showError">
-    {{errorMessage}}
-  </div>
+  <mat-form-field id="at-input-searchPatient" appearance="outline">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      type="search"
+      [(ngModel)]="searchValue"
+      placeholder="Search Patient"
+      class="search-patient"
+    />
+  </mat-form-field>
+  <ag-grid-angular
+    id="patientGrid"
+    class="ag-theme-material"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [rowData]="rowData"
+    (gridReady)="onGridReady($event)"
+    [pagination]="true"
+    [quickFilterText]="searchValue"
+  >
+  </ag-grid-angular>
+</div>
+<div class="errorBlock" *ngIf="showError">
+  {{ errorMessage }}
+</div>

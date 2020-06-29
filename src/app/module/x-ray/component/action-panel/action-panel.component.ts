@@ -1,14 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output} from '@angular/core';
 import { actionPanelConstants } from '../../../../constants/actionPanelConstants';
 import { Options } from 'ng5-slider';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cxr-action-panel',
   templateUrl: './action-panel.component.html',
-  styleUrls: ['./action-panel.component.scss']
+  styleUrls: ['./action-panel.component.scss'],
 })
 export class ActionPanelComponent implements OnInit {
+  @Output() askAIEvent = new EventEmitter();
   value = 70;
   options: Options = {
     floor: 0,
@@ -17,8 +19,8 @@ export class ActionPanelComponent implements OnInit {
     showSelectionBar: true,
     selectionBarGradient: {
       from: '#285c68',
-      to: '#285c68'
-    }
+      to: '#285c68',
+    },
   };
 
   values = 50;
@@ -29,8 +31,8 @@ export class ActionPanelComponent implements OnInit {
     showSelectionBar: true,
     selectionBarGradient: {
       from: '#285c68',
-      to: '#285c68'
-    }
+      to: '#285c68',
+    },
   };
 
   readonly constants = actionPanelConstants;
@@ -48,4 +50,7 @@ export class ActionPanelComponent implements OnInit {
         this.eventEmitterService.onComponentButtonClick(title); 
   }
 
+  askAI() {
+    this.askAIEvent.emit(true);
+  }
 }

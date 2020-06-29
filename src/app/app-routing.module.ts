@@ -12,6 +12,7 @@ import { CalendarComponent } from './module/home/calendar/calendar.component';
 import { SettingsComponent } from './module/home/settings/settings.component';
 import { HeaderComponent } from './core/layout/component/header/header.component';
 import { XRayComponent } from './module/x-ray/x-ray.component';
+import { AskAiComponent } from './module/x-ray/component/ask-ai/ask-ai.component';
 
 const routes: Routes = [
   {
@@ -60,7 +61,10 @@ const routes: Routes = [
     path: 'x-ray',
     canActivate: [AuthGuard],
     component: HeaderComponent,
-    children: [{ path: '', component: XRayComponent }],
+    children: [
+      { path: '', component: XRayComponent },
+      {path: 'ask-ai', component: AskAiComponent}
+    ],
   },
   {
     path: '',

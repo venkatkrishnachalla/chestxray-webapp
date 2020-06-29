@@ -11,6 +11,7 @@ import { PatientDetailsComponent } from './component/patient-details/patient-det
 import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
 import { FormsModule } from '@angular/forms';
 import { SearchFilterPipe } from 'src/app/filters/search-filter.pipe';
+import { AskAiComponent } from './component/ask-ai/ask-ai.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SearchFilterPipe } from 'src/app/filters/search-filter.pipe';
     ImpressionComponent,
     PatientDetailsComponent,
     CanvasImageComponent,
-    SearchFilterPipe
+    SearchFilterPipe,
+    AskAiComponent
   ],
   imports: [CommonModule, MaterialModule, Ng5SliderModule, FormsModule],
   exports: [SearchFilterPipe]
