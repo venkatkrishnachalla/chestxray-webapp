@@ -4,22 +4,35 @@ import { ActionPanelComponent } from './action-panel.component';
 
 describe('ActionPanelComponent', () => {
   let component: ActionPanelComponent;
-  let fixture: ComponentFixture<ActionPanelComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ActionPanelComponent ]
-    })
-    .compileComponents();
-  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActionPanelComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new ActionPanelComponent(
+    );
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+    it('should call ngOnIit function', () => {
+      const result = component.ngOnInit();
+      expect(component.ngOnInit).toBeDefined();
+    });
+  });
+
+  describe('#askAI', () => {
+    beforeEach(() => {
+      // spyOn(component, 'askAIEvent').and.callThrough();
+      component.askAI();
+    });
+    it('should call askAI function', () => {
+      const result = component.askAI();
+      expect(component.askAI).toBeDefined();
+    });
+  });
+
 });

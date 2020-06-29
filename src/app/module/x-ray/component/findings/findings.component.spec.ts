@@ -21,4 +21,14 @@ describe('FindingsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function', () => {
+      const result = component.ngOnInit();
+      expect(component.ngOnInit).toBeDefined();
+    });
+  });
 });

@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { actionPanelConstants } from '../../../../constants/actionPanelConstants';
 import { Options } from 'ng5-slider';
 import { Router } from '@angular/router';
-import { TestRequest } from '@angular/common/http/testing';
 
 @Component({
   selector: 'cxr-action-panel',
@@ -39,7 +38,7 @@ export class ActionPanelComponent implements OnInit {
   actionPanel: { image: string; alt: string }[];
   middlePanel: { image: string; alt: string }[];
   brightnessPanel: { image: string; alt: string }[];
-  constructor(private router: Router) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.actionPanel = this.constants.actionPanelTop;
