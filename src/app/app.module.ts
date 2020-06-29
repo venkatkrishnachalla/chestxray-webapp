@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, EventEmitter } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,6 +12,8 @@ import { HomeModule } from './module/home/home.module';
 import { LayoutModule } from '@angular/cdk/layout';
 import { SharedModule } from './module/shared/shared.module';
 import { XRayModule } from './module/x-ray/x-ray.module';
+import { EventEmitterService } from './service/event-emitter.service';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -25,9 +27,12 @@ import { XRayModule } from './module/x-ray/x-ray.module';
     AuthModule, // Load AuthModule with the app,
     LayoutModule,
     SharedModule,
-    XRayModule
+    XRayModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
+    EventEmitterService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

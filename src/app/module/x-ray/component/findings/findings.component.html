@@ -7,4 +7,9 @@
       alt="update"
     />
   </mat-card-title>
+  <mat-list>
+      <ng-container *ngFor="let item of findings">
+          <mat-list-item list-style-type="number">{{item}}</mat-list-item>
+      </ng-container>
+  </mat-list>
 </mat-card>

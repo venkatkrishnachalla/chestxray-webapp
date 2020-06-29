@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { actionPanelConstants } from '../../../../constants/actionPanelConstants';
 import { Options } from 'ng5-slider';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-action-panel',
@@ -36,12 +37,15 @@ export class ActionPanelComponent implements OnInit {
   actionPanel: { image: string; alt: string; }[];
   middlePanel: { image: string; alt: string; }[];
   brightnessPanel: { image: string; alt: string; }[];
-  constructor() { }
+  constructor(private eventEmitterService: EventEmitterService ) { }
 
   ngOnInit(): void {
     this.actionPanel = this.constants.actionPanelTop;
     this.middlePanel = this.constants.actionPanelMiddle;
     this.brightnessPanel = this.constants.actionPanelBrightness;
+  }
+  iconAction(title){  
+        this.eventEmitterService.onComponentButtonClick(title); 
   }
 
 }

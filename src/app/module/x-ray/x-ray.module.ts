@@ -9,6 +9,8 @@ import { ImageSlidingComponent } from './component/image-sliding/image-sliding.c
 import { ImpressionComponent } from './component/impression/impression.component';
 import { PatientDetailsComponent } from './component/patient-details/patient-details.component';
 import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
+import { FormsModule } from '@angular/forms';
+import { SearchFilterPipe } from 'src/app/filters/search-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -18,8 +20,10 @@ import { CanvasImageComponent } from './component/canvas-image/canvas-image.comp
     ImageSlidingComponent,
     ImpressionComponent,
     PatientDetailsComponent,
-    CanvasImageComponent
+    CanvasImageComponent,
+    SearchFilterPipe
   ],
-  imports: [CommonModule, MaterialModule, Ng5SliderModule],
+  imports: [CommonModule, MaterialModule, Ng5SliderModule, FormsModule],
+  exports: [SearchFilterPipe]
 })
 export class XRayModule {}
