@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener, TemplateRef, ViewChild} from '@angular
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
+import "fabric-customise-controls";
 import { SpinnerService } from 'src/app/module/shared/UI/spinner/spinner.service';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
@@ -79,13 +80,58 @@ export class CanvasImageComponent implements OnInit {
       });    
     } 
     this.spinnerService.show();
-    this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', {
-        selection: false
+    this.canvas = new fabric.Canvas('at-id-x-ray-Canvas');
+    fabric.Canvas.prototype.customiseControls({
+      position: { x: 0.5, y: -0.5 },
+      offsetY: 16,
+      cursorStyle: 'pointer',
+      mouseUpHandler: this.deleteObject,
+      render: this.renderIcon,
+      cornerSize: 24
     });
-    fabric.Object.prototype.transparentCorners = false;
-    fabric.Object.prototype.cornerColor = 'blue';
-    fabric.Object.prototype.cornerStyle = 'circle';
-    
+    // fabric.object.prototype.transparentCorners = false;
+    // fabric.object.prototype.cornerColor = 'blue';
+    // fabric.object.prototype.cornerStyle = 'circle';
+  //   fabric.Canvas.prototype.customiseControls({
+  //     settings: {
+  //         borderColor: 'black',
+  //         cornerSize: 25,
+  //         cornerShape: 'rect',
+  //         cornerBackgroundColor: 'black',
+  //         cornerPadding: 10
+  //     },
+  //     tl: {
+  //         icon: 'src/assets/facebook.png',
+  //         settings: {
+  //             cornerShape: 'rect',
+  //             cornerBackgroundColor: 'red',
+  //             cornerPadding: 10,
+  //         },
+  //     },
+  //     tr: {
+  //         icon: 'src/assets/facebook.png',
+  //         settings: {
+  //             cornerShape: 'circle',
+  //             cornerBackgroundColor: '#000',
+  //             cornerPadding: 15,
+  //         },
+  //     },
+  //     bl: {
+  //         icon: 'src/assets/facebook.png'
+  //     },
+  //     br: {
+  //         icon: 'src/assets/facebook.png'
+  //     },
+  //     mb: {
+  //         icon: 'src/assets/facebook.png'
+  //     },
+  //     // only is hasRotatingPoint is not set to false
+  //     mtr: {
+  //         icon: 'src/assets/facebook.png'
+  //     },
+  // }, function() {
+  //     this.canvas.renderAll();
+  // } );
     this.patientId = localStorage.getItem('InstanceUID');
     if (!this.PatientImage) {
       this.getPatientImage(this.patientId);
@@ -93,16 +139,26 @@ export class CanvasImageComponent implements OnInit {
       this.setCanvasDimension();
       this.setCanvasBackground();
     }
-    fabric.Object.prototype.controls.deleteControl = new fabric.Control({
-      position: { x: 0.5, y: -0.5 },
-      offsetY: -16,
-      offsetX: 16,
-      cursorStyle: 'pointer',
-      mouseUpHandler: this.deleteObject,
-      render: this.renderIcon(this.deleteImg),
-      cornerSize: 24
+    this.canvas.on('object:selected', (evt) => {
+      let selectedObject = this.canvas.getActiveObject();
+      this.canvas.setActiveObject(selectedObject);
     });
   }
+
+  renderIcon(ctx , left, top, styleOverride, fabricObject) {
+    var size = this.canvas.cornerSize;
+    ctx.save();
+    ctx.translate(left, top);
+    ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+    ctx.drawImage(this.deleteImg, -size/2, -size/2, size, size);
+    ctx.restore();
+  }
+
+deleteObject(eventData, target) {
+  var canvas = target.canvas;
+      canvas.remove(target);
+      canvas.requestRenderAll();
+}
 
   updateSearchModel(value) {
     this.searchModel = value;
@@ -236,18 +292,10 @@ export class CanvasImageComponent implements OnInit {
               top: pointer.y,
               originX: "left",
               originY: "top",
-              stroke: "black",
-              hoverCursor: "pointer",
-              selectable: true,
               opacity: 0.3,
               strokeWidth: 1,
               fill: "rgb(255,127,80)",
-              rx: 0,
-              ry: 0,
-              angle: 0,
-              hasRotatingPoint: false,
-              // hasControls:false,
-              // hasBorders:false
+              selection: false
         });
         this.canvas.add(ellipse);
         this.canvas.renderAll();
@@ -275,7 +323,6 @@ export class CanvasImageComponent implements OnInit {
 
     this.canvas.observe('mouse:up', (e) => {
       this.isDown = false;
-      this.canvas.renderAll();
       if(this.enableDrawEllipseMode){
         this.openPathologyModal();
       }
@@ -296,31 +343,17 @@ export class CanvasImageComponent implements OnInit {
 
   savePrediction(){
     this.eventEmitterService.onComponentDataShared(this.selectedDisease);
+    this.selectedDisease = '';
     this.dialog.closeAll();
   }
 
   closePathologyModal(){
+    this.selectedDisease = '';
     let activeObject = this.canvas.getActiveObject();   
-      this.canvas.remove(activeObject);
-      this.canvas.renderAll();
+    this.canvas.remove(activeObject);
+    this.canvas.renderAll();
   }
   
-  renderIcon(icon) {
-    return function renderIcon(ctx, left, top, styleOverride, fabricObject) {
-      var size = this.cornerSize;
-      ctx.save();
-      ctx.translate(left, top);
-      ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
-      ctx.drawImage(icon, -size/2, -size/2, size, size);
-      ctx.restore();
-    }
-  }
-  
-  deleteObject(eventData, target) {
-    var canvas = target.canvas;
-        canvas.remove(target);
-        canvas.requestRenderAll();
-  }
 
   freeHandDrawing() {
     this.enableDrawEllipseMode = false;
@@ -362,6 +395,5 @@ export class CanvasImageComponent implements OnInit {
         this.isDown = false;
         this.canvas.isDrawingMode = false;
       });
-     
   } 
 }
