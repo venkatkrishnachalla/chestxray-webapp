@@ -1,18 +1,79 @@
 <div
-    id="x-ray-aspect-ratio-container"
-    class="x-ray-aspect-ratio-container"
-    [style.width.%]="100"
-    [style.height.%]="100"
+  id="x-ray-aspect-ratio-container"
+  class="x-ray-aspect-ratio-container"
+  [style.width.%]="100"
+  [style.height.%]="100"
+>
+  <div
+    class="xRay-image-canvas-container d-flex justify-content-center"
+    id="canvas-wrapper"
   >
-    <div
-      class="xRay-image-canvas-container d-flex justify-content-center"
-      id="canvas-wrapper"
-    >
-      <canvas
-        id="c"
-        class="xRay-image-canvas align-self-center orange"
-        [style.width.%]="100"
-        [style.height.%]="100"
-      ></canvas>
-    </div>
+    <canvas
+      id="at-id-x-ray-Canvas"
+      class="xRay-image-canvas align-self-center orange"
+      [style.width.%]="100"
+      [style.height.%]="100"
+    ></canvas>
   </div>
+</div>
+<ng-template #pathologyModal class="pathologyModal">
+  <h2 mat-dialog-title align="center">SELECT PATHOLOGY</h2>
+  <mat-form-field id="at-input-disease" appearance="outline">
+    <img
+      class="search-icon"
+      src="../../../../../assets/images/Icon search inactive.png"
+      height="18px"
+      width="18px"
+      alt="search"
+    />
+    <input
+      matInput
+      type="search"
+      placeholder="Search"
+      class="search-disease"
+      [(ngModel)]="selectedDisease"
+      (ngModelChange)="updateSearchModel($event)"
+    />
+    <span>
+      <mat-icon class="pointer" (click)="selectedDisease = ''" matPrefix
+        >clear</mat-icon
+      >
+    </span>
+  </mat-form-field>
+  <mat-dialog-content>
+    <mat-list>
+      <ng-container
+        *ngFor="
+          let item of pathologyNames | searchFilter: selectedDisease;
+          let i = index
+        "
+      >
+        <mat-list-item class="c-p" (click)="onSelect($event)"
+          >{{ i + 1 }}.&nbsp;&nbsp; {{ item.letter }}</mat-list-item
+        >
+        <mat-list class="sub-list">
+          <div *ngFor="let subItem of item.names; let i = index">
+            <mat-list-item
+              style="list-style-type: circle;"
+              class="c-p"
+              (click)="onSelect($event)"
+              >{{ i + 1 }}.&nbsp;&nbsp;{{ subItem }}</mat-list-item
+            >
+          </div>
+        </mat-list>
+      </ng-container>
+    </mat-list>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      (click)="savePrediction()"
+      [mat-dialog-close]="true"
+    >
+      SAVE
+    </button>
+    <button mat-raised-button (click)="closePathologyModal()" mat-dialog-close>
+      CANCEL
+    </button>
+  </mat-dialog-actions>
+</ng-template>
