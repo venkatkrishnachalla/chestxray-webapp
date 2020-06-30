@@ -100,7 +100,7 @@ export const actionPanelConstants = {
     {
       image: '../../../../assets/images/delete active@2x.png',
       alt: 'Delete',
-      title: ''
+      title: 'Delete'
     },
   ],
   actionPanelBrightness: [

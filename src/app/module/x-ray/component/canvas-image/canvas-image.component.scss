@@ -21,57 +21,7 @@
   background-color: #28a745 !important;
   border-color: #28a745 !important;
 }
-/* Dropdown allignment codes */
-::ng-deep {
-  .mat-optgroup {
-    .mat-optgroup-label {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #000000;
-      opacity: 0.8;
-      font-size: 15px;
-      display: block;
-      line-height: 38px;
-      height: 30px;
-      padding: 0 16px;
-      text-align: left;
-      text-decoration: none;
-      max-width: 100%;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      cursor: pointer;
-    }
-  }
-}
- 
-.mat-optgroup {
-  .mat-option {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-    font-size: 15px;
-    line-height: 48px;
-    height: 30px;
-    padding: 0px 38px;
-    text-align: left;
-    text-decoration: none;
-    max-width: 100%;
-    position: relative;
-    cursor: pointer;
-    outline: 0;
-    display: flex;
-    flex-direction: row;
-    max-width: 100%;
-    box-sizing: border-box;
-    align-items: center;
-    -webkit-tap-highlight-color: transparent;
-  }
-}
- 
+
 ::ng-deep {
   .mat-autocomplete-panel.mat-autocomplete-visible {
     visibility: visible;
@@ -80,9 +30,18 @@
 }
 ::ng-deep{
   mat-dialog-container{
-      mat-dialog-content{
-        min-height: 300px !important;
-        width: 350px !important;
+    mat-dialog-content#pathologyModel{
+        min-height: 300px;
+        width: 350px;
     }
+    mat-dialog-content#deleteImpression{
+      display: table-cell;
+      padding: 10px 25px 23px 20px;
+    }
+    // mat-dialog-content#controls{
+    //   background-color: black;
+    //   color: white;
+    //   opacity: 0.7;
+    // }
   }
 }

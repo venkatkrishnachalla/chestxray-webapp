@@ -5,12 +5,16 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SearchFilterPipe implements PipeTransform {
   
-  _filter = (opt: string[], value: string): string[] => {
+  _filter = (name: string, opt: string[], value: string): string[] => {
     const filterValue = value.toLowerCase();
-    return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+    if(name.toLowerCase().indexOf(filterValue) != 0){
+      return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+    }
+    else{
+      return opt;
+    }
   }; 
   transform(list: any[], filterText: string): any {
-    // return list ? list.filter(item => item.names.search(new RegExp(filterText, 'i')) > -1) : [];
     if(filterText)
     filterText = filterText.toLowerCase();
     if (!filterText) return list;
@@ -18,7 +22,7 @@ export class SearchFilterPipe implements PipeTransform {
       return list
         .map((group) => ({
           letter: group.letter,
-          names: this._filter(group.names, filterText),
+          names: this._filter(group.letter, group.names, filterText),
         }))
         .filter((group) => {
           return (

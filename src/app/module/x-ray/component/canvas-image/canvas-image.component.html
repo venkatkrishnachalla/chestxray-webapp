@@ -29,13 +29,13 @@
         (ngModelChange)="updateSearchModel($event)"
       />
   </mat-form-field>
-  <mat-dialog-content>
+  <mat-dialog-content id="pathologyModel">
       <mat-list>
           <ng-container *ngFor="let item of pathologyNames | searchFilter : selectedDisease">
-              <mat-list-item class="c-p" (click)="onSelect($event)" list-style-type="number">{{item.letter}}</mat-list-item>
+              <mat-list-item class="pointer" (click)="onSelect($event, item.names)" list-style-type="number">{{item.letter}}</mat-list-item>
               <mat-list style="margin-left:30px;">
                   <div *ngFor="let subItem of item.names">
-                      <mat-list-item class="c-p" (click)="onSelect($event)">{{ subItem }}</mat-list-item>
+                      <mat-list-item class="pointer" (click)="onSelect($event, '')">{{ subItem }}</mat-list-item>
                   </div>
               </mat-list>
           </ng-container>
@@ -43,6 +43,26 @@
   </mat-dialog-content>
   <mat-dialog-actions align="center">
     <button class="saveDisease" mat-raised-button color="primary" (click)="savePrediction()" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
-    <button class="cancelDisease" mat-raised-button color="warn" (click)="closePathologyModal()" mat-dialog-close>Cancel</button>
+    <button class="cancelDisease" mat-raised-button color="warn" (click)="closePathologyModal()" [mat-dialog-close]="true">Cancel</button>
   </mat-dialog-actions>
+</ng-template>
+
+<ng-template #deleteObject>
+  <h2 mat-dialog-title>Delete Impression</h2>
+  <mat-dialog-content id="deleteImpression">
+      <div>Are you sure want to delete this Impression?</div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+    <button class="saveDisease" mat-raised-button color="primary" (click)="deletePrediction()" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
+    <button class="cancelDisease" mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #controls>
+  <mat-dialog-content id="controls">
+    <span class="material-icons pointer">done</span>
+    <span class="material-icons pointer">link</span>
+    <span class="material-icons pointer">content_copy</span>
+    <span class="material-icons pointer" (click)="deleteEllipse()">highlight_off</span>
+  </mat-dialog-content>
 </ng-template>
