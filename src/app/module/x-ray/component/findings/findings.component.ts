@@ -25,8 +25,6 @@ export class FindingsComponent implements OnInit {
   }
 
   getFindings(){
-    this.eventEmitterService.invokeComponentData.subscribe((title) => {  
-        this.findings.push(title);
-      });    
+       
   }
 }
