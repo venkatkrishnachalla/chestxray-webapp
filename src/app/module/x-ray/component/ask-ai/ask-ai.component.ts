@@ -36,6 +36,65 @@ export class AskAiComponent implements OnInit {
       id: 1,
     },
   ];
+
+  mlResponseList = {
+    data: {
+      names: [],
+      ndarray: [
+        {
+          Findings: {
+            ADDITIONAL: [],
+            'BONY THORAX': [],
+            'CARDIAC SILHOUETTE': [],
+            COSTOPHRENIC_ANGLES: [],
+            'DOMES OF DIAPHRAGM': [],
+            'HILAR/MEDIASTINAL': [],
+            'LUNG FIELDS': [0, 1],
+          },
+          Impression: [
+            [0, 'calcification'],
+            [1, 'consolidation'],
+          ],
+          diseases: [
+            {
+              color: 'rgb(230,25,75)',
+              confidence: 0.9941253662109375,
+              contours: [],
+              ellipses: [
+                {
+                  a: 398,
+                  b: 653,
+                  r: 0,
+                  x: 2716,
+                  y: 978,
+                },
+              ],
+              idx: 0,
+              name: 'Calcification',
+            },
+            {
+              color: 'rgb(60,180,75)',
+              confidence: 0.9983514547348022,
+              contours: [],
+              ellipses: [
+                {
+                  a: 530,
+                  b: 544,
+                  r: 0,
+                  x: 2782,
+                  y: 1033,
+                },
+              ],
+              idx: 1,
+              name: 'Consolidation',
+            },
+          ],
+        },
+      ],
+    },
+    meta: {},
+  };
+
   constructor(private xrayService: XRayService) {}
 
   ngOnInit(): void {

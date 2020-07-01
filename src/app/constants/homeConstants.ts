@@ -54,6 +54,10 @@ export const home_constants = {
               params.value +
               '</span>'
             );
+          } else if (params.value === false) {
+            return (
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>invalid</span>"
+            );
           }
         },
       },
@@ -82,13 +86,13 @@ export const home_constants = {
       },
       {
         headerName: 'Ref. Doctor',
-        field: 'referenceDoctor',
+        field: 'referringPhysicianName',
         sortable: true,
         minWidth: 111,
       },
       {
         headerName: 'Date & Time',
-        field: 'date',
+        field: 'lastUpdate',
         sortable: true,
         minWidth: 117,
         cellRenderer: (data) => {
