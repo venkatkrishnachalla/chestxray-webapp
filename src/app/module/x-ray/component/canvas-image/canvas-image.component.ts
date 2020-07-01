@@ -99,7 +99,17 @@ export class CanvasImageComponent implements OnInit {
       let selectedObject = this.canvas.getActiveObject();
       this.canvas.setActiveObject(selectedObject);
       if(!this.enableDrawEllipseMode){
-        this.dialog.open(this.controlsModel, {panelClass: 'my-class'})
+        this.dialog.open(this.controlsModel, {panelClass: 'my-class',hasBackdrop: false})
+      }
+    });
+    this.canvas.on('selection:cleared', (evt) => {
+      if(!this.enableDrawEllipseMode){
+        this.dialog.closeAll();
+      }
+    });
+    this.canvas.on('object:moving', (evt) => {
+      if(!this.enableDrawEllipseMode){
+        this.dialog.closeAll();
       }
     });
   }
