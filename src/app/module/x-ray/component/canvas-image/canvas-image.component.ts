@@ -201,7 +201,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const imgAspect = this.xRayImage.width / this.xRayImage.height;
 
     if (this.xRayImage.width > this.xRayImage.height) {
-      this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
+      this.scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
+     // this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
       this.left = 0;
       this.top =
         -(this.xRayImage.height * this.scaleFactor - this.canvasDynamicHeight) /
@@ -235,7 +236,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /* draw ellipse, when user hits ask ai accept button */
   mlApiEllipseLoop(mlList: any) {
-    mlList.forEach((diseaseItem: any) => {
+    mlList.diseases.forEach((diseaseItem: any) => {
       this.drawEllipse(true, diseaseItem);
     });
   }

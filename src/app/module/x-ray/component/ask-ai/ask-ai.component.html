@@ -5,20 +5,26 @@
       <label>FINDINGS</label>
       <div class="findings">
         <ul>
-          <li *ngFor="let findings of finding">> {{ findings.text }}</li>
+          <li *ngFor="let finding of findings">> {{ finding.name }}</li>
         </ul>
       </div>
       <label>IMPRESSION</label>
       <div class="impression">
         <ul>
-          <li *ngFor="let impressions of impression">
-            > {{ impressions.name }}
+          <li *ngFor="let impression of impressions">
+            > {{ impression.name }}
           </li>
         </ul>
       </div>
     </div>
     <div class="card-footer">
-      <button mat-raised-button (click)="acceptAI()" [disabled]="isDisableAccept">ACCEPT</button>
+      <button
+        mat-raised-button
+        (click)="acceptAI()"
+        [disabled]="isDisableAccept"
+      >
+        ACCEPT
+      </button>
       <button mat-raised-button (click)="rejectAI()">REJECT</button>
     </div>
   </div>
