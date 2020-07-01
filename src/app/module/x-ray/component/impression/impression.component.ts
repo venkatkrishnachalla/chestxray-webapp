@@ -3,6 +3,7 @@ import {
   DISEASE_COLOR_MAPPING,
   RANDOM_COLOR,
 } from '../../../../constants/findingColorConstants';
+import { EventEmitterService } from "../../../../service/event-emitter.service";
 
 @Component({
   selector: 'cxr-impression',
@@ -11,22 +12,31 @@ import {
 })
 export class ImpressionComponent implements OnInit {
   impression = [
-    'Cyst with Air Crescent',
-    'Cardiomegaly',
-    'others',
-    'Bronchiectasis',
+    // 'Cyst with Air Crescent',
+    // 'Cardiomegaly',
+    // 'others',
+    // 'Bronchiectasis',
   ];
   abnormalityColor = [];
-  constructor() {}
+  constructor(
+    private eventEmitterService: EventEmitterService
+  ) {}
 
   ngOnInit(): void {
-    this.getColorMapping(this.impression);
+    this.getImpressions();
+  }
+
+  getImpressions(){
+    this.eventEmitterService.invokeComponentData.subscribe((title) => {  
+      this.impression.push(title);
+      this.getColorMapping(title);
+    }); 
   }
 
   getColorMapping(diseases) {
-    diseases.forEach((element) => {
-      const color = DISEASE_COLOR_MAPPING[element] || RANDOM_COLOR;
+    // diseases.forEach((element) => {
+      const color = DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;
       this.abnormalityColor.push(color);
-    });
+    // });
   }
 }

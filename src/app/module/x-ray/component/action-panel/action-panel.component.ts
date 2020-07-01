@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output} from '@angular/core';
 import { actionPanelConstants } from '../../../../constants/actionPanelConstants';
 import { Options } from 'ng5-slider';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -35,15 +36,18 @@ export class ActionPanelComponent implements OnInit {
   };
 
   readonly constants = actionPanelConstants;
-  actionPanel: { image: string; alt: string }[];
-  middlePanel: { image: string; alt: string }[];
-  brightnessPanel: { image: string; alt: string }[];
-  constructor() {}
+  actionPanel: { image: string; alt: string; }[];
+  middlePanel: { image: string; alt: string; }[];
+  brightnessPanel: { image: string; alt: string; }[];
+  constructor(private eventEmitterService: EventEmitterService ) { }
 
   ngOnInit(): void {
     this.actionPanel = this.constants.actionPanelTop;
     this.middlePanel = this.constants.actionPanelMiddle;
     this.brightnessPanel = this.constants.actionPanelBrightness;
+  }
+  iconAction(title){  
+        this.eventEmitterService.onComponentButtonClick(title); 
   }
 
   askAI() {

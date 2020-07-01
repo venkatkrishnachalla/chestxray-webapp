@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EventEmitterService } from "../../../../service/event-emitter.service";
 import { DISEASE_COLOR_MAPPING } from '../../../../constants/findingColorConstants';
 
 @Component({
@@ -7,6 +8,9 @@ import { DISEASE_COLOR_MAPPING } from '../../../../constants/findingColorConstan
   styleUrls: ['./findings.component.scss'],
 })
 export class FindingsComponent implements OnInit {
+  constructor(
+    private eventEmitterService: EventEmitterService
+  ) {}
   findings = [
     'Lungs are clear, no evidence of pulmonary parenchymal masses or consolidations.',
     'Normal hilar vascular markings.',
@@ -14,7 +18,13 @@ export class FindingsComponent implements OnInit {
     'There is cardiomegaly.',
     'The mediastinum is within normal limits.',
   ];
-  constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.findings = [];
+    this.getFindings();
+  }
+
+  getFindings(){
+       
+  }
 }

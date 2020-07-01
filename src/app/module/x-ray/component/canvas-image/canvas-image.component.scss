@@ -10,3 +10,38 @@
   width: 100%;
   overflow: hidden;
 }
+.my-class .mat-dialog-container{
+  height: 400px !important;
+  width: 600px !important;
+  border-radius: 10px;
+  background: lightcyan;
+  color: #039be5;
+}
+.saveDisease{
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+::ng-deep {
+  .mat-autocomplete-panel.mat-autocomplete-visible {
+    visibility: visible;
+    max-height: 21rem;
+  }
+}
+::ng-deep{
+  mat-dialog-container{
+    mat-dialog-content#pathologyModel{
+        min-height: 300px;
+        width: 350px;
+    }
+    mat-dialog-content#deleteImpression{
+      display: table-cell;
+      padding: 10px 25px 23px 20px;
+    }
+    // mat-dialog-content#controls{
+    //   background-color: black;
+    //   color: white;
+    //   opacity: 0.7;
+    // }
+  }
+}
