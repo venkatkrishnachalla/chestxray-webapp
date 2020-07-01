@@ -6,7 +6,7 @@
 
   <!-- Main Content, X-Ray Aspect Ratio Part -->
   <section class="xray-panel">
-    <cxr-canvas-image></cxr-canvas-image>
+    <cxr-canvas-image [events]="eventsSubject.asObservable()"></cxr-canvas-image>
   </section>
 
   <!-- Right Side Content -->
@@ -27,6 +27,6 @@
   </section>
 
   <div class="askAIPopup" *ngIf="showAskAI">
-    <cxr-ask-ai (rejectAiEvent)=rejectAI($event)></cxr-ask-ai>
+    <cxr-ask-ai (rejectAiEvent)="rejectAI($event)" (acceptAiEvent)="acceptAI($event)" [isDisableAccept]="acceptStatus"></cxr-ask-ai>
   </div>
 </div>
