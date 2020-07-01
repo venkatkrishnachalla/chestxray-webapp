@@ -11,11 +11,12 @@
   overflow: hidden;
 }
 .my-class .mat-dialog-container {
-  height: 400px !important;
+  height: 375px !important;
   width: 600px !important;
   border-radius: 10px;
   background: lightcyan;
   color: #039be5;
+  padding: 0px !important;
 }
 .saveDisease {
   background-color: #28a745 !important;
@@ -28,18 +29,20 @@
     max-height: 21rem;
   }
 }
-::ng-deep {
-  mat-dialog-container {
-    mat-dialog-content {
-      min-height: 300px !important;
-      width: 350px !important;
-    }
-  }
-}
+// ::ng-deep {
+//   mat-dialog-container {
+//     mat-dialog-content {
+//       min-height: 300px !important;
+//       width: 350px !important;
+//     }
+//   }
+// }
 
 ::ng-deep .mat-dialog-container {
   padding-top: 0 !important;
   background-color: #3d3f44;
+  height: 92% !important;
+  opacity: 0.9;
   h2 {
     font-size: 18px;
     font-weight: normal;
@@ -91,8 +94,9 @@
   }
   .material-icons {
     display: inline-block;
-    margin: 0px !important;
-    color: #5d5f64;
+    margin: 5px !important;
+    color: #ffffff;
+    margin-bottom: -15px !important;
   }
   mat-dialog-content {
     margin: 0px;
@@ -117,11 +121,14 @@
     justify-content: space-between;
     margin-top: 1.5rem;
     button {
-      background-color: #5d5f64;
+      background-color: #ff4d4d;
       width: 140px;
       height: 35px;
       color: #ffffff;
       font-size: 1.5rem;
+    }
+    button:first-child {
+      background-color: #25b865;
     }
   }
 }
@@ -134,6 +141,8 @@
     mat-dialog-content#deleteImpression {
       display: table-cell;
       padding: 10px 25px 23px 20px;
+      border-radius: 14px;
+      color: white;
     }
     // mat-dialog-content#controls{
     //   background-color: black;

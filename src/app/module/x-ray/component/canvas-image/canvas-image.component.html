@@ -64,7 +64,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="center">
     <button
-      mat-raised-button
+      mat-raised-button [disabled]="selectedDisease == '' || selectedDisease == undefined"
       (click)="savePrediction()"
       [mat-dialog-close]="true"
       cdkFocusInitial
@@ -88,7 +88,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="center">
     <button
-      class="saveDisease"
+      class="deleteDisease"
       mat-raised-button
       color="primary"
       (click)="deletePrediction()"
@@ -109,12 +109,12 @@
 </ng-template>
 
 <ng-template #controls>
-  <mat-dialog-content id="controls">
+  <div id="controls">
     <span class="material-icons pointer">done</span>
     <span class="material-icons pointer">link</span>
     <span class="material-icons pointer">content_copy</span>
     <span class="material-icons pointer" (click)="deleteEllipse()"
       >highlight_off</span
     >
-  </mat-dialog-content>
+  </div>
 </ng-template>
