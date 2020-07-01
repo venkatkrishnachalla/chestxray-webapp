@@ -1,4 +1,4 @@
 export interface StateGroup {
-    letter: string;
-    names: string[];
+  letter: string;
+  names: string[];
 }

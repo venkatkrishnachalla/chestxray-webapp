@@ -1,145 +1,179 @@
-
 export const pathology = {
-  diseases : [
+  diseases: [
     {
       letter: 'Anatomical variants',
-      names: ['Aortic Arch variants', 'Azygous fissure', 'Cervical rib', 'Thymus']
+      names: [
+        'Aortic Arch variants',
+        'Azygous fissure',
+        'Cervical rib',
+        'Thymus',
+      ],
     },
     {
       letter: 'Bronchiectasis',
-      names: []
+      names: [],
     },
     {
       letter: 'Bronchitis',
-      names: []
+      names: [],
     },
     {
       letter: 'Bulla',
-      names: []
+      names: [],
     },
     {
       letter: 'Calcification',
-      names: ['Calcified nodule', 'Calcified node', 'Calcified pleural plaque', 'Physiological calcification']
+      names: [
+        'Calcified nodule',
+        'Calcified node',
+        'Calcified pleural plaque',
+        'Physiological calcification',
+      ],
     },
     {
       letter: 'Cardiomegaly',
-      names: []
+      names: [],
     },
     {
       letter: 'Cavity',
-      names: []
+      names: [],
     },
     {
       letter: 'Collapse/Atelectais',
-      names: []
+      names: [],
     },
     {
       letter: 'Consolidation',
-      names: []
+      names: [],
     },
     {
       letter: 'Covid',
-      names: []
+      names: [],
     },
     {
       letter: 'Cyst with Air Crescent',
-      names: []
+      names: [],
     },
     {
       letter: 'Cyst with Air Fluid Level',
-      names: []
+      names: [],
     },
     {
       letter: 'Dextrocardia',
-      names: []
+      names: [],
     },
     {
       letter: 'Diaphragmatic Abnormalitis',
-      names: []
+      names: [],
     },
     {
       letter: 'External Densities',
-      names: ['bone cement', 'mammary prosthesis/breast implant', 'Radio-opaque foregn body', 'Surgical  sutures']
+      names: [
+        'bone cement',
+        'mammary prosthesis/breast implant',
+        'Radio-opaque foregn body',
+        'Surgical  sutures',
+      ],
     },
     {
       letter: 'Extrapulmonary Extrapleural Conditions',
-      names: ['Subcutaneous emphysema', 'Thyroid calcification', 'Thyroid enlargement/mass']
+      names: [
+        'Subcutaneous emphysema',
+        'Thyroid calcification',
+        'Thyroid enlargement/mass',
+      ],
     },
     {
       letter: 'Fibrosis',
-      names: []
+      names: [],
     },
     {
       letter: 'Hilar Enlargement',
-      names: []
+      names: [],
     },
     {
       letter: 'Honey Combing',
-      names: []
+      names: [],
     },
     {
       letter: 'Hydropneumothorax',
-      names: []
+      names: [],
     },
     {
       letter: 'Hyperinflation',
-      names: []
+      names: [],
     },
     {
       letter: 'Mass',
-      names: []
+      names: [],
     },
     {
       letter: 'Mediastinal widening',
-      names: []
+      names: [],
     },
     {
       letter: 'Nodule',
-      names: []
+      names: [],
     },
     {
       letter: 'No Finding',
-      names: []
+      names: [],
     },
     {
       letter: 'Osseous Lesions',
-      names: ['Fracture', 'Implants', 'kyphosis', 'Lytic', 'sclerotic', 'scoliosis']
+      names: [
+        'Fracture',
+        'Implants',
+        'kyphosis',
+        'Lytic',
+        'sclerotic',
+        'scoliosis',
+      ],
     },
     {
       letter: 'Osteopenia',
-      names: []
+      names: [],
     },
     {
       letter: 'Pleural Effusion',
-      names: ['Pleural Effusion', 'Pleural Thickening']
+      names: ['Pleural Effusion', 'Pleural Thickening'],
     },
     {
       letter: 'Pneumomediastinum',
-      names: []
+      names: [],
     },
     {
       letter: 'Pneumopericardium',
-      names: []
+      names: [],
     },
     {
       letter: 'Pneumoperitoneum',
-      names: []
+      names: [],
     },
     {
       letter: 'Pneumothorax',
-      names: []
+      names: [],
     },
     {
       letter: 'Reticulo Nodular Pattern',
-      names: []
+      names: [],
     },
     {
       letter: 'Support Devices',
-      names: ['Artificial valves', 'Dialysis catheter', 'ET tube', 'ICD', 'IJV', 'NG tube', 'Pacemaker', 'UAC/UVC']
-    },   
-  {
-    letter: 'Surgery',
-    names: ['mastectomy', 'pneumonectomy', 'rib resection', 'sternotomy']
-  }]
-}
-  
+      names: [
+        'Artificial valves',
+        'Dialysis catheter',
+        'ET tube',
+        'ICD',
+        'IJV',
+        'NG tube',
+        'Pacemaker',
+        'UAC/UVC',
+      ],
+    },
+    {
+      letter: 'Surgery',
+      names: ['mastectomy', 'pneumonectomy', 'rib resection', 'sternotomy'],
+    },
+  ],
+};

@@ -13,7 +13,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const materialModules = [
@@ -33,7 +33,7 @@ const materialModules = [
   MatCheckboxModule,
   MatListModule,
   MatDialogModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
 ];
 
 @NgModule({

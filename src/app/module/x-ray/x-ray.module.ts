@@ -23,9 +23,9 @@ import { AskAiComponent } from './component/ask-ai/ask-ai.component';
     PatientDetailsComponent,
     CanvasImageComponent,
     SearchFilterPipe,
-    AskAiComponent
+    AskAiComponent,
   ],
   imports: [CommonModule, MaterialModule, Ng5SliderModule, FormsModule],
-  exports: [SearchFilterPipe]
+  exports: [SearchFilterPipe],
 })
 export class XRayModule {}

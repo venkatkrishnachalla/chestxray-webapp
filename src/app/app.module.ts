@@ -13,7 +13,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { SharedModule } from './module/shared/shared.module';
 import { XRayModule } from './module/x-ray/x-ray.module';
 import { EventEmitterService } from './service/event-emitter.service';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -29,7 +29,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     SharedModule,
     XRayModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     EventEmitterService,
