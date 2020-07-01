@@ -11,6 +11,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { FormsModule } from '@angular/forms';
 import { ImplicitReceiver } from '@angular/compiler';
 import { PatientListComponent } from './patient-list/patient-list.component';
+import { LocalFilesystemComponent } from './local-filesystem/local-filesystem.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { PatientListComponent } from './patient-list/patient-list.component';
     ChatRoomComponent,
     MyAccountComponent,
     SettingsComponent,
-    PatientListComponent
+    PatientListComponent,
+    LocalFilesystemComponent,
   ],
   imports: [
     MaterialModule,
