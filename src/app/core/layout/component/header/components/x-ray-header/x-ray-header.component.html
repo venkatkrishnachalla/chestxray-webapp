@@ -6,14 +6,18 @@
           class="pre-image"
           src="../../../../../../../assets/images/arrow back.png"
           alt="back_arrow"
-        />&nbsp;
-        Previous
+        />&nbsp; Previous
       </button>
     </div>
 
     <div class="navigate-button">
       <button mat-button>
-        <button class="status"></button>
+        <button
+          [ngStyle]="{
+            'background-color': isProcessed ? '#00ff00' : '#ff0000'
+          }"
+          class="status"
+        ></button>
         ID: {{ patientID }}
       </button>
     </div>
@@ -33,7 +37,7 @@
   <section class="search-field">
     <div class="search">
       <span><i class="material-icons" matPrefix>search</i></span>
-      <input type="text"/>
+      <input type="text" />
     </div>
   </section>
 </div>

@@ -1,16 +1,34 @@
 import { TestBed } from '@angular/core/testing';
 
-import { XRayService } from './x-ray.service';
+import { xrayImageService } from './canvasImage';
 
-describe('XRayService', () => {
-  let service: XRayService;
+fdescribe('XRayService', () => {
+  let service: xrayImageService;
+  const httpSpy = jasmine.createSpyObj('HttpClient', ['get']);
+  const endPointSpy = jasmine.createSpyObj('ApiEndPointService', [
+    'getPatientImage',
+    'getPatientInstanceId',
+  ]);
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(XRayService);
+    service = new xrayImageService(httpSpy, endPointSpy);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('#getPatientImage', () => {
+    beforeEach(() => {
+      service.getPatientImage(1);
+    });
+    it('should call getPatientImage function', () => {});
+  });
+
+  describe('#getPatientInstanceId', () => {
+    beforeEach(() => {
+      service.getPatientInstanceId(1);
+    });
+    it('should call getPatientInstanceId function', () => {});
   });
 });

@@ -8,10 +8,12 @@ import { Router } from '@angular/router';
 })
 export class XRayHeaderComponent implements OnInit {
   patientID: string;
+  isProcessed: boolean;
 
   constructor(public router: Router) {}
 
   ngOnInit(): void {
     this.patientID = '1004';
+    this.isProcessed = true;
   }
 }

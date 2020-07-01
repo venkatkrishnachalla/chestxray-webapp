@@ -96,7 +96,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe((mlResponse: any) =>
-      this.drawEllipse_1(mlResponse)
+      this.mlApiEllipseLoop(mlResponse)
     );
     // this.canvas = new fabric.Canvas('c');
     this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', { selection: false });
@@ -139,7 +139,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.searchModel = value;
   }
 
-  /* retrieve instance id */
+  deleteObject(eventData, target) {
+    var canvas = target.canvas;
+    canvas.remove(target);
+    canvas.requestRenderAll();
+  }
+
   getPatientInstanceId(id) {
     this.xRayService
       .getPatientInstanceId(id)
@@ -196,8 +201,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const imgAspect = this.xRayImage.width / this.xRayImage.height;
 
     if (this.xRayImage.width > this.xRayImage.height) {
-      // this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
-      this.scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
+      this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
       this.left = 0;
       this.top =
         -(this.xRayImage.height * this.scaleFactor - this.canvasDynamicHeight) /
@@ -230,11 +234,31 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   /* draw ellipse, when user hits ask ai accept button */
-  drawEllipse_1(mlList: any) {
-    const canvasScaleX = this.xRayImage.width / this.canvas.width;
-    const canvasScaleY = this.xRayImage.height / this.canvas.height;
-    console.log('mlList', mlList);
-    mlList.forEach((diseaseItem) => {
+  mlApiEllipseLoop(mlList: any) {
+    mlList.forEach((diseaseItem: any) => {
+      this.drawEllipse(true, diseaseItem);
+    });
+  }
+
+  ngOnDestroy() {
+    this.eventsSubscription.unsubscribe();
+  }
+
+  /**
+   Register click function from another component
+   */
+  firstComponentFunction(title) {
+    this.eventEmitterService.onComponentButtonClick(title);
+  }
+
+  /**Draw Ellipse Functionality */
+  drawEllipse(isMlAi?, diseaseItem?) {
+    var origX, origY;
+    this.canvas.isDrawingMode = false;
+    this.enableDrawEllipseMode = true;
+    if (isMlAi) {
+      const canvasScaleX = this.xRayImage.width / this.canvas.width;
+      const canvasScaleY = this.xRayImage.height / this.canvas.height;
       this.canvas.add(
         new fabric.Ellipse({
           id: diseaseItem.id,
@@ -253,49 +277,30 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           hoverCursor: 'pointer',
         })
       );
-    });
-  }
+    } else {
+      this.canvas.observe('mouse:down', (e) => {
+        if (this.enableDrawEllipseMode === true) {
+          this.isDown = true;
+          var pointer = this.canvas.getPointer(e.e);
+          this.origX = pointer.x;
+          this.origY = pointer.y;
 
-  ngOnDestroy() {
-    this.eventsSubscription.unsubscribe();
-  }
-
-  /**
-   Register click function from another component
-   */
-  firstComponentFunction(title) {
-    this.eventEmitterService.onComponentButtonClick(title);
-  }
-
-  /**Draw Ellipse Functionality */
-  drawEllipse() {
-    
-    var origX, origY;
-    this.canvas.isDrawingMode = false;
-    this.enableDrawEllipseMode = true;
-    this.canvas.observe('mouse:down', (e) => {
-      if (this.enableDrawEllipseMode === true) {
-        this.isDown = true;
-        var pointer = this.canvas.getPointer(e.e);
-        this.origX = pointer.x;
-        this.origY = pointer.y;
-
-        var ellipse = new fabric.Ellipse({
-          width: 0,
-          height: 0,
-          left: pointer.x,
-          top: pointer.y,
-          opacity: 0.3,
-          strokeWidth: 1,
-          fill: 'rgb(255,127,80)',
-          selectable: true,
-        });
-
-        this.canvas.add(ellipse);
-        this.canvas.renderAll();
-        this.canvas.setActiveObject(ellipse);
-      }
-    });
+          var ellipse = new fabric.Ellipse({
+            width: 0,
+            height: 0,
+            left: pointer.x,
+            top: pointer.y,
+            opacity: 0.3,
+            strokeWidth: 1,
+            fill: 'rgb(255,127,80)',
+            selectable: true,
+          });
+          this.canvas.add(ellipse);
+          this.canvas.renderAll();
+          this.canvas.setActiveObject(ellipse);
+        }
+      });
+    }
     this.canvas.observe('mouse:move', (e) => {
       if (!this.isDown) return;
       let pointer = this.canvas.getPointer(e.e);
@@ -361,17 +366,17 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.role = 'dialog';
     this.dialog.open(this.pathologyModal, {
-      panelClass: 'my-class',
-      disableClose: true,
+      height: '500px',
+      width: '350px',
     });
   }
   /**
    * Search pathology functionality
    */
   onSelect(event, item) {
-    if (item.length == 0) {
+    if (item.length === 0) {
       this.selectedDisease = event.target.textContent;
-    } else if (item == '') {
+    } else if (item === '') {
       this.selectedDisease = event.target.textContent;
     }
   }

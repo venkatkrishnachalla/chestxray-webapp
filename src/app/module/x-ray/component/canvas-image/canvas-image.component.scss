@@ -10,14 +10,14 @@
   width: 100%;
   overflow: hidden;
 }
-.my-class .mat-dialog-container{
+.my-class .mat-dialog-container {
   height: 400px !important;
   width: 600px !important;
   border-radius: 10px;
   background: lightcyan;
   color: #039be5;
 }
-.saveDisease{
+.saveDisease {
   background-color: #28a745 !important;
   border-color: #28a745 !important;
 }
@@ -28,13 +28,110 @@
     max-height: 21rem;
   }
 }
-::ng-deep{
-  mat-dialog-container{
-    mat-dialog-content#pathologyModel{
-        min-height: 300px;
-        width: 350px;
+::ng-deep {
+  mat-dialog-container {
+    mat-dialog-content {
+      min-height: 300px !important;
+      width: 350px !important;
     }
-    mat-dialog-content#deleteImpression{
+  }
+}
+
+::ng-deep .mat-dialog-container {
+  padding-top: 0 !important;
+  background-color: #3d3f44;
+  h2 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #ffffff;
+    margin: 0;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-flex {
+    height: 40px;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0 !important;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0;
+    padding-bottom: 0;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline-end {
+    border-radius: 0px;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline-start {
+    border-radius: 0px;
+  }
+  .mat-form-field-appearance-outline
+    .mat-form-field-outline-thick
+    .mat-form-field-outline-start,
+  .mat-form-field-outline-end,
+  .mat-form-field-outline-gap {
+    border-width: 1px;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline-start,
+  .mat-form-field-appearance-outline .mat-form-field-outline-end {
+    min-width: 0px;
+    border: none;
+    border-bottom: 1px solid #5d5f64;
+  }
+  img {
+    margin-right: 5px;
+  }
+  .material-icons {
+    display: inline-block;
+    margin: 0px !important;
+    color: #5d5f64;
+  }
+  mat-dialog-content {
+    margin: 0px;
+    padding: 0px;
+    max-height: 46vh;
+    width: 100% !important;
+    background-color: black;
+    border-radius: 1rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    .mat-list-base .mat-list-item {
+      color: #ffffff;
+      font-size: 1.2rem;
+      height: 30px;
+    }
+    .sub-list {
+      padding-top: 0px;
+      margin-left: 30px;
+    }
+  }
+  .mat-dialog-actions[align='center'] {
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    button {
+      background-color: #5d5f64;
+      width: 140px;
+      height: 35px;
+      color: #ffffff;
+      font-size: 1.5rem;
+    }
+  }
+}
+::ng-deep {
+  mat-dialog-container {
+    mat-dialog-content#pathologyModel {
+      min-height: 300px;
+      width: 350px;
+    }
+    mat-dialog-content#deleteImpression {
       display: table-cell;
       padding: 10px 25px 23px 20px;
     }
