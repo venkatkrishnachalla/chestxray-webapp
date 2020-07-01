@@ -16,7 +16,8 @@
     ></canvas>
   </div>
 </div>
-<ng-template #pathologyModal class="pathologyModal">
+
+<ng-template #pathologyModal>
   <h2 mat-dialog-title align="center">SELECT PATHOLOGY</h2>
   <mat-form-field id="at-input-disease" appearance="outline">
     <img
@@ -40,7 +41,7 @@
       >
     </span>
   </mat-form-field>
-  <mat-dialog-content>
+  <mat-dialog-content id="pathologyModel">
     <mat-list>
       <ng-container
         *ngFor="
@@ -48,15 +49,12 @@
           let i = index
         "
       >
-        <mat-list-item class="c-p" (click)="onSelect($event)"
+        <mat-list-item class="pointer" (click)="onSelect($event, item.names)"
           >{{ i + 1 }}.&nbsp;&nbsp; {{ item.letter }}</mat-list-item
         >
         <mat-list class="sub-list">
           <div *ngFor="let subItem of item.names; let i = index">
-            <mat-list-item
-              style="list-style-type: circle;"
-              class="c-p"
-              (click)="onSelect($event)"
+            <mat-list-item class="pointer" (click)="onSelect($event, '')"
               >{{ i + 1 }}.&nbsp;&nbsp;{{ subItem }}</mat-list-item
             >
           </div>
@@ -69,11 +67,54 @@
       mat-raised-button
       (click)="savePrediction()"
       [mat-dialog-close]="true"
+      cdkFocusInitial
     >
       SAVE
     </button>
-    <button mat-raised-button (click)="closePathologyModal()" mat-dialog-close>
+    <button
+      mat-raised-button
+      (click)="closePathologyModal()"
+      [mat-dialog-close]="true"
+    >
       CANCEL
     </button>
   </mat-dialog-actions>
+</ng-template>
+
+<ng-template #deleteObject>
+  <h2 mat-dialog-title>Delete Impression</h2>
+  <mat-dialog-content id="deleteImpression">
+    <div>Are you sure want to delete this Impression?</div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+    <button
+      class="saveDisease"
+      mat-raised-button
+      color="primary"
+      (click)="deletePrediction()"
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+    >
+      Delete
+    </button>
+    <button
+      class="cancelDisease"
+      mat-raised-button
+      color="warn"
+      mat-dialog-close
+    >
+      Cancel
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #controls>
+  <mat-dialog-content id="controls">
+    <span class="material-icons pointer">done</span>
+    <span class="material-icons pointer">link</span>
+    <span class="material-icons pointer">content_copy</span>
+    <span class="material-icons pointer" (click)="deleteEllipse()"
+      >highlight_off</span
+    >
+  </mat-dialog-content>
 </ng-template>

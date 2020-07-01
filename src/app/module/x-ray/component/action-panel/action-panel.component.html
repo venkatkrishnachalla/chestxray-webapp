@@ -21,13 +21,22 @@
 
     <div class="actionItem">
       <div class="actions" *ngFor="let actions of actionPanel">
-        <img [src]="actions.image" [alt]="actions.alt" />
+        <img
+          [src]="actions.image"
+          [alt]="actions.alt"
+          [title]="actions.title"
+        />
       </div>
     </div>
 
     <div class="middleItems">
       <div class="menus" *ngFor="let middle of middlePanel">
-        <img [src]="middle.image" [alt]="middle.alt" />
+        <img
+          [src]="middle.image"
+          [alt]="middle.alt"
+          (click)="iconAction(middle.title)"
+          [title]="middle.title"
+        />
       </div>
     </div>
 
@@ -43,7 +52,11 @@
 
     <div class="brightness">
       <div class="contrast" *ngFor="let brightness of brightnessPanel">
-        <img [src]="brightness.image" [alt]="brightness.alt" />
+        <img
+          [src]="brightness.image"
+          [alt]="brightness.alt"
+          [title]="brightness.title"
+        />
       </div>
     </div>
   </div>

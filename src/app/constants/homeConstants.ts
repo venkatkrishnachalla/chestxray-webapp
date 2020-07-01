@@ -54,6 +54,8 @@ export const home_constants = {
               params.value +
               '</span>'
             );
+          } else if (params.value === false) {
+            return "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>invalid</span>";
           }
         },
       },
@@ -75,20 +77,16 @@ export const home_constants = {
         sortable: true,
         minWidth: 89,
       },
-      { headerName: 'Age', 
-        field: 'age', 
-        sortable: true, 
-        minWidth:72,
-      },
+      { headerName: 'Age', field: 'age', sortable: true, minWidth: 72 },
       {
         headerName: 'Ref. Doctor',
-        field: 'referenceDoctor',
+        field: 'referringPhysicianName',
         sortable: true,
         minWidth: 111,
       },
       {
         headerName: 'Date & Time',
-        field: 'date',
+        field: 'lastUpdate',
         sortable: true,
         minWidth: 117,
         cellRenderer: (data) => {
