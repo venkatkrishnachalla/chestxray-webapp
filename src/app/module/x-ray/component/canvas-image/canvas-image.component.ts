@@ -2,10 +2,11 @@ import {
   Component,
   OnInit,
   HostListener,
+  Input,
+  OnDestroy,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
 import { SpinnerService } from 'src/app/module/shared/UI/spinner/spinner.service';
@@ -13,16 +14,18 @@ import { DashboardService } from 'src/app/service/dashboard.service';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { pathology } from 'src/app/constants/pathologyConstants';
-import { Observable } from 'rxjs';
 import { StateGroup } from '../../healthDetails';
 import { xrayImageService } from 'src/app/service/canvasImage';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
   styleUrls: ['./canvas-image.component.scss'],
 })
-export class CanvasImageComponent implements OnInit {
+export class CanvasImageComponent implements OnInit, OnDestroy {
+  private eventsSubscription: Subscription;
+  @Input() events: Observable<void>;
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
@@ -48,6 +51,9 @@ export class CanvasImageComponent implements OnInit {
   patientImage: any;
   instanceId: any;
   patientId: string;
+  left: any;
+  top: any;
+  scaleFactor: any;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -64,6 +70,7 @@ export class CanvasImageComponent implements OnInit {
     this.setCanvasBackground();
   }
 
+  /* initialization method */
   ngOnInit() {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
@@ -88,6 +95,10 @@ export class CanvasImageComponent implements OnInit {
       );
     }
     this.spinnerService.show();
+    this.eventsSubscription = this.events.subscribe((mlResponse: any) =>
+      this.mlApiEllipseLoop(mlResponse)
+    );
+    // this.canvas = new fabric.Canvas('c');
     this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', { selection: false });
     // fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = 'white';
@@ -145,6 +156,7 @@ export class CanvasImageComponent implements OnInit {
       });
   }
 
+  /* setting dimension for canvas container */
   setCanvasDimension() {
     this.canvasDynamicWidth = document.getElementById(
       'x-ray-aspect-ratio-container'
@@ -163,17 +175,19 @@ export class CanvasImageComponent implements OnInit {
    * @param {string} instanceID Patient ID
    * @return void
    */
+
+  /* retrieve patient image from server */
   getPatientImage(instanceID: string) {
     this.xRayService
       .getPatientImage(instanceID)
       .subscribe((PatientImageResponse: any) => {
         this.PatientImage = 'data:image/png;base64,' + PatientImageResponse;
-        console.log('this.PatientImage', this.PatientImage);
         this.setCanvasDimension();
         this.generateCanvas();
       });
   }
 
+  /* generate a canvas using fabric.js */
   generateCanvas() {
     fabric.Image.fromURL(this.PatientImage, (img) => {
       this.xRayImage = img;
@@ -181,21 +195,23 @@ export class CanvasImageComponent implements OnInit {
     });
   }
 
+  /* setting BackgroundImage for canvas block */
   setCanvasBackground() {
     const canvasAspect = this.canvasDynamicWidth / this.canvasDynamicHeight;
     const imgAspect = this.xRayImage.width / this.xRayImage.height;
-    let left, top, scaleFactor;
 
     if (this.xRayImage.width > this.xRayImage.height) {
-      scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
-      left = 0;
-      top =
-        -(this.xRayImage.height * scaleFactor - this.canvasDynamicHeight) / 2;
+      this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
+      this.left = 0;
+      this.top =
+        -(this.xRayImage.height * this.scaleFactor - this.canvasDynamicHeight) /
+        2;
     } else {
-      scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
-      top = 0;
-      left =
-        -(this.xRayImage.width * scaleFactor - this.canvasDynamicWidth) / 2;
+      this.scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
+      this.top = 0;
+      this.left =
+        -(this.xRayImage.width * this.scaleFactor - this.canvasDynamicWidth) /
+        2;
     }
 
     this.canvas.setBackgroundImage(
@@ -206,20 +222,28 @@ export class CanvasImageComponent implements OnInit {
         backgroundImageStretch: false,
         backgroundImageOpacity: 1,
         crossOrigin: 'anonymous',
-        top: top,
-        left: left,
+        top: this.top,
+        left: this.left,
         originX: 'left',
         originY: 'top',
-        scaleX: scaleFactor,
-        scaleY: scaleFactor,
+        scaleX: this.scaleFactor,
+        scaleY: this.scaleFactor,
       }
     );
     this.spinnerService.hide();
   }
 
-  onProcessClickHandler() {
-    this.router.navigateByUrl('/doctor');
+  /* draw ellipse, when user hits ask ai accept button */
+  mlApiEllipseLoop(mlList: any) {
+    mlList.forEach((diseaseItem: any) => {
+      this.drawEllipse(true, diseaseItem);
+    });
   }
+
+  ngOnDestroy() {
+    this.eventsSubscription.unsubscribe();
+  }
+
   /**
    Register click function from another component
    */
@@ -228,33 +252,55 @@ export class CanvasImageComponent implements OnInit {
   }
 
   /**Draw Ellipse Functionality */
-  drawEllipse() {
+  drawEllipse(isMlAi?, diseaseItem?) {
     var origX, origY;
     this.canvas.isDrawingMode = false;
     this.enableDrawEllipseMode = true;
-    this.canvas.observe('mouse:down', (e) => {
-      if (this.enableDrawEllipseMode == true) {
-        this.isDown = true;
-        var pointer = this.canvas.getPointer(e.e);
-        this.origX = pointer.x;
-        this.origY = pointer.y;
-
-        var ellipse = new fabric.Ellipse({
-          width: 0,
-          height: 0,
-          left: pointer.x,
-          top: pointer.y,
+    if (isMlAi) {
+      const canvasScaleX = this.xRayImage.width / this.canvas.width;
+      const canvasScaleY = this.xRayImage.height / this.canvas.height;
+      this.canvas.add(
+        new fabric.Ellipse({
+          id: diseaseItem.id,
+          disease: diseaseItem.diseases,
+          left: (diseaseItem.coordX as any) / canvasScaleX,
+          top: (diseaseItem.coordY as any) / canvasScaleY,
+          fill: diseaseItem.color,
           opacity: 0.3,
-          strokeWidth: 1,
-          fill: 'rgb(255,127,80)',
           selectable: true,
-        });
+          originX: 'center',
+          originY: 'center',
+          rx: (diseaseItem.coordA as any) / canvasScaleX / 2,
+          ry: (diseaseItem.coordB as any) / canvasScaleY / 2,
+          angle: diseaseItem.coordAngle,
+          stroke: 'black',
+          hoverCursor: 'pointer',
+        })
+      );
+    } else {
+      this.canvas.observe('mouse:down', (e) => {
+        if (this.enableDrawEllipseMode === true) {
+          this.isDown = true;
+          var pointer = this.canvas.getPointer(e.e);
+          this.origX = pointer.x;
+          this.origY = pointer.y;
 
-        this.canvas.add(ellipse);
-        this.canvas.renderAll();
-        this.canvas.setActiveObject(ellipse);
-      }
-    });
+          var ellipse = new fabric.Ellipse({
+            width: 0,
+            height: 0,
+            left: pointer.x,
+            top: pointer.y,
+            opacity: 0.3,
+            strokeWidth: 1,
+            fill: 'rgb(255,127,80)',
+            selectable: true,
+          });
+          this.canvas.add(ellipse);
+          this.canvas.renderAll();
+          this.canvas.setActiveObject(ellipse);
+        }
+      });
+    }
     this.canvas.observe('mouse:move', (e) => {
       if (!this.isDown) return;
       let pointer = this.canvas.getPointer(e.e);
@@ -328,9 +374,9 @@ export class CanvasImageComponent implements OnInit {
    * Search pathology functionality
    */
   onSelect(event, item) {
-    if (item.length == 0) {
+    if (item.length === 0) {
       this.selectedDisease = event.target.textContent;
-    } else if (item == '') {
+    } else if (item === '') {
       this.selectedDisease = event.target.textContent;
     }
   }

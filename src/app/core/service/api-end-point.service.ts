@@ -84,4 +84,11 @@ export class ApiEndPointService {
       '/image'
     );
   }
+
+  public getAskAi(): string {
+    // if (environment.isMockAPI) {
+    //   return environment.mockApiEndPoint + '/predictions';
+    // }
+    return 'http://52.167.73.54:80/seldon/seldon/cxr-classifier/api/v1.0/predictions';
+  }
 }
