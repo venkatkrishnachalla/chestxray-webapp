@@ -117,9 +117,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       let selectedObject = this.canvas.getActiveObject();
       this.canvas.setActiveObject(selectedObject);
       if (!this.enableDrawEllipseMode) {
+        const bodyRect = document.body.getBoundingClientRect();
+        const right = bodyRect.right - this.canvas.getActiveObject().left;
+        const top = this.canvas.getActiveObject().top - bodyRect.top;
         this.dialog.open(this.controlsModel, {
           panelClass: 'my-class',
           hasBackdrop: false,
+          position: { right: right-305 + 'px', top: top + 'px' },
         });
       }
     });
@@ -354,6 +358,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Delete active object
    */
   deletePrediction() {
+    let selectedObject = {id: this.canvas.getActiveObject().id, name: "delete"};
+    this.eventEmitterService.onComponentButtonClick(selectedObject);
     let activeObject = this.canvas.getActiveObject();
     this.canvas.remove(activeObject);
     this.dialog.closeAll();
@@ -368,7 +374,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     dialogConfig.role = 'dialog';
     this.dialog.open(this.pathologyModal, {
       height: '500px',
-      width: '350px',
+      width: '350px', disableClose: true,
     });
   }
   /**
@@ -376,16 +382,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   onSelect(event, item) {
     if (item.length === 0) {
-      this.selectedDisease = event.target.textContent;
+      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z ]/g, "");
     } else if (item === '') {
-      this.selectedDisease = event.target.textContent;
+      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z]/g, "");
     }
   }
   /**
    * Emitting selected disease to Impression component
    */
   savePrediction() {
-    this.eventEmitterService.onComponentDataShared(this.selectedDisease);
+    let id = Math.floor((Math.random() * 100) + 1);
+    this.canvas.getActiveObject().id = id;
+    let selectedObject = {id: id, name: this.selectedDisease};
+    this.eventEmitterService.onComponentDataShared(selectedObject);
+    // this.eventEmitterService.onComponentDataShared(this.selectedDisease);
     this.selectedDisease = '';
     this.dialog.closeAll();
   }
