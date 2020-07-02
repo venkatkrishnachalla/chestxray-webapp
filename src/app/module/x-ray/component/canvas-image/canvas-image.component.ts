@@ -48,6 +48,7 @@ export class CanvasImageComponent implements OnInit {
   patientImage: any;
   instanceId: any;
   patientId: string;
+  patientDetail: any;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -93,7 +94,8 @@ export class CanvasImageComponent implements OnInit {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    this.patientId = localStorage.getItem('InstanceUID');
+    this.patientDetail = JSON.parse(localStorage.getItem('patientDetail'));
+    this.patientId = this.patientDetail.id;
     if (!this.instanceId) {
       this.getPatientInstanceId(this.patientId);
     } else if (!this.patientImage) {
@@ -168,7 +170,6 @@ export class CanvasImageComponent implements OnInit {
       .getPatientImage(instanceID)
       .subscribe((PatientImageResponse: any) => {
         this.PatientImage = 'data:image/png;base64,' + PatientImageResponse;
-        console.log('this.PatientImage', this.PatientImage);
         this.setCanvasDimension();
         this.generateCanvas();
       });

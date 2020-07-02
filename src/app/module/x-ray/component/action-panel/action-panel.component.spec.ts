@@ -4,10 +4,12 @@ import { ActionPanelComponent } from './action-panel.component';
 
 describe('ActionPanelComponent', () => {
   let component: ActionPanelComponent;
+  const eventEmitterServicespy = jasmine.createSpyObj('EventEmitterService', [
+    'onComponentButtonClick',
+  ]);
 
   beforeEach(() => {
-    component = new ActionPanelComponent(
-    );
+    component = new ActionPanelComponent(eventEmitterServicespy);
   });
 
   it('should create', () => {
@@ -34,5 +36,4 @@ describe('ActionPanelComponent', () => {
       expect(component.askAI).toBeDefined();
     });
   });
-
 });

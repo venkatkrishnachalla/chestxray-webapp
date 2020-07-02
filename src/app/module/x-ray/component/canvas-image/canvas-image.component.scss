@@ -117,11 +117,14 @@
     justify-content: space-between;
     margin-top: 1.5rem;
     button {
-      background-color: #5d5f64;
+      background-color: #ff4d4d;
       width: 140px;
       height: 35px;
       color: #ffffff;
       font-size: 1.5rem;
+    }
+    button:first-child {
+      background-color: #25b865;
     }
   }
 }

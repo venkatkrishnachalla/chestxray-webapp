@@ -109,8 +109,8 @@ export const home_constants = {
                 arrow_forward_ios</mat-icon>`;
         },
         onCellClicked: function make(params) {
-          const patientId = params.data.id;
-          localStorage.setItem('InstanceUID', patientId);
+          const patientDetail = JSON.stringify(params.data);
+          localStorage.setItem('patientDetail', patientDetail);
           window.location.assign('/x-ray');
         },
       },
