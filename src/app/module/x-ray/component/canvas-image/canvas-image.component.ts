@@ -54,6 +54,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   left: any;
   top: any;
   scaleFactor: any;
+  patientDetail: any;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -104,7 +105,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    this.patientId = localStorage.getItem('InstanceUID');
+    this.patientDetail = JSON.parse(localStorage.getItem('patientDetail'));
+    this.patientId = this.patientDetail.id;
     if (!this.instanceId) {
       this.getPatientInstanceId(this.patientId);
     } else if (!this.patientImage) {
@@ -123,7 +125,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.dialog.open(this.controlsModel, {
           panelClass: 'my-class',
           hasBackdrop: false,
-          position: { right: right-305 + 'px', top: top + 'px' },
+          position: { right: right - 305 + 'px', top: top + 'px' },
         });
       }
     });
@@ -206,7 +208,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
     if (this.xRayImage.width > this.xRayImage.height) {
       this.scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
-     // this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
+      // this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
       this.left = 0;
       this.top =
         -(this.xRayImage.height * this.scaleFactor - this.canvasDynamicHeight) /
@@ -358,7 +360,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Delete active object
    */
   deletePrediction() {
-    let selectedObject = {id: this.canvas.getActiveObject().id, name: "delete"};
+    let selectedObject = {
+      id: this.canvas.getActiveObject().id,
+      name: 'delete',
+    };
     this.eventEmitterService.onComponentButtonClick(selectedObject);
     let activeObject = this.canvas.getActiveObject();
     this.canvas.remove(activeObject);
@@ -374,7 +379,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     dialogConfig.role = 'dialog';
     this.dialog.open(this.pathologyModal, {
       height: '500px',
-      width: '350px', disableClose: true,
+      width: '350px',
+      disableClose: true,
     });
   }
   /**
@@ -382,18 +388,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   onSelect(event, item) {
     if (item.length === 0) {
-      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z ]/g, "");
+      this.selectedDisease = event.target.textContent.replace(
+        /[^a-zA-Z ]/g,
+        ''
+      );
     } else if (item === '') {
-      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z]/g, "");
+      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z]/g, '');
     }
   }
   /**
    * Emitting selected disease to Impression component
    */
   savePrediction() {
-    let id = Math.floor((Math.random() * 100) + 1);
+    let id = Math.floor(Math.random() * 100 + 1);
     this.canvas.getActiveObject().id = id;
-    let selectedObject = {id: id, name: this.selectedDisease};
+    let selectedObject = { id: id, name: this.selectedDisease };
     this.eventEmitterService.onComponentDataShared(selectedObject);
     // this.eventEmitterService.onComponentDataShared(this.selectedDisease);
     this.selectedDisease = '';

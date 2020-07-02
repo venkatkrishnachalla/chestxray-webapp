@@ -13,7 +13,8 @@ export class XRayHeaderComponent implements OnInit {
   constructor(public router: Router) {}
 
   ngOnInit(): void {
-    this.patientID = '1004';
-    this.isProcessed = true;
+    const patientDetail = JSON.parse(localStorage.getItem('patientDetail'));
+    this.patientID = patientDetail.hospitalPatientId;
+    this.isProcessed = false;
   }
 }

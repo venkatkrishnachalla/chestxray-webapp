@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class PatientDetailsComponent implements OnInit {
   value: number;
   PatientName: string;
-  PatientGender = 'F';
+  PatientGender: string;
   PatientAge: string;
   refPhysician: string;
   Date: string;
@@ -17,13 +17,14 @@ export class PatientDetailsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    const patient = JSON.parse(localStorage.getItem('patientDetail'));
     this.value = 50;
-    this.PatientName = 'Shilpa R.';
-    this.PatientAge = '45yrs';
-    this.refPhysician = 'Dr.Adam Walt';
-    this.Date = '18-05-2020';
-    this.Time = '16:15:30';
-    this.history =
-      'lorem ipsum sit amet, consetetur sadipscing, sed diam nonumy eirmod';
+    this.PatientName = patient.name;
+    this.PatientAge = patient.age;
+    this.refPhysician = patient.referringPhysicianName;
+    this.PatientGender = patient.sex;
+    this.Date = patient.lastUpdate;
+    this.Time = patient.lastUpdate;
+    this.history = '';
   }
 }
