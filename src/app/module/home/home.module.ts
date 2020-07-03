@@ -13,6 +13,8 @@ import { ImplicitReceiver } from '@angular/compiler';
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { LocalFilesystemComponent } from './local-filesystem/local-filesystem.component';
 import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.component';
+import { InputValidatorDirective } from 'src/app/directives/input-validator.directive';
+import { PhoneNumberDirective } from 'src/app/directives/phone-number.directive';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.compon
     SettingsComponent,
     PatientListComponent,
     LocalFilesystemComponent,
-    DragDropComponent
+    DragDropComponent,
+    InputValidatorDirective,
+    PhoneNumberDirective
   ],
   imports: [
     MaterialModule,

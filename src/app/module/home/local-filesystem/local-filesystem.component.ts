@@ -14,16 +14,16 @@ export class LocalFilesystemComponent implements OnInit {
   // files: any[];
   images = [];
   fileName = 'Choose file';
-
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.uploadImageForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required]],
       dateOfBirth: ['', Validators.required],
       gender: ['male', Validators.required],
-      email: [''],
-      phoneNumber: [''],
+      email: ['', [Validators.email]],
+      phoneNumber: ['', [Validators.maxLength(10)]],
       address: [''],
       XRayImage: this.formBuilder.group({
         file: ['', Validators.required],

@@ -18,7 +18,7 @@
             formControlName="name"
             name="name"
             autocomplete="off"
-            [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
+            cxrInputValidator
           />
         </div>
         <div
@@ -91,6 +91,7 @@
             formControlName="dateOfBirth"
             name="dateOfBirth"
             autocomplete="off"
+            id="datepicker"
           />
         </div>
         <div
@@ -119,16 +120,28 @@
             formControlName="email"
             name="email"
             autocomplete="off"
+            email
           />
+        </div>
+        <div *ngIf="uploadImageForm.controls['email'].errors">
+          <div
+            class="alert-danger"
+            style="margin: 0;"
+            *ngIf="uploadImageForm.controls['email'].errors"
+          >
+            Email is not a valid format.
+          </div>
         </div>
         <label for="">Phone No.:</label>
         <div>
           <input
-            type="number"
+            type="text"
             placeholder="Enter phone number"
             formControlName="phoneNumber"
-            name="number"
+            name="phoneNumber"
             autocomplete="off"
+            maxlength="10"
+            cxrPhoneNumber
           />
         </div>
         <label for="">Address:</label>
@@ -149,7 +162,6 @@
     <div class="upload-image-local-file">
       <h2>UPLOAD X-RAY IMAGE *</h2>
       <form [formGroup]="uploadImageForm">
-
         <cxr-drag-drop></cxr-drag-drop>
 
         <div style="text-align: center;">
