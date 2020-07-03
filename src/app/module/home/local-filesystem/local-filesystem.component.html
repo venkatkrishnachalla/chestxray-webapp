@@ -162,7 +162,7 @@
     <div class="upload-image-local-file">
       <h2>UPLOAD X-RAY IMAGE *</h2>
       <form [formGroup]="uploadImageForm">
-        <cxr-drag-drop></cxr-drag-drop>
+        <cxr-drag-drop (dragImageSrc)="dragDropEvent($event)"></cxr-drag-drop>
 
         <div style="text-align: center;">
           <pre>Drag & drop your files here</pre>

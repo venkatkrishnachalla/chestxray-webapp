@@ -9,13 +9,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class LocalFilesystemComponent implements OnInit {
   uploadImageForm: FormGroup;
   submitted: boolean;
-
   imageWidth: any;
-  // files: any[];
   images = [];
   fileName = 'Choose file';
-  constructor(private formBuilder: FormBuilder) {
-  }
+  imageSource: string;
+
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.uploadImageForm = this.formBuilder.group({
@@ -27,27 +26,25 @@ export class LocalFilesystemComponent implements OnInit {
       address: [''],
       XRayImage: this.formBuilder.group({
         file: ['', Validators.required],
-        fileSource: ['']
-      })
+        fileSource: [''],
+      }),
     });
   }
+  
   get f() {
     return this.uploadImageForm.controls;
   }
 
-  // on changing file
+  /* on changing file */
+
   onFileChange(event) {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name.toString();
       const filesAmount = event.target.files.length;
-      // tslint:disable-next-line: no-console
-      console.log(filesAmount);
       for (let i = 0; i < filesAmount; i++) {
         const reader = new FileReader();
-        // tslint:disable-next-line: no-shadowed-variable
         reader.onload = (event: any) => {
-          // tslint:disable-next-line: no-console
-          console.log(event.target.result);
+          this.imageSource = event.target.result;
           this.images.push(event.target.result);
           this.uploadImageForm.patchValue({
             fileSource: this.images,
@@ -58,14 +55,15 @@ export class LocalFilesystemComponent implements OnInit {
     }
   }
 
+  dragDropEvent(event) {
+    this.imageSource = event;
+  }
+
   onSubmit() {
     this.submitted = true;
-
-    // stop here if form is invalid
     if (this.uploadImageForm.invalid) {
       return;
     }
-
     alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.uploadImageForm.value));
   }
 }
