@@ -50,7 +50,7 @@
         "
       >
         <mat-list-item class="pointer" (click)="onSelect($event, item.names)"
-          >{{ i + 1 }}.&nbsp;&nbsp; {{ item.letter }}</mat-list-item
+          >{{ i + 1 }}.&nbsp;&nbsp;{{ item.letter }}</mat-list-item
         >
         <mat-list class="sub-list">
           <div *ngFor="let subItem of item.names; let i = index">
@@ -64,7 +64,8 @@
   </mat-dialog-content>
   <mat-dialog-actions align="center">
     <button
-      mat-raised-button [disabled]="selectedDisease == '' || selectedDisease == undefined"
+      mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#25b865' }"
+      [disabled]="selectedDisease == '' || selectedDisease == undefined"
       (click)="savePrediction()"
       [mat-dialog-close]="true"
       cdkFocusInitial
@@ -72,7 +73,7 @@
       SAVE
     </button>
     <button
-      mat-raised-button
+      mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#ff4d4d' }"
       (click)="closePathologyModal()"
       [mat-dialog-close]="true"
     >
@@ -82,28 +83,27 @@
 </ng-template>
 
 <ng-template #deleteObject>
-  <h2 mat-dialog-title>Delete Impression</h2>
-  <mat-dialog-content id="deleteImpression">
-    <div>Are you sure want to delete this Impression?</div>
+  <h2 mat-dialog-title>&nbsp;</h2>
+  <mat-dialog-content id="deleteImpression" align="center">
+    <h2>Are you sure ?</h2>
+    <div class="sub-delete-title">Do you really want to delete this annotation?</div>
   </mat-dialog-content>
-  <mat-dialog-actions align="center">
+  <mat-dialog-actions id="deleteImpression" align="center">
     <button
       class="deleteDisease"
       mat-raised-button
-      color="primary"
       (click)="deletePrediction()"
       [mat-dialog-close]="true"
       cdkFocusInitial
     >
-      Delete
+      DELETE
     </button>
     <button
       class="cancelDisease"
       mat-raised-button
-      color="warn"
       mat-dialog-close
     >
-      Cancel
+      CANCEL
     </button>
   </mat-dialog-actions>
 </ng-template>

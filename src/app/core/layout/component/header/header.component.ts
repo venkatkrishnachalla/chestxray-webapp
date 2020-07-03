@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
-import { SidenavService } from 'src/app/core/service/sidenav.service';
+
 
 @Component({
   selector: 'cxr-header',
@@ -18,8 +18,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
     public router: Router,
-    private sidenav: SidenavService
-  ) {}
+    ) {}
 
   ngOnInit(): void {
     this.doctorName = localStorage.getItem('loggedInUser');

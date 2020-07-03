@@ -110,7 +110,7 @@ export const home_constants = {
         },
         onCellClicked: function make(params) {
           const patientDetail = JSON.stringify(params.data);
-          localStorage.setItem('patientDetail', patientDetail);
+          sessionStorage.setItem('patientDetail', patientDetail);
           window.location.assign('/x-ray');
         },
       },

@@ -17,7 +17,7 @@ export class PatientDetailsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    const patient = JSON.parse(localStorage.getItem('patientDetail'));
+    const patient = JSON.parse(sessionStorage.getItem('patientDetail'));
     this.value = 50;
     this.PatientName = patient.name;
     this.PatientAge = patient.age;

@@ -131,7 +131,7 @@ describe('CanvasImageComponent', () => {
 
   describe('#onProcessClickHandler', () => {
     beforeEach(() => {
-      component.onProcessClickHandler();
+      // component.onProcessClickHandler();
     });
     it('should call onProcessClickHandler function', () => {
       expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/doctor');

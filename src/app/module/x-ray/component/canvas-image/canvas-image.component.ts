@@ -18,6 +18,7 @@ import { StateGroup } from '../../healthDetails';
 import { xrayImageService } from 'src/app/service/canvasImage';
 import { Observable, Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -55,6 +56,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   top: any;
   scaleFactor: any;
   patientDetail: any;
+  canvasColor: string;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -105,7 +107,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    this.patientDetail = JSON.parse(localStorage.getItem('patientDetail'));
+    this.patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
     this.patientId = this.patientDetail.id;
     if (!this.instanceId) {
       this.getPatientInstanceId(this.patientId);
@@ -349,7 +351,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     let activeObject = this.canvas.getActiveObject();
     if (activeObject) {
       this.dialog.open(this.deleteObjectModel, {
-        panelClass: 'my-class',
+        height: '240px',
+        width: '320px',
         disableClose: true,
       });
     } else {
@@ -379,7 +382,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     dialogConfig.role = 'dialog';
     this.dialog.open(this.pathologyModal, {
       height: '500px',
-      width: '350px',
+      width: '320px',
       disableClose: true,
     });
   }
