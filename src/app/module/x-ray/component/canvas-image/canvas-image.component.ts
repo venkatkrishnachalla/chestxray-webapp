@@ -18,7 +18,6 @@ import { StateGroup } from '../../healthDetails';
 import { xrayImageService } from 'src/app/service/canvasImage';
 import { Observable, Subscription } from 'rxjs';
 
-
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -153,6 +152,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     canvas.requestRenderAll();
   }
 
+  /**
+   * Get Patient Instance ID
+   * @param {string} patientId Patient ID
+   * @return void
+   */
+
+  /* retrieve patient instance id from server */
   getPatientInstanceId(id) {
     this.xRayService
       .getPatientInstanceId(id)

@@ -2,10 +2,13 @@ import { TestBed } from '@angular/core/testing';
 
 import { xrayImageService } from './canvasImage';
 
-describe('XRayService', () => {
+fdescribe('XRayService', () => {
   let service: xrayImageService;
   const httpSpy = jasmine.createSpyObj('HttpClient', ['get']);
-  const endPointSpy = jasmine.createSpyObj('ApiEndPointService', ['getAskAi']);
+  const endPointSpy = jasmine.createSpyObj('ApiEndPointService', [
+    'getPatientImage',
+    'getPatientInstanceId',
+  ]);
 
   beforeEach(() => {
     service = new xrayImageService(httpSpy, endPointSpy);
