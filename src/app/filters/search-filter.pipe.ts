@@ -20,12 +20,12 @@ export class SearchFilterPipe implements PipeTransform {
     if (filterText) {
       return list
         .map((group) => ({
-          letter: group.letter,
-          names: this._filter(group.letter, group.names, filterText),
+          abnormality: group.abnormality,
+          names: this._filter(group.abnormality, group.names, filterText),
         }))
         .filter((group) => {
           return (
-            group.letter.toLowerCase().indexOf(filterText) === 0 ||
+            group.abnormality.toLowerCase().indexOf(filterText) === 0 ||
             group.names.length > 0
           );
         });

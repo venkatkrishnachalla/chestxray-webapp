@@ -1,20 +1,46 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of, throwError } from 'rxjs';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { MatDialog } from '@angular/material/dialog';
+import { XRayService } from 'src/app/service/x-ray.service';
+import { TestBed } from '@angular/core/testing';
+import { SpinnerService } from 'src/app/module/shared/UI/spinner/spinner.service';
+import { DashboardService } from 'src/app/service/dashboard.service';
+import { Router } from '@angular/router';
 
 describe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
-  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
-    'show',
-    'hide',
-  ]);
-  const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
-  const dashboardServiceSpy = jasmine.createSpyObj('DashboardService', [
-    'getPatientList',
-  ]);
+  let spinnerServiceSpy:jasmine.SpyObj<SpinnerService>;
+  let dialogSpy: jasmine.SpyObj<MatDialog>;
+  let XrayServiceSpy: jasmine.SpyObj<XRayService>;
+  let EventEmitterServiceSpy: jasmine.SpyObj<EventEmitterService>;
+  let routerSpy: jasmine.SpyObj<Router>;
+  let dashboardServiceSpy: jasmine.SpyObj<DashboardService>;
 
   beforeEach(() => {
-    // component = new CanvasImageComponent(spinnerServiceSpy, routerSpy, dashboardServiceSpy);
+    spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
+      'show',
+      'hide',
+    ]);
+    dialogSpy = jasmine.createSpyObj(MatDialog);
+    XrayServiceSpy = jasmine.createSpyObj(XRayService);
+    EventEmitterServiceSpy = jasmine.createSpyObj(EventEmitterService);
+    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    dashboardServiceSpy = jasmine.createSpyObj('DashboardService', [
+      'getPatientList',
+    ]);
   });
+  TestBed.configureTestingModule({
+    declarations: [CanvasImageComponent],
+    providers:[
+      {provide: XRayService, usevalue: XrayServiceSpy},
+      {provide: SpinnerService, usevalue: spinnerServiceSpy},
+      {provide: MatDialog, usevalue: dialogSpy},
+      {provide: EventEmitterService, usevalue: EventEmitterServiceSpy},
+      {provide: Router, usevalue: routerSpy},
+      {provide: DashboardService, usevalue: dashboardServiceSpy}
+    ]
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -131,10 +157,74 @@ describe('CanvasImageComponent', () => {
 
   describe('#onProcessClickHandler', () => {
     beforeEach(() => {
-      component.onProcessClickHandler();
+      // component.onProcessClickHandler();
     });
     it('should call onProcessClickHandler function', () => {
       expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/doctor');
+    });
+  });
+  describe('#firstComponentFunction', () => {
+    beforeEach(() => {
+      component.firstComponentFunction('test');
+    });
+    it('should call firstComponentFunction function', () => {
+      expect(component.firstComponentFunction).toBeDefined();
+    });
+  });
+  describe('#deleteEllipse', () => {
+    beforeEach(() => {
+      component.deleteEllipse();
+    });
+    it('should call deleteEllipse function', () => {
+      expect(component.deleteEllipse).toBeDefined();
+    });
+  });
+  describe('#deletePrediction', () => {
+    beforeEach(() => {
+      component.deletePrediction();
+    });
+    it('should call deletePrediction function', () => {
+      expect(component.deletePrediction).toBeDefined();
+    });
+  });
+  describe('#openPathologyModal', () => {
+    beforeEach(() => {
+      component.openPathologyModal();
+    });
+    it('should call openPathologyModal function', () => {
+      expect(component.openPathologyModal).toBeDefined();
+    });
+  });
+  describe('#onSelect', () => {
+    beforeEach(() => {
+      component.onSelect(event,'text');
+    });
+    it('should call onSelect function', () => {
+      expect(component.onSelect).toBeDefined();
+    });
+  });
+  describe('#savePrediction', () => {
+    beforeEach(() => {
+      component.savePrediction();
+    });
+    it('should call savePrediction function', () => {
+      expect(component.savePrediction).toBeDefined();
+    });
+  });
+  describe('#closePathologyModal', () => {
+    beforeEach(() => {
+      component.closePathologyModal();
+    });
+    it('should call closePathologyModal function', () => {
+      expect(component.closePathologyModal).toBeDefined();
+    });
+  });
+  describe('#freeHandDrawing', () => {
+    beforeEach(() => {
+      component.freeHandDrawing();
+    });
+    it('should call freeHandDrawing function', () => {
+      expect(component.freeHandDrawing).toBeDefined();
     });
   });
 });

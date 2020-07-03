@@ -50,7 +50,7 @@
         "
       >
         <mat-list-item class="pointer" (click)="onSelect($event, item.names)"
-          >{{ i + 1 }}.&nbsp;&nbsp; {{ item.letter }}</mat-list-item
+          >{{ i + 1 }}.&nbsp;&nbsp; {{ item.abnormality }}</mat-list-item
         >
         <mat-list class="sub-list">
           <div *ngFor="let subItem of item.names; let i = index">
@@ -67,9 +67,19 @@
       mat-raised-button [disabled]="selectedDisease == '' || selectedDisease == undefined"
       (click)="savePrediction()"
       [mat-dialog-close]="true"
+      *ngIf="!updateDisease"
       cdkFocusInitial
     >
       SAVE
+    </button>
+    <button
+      mat-raised-button [disabled]="selectedDisease == '' || selectedDisease == undefined"
+      (click)="updatePrediction()"
+      [mat-dialog-close]="true"
+      *ngIf="updateDisease"
+      cdkFocusInitial
+    >
+      UPDATE
     </button>
     <button
       mat-raised-button
@@ -111,7 +121,7 @@
 <ng-template #controls>
   <div id="controls">
     <span class="material-icons pointer">done</span>
-    <span class="material-icons pointer">link</span>
+    <span class="material-icons pointer" (click)="updateEllipse()">link</span>
     <span class="material-icons pointer">content_copy</span>
     <span class="material-icons pointer" (click)="deleteEllipse()"
       >highlight_off</span

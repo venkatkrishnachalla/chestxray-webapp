@@ -23,13 +23,13 @@ export class ImpressionComponent implements OnInit {
   ngOnInit(): void {
     this.getImpressions();
       this.eventEmitterService.invokeComponentFunction.subscribe(
-        (title: object) => {
-          switch (title['name']) {
+        (info: object) => {
+          switch (info['check']) {
             case 'delete':
-              this.deleteImpression(title['id']);
+              this.deleteImpression(info['id']);
               break;
             case 'update':
-              this.updateImpression();
+              this.updateImpression(info);
               break;
             default:
               break;
@@ -50,8 +50,9 @@ export class ImpressionComponent implements OnInit {
     this.impression.splice(index,1);
   }
 
-  updateImpression(){
-
+  updateImpression(info){
+    let index = this.impression.findIndex(item => item.id == info.id);
+    this.impression.splice(index,1, {id:info.id, name: info.name});
   }
 
   getColorMapping(diseases) {

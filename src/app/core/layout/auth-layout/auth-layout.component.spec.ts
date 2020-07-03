@@ -1,6 +1,6 @@
 import { AuthLayoutComponent } from './auth-layout.component';
 
-fdescribe('AuthLayoutComponent', () => {
+describe('AuthLayoutComponent', () => {
   let component: AuthLayoutComponent;
   const authServiceSpy = jasmine.createSpyObj('AuthService', [
     'user',

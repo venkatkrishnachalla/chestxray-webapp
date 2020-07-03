@@ -1,6 +1,6 @@
 import { ApiEndPointService } from './api-end-point.service';
 
-fdescribe('ApiEndPointService', () => {
+describe('ApiEndPointService', () => {
   let apiEndPointService: ApiEndPointService;
 
   beforeEach(() => {
@@ -37,7 +37,7 @@ fdescribe('ApiEndPointService', () => {
       apiEndPointService.getSingInURL();
       const result = apiEndPointService.getSingInURL();
       expect(result).toEqual(
-        'http://localhost:3000/auth'
+        'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login/'
       );
     });
   });
