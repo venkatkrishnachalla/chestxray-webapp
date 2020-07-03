@@ -1,32 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { XRayComponent } from './x-ray.component';
+import { of, throwError } from 'rxjs';
 
 fdescribe('XRayComponent', () => {
-  // let component: XRayComponent;
-  // let fixture: ComponentFixture<XRayComponent>;
-
-  // beforeEach(async(() => {
-  //   TestBed.configureTestingModule({
-  //     declarations: [ XRayComponent ]
-  //   })
-  //   .compileComponents();
-  // }));
-
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(XRayComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
-
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
   let component: XRayComponent;
+  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
+    'show',
+    'hide',
+  ]);
+  const XRayServiceSpy = jasmine.createSpyObj('XRayService', [
+    'getAskAiDetails',
+  ]);
 
   beforeEach(() => {
-    component = new XRayComponent(
-    );
+    component = new XRayComponent(XRayServiceSpy, spinnerServiceSpy);
   });
 
   it('should create', () => {
@@ -44,26 +30,46 @@ fdescribe('XRayComponent', () => {
   });
 
   describe('#openAskAI', () => {
+    const mock = {
+      data: {
+        ndarray: [],
+      },
+    };
     beforeEach(() => {
-      // tslint:disable-next-line: deprecation
+      XRayServiceSpy.getAskAiDetails.and.returnValue(of(mock));
+      const event = {};
       component.openAskAI(event);
     });
     it('should call openAskAI function', () => {
-      // tslint:disable-next-line: deprecation
-      const result = component.openAskAI(event);
-      expect(component.openAskAI).toBeDefined();
+      expect(spinnerServiceSpy.show).toHaveBeenCalled();
+      XRayServiceSpy.getAskAiDetails('test').subscribe((xrayResponse: any) => {
+        expect(xrayResponse).toEqual(mock);
+        expect(spinnerServiceSpy.hide).toHaveBeenCalled();
+      });
     });
   });
 
-  describe('#rejectAI', () => {
+  describe('#openAskAI', () => {
     beforeEach(() => {
-      // tslint:disable-next-line: deprecation
-      component.rejectAI(event);
+      const errorResponse = { status: 401 };
+      XRayServiceSpy.getAskAiDetails.and.returnValue(throwError(errorResponse));
+      const event = {};
+      component.openAskAI(event);
     });
-    it('should call rejectAI function', () => {
-      // tslint:disable-next-line: deprecation
-      const result = component.rejectAI(event);
-      expect(component.rejectAI).toBeDefined();
+    it('should call openAskAI function, when returns error message', () => {
+      expect(spinnerServiceSpy.hide).toHaveBeenCalled();
     });
   });
+
+  // describe('#rejectAI', () => {
+  //   beforeEach(() => {
+  //     // tslint:disable-next-line: deprecation
+  //     component.rejectAI(event);
+  //   });
+  //   it('should call rejectAI function', () => {
+  //     // tslint:disable-next-line: deprecation
+  //     const result = component.rejectAI(event);
+  //     expect(component.rejectAI).toBeDefined();
+  //   });
+  // });
 });

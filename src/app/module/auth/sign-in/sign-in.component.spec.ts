@@ -2,7 +2,7 @@ import { SignInComponent } from './sign-in.component';
 import { NgForm } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
-describe('SignInComponent', () => {
+fdescribe('SignInComponent', () => {
   let component: SignInComponent;
   const alertSpy = jasmine.createSpyObj('SnackbarService', ['open']);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['signIn']);

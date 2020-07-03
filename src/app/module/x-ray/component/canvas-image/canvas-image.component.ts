@@ -51,14 +51,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   patientImage: any;
   instanceId: any;
   patientId: string;
-  left: any;
-  top: any;
-  scaleFactor: any;
+  left: number;
+  top: number;
+  scaleFactorX: number;
+  scaleFactorY: number;
 
   constructor(
     private spinnerService: SpinnerService,
-    private router: Router,
-    private dashboardService: DashboardService,
     private eventEmitterService: EventEmitterService,
     private dialog: MatDialog,
     private xRayService: xrayImageService
@@ -75,7 +74,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
-    if (this.eventEmitterService.subsVar == undefined) {
+    if (this.eventEmitterService.subsVar === undefined) {
       this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
         (title: string) => {
           switch (title) {
@@ -155,7 +154,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       .subscribe((patientInstanceIdResponse: any) => {
         this.instanceId =
           patientInstanceIdResponse[0].seriesList[0].instanceList[0].id;
-        this.spinnerService.hide();
         this.getPatientImage(this.instanceId);
       });
   }
@@ -186,6 +184,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       .getPatientImage(instanceID)
       .subscribe((PatientImageResponse: any) => {
         this.PatientImage = 'data:image/png;base64,' + PatientImageResponse;
+        localStorage.setItem('PatientImage', this.PatientImage);
         this.setCanvasDimension();
         this.generateCanvas();
       });
@@ -205,17 +204,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const imgAspect = this.xRayImage.width / this.xRayImage.height;
 
     if (this.xRayImage.width > this.xRayImage.height) {
-      this.scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
-     // this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
-      this.left = 0;
-      this.top =
-        -(this.xRayImage.height * this.scaleFactor - this.canvasDynamicHeight) /
-        2;
+      this.top = 0;
+      this.left = 0,
+      this.scaleFactorX = this.canvasDynamicWidth / this.xRayImage.width;
+      this.scaleFactorY = this.canvasDynamicHeight / this.xRayImage.height;
     } else {
-      this.scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
+      this.scaleFactorX = this.canvasDynamicHeight / this.xRayImage.height;
+      this.scaleFactorY = this.canvasDynamicHeight / this.xRayImage.height;
       this.top = 0;
       this.left =
-        -(this.xRayImage.width * this.scaleFactor - this.canvasDynamicWidth) /
+        -(this.xRayImage.width * this.scaleFactorX - this.canvasDynamicWidth) /
         2;
     }
 
@@ -231,8 +229,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         left: this.left,
         originX: 'left',
         originY: 'top',
-        scaleX: this.scaleFactor,
-        scaleY: this.scaleFactor,
+        scaleX: this.scaleFactorX,
+        scaleY: this.scaleFactorY,
       }
     );
     this.spinnerService.hide();
@@ -240,8 +238,25 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /* draw ellipse, when user hits ask ai accept button */
   mlApiEllipseLoop(mlList: any) {
-    mlList.diseases.forEach((diseaseItem: any) => {
-      this.drawEllipse(true, diseaseItem);
+    const mLArray = mlList.data.ndarray[0];
+    let impressions = [];
+    mLArray.Impression.forEach((impression: any) => {
+      impressions.push({
+        index: impression[0],
+        name: impression[1],
+      });
+    });
+    mLArray.diseases.forEach((disease: any) => {
+      disease.ellipses.forEach((ellipse: any) => {
+        ellipse.id = ellipse.index;
+        ellipse.coordX = ellipse.x;
+        ellipse.coordY = ellipse.y;
+        ellipse.coordA = ellipse.a;
+        ellipse.coordB = ellipse.b;
+        ellipse.coordAngle = ellipse.r;
+        ellipse.color = disease.color;
+        this.drawEllipse(true, ellipse);
+      });
     });
   }
 
@@ -268,16 +283,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         new fabric.Ellipse({
           id: diseaseItem.id,
           disease: diseaseItem.diseases,
-          left: (diseaseItem.coordX as any) / canvasScaleX,
-          top: (diseaseItem.coordY as any) / canvasScaleY,
+          left: (diseaseItem.x as any) / canvasScaleX,
+          top: (diseaseItem.y as any) / canvasScaleY,
           fill: diseaseItem.color,
-          opacity: 0.3,
+          opacity: 0.1,
           selectable: true,
           originX: 'center',
           originY: 'center',
-          rx: (diseaseItem.coordA as any) / canvasScaleX / 2,
-          ry: (diseaseItem.coordB as any) / canvasScaleY / 2,
-          angle: diseaseItem.coordAngle,
+          rx: (diseaseItem.a as any) / canvasScaleX / 2,
+          ry: (diseaseItem.b as any) / canvasScaleY / 2,
+          angle: diseaseItem.r,
           stroke: 'black',
           hoverCursor: 'pointer',
         })
