@@ -8,11 +8,11 @@ import { MyAccountComponent } from './my-account/my-account.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { MaterialModule } from 'src/app/material.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImplicitReceiver } from '@angular/compiler';
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { LocalFilesystemComponent } from './local-filesystem/local-filesystem.component';
-
+import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.component';
 
 @NgModule({
   declarations: [
@@ -24,10 +24,12 @@ import { LocalFilesystemComponent } from './local-filesystem/local-filesystem.co
     SettingsComponent,
     PatientListComponent,
     LocalFilesystemComponent,
+    DragDropComponent
   ],
   imports: [
     MaterialModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     AgGridModule.withComponents([]),
   ],
