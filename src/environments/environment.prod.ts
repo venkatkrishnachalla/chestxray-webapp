@@ -5,5 +5,5 @@ export const environment = {
   patientList: window['patientList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/',
   patientInstanceId: window['patientInstanceId'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/',
   PatientImage: window['patientImage'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/instance/',
-  askAI: window['askAI'] || 'http://52.167.73.54:80/seldon/seldon/cxr-classifier/api/v1.0/predictions'
+  askAI: window['askAI'] || 'https://52.167.73.54:80/seldon/seldon/cxr-classifier/api/v1.0/predictions'
 };
