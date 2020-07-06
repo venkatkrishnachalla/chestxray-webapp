@@ -51,6 +51,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   patientImage: any;
   instanceId: any;
   patientId: string;
+  canvasCorrectedHeight: number;
+  canvasCorrectedWidth: number;
   left: any;
   top: any;
   scaleFactor: any;
@@ -59,8 +61,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   constructor(
     private spinnerService: SpinnerService,
-    private router: Router,
-    private dashboardService: DashboardService,
     private eventEmitterService: EventEmitterService,
     private dialog: MatDialog,
     private xRayService: xrayImageService
@@ -77,7 +77,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
-    if (this.eventEmitterService.subsVar == undefined) {
+    if (this.eventEmitterService.subsVar === undefined) {
       this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
         (title: string) => {
           switch (title) {
@@ -165,7 +165,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       .subscribe((patientInstanceIdResponse: any) => {
         this.instanceId =
           patientInstanceIdResponse[0].seriesList[0].instanceList[0].id;
-        this.spinnerService.hide();
         this.getPatientImage(this.instanceId);
       });
   }
@@ -196,6 +195,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       .getPatientImage(instanceID)
       .subscribe((PatientImageResponse: any) => {
         this.PatientImage = 'data:image/png;base64,' + PatientImageResponse;
+        localStorage.setItem('PatientImage', this.PatientImage);
         this.setCanvasDimension();
         this.generateCanvas();
       });
@@ -209,49 +209,64 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
+  getWidthFirst(imageAspectRatio, containerAspectRatio) {
+    return imageAspectRatio > containerAspectRatio;
+  }
+
   /* setting BackgroundImage for canvas block */
   setCanvasBackground() {
-    const canvasAspect = this.canvasDynamicWidth / this.canvasDynamicHeight;
-    const imgAspect = this.xRayImage.width / this.xRayImage.height;
+    const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
+    const containerAspectRatio =
+      this.canvasDynamicWidth / this.canvasDynamicHeight;
+    const widthFirst = this.getWidthFirst(imageAspectRatio, containerAspectRatio);
 
-    if (this.xRayImage.width > this.xRayImage.height) {
-      this.scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
-      // this.scaleFactor = this.canvasDynamicWidth / this.xRayImage.width;
-      this.left = 0;
-      this.top =
-        -(this.xRayImage.height * this.scaleFactor - this.canvasDynamicHeight) /
-        2;
+    if (widthFirst) {
+      this.canvasCorrectedWidth = this.canvasDynamicWidth;
+      this.canvasCorrectedHeight = this.canvasCorrectedWidth / imageAspectRatio;
     } else {
-      this.scaleFactor = this.canvasDynamicHeight / this.xRayImage.height;
-      this.top = 0;
-      this.left =
-        -(this.xRayImage.width * this.scaleFactor - this.canvasDynamicWidth) /
-        2;
+      this.canvasCorrectedHeight = this.canvasDynamicHeight;
+      this.canvasCorrectedWidth = this.canvasCorrectedHeight * imageAspectRatio;
     }
 
+    this.canvas.setWidth(this.canvasCorrectedWidth);
+    this.canvas.setHeight(this.canvasCorrectedHeight);
+
+    this.xRayImage.set({
+      opacity: 1,
+      scaleX: this.canvasCorrectedWidth / this.xRayImage.width,
+      scaleY: this.canvasCorrectedHeight / this.xRayImage.height,
+    });
     this.canvas.setBackgroundImage(
       this.xRayImage,
-      this.canvas.requestRenderAll.bind(this.canvas),
+      this.canvas.renderAll.bind(this.canvas),
       {
-        opacity: 1,
-        backgroundImageStretch: false,
+        backgroundImageStretch: true,
         backgroundImageOpacity: 1,
         crossOrigin: 'anonymous',
-        top: this.top,
-        left: this.left,
-        originX: 'left',
-        originY: 'top',
-        scaleX: this.scaleFactor,
-        scaleY: this.scaleFactor,
       }
     );
+    this.canvas.renderAll();
     this.spinnerService.hide();
   }
 
   /* draw ellipse, when user hits ask ai accept button */
   mlApiEllipseLoop(mlList: any) {
-    mlList.diseases.forEach((diseaseItem: any) => {
-      this.drawEllipse(true, diseaseItem);
+    const mLArray = mlList.data.ndarray[0];
+    mLArray.Impression.forEach((impression: any) => {
+      const impressionObject = { id: impression[0], name: impression[1] };
+      this.eventEmitterService.onComponentDataShared(impressionObject);
+    });
+    mLArray.diseases.forEach((disease: any) => {
+      disease.ellipses.forEach((ellipse: any) => {
+        ellipse.id = ellipse.index;
+        ellipse.coordX = ellipse.x;
+        ellipse.coordY = ellipse.y;
+        ellipse.coordA = ellipse.a;
+        ellipse.coordB = ellipse.b;
+        ellipse.coordAngle = ellipse.r;
+        ellipse.color = disease.color;
+        this.drawEllipse(true, ellipse);
+      });
     });
   }
 
@@ -278,18 +293,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         new fabric.Ellipse({
           id: diseaseItem.id,
           disease: diseaseItem.diseases,
-          left: (diseaseItem.coordX as any) / canvasScaleX,
-          top: (diseaseItem.coordY as any) / canvasScaleY,
-          fill: diseaseItem.color,
-          opacity: 0.3,
+          left: (diseaseItem.x as any) / canvasScaleX,
+          top: (diseaseItem.y as any) / canvasScaleY,
+          rx: (diseaseItem.a as any) / canvasScaleX / 2,
+          ry: (diseaseItem.b as any) / canvasScaleY / 2,
+          angle: diseaseItem.r,
+          stroke: 'white',
+          fill: '',
           selectable: true,
-          originX: 'center',
-          originY: 'center',
-          rx: (diseaseItem.coordA as any) / canvasScaleX / 2,
-          ry: (diseaseItem.coordB as any) / canvasScaleY / 2,
-          angle: diseaseItem.coordAngle,
-          stroke: 'black',
-          hoverCursor: 'pointer',
         })
       );
     } else {

@@ -7,9 +7,8 @@ fdescribe('CanvasImageComponent', () => {
     'show',
     'hide',
   ]);
-  const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
-  const dashboardServiceSpy = jasmine.createSpyObj('DashboardService', [
-    'getPatientList',
+  const xrayImageServiceSpy = jasmine.createSpyObj('xrayImageService', [
+    'getPatientInstanceId',
   ]);
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'invokeComponentFunction',
@@ -24,11 +23,9 @@ fdescribe('CanvasImageComponent', () => {
   beforeEach(() => {
     component = new CanvasImageComponent(
       spinnerServiceSpy,
-      routerSpy,
-      dashboardServiceSpy,
       eventEmitterServiceSpy,
       dialogSpy,
-      xRayServiceSpy
+      xrayImageServiceSpy
     );
   });
 
@@ -118,7 +115,7 @@ fdescribe('CanvasImageComponent', () => {
         accessKeyLabel: '',
       } as unknown) as HTMLElement;
       const patientMock = [{ patientId: 1234, name: 'abcde' }];
-      dashboardServiceSpy.getPatientList.and.returnValue(of(patientMock));
+    //  dashboardServiceSpy.getPatientList.and.returnValue(of(patientMock));
       spyOn(document, 'getElementById').and.returnValue(controlCheckbox);
       component.getPatientImage('12662');
     });
@@ -142,15 +139,6 @@ fdescribe('CanvasImageComponent', () => {
     });
     it('should call setCanvasBackground function', () => {
       expect(component.setCanvasBackground).toBeDefined();
-    });
-  });
-
-  xdescribe('#onProcessClickHandler', () => {
-    beforeEach(() => {
-      // component.onProcessClickHandler();
-    });
-    it('should call onProcessClickHandler function', () => {
-      expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/doctor');
     });
   });
 

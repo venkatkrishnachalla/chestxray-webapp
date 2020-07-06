@@ -36,7 +36,9 @@ fdescribe('ApiEndPointService', () => {
     it('should call getSingInURL function', () => {
       apiEndPointService.getSingInURL();
       const result = apiEndPointService.getSingInURL();
-      expect(result).toEqual('http://localhost:3000/auth');
+      expect(result).toEqual(
+        'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login/'
+      );
     });
   });
 
