@@ -65,6 +65,7 @@ export class AuthService {
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
     localStorage.removeItem('userAuthData');
+    sessionStorage.removeItem('patientDetail');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }

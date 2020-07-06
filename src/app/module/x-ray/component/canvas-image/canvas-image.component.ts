@@ -53,6 +53,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   patientId: string;
   canvasCorrectedHeight: number;
   canvasCorrectedWidth: number;
+  left: any;
+  top: any;
+  scaleFactor: any;
+  patientDetail: any;
+  canvasColor: string;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -101,7 +106,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    this.patientId = localStorage.getItem('InstanceUID');
+    this.patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
+    this.patientId = this.patientDetail.id;
     if (!this.instanceId) {
       this.getPatientInstanceId(this.patientId);
     } else if (!this.patientImage) {
@@ -146,6 +152,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     canvas.requestRenderAll();
   }
 
+  /**
+   * Get Patient Instance ID
+   * @param {string} patientId Patient ID
+   * @return void
+   */
+
+  /* retrieve patient instance id from server */
   getPatientInstanceId(id) {
     this.xRayService
       .getPatientInstanceId(id)
@@ -355,7 +368,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     let activeObject = this.canvas.getActiveObject();
     if (activeObject) {
       this.dialog.open(this.deleteObjectModel, {
-        panelClass: 'my-class',
+        height: '240px',
+        width: '320px',
         disableClose: true,
       });
     } else {
@@ -385,7 +399,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     dialogConfig.role = 'dialog';
     this.dialog.open(this.pathologyModal, {
       height: '500px',
-      width: '350px',
+      width: '320px',
       disableClose: true,
     });
   }

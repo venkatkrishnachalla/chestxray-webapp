@@ -69,7 +69,7 @@ export class ApiEndPointService {
     return 'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/';
   }
 
-  public getPatientInstanceId(id): any {
+  getPatientInstanceId(id): any {
     return (
       'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/' +
       id +
@@ -77,7 +77,7 @@ export class ApiEndPointService {
     );
   }
 
-  public getPatientImage(id): any {
+  getPatientImage(id): any {
     return (
       'http://chestxrayqa.southindia.cloudapp.azure.com/api/instance/' +
       id +
