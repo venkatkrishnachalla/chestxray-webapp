@@ -8,12 +8,12 @@
     class="xRay-image-canvas-container d-flex justify-content-center"
     id="canvas-wrapper"
   >
+  <p align="center">
     <canvas
       id="at-id-x-ray-Canvas"
       class="xRay-image-canvas align-self-center orange"
-      [style.width.%]="100"
-      [style.height.%]="100"
     ></canvas>
+</p>
   </div>
 </div>
 
@@ -22,7 +22,7 @@
   <mat-form-field id="at-input-disease" appearance="outline">
     <img
       class="search-icon"
-      src="../../../../../assets/images/Icon search inactive.png"
+      src="{{patientImage}}"
       height="18px"
       width="18px"
       alt="search"
@@ -64,7 +64,8 @@
   </mat-dialog-content>
   <mat-dialog-actions align="center">
     <button
-      mat-raised-button [disabled]="selectedDisease == '' || selectedDisease == undefined"
+      mat-raised-button
+      [disabled]="selectedDisease == '' || selectedDisease == undefined"
       (click)="savePrediction()"
       [mat-dialog-close]="true"
       cdkFocusInitial

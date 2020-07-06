@@ -51,10 +51,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   patientImage: any;
   instanceId: any;
   patientId: string;
-  left: number;
-  top: number;
-  scaleFactorX: number;
-  scaleFactorY: number;
+  canvasCorrectedHeight: number;
+  canvasCorrectedWidth: number;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -122,7 +120,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.dialog.open(this.controlsModel, {
           panelClass: 'my-class',
           hasBackdrop: false,
-          position: { right: right-305 + 'px', top: top + 'px' },
+          position: { right: right - 305 + 'px', top: top + 'px' },
         });
       }
     });
@@ -198,53 +196,52 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
+  getWidthFirst(imageAspectRatio, containerAspectRatio) {
+    return imageAspectRatio > containerAspectRatio;
+  }
+
   /* setting BackgroundImage for canvas block */
   setCanvasBackground() {
-    const canvasAspect = this.canvasDynamicWidth / this.canvasDynamicHeight;
-    const imgAspect = this.xRayImage.width / this.xRayImage.height;
+    const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
+    const containerAspectRatio =
+      this.canvasDynamicWidth / this.canvasDynamicHeight;
+    const widthFirst = this.getWidthFirst(imageAspectRatio, containerAspectRatio);
 
-    if (this.xRayImage.width > this.xRayImage.height) {
-      this.top = 0;
-      this.left = 0,
-      this.scaleFactorX = this.canvasDynamicWidth / this.xRayImage.width;
-      this.scaleFactorY = this.canvasDynamicHeight / this.xRayImage.height;
+    if (widthFirst) {
+      this.canvasCorrectedWidth = this.canvasDynamicWidth;
+      this.canvasCorrectedHeight = this.canvasCorrectedWidth / imageAspectRatio;
     } else {
-      this.scaleFactorX = this.canvasDynamicHeight / this.xRayImage.height;
-      this.scaleFactorY = this.canvasDynamicHeight / this.xRayImage.height;
-      this.top = 0;
-      this.left =
-        -(this.xRayImage.width * this.scaleFactorX - this.canvasDynamicWidth) /
-        2;
+      this.canvasCorrectedHeight = this.canvasDynamicHeight;
+      this.canvasCorrectedWidth = this.canvasCorrectedHeight * imageAspectRatio;
     }
 
+    this.canvas.setWidth(this.canvasCorrectedWidth);
+    this.canvas.setHeight(this.canvasCorrectedHeight);
+
+    this.xRayImage.set({
+      opacity: 1,
+      scaleX: this.canvasCorrectedWidth / this.xRayImage.width,
+      scaleY: this.canvasCorrectedHeight / this.xRayImage.height,
+    });
     this.canvas.setBackgroundImage(
       this.xRayImage,
-      this.canvas.requestRenderAll.bind(this.canvas),
+      this.canvas.renderAll.bind(this.canvas),
       {
-        opacity: 1,
-        backgroundImageStretch: false,
+        backgroundImageStretch: true,
         backgroundImageOpacity: 1,
         crossOrigin: 'anonymous',
-        top: this.top,
-        left: this.left,
-        originX: 'left',
-        originY: 'top',
-        scaleX: this.scaleFactorX,
-        scaleY: this.scaleFactorY,
       }
     );
+    this.canvas.renderAll();
     this.spinnerService.hide();
   }
 
   /* draw ellipse, when user hits ask ai accept button */
   mlApiEllipseLoop(mlList: any) {
     const mLArray = mlList.data.ndarray[0];
-    let impressions = [];
     mLArray.Impression.forEach((impression: any) => {
-      impressions.push({
-        index: impression[0],
-        name: impression[1],
-      });
+      const impressionObject = { id: impression[0], name: impression[1] };
+      this.eventEmitterService.onComponentDataShared(impressionObject);
     });
     mLArray.diseases.forEach((disease: any) => {
       disease.ellipses.forEach((ellipse: any) => {
@@ -285,16 +282,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           disease: diseaseItem.diseases,
           left: (diseaseItem.x as any) / canvasScaleX,
           top: (diseaseItem.y as any) / canvasScaleY,
-          fill: diseaseItem.color,
-          opacity: 0.1,
-          selectable: true,
-          originX: 'center',
-          originY: 'center',
           rx: (diseaseItem.a as any) / canvasScaleX / 2,
           ry: (diseaseItem.b as any) / canvasScaleY / 2,
           angle: diseaseItem.r,
-          stroke: 'black',
-          hoverCursor: 'pointer',
+          stroke: 'white',
+          fill: '',
+          selectable: true,
         })
       );
     } else {
@@ -373,7 +366,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Delete active object
    */
   deletePrediction() {
-    let selectedObject = {id: this.canvas.getActiveObject().id, name: "delete"};
+    let selectedObject = {
+      id: this.canvas.getActiveObject().id,
+      name: 'delete',
+    };
     this.eventEmitterService.onComponentButtonClick(selectedObject);
     let activeObject = this.canvas.getActiveObject();
     this.canvas.remove(activeObject);
@@ -389,7 +385,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     dialogConfig.role = 'dialog';
     this.dialog.open(this.pathologyModal, {
       height: '500px',
-      width: '350px', disableClose: true,
+      width: '350px',
+      disableClose: true,
     });
   }
   /**
@@ -397,18 +394,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   onSelect(event, item) {
     if (item.length === 0) {
-      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z ]/g, "");
+      this.selectedDisease = event.target.textContent.replace(
+        /[^a-zA-Z ]/g,
+        ''
+      );
     } else if (item === '') {
-      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z]/g, "");
+      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z]/g, '');
     }
   }
   /**
    * Emitting selected disease to Impression component
    */
   savePrediction() {
-    let id = Math.floor((Math.random() * 100) + 1);
+    let id = Math.floor(Math.random() * 100 + 1);
     this.canvas.getActiveObject().id = id;
-    let selectedObject = {id: id, name: this.selectedDisease};
+    let selectedObject = { id: id, name: this.selectedDisease };
     this.eventEmitterService.onComponentDataShared(selectedObject);
     // this.eventEmitterService.onComponentDataShared(this.selectedDisease);
     this.selectedDisease = '';
