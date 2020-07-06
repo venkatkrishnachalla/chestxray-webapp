@@ -42,9 +42,9 @@ export class ActionPanelComponent implements OnInit {
   };
 
   readonly constants = actionPanelConstants;
-  actionPanel: { image: string; alt: string }[];
-  middlePanel: { image: string; alt: string }[];
-  brightnessPanel: { image: string; alt: string }[];
+  actionPanel: { image: string; alt: string; title: string }[];
+  middlePanel: { image: string; alt: string; title: string }[];
+  brightnessPanel: { image: string; alt: string; title: string }[];
   constructor(private eventEmitterService: EventEmitterService) {}
 
   ngOnInit(): void {
