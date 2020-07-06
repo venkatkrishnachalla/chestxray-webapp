@@ -42,9 +42,9 @@ export class ActionPanelComponent implements OnInit {
   };
 
   readonly constants = actionPanelConstants;
-  actionPanel: { image: string; alt: string; title: string }[];
-  middlePanel: { image: string; alt: string; title: string }[];
-  brightnessPanel: { image: string; alt: string; title: string }[];
+  actionPanel: { image: string; alt: string, title: string }[];
+  middlePanel: { image: string; alt: string , title: string, active: boolean}[];
+  brightnessPanel: { image: string; alt: string, title: string }[];
   constructor(private eventEmitterService: EventEmitterService) {}
 
   ngOnInit(): void {
@@ -52,8 +52,14 @@ export class ActionPanelComponent implements OnInit {
     this.middlePanel = this.constants.actionPanelMiddle;
     this.brightnessPanel = this.constants.actionPanelBrightness;
   }
-  iconAction(title) {
-    this.eventEmitterService.onComponentButtonClick(title);
+  iconAction(data, index){
+    for (const key in data) {
+      if (key !== index) {
+      data[key].active = false;
+      }
+    }  
+    data[index].active = (data[index].active) ?  false : true;
+    this.eventEmitterService.onComponentButtonClick(data[index]); 
   }
 
   askAI() {

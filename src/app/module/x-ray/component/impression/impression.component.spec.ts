@@ -21,4 +21,17 @@ describe('ImpressionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call getImpressions function', () => {
+    const result = component.getImpressions();
+    expect(component.getImpressions).toBeDefined();
+  });
+  it('should call deleteImpression function', () => {
+    const result = component.deleteImpression(2);
+    expect(component.deleteImpression).toBeDefined();
+  });
+  it('should call updateImpression function', () => {
+    const result = component.updateImpression();
+    expect(component.updateImpression).toBeDefined();
+  });
 });

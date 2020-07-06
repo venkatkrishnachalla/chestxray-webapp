@@ -1,10 +1,8 @@
 {
-  "/api": {
-    "target": "http://localhost:3000",
+  "/api/*": {
+    "target": "https://52.184.249.242:80/seldon/seldon/cxr-classifier",
     "secure": false,
-    "pathRewrite": {
-      "^/mock": ""
-    }
+    "changeOrigin": true
   },
   "logLevel": "debug"
 }

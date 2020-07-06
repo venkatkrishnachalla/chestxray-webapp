@@ -1,13 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AskAiComponent } from './ask-ai.component';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 describe('AskAiComponent', () => {
   let component: AskAiComponent;
+  const xrayServiceSpy = jasmine.createSpyObj('XRayService', ['getAskAiDetails']);
 
   beforeEach(() => {
-    component = new AskAiComponent(
-    );
+    component = new AskAiComponent(xrayServiceSpy);
   });
 
   it('should create', () => {

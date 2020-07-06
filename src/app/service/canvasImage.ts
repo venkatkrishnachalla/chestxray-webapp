@@ -22,6 +22,7 @@ export class xrayImageService {
       .pipe(
         catchError(this.handleError),
         tap((responseData) => {
+          console.log("responseData", responseData)
           return responseData;
         })
       );

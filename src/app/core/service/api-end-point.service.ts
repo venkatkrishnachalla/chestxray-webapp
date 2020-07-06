@@ -69,15 +69,15 @@ export class ApiEndPointService {
     return environment.patientList;
   }
 
-  public getPatientInstanceId(id): any {
+  getPatientInstanceId(id): any {
     return (
       environment.patientInstanceId + id
        +
       '/studies'
     );
   }
-  
-  public getPatientImage(id): any {
+
+  getPatientImage(id): any {
     return (
       environment.PatientImage + id
        +
@@ -89,6 +89,6 @@ export class ApiEndPointService {
     // if (environment.isMockAPI) {
     //   return environment.mockApiEndPoint + '/predictions';
     // }
-    return environment.askAI;
+    return '/api/v1.0/predictions';
   }
 }
