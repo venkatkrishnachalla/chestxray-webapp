@@ -69,26 +69,23 @@ export class ApiEndPointService {
     return 'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/';
   }
 
-  public getPatientInstanceId(id): any {
+  getPatientInstanceId(id): any {
     return (
-      'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/' + id
-       +
+      'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/' +
+      id +
       '/studies'
     );
   }
-  
-  public getPatientImage(id): any {
+
+  getPatientImage(id): any {
     return (
-      'http://chestxrayqa.southindia.cloudapp.azure.com/api/instance/' + id
-       +
+      'http://chestxrayqa.southindia.cloudapp.azure.com/api/instance/' +
+      id +
       '/image'
     );
   }
 
   public getAskAi(): string {
-    // if (environment.isMockAPI) {
-    //   return environment.mockApiEndPoint + '/predictions';
-    // }
-    return 'http://52.167.73.54:80/seldon/seldon/cxr-classifier/api/v1.0/predictions';
+    return '/api/v1.0/predictions';
   }
 }

@@ -2,20 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActionPanelComponent } from './action-panel.component';
 
-describe('ActionPanelComponent', () => {
+fdescribe('ActionPanelComponent', () => {
   let component: ActionPanelComponent;
-  let fixture: ComponentFixture<ActionPanelComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ActionPanelComponent],
-    }).compileComponents();
-  }));
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', ['onComponentButtonClick']);
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActionPanelComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new ActionPanelComponent(
+      eventEmitterServiceSpy
+    );
   });
 
   describe('#ngOnInit', () => {

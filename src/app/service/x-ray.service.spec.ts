@@ -19,18 +19,4 @@ describe('XRayService', () => {
     // const service: xrayImageService = TestBed.get(xrayImageService);
     expect(service).toBeTruthy();
   });
-
-  // describe('#getPatientImage', () => {
-  //   beforeEach(() => {
-  //     service.getPatientImage(1);
-  //   });
-  //   it('should call getPatientImage function', () => {});
-  // });
-
-  // describe('#getPatientInstanceId', () => {
-  //   beforeEach(() => {
-  //     service.getPatientInstanceId(1);
-  //   });
-  //   it('should call getPatientInstanceId function', () => {});
-  // });
 });

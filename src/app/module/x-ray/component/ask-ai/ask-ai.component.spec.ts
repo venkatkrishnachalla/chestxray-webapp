@@ -1,22 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AskAiComponent } from './ask-ai.component';
 import { XRayService } from 'src/app/service/x-ray.service';
 
 describe('AskAiComponent', () => {
   let component: AskAiComponent;
-  let XRayServiceSpy:jasmine.SpyObj<XRayService>
+  const xrayServiceSpy = jasmine.createSpyObj('XRayService', ['getAskAiDetails']);
 
   beforeEach(() => {
-    XRayServiceSpy = jasmine.createSpyObj('XRayService', []);
+    component = new AskAiComponent(xrayServiceSpy);
   });
-
-  TestBed.configureTestingModule({
-    declarations: [AskAiComponent],
-    providers:[{
-      provide: XRayService, usevalue: XRayServiceSpy
-    }]
-  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
