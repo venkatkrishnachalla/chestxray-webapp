@@ -101,7 +101,7 @@
   mat-dialog-content {
     margin: 0px;
     padding: 0px;
-    max-height: 46vh;
+    max-height: 42vh;
     width: 100% !important;
     background-color: black;
     border-radius: 1rem;
@@ -121,28 +121,57 @@
     justify-content: space-between;
     margin-top: 1.5rem;
     button {
-      background-color: #ff4d4d;
-      width: 140px;
+      width: 110px;
       height: 35px;
       color: #ffffff;
       font-size: 1.5rem;
-    }
-    button:first-child {
-      background-color: #25b865;
     }
   }
 }
 ::ng-deep {
   mat-dialog-container {
     mat-dialog-content#pathologyModel {
-      min-height: 300px;
+      min-height: 42vh;
       width: 350px;
     }
     mat-dialog-content#deleteImpression {
       display: table-cell;
       padding: 10px 25px 23px 20px;
-      border-radius: 14px;
+      border-radius: 7px;
       color: white;
+      min-height: 300px;
+      width: 350px;
+      h2{
+        font-weight: 400;
+        padding-bottom: 1.5rem;
+      }
+      .sub-delete-title{
+        font-size: 1.3rem;
+      }
+    }
+    mat-dialog-actions#deleteImpression {
+      justify-content: space-between;
+      margin-top: 0.8rem;
+      .deleteDisease {
+        width: 110px;
+        height: 35px;
+        color: #ffffff;
+        font-size: 1.5rem;
+        background-color: #5d5f64;
+      }
+      .deleteDisease:hover {
+        background-color: #ff4d4d;
+      }
+      .cancelDisease{
+        width: 110px;
+        height: 35px;
+        color: #ffffff;
+        font-size: 1.5rem;
+        background-color: #5d5f64;
+      }
+      .cancelDisease:hover {
+        background-color: rgb(159, 160, 159);      
+      }
     }
     // mat-dialog-content#controls{
     //   background-color: black;
