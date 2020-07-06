@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cxr-local-filesystem',
@@ -14,8 +15,9 @@ export class LocalFilesystemComponent implements OnInit {
   fileName = 'Choose file';
   imageSource: string;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) {}
 
+  /*** class init function ***/
   ngOnInit(): void {
     this.uploadImageForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -30,13 +32,12 @@ export class LocalFilesystemComponent implements OnInit {
       }),
     });
   }
-  
+
   get f() {
     return this.uploadImageForm.controls;
   }
 
-  /* on changing file */
-
+  /*** on image file changing event ***/
   onFileChange(event) {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name.toString();
@@ -55,15 +56,20 @@ export class LocalFilesystemComponent implements OnInit {
     }
   }
 
+  /*** capture drag and drop of image ***/
   dragDropEvent(event) {
     this.imageSource = event;
   }
 
+  /*** new patient form submit ***/
   onSubmit() {
     this.submitted = true;
     if (this.uploadImageForm.invalid) {
       return;
     }
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.uploadImageForm.value));
+    const patientData = JSON.stringify(this.uploadImageForm.value);
+    localStorage.setItem('InstanceUID', patientData);
+    sessionStorage.setItem('patientImage', this.imageSource);
+    this.router.navigate(['/x-ray']);
   }
 }

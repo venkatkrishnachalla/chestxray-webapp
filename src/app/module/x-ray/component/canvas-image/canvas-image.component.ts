@@ -105,13 +105,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
     this.patientId = localStorage.getItem('InstanceUID');
-    if (!this.instanceId) {
+    this.PatientImage = sessionStorage.getItem('patientImage');
+    if (!this.instanceId && !this.PatientImage) {
       this.getPatientInstanceId(this.patientId);
-    } else if (!this.patientImage) {
+    } else if (!this.PatientImage) {
       this.getPatientImage(this.instanceId);
     } else {
       this.setCanvasDimension();
-      this.setCanvasBackground();
+      this.generateCanvas();
     }
     this.canvas.on('object:selected', (evt) => {
       let selectedObject = this.canvas.getActiveObject();

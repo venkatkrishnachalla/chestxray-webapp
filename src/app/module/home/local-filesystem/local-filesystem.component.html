@@ -163,7 +163,6 @@
       <h2>UPLOAD X-RAY IMAGE *</h2>
       <form [formGroup]="uploadImageForm">
         <cxr-drag-drop (dragImageSrc)="dragDropEvent($event)"></cxr-drag-drop>
-
         <div style="text-align: center;">
           <!-- <pre>Drag & drop your files here</pre> -->
           <pre>(or)</pre>
@@ -190,7 +189,7 @@
         <button
           type="button"
           [disabled]="uploadImageForm.invalid"
-          mat-raised-button
+          mat-raised-button (click)="onSubmit()"
         >
           Report <img src="../../../../assets/images/arrow next.png" alt="" />
         </button>
