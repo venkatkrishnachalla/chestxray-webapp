@@ -7,14 +7,16 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 })
 export class DragDropComponent implements OnInit {
   @Output() dragImageSrc = new EventEmitter();
+  @Output() dragImageFile = new EventEmitter();
   activeColor = 'green';
   baseColor = '#ccc';
   overlayColor = 'rgba(255,255,255,0.5)';
-
   dragging = false;
   loaded = false;
   imageLoaded = false;
   imageSrc = '';
+  file: any;
+
   constructor() {}
 
   ngOnInit(): void {}
@@ -49,7 +51,7 @@ export class DragDropComponent implements OnInit {
     }
 
     this.loaded = false;
-
+    this.file = file;
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
   }
@@ -58,6 +60,7 @@ export class DragDropComponent implements OnInit {
     const reader = e.target;
     this.imageSrc = reader.result;
     this.dragImageSrc.emit(this.imageSrc);
+    this.dragImageFile.emit(this.file);
     this.loaded = true;
   }
 }

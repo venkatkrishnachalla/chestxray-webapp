@@ -26,8 +26,9 @@ export class LocalFilesystemComponent implements OnInit {
       email: ['', [Validators.email]],
       phoneNumber: ['', [Validators.maxLength(10)]],
       address: [''],
+      file: ['', Validators.required],
       XRayImage: this.formBuilder.group({
-        file: ['', Validators.required],
+        file: [''],
         fileSource: [''],
       }),
     });
@@ -59,6 +60,17 @@ export class LocalFilesystemComponent implements OnInit {
   /*** capture drag and drop of image ***/
   dragDropEvent(event) {
     this.imageSource = event;
+  }
+
+  /*** capture drag and drop of image file event ***/
+  dragDropFile(event) {
+    this.fileName = event.name.toString();
+    this.uploadImageForm.patchValue({
+      fileSource: this.images,
+      file: event
+    });
+    this.uploadImageForm.controls.file.setValue(event);
+   // console.log('this.uploadImageForm', this.uploadImageForm);
   }
 
   /*** new patient form submit ***/
