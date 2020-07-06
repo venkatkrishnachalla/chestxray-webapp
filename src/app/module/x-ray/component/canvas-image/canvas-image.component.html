@@ -8,12 +8,12 @@
     class="xRay-image-canvas-container d-flex justify-content-center"
     id="canvas-wrapper"
   >
-  <p align="center">
-    <canvas
-      id="at-id-x-ray-Canvas"
-      class="xRay-image-canvas align-self-center orange"
-    ></canvas>
-</p>
+    <p align="center">
+      <canvas
+        id="at-id-x-ray-Canvas"
+        class="xRay-image-canvas align-self-center orange"
+      ></canvas>
+    </p>
   </div>
 </div>
 
@@ -46,16 +46,16 @@
       <ng-container
         *ngFor="
           let item of pathologyNames | searchFilter: selectedDisease;
-          let i = index
+          let v = index
         "
       >
         <mat-list-item class="pointer" (click)="onSelect($event, item.names)"
-          >{{ i + 1 }}.&nbsp;&nbsp; {{ item.abnormality }}</mat-list-item
+          >{{ v + 1 }}.&nbsp;&nbsp;{{ item.letter }}</mat-list-item
         >
         <mat-list class="sub-list">
           <div *ngFor="let subItem of item.names; let i = index">
             <mat-list-item class="pointer" (click)="onSelect($event, '')"
-              >{{ i + 1 }}.&nbsp;&nbsp;{{ subItem }}</mat-list-item
+              >{{ v + 1 }}.{{ i + 1 }}&nbsp;&nbsp;{{ subItem }}</mat-list-item
             >
           </div>
         </mat-list>
@@ -64,17 +64,29 @@
   </mat-dialog-content>
   <mat-dialog-actions align="center">
     <button
-    mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#25b865' }"
-    [disabled]="selectedDisease == '' || selectedDisease == undefined"
-    (click)="savePrediction()"
-    [mat-dialog-close]="true"
-    *ngIf="!updateDisease"
-    cdkFocusInitial
-  >
-    SAVE
-  </button>
-  <button
-      mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#25b865' }"
+      mat-raised-button
+      [ngStyle]="{
+        'background-color':
+          selectedDisease === '' || selectedDisease == undefined
+            ? '#5d5f64'
+            : '#25b865'
+      }"
+      [disabled]="selectedDisease == '' || selectedDisease == undefined"
+      (click)="savePrediction()"
+      [mat-dialog-close]="true"
+      *ngIf="!updateDisease"
+      cdkFocusInitial
+    >
+      SAVE
+    </button>
+    <button
+      mat-raised-button
+      [ngStyle]="{
+        'background-color':
+          selectedDisease === '' || selectedDisease == undefined
+            ? '#5d5f64'
+            : '#25b865'
+      }"
       [disabled]="selectedDisease == '' || selectedDisease == undefined"
       (click)="updatePrediction()"
       [mat-dialog-close]="true"
@@ -83,13 +95,19 @@
     >
       UPDATE
     </button>
-  <button
-    mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#ff4d4d' }"
-    (click)="closePathologyModal()"
-    [mat-dialog-close]="true"
-  >
-    CANCEL
-  </button>
+    <button
+      mat-raised-button
+      [ngStyle]="{
+        'background-color':
+          selectedDisease === '' || selectedDisease == undefined
+            ? '#5d5f64'
+            : '#ff4d4d'
+      }"
+      (click)="closePathologyModal()"
+      [mat-dialog-close]="true"
+    >
+      CANCEL
+    </button>
   </mat-dialog-actions>
 </ng-template>
 
@@ -97,7 +115,9 @@
   <h2 mat-dialog-title>&nbsp;</h2>
   <mat-dialog-content id="deleteImpression" align="center">
     <h2>Are you sure ?</h2>
-    <div class="sub-delete-title">Do you really want to delete this annotation?</div>
+    <div class="sub-delete-title">
+      Do you really want to delete this annotation?
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions id="deleteImpression" align="center">
     <button
@@ -109,11 +129,7 @@
     >
       DELETE
     </button>
-    <button
-      class="cancelDisease"
-      mat-raised-button
-      mat-dialog-close
-    >
+    <button class="cancelDisease" mat-raised-button mat-dialog-close>
       CANCEL
     </button>
   </mat-dialog-actions>
