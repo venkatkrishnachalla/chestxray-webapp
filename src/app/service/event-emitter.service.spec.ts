@@ -13,4 +13,12 @@ xdescribe('EventEmitterService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+  it('should call onComponentButtonClick function', () => {
+    const result = service.onComponentButtonClick('');
+    expect(service.onComponentButtonClick).toBeDefined();
+  });
+  it('should call onComponentDataShared function', () => {
+    const result = service.onComponentDataShared('')
+    expect(service.onComponentDataShared).toBeDefined();
+  });
 });

@@ -11,10 +11,6 @@ fdescribe('XRayComponent', () => {
     'getAskAiDetails',
   ]);
 
-  beforeEach(() => {
-    component = new XRayComponent(XRayServiceSpy, spinnerServiceSpy);
-  });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });

@@ -15,6 +15,6 @@
   <p><mat-label>Time:</mat-label>{{ Time | date: 'HH:mm:ss' }}</p>
   <p>
     <mat-label>Clinical History:</mat-label>
-    <mat-card-content>{{ history }}</mat-card-content>
+    <mat-card-content>{{ history || '-'}}</mat-card-content>
   </p>
 </mat-card>

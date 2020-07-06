@@ -22,7 +22,7 @@
   <mat-form-field id="at-input-disease" appearance="outline">
     <img
       class="search-icon"
-      src="{{patientImage}}"
+      src="../../../../../assets/images/Icon search inactive.png"
       height="18px"
       width="18px"
       alt="search"
@@ -50,7 +50,7 @@
         "
       >
         <mat-list-item class="pointer" (click)="onSelect($event, item.names)"
-          >{{ i + 1 }}.&nbsp;&nbsp;{{ item.letter }}</mat-list-item
+          >{{ i + 1 }}.&nbsp;&nbsp; {{ item.abnormality }}</mat-list-item
         >
         <mat-list class="sub-list">
           <div *ngFor="let subItem of item.names; let i = index">
@@ -64,21 +64,32 @@
   </mat-dialog-content>
   <mat-dialog-actions align="center">
     <button
+    mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#25b865' }"
+    [disabled]="selectedDisease == '' || selectedDisease == undefined"
+    (click)="savePrediction()"
+    [mat-dialog-close]="true"
+    *ngIf="!updateDisease"
+    cdkFocusInitial
+  >
+    SAVE
+  </button>
+  <button
       mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#25b865' }"
       [disabled]="selectedDisease == '' || selectedDisease == undefined"
-      (click)="savePrediction()"
+      (click)="updatePrediction()"
       [mat-dialog-close]="true"
+      *ngIf="updateDisease"
       cdkFocusInitial
     >
-      SAVE
+      UPDATE
     </button>
-    <button
-      mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#ff4d4d' }"
-      (click)="closePathologyModal()"
-      [mat-dialog-close]="true"
-    >
-      CANCEL
-    </button>
+  <button
+    mat-raised-button [ngStyle]="{'background-color':selectedDisease === '' || selectedDisease == undefined ? '#5d5f64' : '#ff4d4d' }"
+    (click)="closePathologyModal()"
+    [mat-dialog-close]="true"
+  >
+    CANCEL
+  </button>
   </mat-dialog-actions>
 </ng-template>
 
@@ -110,8 +121,7 @@
 
 <ng-template #controls>
   <div id="controls">
-    <span class="material-icons pointer">done</span>
-    <span class="material-icons pointer">link</span>
+    <span class="material-icons pointer" (click)="updateEllipse()">link</span>
     <span class="material-icons pointer">content_copy</span>
     <span class="material-icons pointer" (click)="deleteEllipse()"
       >highlight_off</span

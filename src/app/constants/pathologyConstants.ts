@@ -1,7 +1,7 @@
 export const pathology = {
   diseases: [
     {
-      letter: 'Anatomical variants',
+      abnormality: 'Anatomical variants',
       names: [
         'Aortic Arch variants',
         'Azygous fissure',
@@ -10,19 +10,19 @@ export const pathology = {
       ],
     },
     {
-      letter: 'Bronchiectasis',
+      abnormality: 'Bronchiectasis',
       names: [],
     },
     {
-      letter: 'Bronchitis',
+      abnormality: 'Bronchitis',
       names: [],
     },
     {
-      letter: 'Bulla',
+      abnormality: 'Bulla',
       names: [],
     },
     {
-      letter: 'Calcification',
+      abnormality: 'Calcification',
       names: [
         'Calcified nodule',
         'Calcified node',
@@ -31,43 +31,43 @@ export const pathology = {
       ],
     },
     {
-      letter: 'Cardiomegaly',
+      abnormality: 'Cardiomegaly',
       names: [],
     },
     {
-      letter: 'Cavity',
+      abnormality: 'Cavity',
       names: [],
     },
     {
-      letter: 'Collapse/Atelectais',
+      abnormality: 'Collapse/Atelectais',
       names: [],
     },
     {
-      letter: 'Consolidation',
+      abnormality: 'Consolidation',
       names: [],
     },
     {
-      letter: 'Covid',
+      abnormality: 'Covid',
       names: [],
     },
     {
-      letter: 'Cyst with Air Crescent',
+      abnormality: 'Cyst with Air Crescent',
       names: [],
     },
     {
-      letter: 'Cyst with Air Fluid Level',
+      abnormality: 'Cyst with Air Fluid Level',
       names: [],
     },
     {
-      letter: 'Dextrocardia',
+      abnormality: 'Dextrocardia',
       names: [],
     },
     {
-      letter: 'Diaphragmatic Abnormalitis',
+      abnormality: 'Diaphragmatic Abnormalitis',
       names: [],
     },
     {
-      letter: 'External Densities',
+      abnormality: 'External Densities',
       names: [
         'bone cement',
         'mammary prosthesis/breast implant',
@@ -76,7 +76,7 @@ export const pathology = {
       ],
     },
     {
-      letter: 'Extrapulmonary Extrapleural Conditions',
+      abnormality: 'Extrapulmonary Extrapleural Conditions',
       names: [
         'Subcutaneous emphysema',
         'Thyroid calcification',
@@ -84,43 +84,43 @@ export const pathology = {
       ],
     },
     {
-      letter: 'Fibrosis',
+      abnormality: 'Fibrosis',
       names: [],
     },
     {
-      letter: 'Hilar Enlargement',
+      abnormality: 'Hilar Enlargement',
       names: [],
     },
     {
-      letter: 'Honey Combing',
+      abnormality: 'Honey Combing',
       names: [],
     },
     {
-      letter: 'Hydropneumothorax',
+      abnormality: 'Hydropneumothorax',
       names: [],
     },
     {
-      letter: 'Hyperinflation',
+      abnormality: 'Hyperinflation',
       names: [],
     },
     {
-      letter: 'Mass',
+      abnormality: 'Mass',
       names: [],
     },
     {
-      letter: 'Mediastinal widening',
+      abnormality: 'Mediastinal widening',
       names: [],
     },
     {
-      letter: 'Nodule',
+      abnormality: 'Nodule',
       names: [],
     },
     {
-      letter: 'No Finding',
+      abnormality: 'No Finding',
       names: [],
     },
     {
-      letter: 'Osseous Lesions',
+      abnormality: 'Osseous Lesions',
       names: [
         'Fracture',
         'Implants',
@@ -131,35 +131,35 @@ export const pathology = {
       ],
     },
     {
-      letter: 'Osteopenia',
+      abnormality: 'Osteopenia',
       names: [],
     },
     {
-      letter: 'Pleural Effusion',
+      abnormality: 'Pleural Effusion',
       names: ['Pleural Effusion', 'Pleural Thickening'],
     },
     {
-      letter: 'Pneumomediastinum',
+      abnormality: 'Pneumomediastinum',
       names: [],
     },
     {
-      letter: 'Pneumopericardium',
+      abnormality: 'Pneumopericardium',
       names: [],
     },
     {
-      letter: 'Pneumoperitoneum',
+      abnormality: 'Pneumoperitoneum',
       names: [],
     },
     {
-      letter: 'Pneumothorax',
+      abnormality: 'Pneumothorax',
       names: [],
     },
     {
-      letter: 'Reticulo Nodular Pattern',
+      abnormality: 'Reticulo Nodular Pattern',
       names: [],
     },
     {
-      letter: 'Support Devices',
+      abnormality: 'Support Devices',
       names: [
         'Artificial valves',
         'Dialysis catheter',
@@ -172,7 +172,7 @@ export const pathology = {
       ],
     },
     {
-      letter: 'Surgery',
+      abnormality: 'Surgery',
       names: ['mastectomy', 'pneumonectomy', 'rib resection', 'sternotomy'],
     },
   ],

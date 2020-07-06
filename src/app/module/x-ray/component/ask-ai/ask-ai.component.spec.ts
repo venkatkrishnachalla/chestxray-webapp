@@ -1,4 +1,5 @@
 import { AskAiComponent } from './ask-ai.component';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 describe('AskAiComponent', () => {
   let component: AskAiComponent;

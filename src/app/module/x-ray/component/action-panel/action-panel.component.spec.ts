@@ -12,10 +12,6 @@ fdescribe('ActionPanelComponent', () => {
     );
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
@@ -34,6 +30,16 @@ fdescribe('ActionPanelComponent', () => {
     it('should call askAI function', () => {
       const result = component.askAI();
       expect(component.askAI).toBeDefined();
+    });
+  });
+
+  describe('#askAI', () => {
+    beforeEach(() => {
+      component.iconAction('');
+    });
+    it('should call icon Action function', () => {
+      const result = component.iconAction('');
+      expect(component.iconAction).toBeDefined();
     });
   });
 
