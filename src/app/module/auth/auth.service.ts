@@ -20,6 +20,8 @@ interface AuthResponseData {
   expiration: string;
   localId: string;
   registered?: boolean;
+  username: string;
+  userroles: any[];
 }
 @Injectable({
   providedIn: 'root',
@@ -55,7 +57,9 @@ export class AuthService {
             responseDate.email,
             responseDate.localId,
             responseDate.token,
-            responseDate.expiration
+            responseDate.expiration,
+            responseDate.username,
+            responseDate.userroles
           );
         })
       );
@@ -66,6 +70,7 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
     localStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
+    sessionStorage.removeItem('patientImage');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -81,6 +86,8 @@ export class AuthService {
       id: string;
       _token: string;
       _tokenExpirationDate: string;
+      username: string;
+      userroles: any[]
     } = JSON.parse(localStorage.getItem('userAuthData'));
     if (!authData) {
       return;
@@ -89,7 +96,9 @@ export class AuthService {
       authData.email,
       authData.id,
       authData._token,
-      new Date(authData._tokenExpirationDate)
+      new Date(authData._tokenExpirationDate),
+      authData.username,
+      authData.userroles
     );
 
     if (curUser.token) {
@@ -118,7 +127,9 @@ export class AuthService {
             this.user.email,
             this.user.id,
             responseDate.idToken,
-            +responseDate.expiresIn
+            +responseDate.expiresIn,
+            this.user.username,
+            this.user.userroles
           );
         })
       );
@@ -145,11 +156,13 @@ export class AuthService {
     email: string,
     userID: string,
     token: string,
-    expiresIn: any
+    expiresIn: any,
+    username: string,
+    userroles: any,
   ) {
     //  const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const expirationDate = new Date(expiresIn);
-    const user = new User(email, userID, token, expirationDate);
+    const user = new User(email, userID, token, expirationDate, username, userroles);
 
     this.userSubject.next(user);
     const startDate = new Date().getTime();

@@ -33,7 +33,7 @@ const materialModules = [
   MatCheckboxModule,
   MatListModule,
   MatDialogModule,
-  MatAutocompleteModule,
+  MatAutocompleteModule
 ];
 
 @NgModule({

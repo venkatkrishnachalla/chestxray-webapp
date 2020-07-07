@@ -1,16 +1,17 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cxr-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+  private userSubscription: Subscription;
   isAuth = false;
-  doctorName = 'Dr.Adam';
+  doctorName: string;
   toggleActive: boolean;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
@@ -20,8 +21,15 @@ export class HeaderComponent implements OnInit {
     public router: Router,
     ) {}
 
+  /*** class init function ***/
   ngOnInit(): void {
-    this.doctorName = localStorage.getItem('loggedInUser');
+    this.userSubscription = this.authService.userSubject.subscribe(
+      (user: any) => {
+        if (user) {
+          this.doctorName = user.username;
+        }
+      }
+    );
     this.toggleActive = false;
     this.initialize();
   }
@@ -36,5 +44,10 @@ export class HeaderComponent implements OnInit {
 
   toggleSidenav() {
     this.buttonClicked.emit('clicked');
+  }
+
+  /*** unsubscribe user subscription event ***/
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 }
