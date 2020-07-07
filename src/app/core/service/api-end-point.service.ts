@@ -12,9 +12,9 @@ type QueryParams = {
 export class ApiEndPointService {
   private baseUrl: string;
   constructor() {
-    this.baseUrl = environment.isMockAPI
-      ? environment.mockApiEndPoint
-      : environment.apiEndPoint;
+    // this.baseUrl = environment.isMockAPI
+    //   ? environment.mockApiEndPoint
+    //   : environment.apiEndPoint;
   }
 
   private getUrl(action: string, pathVariables: any[] = []): string {
@@ -45,47 +45,50 @@ export class ApiEndPointService {
   }
 
   public getSingInURL(): string {
-    if (environment.isMockAPI) {
-      return environment.mockApiEndPoint + '/auth';
-    }
-    return 'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login/';
+    // if (environment.isMockAPI) {
+    //   return environment.mockApiEndPoint + '/auth';
+    // }
+    return environment.loginAPI;
   }
 
   public getRefreshToken(): string {
-    if (environment.isMockAPI) {
-      return environment.mockApiEndPoint + '/auth';
-    }
+    // if (environment.isMockAPI) {
+    //   return environment.mockApiEndPoint + '/auth';
+    // }
     const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
-    return (
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=' +
+    return ( environment.RefreshToken +
+      'signInWithCustomToken?key=' +
       FIREBASE_API_KEY
     );
   }
 
   public getPatientList(): string {
-    if (environment.isMockAPI) {
-      return environment.mockApiEndPoint + '/patients';
-    }
-    return 'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/';
+    // if (environment.isMockAPI) {
+    //   return environment.mockApiEndPoint + '/patients';
+    // }
+    return environment.patientList;
   }
 
   getPatientInstanceId(id): any {
     return (
-      'http://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/' +
-      id +
+      environment.patientInstanceId + id
+       +
       '/studies'
     );
   }
 
   getPatientImage(id): any {
     return (
-      'http://chestxrayqa.southindia.cloudapp.azure.com/api/instance/' +
-      id +
+      environment.PatientImage + id
+       +
       '/image'
     );
   }
 
   public getAskAi(): string {
+    // if (environment.isMockAPI) {
+    //   return environment.mockApiEndPoint + '/predictions';
+    // }
     return '/api/v1.0/predictions';
   }
 }

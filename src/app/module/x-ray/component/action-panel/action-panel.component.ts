@@ -42,9 +42,9 @@ export class ActionPanelComponent implements OnInit {
   };
 
   readonly constants = actionPanelConstants;
-  actionPanel: { image: string; alt: string }[];
+  actionPanel: { image: string; alt: string, title: string }[];
   middlePanel: { image: string; alt: string , title: string, active: boolean}[];
-  brightnessPanel: { image: string; alt: string }[];
+  brightnessPanel: { image: string; alt: string, title: string }[];
   constructor(private eventEmitterService: EventEmitterService) {}
 
   ngOnInit(): void {
@@ -54,8 +54,9 @@ export class ActionPanelComponent implements OnInit {
   }
   iconAction(data, index){
     for (const key in data) {
-      if(key != index)
+      if (key !== index) {
       data[key].active = false;
+      }
     }  
     data[index].active = (data[index].active) ?  false : true;
     this.eventEmitterService.onComponentButtonClick(data[index]); 

@@ -7,6 +7,6 @@
     *ngFor="let impressions of impression; let i = index"
   >
     <button [style.background-color]="abnormalityColor[i]"></button>
-    <input matInput [value]="impressions.name" disabled/>
+    <input matInput [value]="impressions.name" readonly/>
   </mat-card-content>
 </mat-card>
