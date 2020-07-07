@@ -97,7 +97,7 @@ export class XRayComponent implements OnInit {
     this.xrayService.getAskAiDetails(PatientImage).subscribe(
       (mLResponse: any) => {
         this.mLResponse = mLResponse;
-        this.eventsSubject.next(this.mLResponse);
+        this.eventsSubject.next(this.mLResponseNew);
         this.spinnerService.hide();
       },
       (errorMessage: any) => {

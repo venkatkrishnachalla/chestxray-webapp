@@ -79,6 +79,10 @@ export class LocalFilesystemComponent implements OnInit {
     if (this.uploadImageForm.invalid) {
       return;
     }
+    this.uploadImageForm.value.age = 26;
+    this.uploadImageForm.value.gender = this.uploadImageForm.value.gender;
+    this.uploadImageForm.value.lastUpdate = new Date();
+    this.uploadImageForm.value.referringPhysicianName = 'Ramesh';
     const patientDetail = JSON.stringify(this.uploadImageForm.value);
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('patientImage', this.imageSource);
