@@ -42,7 +42,7 @@
           <input
             type="radio"
             id="test1"
-            value="male"
+            value="M"
             formControlName="gender"
             name="gender"
             autocomplete="off"
@@ -51,7 +51,7 @@
           <input
             type="radio"
             id="test2"
-            value="female"
+            value="F"
             formControlName="gender"
             name="gender"
             autocomplete="off"
@@ -92,6 +92,7 @@
             name="dateOfBirth"
             autocomplete="off"
             id="datepicker"
+            [max]="getToday()"
           />
         </div>
         <div

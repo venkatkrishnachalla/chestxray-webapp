@@ -27,65 +27,11 @@ export class XRayComponent implements OnInit {
     vertical: true,
   };
   mLResponse: any[];
-  mLResponseNew = {
-    data: {
-      names: [],
-      ndarray: [
-        {
-          Findings: {
-            ADDITIONAL: [],
-            'BONY THORAX': [],
-            'CARDIAC SILHOUETTE': [],
-            COSTOPHRENIC_ANGLES: [],
-            'DOMES OF DIAPHRAGM': [],
-            'HILAR/MEDIASTINAL': [],
-            'LUNG FIELDS': [0, 1],
-          },
-          Impression: [
-            [0, 'calcification'],
-            [1, 'consolidation'],
-          ],
-          diseases: [
-            {
-              color: 'rgb(230,25,75)',
-              confidence: 0.9941253662109375,
-              contours: [],
-              ellipses: [
-                {
-                  a: 253,
-                  b: 453,
-                  r: 0,
-                  x: 946,
-                  y: 348,
-                },
-              ],
-              idx: 0,
-              name: 'Calcification',
-            },
-            {
-              color: 'rgb(60,180,75)',
-              confidence: 0.9983514547348022,
-              contours: [],
-              ellipses: [
-                {
-                  a: 153,
-                  b: 353,
-                  r: 0,
-                  x: 716,
-                  y: 278,
-                },
-              ],
-              idx: 1,
-              name: 'Consolidation',
-            },
-          ],
-        },
-      ],
-    },
-    meta: {},
-  };
 
-  constructor(private xrayService: XRayService, private spinnerService: SpinnerService) {}
+  constructor(
+    private xrayService: XRayService,
+    private spinnerService: SpinnerService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -93,11 +39,11 @@ export class XRayComponent implements OnInit {
   openAskAI(event: any) {
     // this.showAskAI = !this.showAskAI;
     this.spinnerService.show();
-    const PatientImage = localStorage.getItem('PatientImage');
+    const PatientImage = sessionStorage.getItem('PatientImage');
     this.xrayService.getAskAiDetails(PatientImage).subscribe(
       (mLResponse: any) => {
         this.mLResponse = mLResponse;
-        this.eventsSubject.next(this.mLResponseNew);
+        this.eventsSubject.next(mLResponse);
         this.spinnerService.hide();
       },
       (errorMessage: any) => {

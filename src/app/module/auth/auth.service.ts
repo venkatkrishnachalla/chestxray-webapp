@@ -71,6 +71,7 @@ export class AuthService {
     localStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
     sessionStorage.removeItem('patientImage');
+    sessionStorage.removeItem('isIndividualRadiologist');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
