@@ -3,6 +3,7 @@ import { Options } from 'ng5-slider';
 import { Subject } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { SpinnerService } from '../shared/UI/spinner/spinner.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cxr-x-ray',
@@ -85,7 +86,11 @@ export class XRayComponent implements OnInit {
     meta: {},
   };
 
-  constructor(private xrayService: XRayService, private spinnerService: SpinnerService) {}
+  constructor(
+    private xrayService: XRayService,
+    private spinnerService: SpinnerService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -117,4 +122,8 @@ export class XRayComponent implements OnInit {
   //   this.acceptStatus = true;
   //   // this.eventsSubject.next(event);
   // }
+
+  report() {
+    this.router.navigateByUrl('/report');
+  }
 }

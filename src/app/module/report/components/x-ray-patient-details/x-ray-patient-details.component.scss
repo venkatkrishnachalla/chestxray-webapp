@@ -1,0 +1,56 @@
+.cxr-x-ray-patient-details {
+  width: 100%;
+
+  .patient-details-group, .clinical-history-group {
+    .profile-icon, .clinical-history-icon {
+      display: flex;
+      img {
+        height: 24px;
+        width: 24px;
+      }
+      span {
+        color: #fefefe;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 4px 5px;
+      }
+    }
+    .patient-info, .clinical-info {
+      width: 100%;
+      height: 87.7px;
+      overflow-y: auto;
+      margin: 5px;
+      border: solid 2px #adb2b7;
+      border-radius: 5px;
+      background-color: #ebeded;
+    }
+
+  }
+
+  .findings-group, .impression-group, .comments-group {
+    .findings-icon, .impression-icon, .comments-icon {
+        display: flex;
+        img {
+          height: 24px;
+          width: 24px;
+        }
+        span {
+          color: #fefefe;
+          font-size: 14px;
+          font-weight: 500;
+          margin: 4px 5px;
+        }
+      }
+      .findings-info, .impression-info, .comments-info {
+        width: 100%;
+        height: 87.7px;
+        height: 137.2px;
+        overflow-y: auto;
+        margin: 5px;
+        border: solid 2px #adb2b7;
+        border-radius: 5px;
+        background-color: #fefefe;
+      }
+  }
+
+}

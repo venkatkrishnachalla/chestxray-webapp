@@ -1,0 +1,20 @@
+.reportContainer {
+    height: calc(100% - 64px);
+    background-color: #212221;
+    display: flex;
+
+    .back-arrow {
+        flex-basis: 60px;
+        background-color: #f8f8f8;
+    }
+
+    .x-ray-patient-details {
+        flex-basis: 50%;
+        margin: 30px 40px 30px;
+    }
+
+    .x-ray-patient-image {
+        flex-basis: 50%;
+        margin: 30px 40px 30px;
+    }
+}
