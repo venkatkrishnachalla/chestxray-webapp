@@ -17,12 +17,16 @@
     }
     .patient-info, .clinical-info {
       width: 100%;
-      height: 87.7px;
+      height: 87px;
       overflow-y: auto;
       margin: 5px;
       border: solid 2px #adb2b7;
       border-radius: 5px;
       background-color: #ebeded;
+    }
+
+    .clinical-info {
+      height: 74px;
     }
 
   }
@@ -43,13 +47,24 @@
       }
       .findings-info, .impression-info, .comments-info {
         width: 100%;
-        height: 87.7px;
-        height: 137.2px;
+        height: 137px;
         overflow-y: auto;
         margin: 5px;
         border: solid 2px #adb2b7;
         border-radius: 5px;
         background-color: #fefefe;
+
+        li {
+          margin-left: 3px;
+        }
+      }
+
+      .impression-info {
+        height: 87px;
+      }
+
+      .comments-info {
+        height: 109px;
       }
   }
 
