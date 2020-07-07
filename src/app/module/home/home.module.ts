@@ -8,10 +8,13 @@ import { MyAccountComponent } from './my-account/my-account.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { MaterialModule } from 'src/app/material.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImplicitReceiver } from '@angular/compiler';
 import { PatientListComponent } from './patient-list/patient-list.component';
-
+import { LocalFilesystemComponent } from './local-filesystem/local-filesystem.component';
+import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.component';
+import { InputValidatorDirective } from 'src/app/directives/input-validator.directive';
+import { PhoneNumberDirective } from 'src/app/directives/phone-number.directive';
 
 @NgModule({
   declarations: [
@@ -21,11 +24,16 @@ import { PatientListComponent } from './patient-list/patient-list.component';
     ChatRoomComponent,
     MyAccountComponent,
     SettingsComponent,
-    PatientListComponent
+    PatientListComponent,
+    LocalFilesystemComponent,
+    DragDropComponent,
+    InputValidatorDirective,
+    PhoneNumberDirective
   ],
   imports: [
     MaterialModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     AgGridModule.withComponents([]),
   ],
