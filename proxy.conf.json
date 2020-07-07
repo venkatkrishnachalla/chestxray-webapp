@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "http://52.184.249.242:80/seldon/seldon/cxr-classifier",
+    "target": "https://52.184.249.242:80/seldon/seldon/cxr-classifier",
     "secure": false,
     "changeOrigin": true
   },
