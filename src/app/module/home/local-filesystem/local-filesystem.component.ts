@@ -38,6 +38,10 @@ export class LocalFilesystemComponent implements OnInit {
     return this.uploadImageForm.controls;
   }
 
+  getToday(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
   /*** on image file changing event ***/
   onFileChange(event) {
     if (event.target.files.length > 0) {
@@ -85,7 +89,8 @@ export class LocalFilesystemComponent implements OnInit {
     this.uploadImageForm.value.referringPhysicianName = 'Ramesh';
     const patientDetail = JSON.stringify(this.uploadImageForm.value);
     sessionStorage.setItem('patientDetail', patientDetail);
-    sessionStorage.setItem('patientImage', this.imageSource);
+    sessionStorage.setItem('PatientImage', this.imageSource);
+    sessionStorage.setItem('isIndividualRadiologist', 'true');
     window.location.assign('/x-ray');
   }
 }
