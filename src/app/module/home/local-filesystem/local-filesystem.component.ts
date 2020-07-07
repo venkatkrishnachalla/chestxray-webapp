@@ -50,6 +50,7 @@ export class LocalFilesystemComponent implements OnInit {
           this.images.push(event.target.result);
           this.uploadImageForm.patchValue({
             fileSource: this.images,
+            file: this.fileName,
           });
         };
         reader.readAsDataURL(event.target.files[i]);
@@ -67,10 +68,9 @@ export class LocalFilesystemComponent implements OnInit {
     this.fileName = event.name.toString();
     this.uploadImageForm.patchValue({
       fileSource: this.images,
-      file: event
+      file: event,
     });
-    this.uploadImageForm.controls.file.setValue(event);
-   // console.log('this.uploadImageForm', this.uploadImageForm);
+    this.uploadImageForm.controls.file.setValue(this.fileName);
   }
 
   /*** new patient form submit ***/
@@ -79,9 +79,9 @@ export class LocalFilesystemComponent implements OnInit {
     if (this.uploadImageForm.invalid) {
       return;
     }
-    const patientData = JSON.stringify(this.uploadImageForm.value);
-    localStorage.setItem('InstanceUID', patientData);
+    const patientDetail = JSON.stringify(this.uploadImageForm.value);
+    sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('patientImage', this.imageSource);
-    this.router.navigate(['/x-ray']);
+    window.location.assign('/x-ray');
   }
 }

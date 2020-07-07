@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SideNavComponent } from './side-nav.component';
 
-fdescribe('SideNavComponent', () => {
+describe('SideNavComponent', () => {
   let component: SideNavComponent;
   let fixture: ComponentFixture<SideNavComponent>;
 
@@ -29,6 +29,29 @@ fdescribe('SideNavComponent', () => {
     });
     it('should call onResize function', () => {
       expect(component.sidenavDisplay).toHaveBeenCalled();
+    });
+  });
+
+  describe('#sidenavDisplay', () => {
+    beforeEach(() => {
+      spyOnProperty(window, 'innerWidth').and.returnValue(760);
+      component.sidenavDisplay();
+    });
+    it('should call sidenavDisplay function on screen size less than 768', () => {
+      expect(component.sidenavDisplay).toBeDefined();
+      expect(component.sideNavToggle).toBe(true);
+    });
+  });
+
+
+  describe('#sidenavDisplay', () => {
+    beforeEach(() => {
+      spyOnProperty(window, 'innerWidth').and.returnValue(780);
+      component.sidenavDisplay();
+    });
+    it('should call sidenavDisplay function on screen size more than 768', () => {
+      expect(component.sidenavDisplay).toBeDefined();
+      expect(component.sideNavToggle).toBe(false);
     });
   });
 });

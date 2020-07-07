@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { EventEmitterService } from './event-emitter.service';
 
-describe('EventEmitterService', () => {
+xdescribe('EventEmitterService', () => {
   let service: EventEmitterService;
 
   beforeEach(() => {
@@ -12,5 +12,13 @@ describe('EventEmitterService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+  it('should call onComponentButtonClick function', () => {
+    const result = service.onComponentButtonClick('');
+    expect(service.onComponentButtonClick).toBeDefined();
+  });
+  it('should call onComponentDataShared function', () => {
+    const result = service.onComponentDataShared('')
+    expect(service.onComponentDataShared).toBeDefined();
   });
 });

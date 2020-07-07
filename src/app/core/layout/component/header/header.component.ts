@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
-import { SidenavService } from 'src/app/core/service/sidenav.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,8 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     public router: Router,
-    private sidenav: SidenavService
-  ) {}
+    ) {}
 
   /*** class init function ***/
   ngOnInit(): void {

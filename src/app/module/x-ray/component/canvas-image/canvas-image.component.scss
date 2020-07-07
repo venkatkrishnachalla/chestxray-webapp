@@ -1,22 +1,17 @@
 .x-ray-aspect-ratio-container {
-  position: relative;
+  height: 100%;
   width: 100%;
-  padding-bottom: 61.45%;
 }
 
-.xRay-image-canvas-container {
-  background-color: #000;
-  position: absolute;
-  width: 100%;
-  overflow: hidden;
-}
 .my-class .mat-dialog-container {
-  height: 400px !important;
+  height: 375px !important;
   width: 600px !important;
   border-radius: 10px;
   background: lightcyan;
   color: #039be5;
+  padding: 0px !important;
 }
+
 .saveDisease {
   background-color: #28a745 !important;
   border-color: #28a745 !important;
@@ -28,18 +23,20 @@
     max-height: 21rem;
   }
 }
-::ng-deep {
-  mat-dialog-container {
-    mat-dialog-content {
-      min-height: 300px !important;
-      width: 350px !important;
-    }
-  }
-}
+// ::ng-deep {
+//   mat-dialog-container {
+//     mat-dialog-content {
+//       min-height: 300px !important;
+//       width: 350px !important;
+//     }
+//   }
+// }
 
 ::ng-deep .mat-dialog-container {
   padding-top: 0 !important;
   background-color: #3d3f44;
+  height: 92% !important;
+  opacity: 0.9;
   h2 {
     font-size: 18px;
     font-weight: normal;
@@ -91,13 +88,14 @@
   }
   .material-icons {
     display: inline-block;
-    margin: 0px !important;
-    color: #5d5f64;
+    margin: 5px !important;
+    color: #ffffff;
+    margin-bottom: -15px !important;
   }
   mat-dialog-content {
     margin: 0px;
     padding: 0px;
-    max-height: 46vh;
+    max-height: 42vh;
     width: 100% !important;
     background-color: black;
     border-radius: 1rem;
@@ -117,8 +115,7 @@
     justify-content: space-between;
     margin-top: 1.5rem;
     button {
-      background-color: #5d5f64;
-      width: 140px;
+      width: 110px;
       height: 35px;
       color: #ffffff;
       font-size: 1.5rem;
@@ -128,12 +125,47 @@
 ::ng-deep {
   mat-dialog-container {
     mat-dialog-content#pathologyModel {
-      min-height: 300px;
+      min-height: 42vh;
       width: 350px;
     }
     mat-dialog-content#deleteImpression {
       display: table-cell;
       padding: 10px 25px 23px 20px;
+      border-radius: 7px;
+      color: white;
+      min-height: 300px;
+      width: 350px;
+      h2 {
+        font-weight: 400;
+        padding-bottom: 1.5rem;
+      }
+      .sub-delete-title {
+        font-size: 1.3rem;
+      }
+    }
+    mat-dialog-actions#deleteImpression {
+      justify-content: space-between;
+      margin-top: 0.8rem;
+      .deleteDisease {
+        width: 110px;
+        height: 35px;
+        color: #ffffff;
+        font-size: 1.5rem;
+        background-color: #5d5f64;
+      }
+      .deleteDisease:hover {
+        background-color: #ff4d4d;
+      }
+      .cancelDisease {
+        width: 110px;
+        height: 35px;
+        color: #ffffff;
+        font-size: 1.5rem;
+        background-color: #5d5f64;
+      }
+      .cancelDisease:hover {
+        background-color: rgb(159, 160, 159);
+      }
     }
     // mat-dialog-content#controls{
     //   background-color: black;
