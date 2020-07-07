@@ -123,7 +123,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.dialog.open(this.controlsModel, {
           panelClass: 'my-class',
           hasBackdrop: false,
-          position: { right: right - 305 + 'px', top: top + 'px' },
+          position: { right: right - 390 + 'px', top: top + 'px' },
         });
       }
     });

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActionPanelComponent } from './action-panel.component';
 
-fdescribe('ActionPanelComponent', () => {
+describe('ActionPanelComponent', () => {
   let component: ActionPanelComponent;
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', ['onComponentButtonClick']);
 
@@ -35,10 +35,10 @@ fdescribe('ActionPanelComponent', () => {
 
   describe('#askAI', () => {
     beforeEach(() => {
-      component.iconAction('');
+      component.iconAction([], 1)
     });
     it('should call icon Action function', () => {
-      const result = component.iconAction('');
+      const result = component.iconAction([], 1);
       expect(component.iconAction).toBeDefined();
     });
   });

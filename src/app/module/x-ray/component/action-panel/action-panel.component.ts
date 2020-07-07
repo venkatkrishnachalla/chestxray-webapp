@@ -54,8 +54,8 @@ export class ActionPanelComponent implements OnInit {
   }
   iconAction(data, index){
     for (const key in data) {
-      if (key !== index) {
-      data[key].active = false;
+      if (parseInt(key) !== index) {
+        data[key].active = false;
       }
     }  
     data[index].active = (data[index].active) ?  false : true;
