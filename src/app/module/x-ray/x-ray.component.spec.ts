@@ -1,7 +1,7 @@
 import { XRayComponent } from './x-ray.component';
 import { of, throwError } from 'rxjs';
 
-fdescribe('XRayComponent', () => {
+describe('XRayComponent', () => {
   let component: XRayComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',

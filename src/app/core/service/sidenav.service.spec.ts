@@ -1,6 +1,6 @@
 import { SidenavService } from './sidenav.service';
 
-fdescribe('SidenavService', () => {
+describe('SidenavService', () => {
   let service: SidenavService;
   const matSidenavSpy = jasmine.createSpyObj('MatSidenav', ['close', 'toggle', 'open']);
 

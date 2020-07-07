@@ -1,6 +1,6 @@
 import { MainLayoutComponent } from './main-layout.component';
 
-fdescribe('MainLayoutComponent', () => {
+describe('MainLayoutComponent', () => {
   let component: MainLayoutComponent;
   const matSidenavSpy = jasmine.createSpyObj('MatSidenav', ['close', 'toggle']);
 
