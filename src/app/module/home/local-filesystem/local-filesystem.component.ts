@@ -22,7 +22,7 @@ export class LocalFilesystemComponent implements OnInit {
     this.uploadImageForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       dateOfBirth: ['', Validators.required],
-      gender: ['male', Validators.required],
+      gender: ['M', Validators.required],
       email: ['', [Validators.email]],
       phoneNumber: ['', [Validators.maxLength(10)]],
       address: [''],
@@ -36,6 +36,10 @@ export class LocalFilesystemComponent implements OnInit {
 
   get f() {
     return this.uploadImageForm.controls;
+  }
+
+  getToday(): string {
+    return new Date().toISOString().split('T')[0];
   }
 
   /*** on image file changing event ***/
@@ -80,12 +84,13 @@ export class LocalFilesystemComponent implements OnInit {
       return;
     }
     this.uploadImageForm.value.age = 26;
-    this.uploadImageForm.value.gender = this.uploadImageForm.value.gender;
+    this.uploadImageForm.value.sex = this.uploadImageForm.value.gender;
     this.uploadImageForm.value.lastUpdate = new Date();
     this.uploadImageForm.value.referringPhysicianName = 'Ramesh';
     const patientDetail = JSON.stringify(this.uploadImageForm.value);
     sessionStorage.setItem('patientDetail', patientDetail);
-    sessionStorage.setItem('patientImage', this.imageSource);
+    sessionStorage.setItem('PatientImage', this.imageSource);
+    sessionStorage.setItem('isIndividualRadiologist', 'true');
     window.location.assign('/x-ray');
   }
 }

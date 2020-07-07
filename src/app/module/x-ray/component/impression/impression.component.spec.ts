@@ -31,7 +31,7 @@ describe('ImpressionComponent', () => {
     expect(component.deleteImpression).toBeDefined();
   });
   it('should call updateImpression function', () => {
-    const result = component.updateImpression();
+    const result = component.updateImpression('');
     expect(component.updateImpression).toBeDefined();
   });
 });

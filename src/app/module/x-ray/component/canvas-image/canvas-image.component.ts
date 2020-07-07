@@ -105,10 +105,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
     this.patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
-    this.PatientImage = sessionStorage.getItem('patientImage');
+    this.PatientImage = sessionStorage.getItem('PatientImage');
+    const isUser = sessionStorage.getItem('isIndividualRadiologist');
     this.patientId = this.patientDetail.id;
 
-    if (this.PatientImage) {
+    if (this.PatientImage && isUser === 'true') {
       this.setCanvasDimension();
       this.generateCanvas();
     } else if (!this.instanceId) {
@@ -130,7 +131,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.dialog.open(this.controlsModel, {
           panelClass: 'my-class',
           hasBackdrop: false,
-          position: { right: right - 305 + 'px', top: top + 'px' },
+          position: { right: right - 390 + 'px', top: top + 'px' },
         });
       }
     });
@@ -184,9 +185,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       width: this.canvasDynamicWidth,
       height: this.canvasDynamicHeight,
     });
-    console.log('this.xRayImage', document.getElementById(
-      'x-ray-aspect-ratio-container'
-    ));
   }
 
   /**
@@ -201,7 +199,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       .getPatientImage(instanceID)
       .subscribe((PatientImageResponse: any) => {
         this.PatientImage = 'data:image/png;base64,' + PatientImageResponse;
-        localStorage.setItem('PatientImage', this.PatientImage);
+        sessionStorage.setItem('PatientImage', this.PatientImage);
         this.setCanvasDimension();
         this.generateCanvas();
       });
@@ -221,7 +219,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /* setting BackgroundImage for canvas block */
   setCanvasBackground() {
-    console.log('this.xRayImage', this.canvasDynamicWidth, this.canvasDynamicHeight);
     const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
     const containerAspectRatio =
       this.canvasDynamicWidth / this.canvasDynamicHeight;
