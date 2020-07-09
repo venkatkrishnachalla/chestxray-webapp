@@ -9,18 +9,18 @@
     </div>
     <div class="patient-info">
       <div class="patient-status">
-        <span>Patient ID: <a>1004</a> </span> 
-        <span>Status: <a>Emergency</a></span>
-        <span>Date of creation: <a>18-05-2020</a></span> 
+        <span>Patient ID: <a>{{patientInfo.hospitalPatientId}}</a> </span> 
+        <span>Status: <a>{{patientInfo.status}}</a></span>
+        <span>Date of creation: <a>{{patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</a></span> 
 
       </div>
       <div class="patient-name">
-        <span>Name: <a>Shilpa Rathore</a> </span>
-        <span>[F]: <a>45 Yrs</a></span>
-        <span>Time: <a>16:15:30</a> </span> 
+        <span>Name: <a>{{patientInfo.name}}</a> </span>
+        <span>[{{patientInfo.sex}}]: <a>{{patientInfo.age}} Yrs</a></span>
+        <span>Time: <a>{{patientInfo.lastUpdate| date: 'HH:mm:ss'}}</a> </span> 
       </div>
       <div class="doctor-name">
-        <span>Ref. Physician: <a>Dr.Amit</a></span>
+        <span>Ref. Physician: <a>{{patientInfo.referringPhysicianName}}</a></span>
       </div>
     </div>
   </div>
