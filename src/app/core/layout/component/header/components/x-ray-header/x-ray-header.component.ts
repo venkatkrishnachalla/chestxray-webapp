@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cxr-x-ray-header',
@@ -9,7 +10,7 @@ export class XRayHeaderComponent implements OnInit {
   patientID: string;
   isProcessed: boolean;
 
-  constructor() {}
+  constructor(public router: Router) {}
 
   ngOnInit(): void {
     const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));

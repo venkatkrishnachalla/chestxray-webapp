@@ -12,18 +12,12 @@ export class XRayPatientDetailsComponent implements OnInit {
     'both costophrenic angles are clear',
     'there is cardiomegaly',
     'the mediastinum is within normal limits',
-    'Normal hilar vascular markings',
-    'both costophrenic angles are clear',
-    'there is cardiomegaly',
-    'the mediastinum is within normal limits',
   ];
 
   impressions = [
     'Cardiomegaly',
     'Lung Lesion',
     'Cardiomegaly',
-    'Cardiomegaly',
-    'Lung Lesion',
     'Cardiomegaly',
   ];
 

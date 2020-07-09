@@ -1,71 +1,132 @@
 .cxr-x-ray-patient-details {
   width: 100%;
 
-  .patient-details-group, .clinical-history-group {
-    .profile-icon, .clinical-history-icon {
+  [contenteditable]:focus {
+    outline: 0px solid transparent;
+  }
+  .patient-details-group,
+  .clinical-history-group {
+    .profile-icon,
+    .clinical-history-icon {
       display: flex;
       img {
-        height: 24px;
-        width: 24px;
+        height: 20px;
+        width: 18px;
+        margin: 3px;
       }
       span {
         color: #fefefe;
         font-size: 14px;
         font-weight: 500;
-        margin: 4px 5px;
+        margin: 5px 3px 0px;
       }
     }
-    .patient-info, .clinical-info {
+    .patient-info,
+    .clinical-info {
       width: 100%;
-      height: 87px;
+      min-height: 95px;
+      max-height: auto;
       overflow-y: auto;
       margin: 5px;
+      padding: 5px;
       border: solid 2px #adb2b7;
       border-radius: 5px;
       background-color: #ebeded;
     }
 
-    .clinical-info {
-      height: 74px;
+    .patient-info {
+      .patient-status,
+      .doctor-name {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        span {
+          font-weight: 500;
+          margin: 3px;
+
+          a {
+            font-weight: 400;
+          }
+        }
+      }
+
+      .patient-name {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        span {
+          font-weight: 500;
+          margin: 3px;
+
+          a {
+            font-weight: 400;
+          }
+        }
+        span:nth-child(3) {
+          font-weight: 500;
+          margin: 3px;
+          padding-right: 85px;
+          a {
+            font-weight: 400;
+          }
+
+          @media (max-width: 1020px) {
+            padding-right: 0px;
+          }
+        }
+      }
     }
 
+    .clinical-info {
+      min-height: 74px;
+      max-height: auto;
+    }
   }
 
-  .findings-group, .impression-group, .comments-group {
-    .findings-icon, .impression-icon, .comments-icon {
-        display: flex;
-        img {
-          height: 24px;
-          width: 24px;
-        }
-        span {
-          color: #fefefe;
-          font-size: 14px;
-          font-weight: 500;
-          margin: 4px 5px;
-        }
+  .findings-group,
+  .impression-group,
+  .comments-group {
+    .findings-icon,
+    .impression-icon,
+    .comments-icon {
+      display: flex;
+      img {
+        height: 20px;
+        width: 18px;
+        margin: 5px 5px;
       }
-      .findings-info, .impression-info, .comments-info {
-        width: 100%;
-        height: 137px;
-        overflow-y: auto;
-        margin: 5px;
-        border: solid 2px #adb2b7;
-        border-radius: 5px;
-        background-color: #fefefe;
+      span {
+        color: #fefefe;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 5px 0px;
+      }
+    }
+    .findings-info,
+    .impression-info,
+    .comments-info {
+      width: 100%;
+      min-height: 137px;
+      max-height: auto;
+      margin: 5px;
+      padding: 5px;
+      border-radius: 5px;
+      background-color: #fefefe;
 
-        li {
-          margin-left: 3px;
-        }
+      li {
+        margin-left: 3px;
+        list-style-type: none;
       }
+    }
 
-      .impression-info {
-        height: 87px;
-      }
+    .impression-info {
+      min-height: 87px;
+      max-height: auto;
+    }
 
-      .comments-info {
-        height: 109px;
-      }
+    .comments-info {
+      min-height: 109px;
+      max-height: auto;
+    }
   }
-
 }
