@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import {
+  DISEASE_COLOR_MAPPING,
+  RANDOM_COLOR,
+} from 'src/app/constants/findingColorConstants';
 
 @Component({
   selector: 'cxr-x-ray-patient-details',
@@ -14,36 +19,25 @@ export class XRayPatientDetailsComponent implements OnInit {
     'the mediastinum is within normal limits',
   ];
 
-  impressions = ['Cardiomegaly', 'Lung Lesion', 'Cardiomegaly', 'Cardiomegaly'];
-
-  // age: number;
-  // birthDate: '1984-05-02T00:00:00';
-  // hospitalPatientId: '1000';
-  // id: 'e3cbba88-83fe746c-6e35783c-9404b4bc-0c7ee9eb';
-  // lastUpdate: '2020-07-07T08:44:25';
-  // name: 'Salman';
-  // referringPhysicianName: 'Mohan';
-  // sex: 'M';
-  // status: false;
-
-  age: number;
-  dateOfCreation: string;
-  hospitalPatientId: string;
-  status: boolean;
-  name: string;
-  sex: string;
-  time: string;
-  referringPhysicianName: string;
+  // impression = ['Cardiomegaly', 'Lung Lesion', 'Cardiomegaly', 'Cardiomegaly'];
   patientInfo: any;
 
+  impressions = [];
+  abnormalityColor = [];
   comments =
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
   clinicalHistory =
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
 
-  constructor() {}
+  constructor(private eventEmitterService: EventEmitterService) {}
 
   ngOnInit(): void {
-     this.patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
+    this.patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
+    this.eventEmitterService.invokeReportFunction.subscribe((impression) => {
+      // tslint:disable-next-line: forin
+      for (const i in impression) {
+        this.impressions.push(impression[i]);
+      }
+    });
   }
 }

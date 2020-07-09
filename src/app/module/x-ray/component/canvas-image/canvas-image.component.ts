@@ -6,6 +6,8 @@ import {
   OnDestroy,
   TemplateRef,
   ViewChild,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
@@ -16,7 +18,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { pathology } from 'src/app/constants/pathologyConstants';
 import { StateGroup } from '../../healthDetails';
 import { xrayImageService } from 'src/app/service/canvasImage';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
   selector: 'cxr-canvas-image',
@@ -29,6 +32,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
+  @Output() anotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
   PatientImage: any;
@@ -59,11 +63,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   updateDisease: boolean;
   activeIcon: any;
   patientDetail: any;
+  ProcessedImage: any;
+
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
     private dialog: MatDialog,
-    private xRayService: xrayImageService
+    private xRayService: xrayImageService,
+    private anotatedXrayService: XRayService
   ) {}
 
   @HostListener('window:resize', [])
@@ -503,5 +510,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       panelClass: 'my-class',
       disableClose: true,
     });
+  }
+  onSubmitPatientDetails() {
+    this.ProcessedImage = this.canvas.toDataURL('image/png');
+    this.anotatedXrayEvent.emit(this.ProcessedImage);
   }
 }

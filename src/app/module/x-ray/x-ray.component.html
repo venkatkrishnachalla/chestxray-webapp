@@ -6,7 +6,7 @@
 
   <!-- Main Content, X-Ray Aspect Ratio Part -->
   <section class="xray-panel">
-    <cxr-canvas-image [events]="eventsSubject.asObservable()"></cxr-canvas-image>
+    <cxr-canvas-image (anotatedXrayEvent)="xrayEventAnotated($event)" [events]="eventsSubject.asObservable()"></cxr-canvas-image>
   </section>
 
   <!-- Right Side Content -->
@@ -15,7 +15,7 @@
     <cxr-impression></cxr-impression>
     <cxr-findings></cxr-findings>
     <cxr-image-sliding></cxr-image-sliding>
-    <button mat-flat-button (click)="report()" type="submit">
+    <button mat-flat-button (click)="generateReport()" type="submit">
       <span>REPORT</span>
       <img src="../../../assets/images/report icon@2x.png" alt="report" />
     </button>

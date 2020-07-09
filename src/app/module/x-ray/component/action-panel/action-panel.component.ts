@@ -52,12 +52,12 @@ export class ActionPanelComponent implements OnInit {
     this.middlePanel = this.constants.actionPanelMiddle;
     this.brightnessPanel = this.constants.actionPanelBrightness;
   }
-  iconAction(data, index){
+  iconAction(data, index) {
     for (const key in data) {
       if (parseInt(key) !== index) {
         data[key].active = false;
       }
-    }  
+    }
     data[index].active = (data[index].active) ?  false : true;
     this.eventEmitterService.onComponentButtonClick(data[index]); 
   }
