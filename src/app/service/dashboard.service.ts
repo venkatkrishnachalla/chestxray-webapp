@@ -18,9 +18,6 @@ export class DashboardService {
 
   getPatientList() {
     return this.http.get<patientData>(this.endpoint.getPatientList(),
-    // {
-    //   doctorId
-    // }
     )
     .pipe(
       catchError(this.handleError),
