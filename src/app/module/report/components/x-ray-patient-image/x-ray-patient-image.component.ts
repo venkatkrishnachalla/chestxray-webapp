@@ -1,26 +1,31 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-x-ray-patient-image',
   templateUrl: './x-ray-patient-image.component.html',
-  styleUrls: ['./x-ray-patient-image.component.scss']
+  styleUrls: ['./x-ray-patient-image.component.scss'],
 })
 export class XRayPatientImageComponent implements OnInit {
   patientImage: any;
   xrayAnnotatedImage: string;
-  constructor(private annotatedXrayService: XRayService) { }
+  xrayAnnotatedImpression: string;
+  constructor(
+    private annotatedXrayService: XRayService,
+    private xrayAnnotatedImpressionService: EventEmitterService
+  ) {}
 
   ngOnInit(): void {
-    // this.patientImage = sessionStorage.getItem('PatientImage');
-  //   this.anotatedXraySubscription = this.anotatedXrayService.anotatedXraySubjectData.subscribe((mlResponse: any) =>
-  //   // this.mlApiEllipseLoop(mlResponse)
-  //   console.log(mlResponse)
-  // );
-    this.annotatedXrayService.getAnnotatedImageData().subscribe(refreshStatus => {
-      this.xrayAnnotatedImage = refreshStatus;
-  });
-  }
+    this.annotatedXrayService
+      .getAnnotatedImageData()
+      .subscribe((xrayAnnotatedImage) => {
+        this.xrayAnnotatedImage = xrayAnnotatedImage;
+      });
 
+  //   this.xrayAnnotatedImpressionService
+  //     .xrayAnnotatedImpressionsService()
+  //     .subscribe((impression) => (this.xrayAnnotatedImpression = impression));
+  }
 }

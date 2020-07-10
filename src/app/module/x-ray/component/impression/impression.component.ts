@@ -63,6 +63,6 @@ export class ImpressionComponent implements OnInit {
   }
 
   getImpressionsToReport() {
-    this.eventEmitterService.onReportDataShared(this.impression);
+    this.eventEmitterService.xrayAnnotatedImpressions(this.impression);
   }
 }
