@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Options } from 'ng5-slider';
 import { Subject } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
 
 @Component({
   selector: 'cxr-x-ray',
@@ -29,6 +30,7 @@ export class XRayComponent implements OnInit {
     vertical: true,
   };
   mLResponse: any[];
+  @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
 
   constructor(
     private xrayService: XRayService,
@@ -81,11 +83,7 @@ export class XRayComponent implements OnInit {
 
   generateReport() {
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
-    this.router.navigateByUrl('/report');
-  }
-
-  xrayEventAnotated(event) {
-    this.anotatedXrayService.xrayAnnotatedService(event);
+    this.canvas.onSubmitPatientDetails();
   }
 
 }

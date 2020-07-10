@@ -9,17 +9,17 @@ import { XRayService } from 'src/app/service/x-ray.service';
 })
 export class XRayPatientImageComponent implements OnInit {
   patientImage: any;
-  private anotatedXraySubscription: Subscription;
-  constructor(private anotatedXrayService: XRayService) { }
+  xrayAnnotatedImage: string;
+  constructor(private annotatedXrayService: XRayService) { }
 
   ngOnInit(): void {
-    this.patientImage = sessionStorage.getItem('PatientImage');
+    // this.patientImage = sessionStorage.getItem('PatientImage');
   //   this.anotatedXraySubscription = this.anotatedXrayService.anotatedXraySubjectData.subscribe((mlResponse: any) =>
   //   // this.mlApiEllipseLoop(mlResponse)
   //   console.log(mlResponse)
   // );
-    this.anotatedXrayService.getAnnotatedImageData().subscribe(refreshStatus => {
-      console.log('Pramoda', refreshStatus);
+    this.annotatedXrayService.getAnnotatedImageData().subscribe(refreshStatus => {
+      this.xrayAnnotatedImage = refreshStatus;
   });
   }
 

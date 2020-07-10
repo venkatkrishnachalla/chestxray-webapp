@@ -32,7 +32,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
-  @Output() anotatedXrayEvent = new EventEmitter();
+  @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
   PatientImage: any;
@@ -63,14 +63,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   updateDisease: boolean;
   activeIcon: any;
   patientDetail: any;
-  ProcessedImage: any;
+  processedImage: any;
 
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
     private dialog: MatDialog,
     private xRayService: xrayImageService,
-    private anotatedXrayService: XRayService
+    private annotatedXrayService: XRayService,
+    private router: Router
   ) {}
 
   @HostListener('window:resize', [])
@@ -512,7 +513,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
   onSubmitPatientDetails() {
-    this.ProcessedImage = this.canvas.toDataURL('image/png');
-    this.anotatedXrayEvent.emit(this.ProcessedImage);
+    this.processedImage = this.canvas.toDataURL('image/png');
+    this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
+    this.router.navigateByUrl('/report');
   }
 }

@@ -15,9 +15,8 @@ interface AiData {
   providedIn: 'root',
 })
 export class XRayService {
-  // annotatedXraySubject = new Subject<any>();
-  // anotatedXraySubjectData = this.annotatedXraySubject.asObservable();
-  private annotatedXraySubject = new BehaviorSubject<any>('Pramod');
+
+  private annotatedXraySubject = new BehaviorSubject<any>({});
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
   getAskAiDetails(PatientImage) {
