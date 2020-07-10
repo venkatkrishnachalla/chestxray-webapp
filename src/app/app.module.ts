@@ -15,6 +15,7 @@ import { XRayModule } from './module/x-ray/x-ray.module';
 import { EventEmitterService } from './service/event-emitter.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ReportModule } from './module/report/report.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -29,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     LayoutModule,
     SharedModule,
     XRayModule,
+    ReportModule,
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule

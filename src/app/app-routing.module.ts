@@ -13,6 +13,7 @@ import { SettingsComponent } from './module/home/settings/settings.component';
 import { HeaderComponent } from './core/layout/component/header/header.component';
 import { XRayComponent } from './module/x-ray/x-ray.component';
 import { AskAiComponent } from './module/x-ray/component/ask-ai/ask-ai.component';
+import { ReportComponent } from './module/report/report.component';
 
 const routes: Routes = [
   {
@@ -64,6 +65,14 @@ const routes: Routes = [
     children: [
       { path: '', component: XRayComponent },
       {path: 'ask-ai', component: AskAiComponent}
+    ],
+  },
+  {
+    path: 'report',
+    canActivate: [AuthGuard],
+    component: HeaderComponent,
+    children: [
+      { path: '', component: ReportComponent }
     ],
   },
   {

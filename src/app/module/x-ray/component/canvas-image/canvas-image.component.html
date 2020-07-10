@@ -8,15 +8,14 @@
     class="xRay-image-canvas-container d-flex justify-content-center"
     id="canvas-wrapper"
   >
-    <p align="center">
+    <div align="center">
       <canvas
         id="at-id-x-ray-Canvas"
         class="xRay-image-canvas align-self-center orange"
       ></canvas>
-    </p>
+    </div>
   </div>
 </div>
-
 <ng-template #pathologyModal>
   <h2 mat-dialog-title align="center">SELECT PATHOLOGY</h2>
   <mat-form-field id="at-input-disease" appearance="outline">
@@ -55,8 +54,8 @@
         <mat-list class="sub-list">
           <div *ngFor="let subItem of item.names; let i = index">
             <mat-list-item class="pointer" (click)="onSelect($event, '')"
-              >{{v + 1}}.{{ i + 1 }}&nbsp;&nbsp;{{ subItem }}</mat-list-item
-            >
+              >{{ v + 1 }}.{{ i + 1 }}&nbsp;&nbsp;{{ subItem }}
+            </mat-list-item>
           </div>
         </mat-list>
       </ng-container>

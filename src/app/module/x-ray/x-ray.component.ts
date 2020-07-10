@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Options } from 'ng5-slider';
 import { Subject } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { SpinnerService } from '../shared/UI/spinner/spinner.service';
+import { Router } from '@angular/router';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
 
 @Component({
   selector: 'cxr-x-ray',
@@ -27,13 +30,23 @@ export class XRayComponent implements OnInit {
     vertical: true,
   };
   mLResponse: any[];
+  @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
 
   constructor(
     private xrayService: XRayService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private router: Router,
+    private eventEmitterService: EventEmitterService,
+    private anotatedXrayService: XRayService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.eventEmitterService.invokeReportFunction.subscribe(
+      (impressions) => {
+        this.eventEmitterService.onReportDataShared(impressions);
+      }
+    );
+  }
 
   /* open ask ai model when user clicks on ask ai button */
   openAskAI(event: any) {
@@ -63,4 +76,14 @@ export class XRayComponent implements OnInit {
   //   this.acceptStatus = true;
   //   // this.eventsSubject.next(event);
   // }
+
+  // report() {
+  //   this.router.navigateByUrl('/report');
+  // }
+
+  generateReport() {
+    this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
+    this.canvas.onSubmitPatientDetails();
+  }
+
 }
