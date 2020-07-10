@@ -35,10 +35,16 @@ describe('ActionPanelComponent', () => {
 
   describe('#askAI', () => {
     beforeEach(() => {
-      component.iconAction([], 1)
+      const data =  [
+        {
+          active: true,
+          key: 0,
+          index: 0
+        }
+      ];
+      component.iconAction(data, 0);
     });
     it('should call icon Action function', () => {
-      const result = component.iconAction([], 1);
       expect(component.iconAction).toBeDefined();
     });
   });

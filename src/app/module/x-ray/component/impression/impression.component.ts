@@ -13,49 +13,76 @@ import { EventEmitterService } from '../../../../service/event-emitter.service';
 export class ImpressionComponent implements OnInit {
   impression = [];
   abnormalityColor = [];
+  ellipseList = [];
   constructor(private eventEmitterService: EventEmitterService) {}
 
   ngOnInit(): void {
     this.getImpressions();
-      this.eventEmitterService.invokeComponentFunction.subscribe(
-        (info: object) => {
-          switch (info['check']) {
-            case 'delete':
-              this.deleteImpression(info['id']);
-              break;
-            case 'update':
-              this.updateImpression(info);
-              break;
-            default:
-              break;
-          }
+    this.eventEmitterService.invokeComponentFunction.subscribe(
+      (info: object) => {
+        switch (info['check']) {
+          case 'delete':
+            this.deleteImpression(
+              info['id'],
+              info['disease'],
+              info['objectindex']
+            );
+            break;
+          case 'update':
+            this.updateImpression(info);
+            break;
+          default:
+            break;
         }
-      );
+      }
+    );
   }
 
   getImpressions() {
     this.eventEmitterService.invokeComponentData.subscribe((obj) => {
-        this.impression.push(obj);
-        this.getColorMapping(obj.name);
+      this.impression.push(obj);
+      this.getColorMapping(obj.name);
     });
+    this.eventEmitterService.invokeComponentEllipseData.subscribe(
+      (objEllipse) => {
+        this.ellipseList.push(objEllipse);
+      }
+    );
   }
 
-  deleteImpression(id){
-    let index = this.impression.findIndex(item => item.id == id);
-    this.impression.splice(index,1);
+  deleteImpression(id, disease, objectindex) {
+    if (disease) {
+      const currEllipse = this.ellipseList.filter(
+        (book) => book.name === disease
+      );
+      if (currEllipse.length === 1) {
+        const impressionList = this.impression.filter(
+          (book) => book.name !== disease
+        );
+        this.impression = impressionList;
+      } else {
+        const ellipseListArray = this.ellipseList.filter(
+          (book) => book.index !== objectindex
+        );
+        this.ellipseList = ellipseListArray;
+      }
+    } else {
+      const index = this.impression.findIndex((item) => item.id === id);
+      this.impression.splice(index, 1);
+    }
     this.abnormalityColor = [];
-    this.impression.forEach(obj => {
+    this.impression.forEach((obj) => {
       this.getColorMapping(obj.name);
     });
   }
 
-  updateImpression(info){
-    let index = this.impression.findIndex(item => item.id == info.id);
-    this.impression.splice(index,1, {id:info.id, name: info.name});
+  updateImpression(info) {
+    let index = this.impression.findIndex((item) => item.id == info.id);
+    this.impression.splice(index, 1, { id: info.id, name: info.name });
   }
 
   getColorMapping(diseases) {
-    const color =  DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;
+    const color = DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;
     this.abnormalityColor.push(color);
   }
 }

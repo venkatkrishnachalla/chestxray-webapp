@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-
 import { DashboardService } from './dashboard.service';
+import { HttpResponse } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
 
 describe('DashboardService', () => {
   let service: DashboardService;
@@ -19,6 +19,11 @@ describe('DashboardService', () => {
 
   describe('#getPatientList', () => {
     beforeEach(() => {
+      const response = new HttpResponse({ status: 204 });
+      endPointSpy.getPatientList.and.returnValue(
+        'https://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/'
+      );
+      httpSpy.get.and.returnValue(of(response));
       service.getPatientList();
     });
     it('should call getPatientList function', () => {});

@@ -1,9 +1,11 @@
 import { AskAiComponent } from './ask-ai.component';
-import { XRayService } from 'src/app/service/x-ray.service';
+import { of, throwError } from 'rxjs';
 
 describe('AskAiComponent', () => {
   let component: AskAiComponent;
-  const xrayServiceSpy = jasmine.createSpyObj('XRayService', ['getAskAiDetails']);
+  const xrayServiceSpy = jasmine.createSpyObj('XRayService', [
+    'getAskAiDetails',
+  ]);
 
   beforeEach(() => {
     component = new AskAiComponent(xrayServiceSpy);
@@ -15,10 +17,20 @@ describe('AskAiComponent', () => {
 
   describe('#ngOnInit', () => {
     beforeEach(() => {
+      const mLResponseNew = {
+        data: {
+          names: [],
+          ndarray: [{}],
+        },
+      };
+      xrayServiceSpy.getAskAiDetails.and.returnValue(of(mLResponseNew));
       component.ngOnInit();
     });
     it('should call ngOnIit function', () => {
-      const result = component.ngOnInit();
+      xrayServiceSpy
+        .getAskAiDetails('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD')
+        .subscribe((authResponse: any) => {
+        });
       expect(component.ngOnInit).toBeDefined();
     });
   });

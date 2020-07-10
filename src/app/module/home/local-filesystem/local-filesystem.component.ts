@@ -72,9 +72,8 @@ export class LocalFilesystemComponent implements OnInit {
     this.fileName = event.name.toString();
     this.uploadImageForm.patchValue({
       fileSource: this.images,
-      file: event,
+      file: this.fileName,
     });
-    this.uploadImageForm.controls.file.setValue(this.fileName);
   }
 
   /*** new patient form submit ***/
@@ -91,6 +90,6 @@ export class LocalFilesystemComponent implements OnInit {
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('PatientImage', this.imageSource);
     sessionStorage.setItem('isIndividualRadiologist', 'true');
-    window.location.assign('/x-ray');
+    this.router.navigate(['/x-ray']);
   }
 }
