@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DashboardService } from './dashboard.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('DashboardService', () => {
   let service: DashboardService;
@@ -16,11 +17,14 @@ describe('DashboardService', () => {
   it('should create', () => {
     expect(service).toBeTruthy();
   });
-
+  
   describe('#getPatientList', () => {
     beforeEach(() => {
+      spyOn(service, 'getPatientList');
       service.getPatientList();
     });
-    it('should call getPatientList function', () => {});
+    it('should call getPatientList function', () => {
+      expect(service.getPatientList).toHaveBeenCalled();
+    });
   });
 });

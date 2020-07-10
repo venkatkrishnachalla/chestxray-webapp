@@ -8,8 +8,9 @@ import { SpinnerService } from 'src/app/module/shared/UI/spinner/spinner.service
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { Router } from '@angular/router';
 import { xrayImageService } from 'src/app/service/canvasImage';
+import { pathology } from 'src/app/constants/pathologyConstants';
 
-describe('CanvasImageComponent', () => {
+fdescribe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',
@@ -22,6 +23,7 @@ describe('CanvasImageComponent', () => {
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'invokeComponentFunction',
     'onComponentButtonClick',
+    'onComponentDataShared',
   ]);
   const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
   const xRayServiceSpy = jasmine.createSpyObj('xrayImageService', [
@@ -29,32 +31,32 @@ describe('CanvasImageComponent', () => {
     'getPatientImage',
   ]);
 
+
   beforeEach(() => {
     component = new CanvasImageComponent(
       spinnerServiceSpy,
-      dashboardServiceSpy,
       eventEmitterServiceSpy,
-      // dialogSpy,
+      dialogSpy,
       xRayServiceSpy
     );
   });
-  TestBed.configureTestingModule({
-    declarations: [CanvasImageComponent],
-    providers:[
-      {provide: XRayService, usevalue: xRayServiceSpy},
-      {provide: SpinnerService, usevalue: spinnerServiceSpy},
-      {provide: MatDialog, usevalue: dialogSpy},
-      {provide: EventEmitterService, usevalue: eventEmitterServiceSpy},
-      {provide: Router, usevalue: routerSpy},
-      {provide: DashboardService, usevalue: dashboardServiceSpy}
-    ]
-  })
+  // TestBed.configureTestingModule({
+  //   declarations: [CanvasImageComponent],
+  //   providers:[
+  //     {provide: XRayService, usevalue: xRayServiceSpy},
+  //     {provide: SpinnerService, usevalue: spinnerServiceSpy},
+  //     {provide: MatDialog, usevalue: dialogSpy},
+  //     {provide: EventEmitterService, usevalue: eventEmitterServiceSpy},
+  //     {provide: Router, usevalue: routerSpy},
+  //     {provide: DashboardService, usevalue: dashboardServiceSpy}
+  //   ]
+  // })
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('#onResize', () => {
+  describe('#onResize', () => {
     beforeEach(() => {
       spyOn(component, 'setCanvasDimension');
       spyOn(component, 'setCanvasBackground');
@@ -66,7 +68,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  xdescribe('#ngOnInit', () => {
+  describe('#ngOnInit', () => {
     let store = {};
     const mockLocalStorage = {
       getItem: (key: string): string => {
@@ -82,7 +84,10 @@ describe('CanvasImageComponent', () => {
         store = {};
       },
     };
+    eventEmitterServiceSpy.invokeComponentFunction();
     beforeEach(() => {
+      spyOn(component, 'ngOnInit');
+      spinnerServiceSpy.show();
       spyOn(localStorage, 'getItem').and.callFake(mockLocalStorage.getItem);
     });
     it('should call ngOnIit function', () => {
@@ -113,8 +118,11 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  xdescribe('#setCanvasDimension', () => {
+  describe('#setCanvasDimension', () => {
     beforeEach(() => {
+      component.canvas = {
+        setDimensions: () => {},
+      };
       const controlCheckbox = ({
         clientWidth: '146',
         accessKey: '',
@@ -128,15 +136,18 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  xdescribe('#getPatientImage', () => {
+  describe('#getPatientImage', () => {
     beforeEach(() => {
+      component.canvas = {
+        setDimensions: () => {},
+      };
       const controlCheckbox = ({
         clientWidth: '146',
         accessKey: '',
         accessKeyLabel: '',
       } as unknown) as HTMLElement;
       const patientMock = [{ patientId: 1234, name: 'abcde' }];
-    //  dashboardServiceSpy.getPatientList.and.returnValue(of(patientMock));
+
       spyOn(document, 'getElementById').and.returnValue(controlCheckbox);
       component.getPatientImage('12662');
     });
@@ -145,8 +156,21 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  xdescribe('#generateCanvas', () => {
+  describe('#generateCanvas', () => {
     beforeEach(() => {
+      component.canvas = {
+        setWidth: () => {},
+        setHeight: () => {},
+        setBackgroundImage: () => {},
+        renderAll: () => {},
+      };
+      component.canvasDynamicWidth = 893;
+      component.canvasDynamicHeight = 549;
+      component.xRayImage = {
+        width: 2000,
+        height: 1650,
+        set: () => {},
+      };
       component.generateCanvas();
     });
     it('should call generateCanvas function', () => {
@@ -154,8 +178,21 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  xdescribe('#setCanvasBackground', () => {
+  describe('#setCanvasBackground', () => {
     beforeEach(() => {
+      component.canvas = {
+        setWidth: () => {},
+        setHeight: () => {},
+        setBackgroundImage: () => {},
+        renderAll: () => {},
+      };
+      component.canvasDynamicWidth = 893;
+      component.canvasDynamicHeight = 549;
+      component.xRayImage = {
+        width: 2000,
+        height: 1650,
+        set: () => {},
+      };
       component.setCanvasBackground();
     });
     it('should call setCanvasBackground function', () => {
@@ -163,7 +200,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  xdescribe('#onProcessClickHandler', () => {
+  describe('#onProcessClickHandler', () => {
     beforeEach(() => {
       const patientMockInstanceId = [
         {
@@ -200,7 +237,6 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getPatientInstanceId function', () => {
       expect(component.getPatientInstanceId).toBeDefined();
-      expect(spinnerServiceSpy.hide).toHaveBeenCalled();
       expect(component.getPatientImage).toHaveBeenCalled();
     });
   });
@@ -258,7 +294,6 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getPatientInstanceId function', () => {
       expect(component.getPatientInstanceId).toBeDefined();
-      expect(spinnerServiceSpy.hide).toHaveBeenCalled();
       expect(component.getPatientImage).toHaveBeenCalled();
     });
   });
@@ -288,6 +323,9 @@ describe('CanvasImageComponent', () => {
   });
   describe('#deleteEllipse', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+      };
       component.deleteEllipse();
     });
     it('should call deleteEllipse function', () => {
@@ -296,6 +334,14 @@ describe('CanvasImageComponent', () => {
   });
   describe('#deletePrediction', () => {
     beforeEach(() => {
+      component.canvas = {
+        remove: () => {},
+        getActiveObject: () => {
+          return {
+            id: 1,
+          };
+        },
+      };
       component.deletePrediction();
     });
     it('should call deletePrediction function', () => {
@@ -312,7 +358,7 @@ describe('CanvasImageComponent', () => {
   });
   describe('#onSelect', () => {
     beforeEach(() => {
-      component.onSelect(event,'text');
+      component.onSelect('', 'text');
     });
     it('should call onSelect function', () => {
       expect(component.onSelect).toBeDefined();
@@ -320,6 +366,16 @@ describe('CanvasImageComponent', () => {
   });
   describe('#savePrediction', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            id: 1,
+          };
+        },
+      };
+      component.activeIcon = {
+        active: true,
+      };
       component.savePrediction();
     });
     it('should call savePrediction function', () => {
@@ -328,6 +384,18 @@ describe('CanvasImageComponent', () => {
   });
   describe('#closePathologyModal', () => {
     beforeEach(() => {
+      component.canvas = {
+        remove: () => {},
+        getActiveObject: () => {
+          return {
+            id: 1,
+          };
+        },
+        renderAll: () => {},
+      };
+      component.activeIcon = {
+        active: true,
+      };
       component.closePathologyModal();
     });
     it('should call closePathologyModal function', () => {
@@ -336,10 +404,27 @@ describe('CanvasImageComponent', () => {
   });
   describe('#freeHandDrawing', () => {
     beforeEach(() => {
-      component.freeHandDrawing('');
+      component.canvas = {
+        remove: () => {},
+        getActiveObject: () => {
+          return {
+            id: 1,
+          };
+        },
+        isDrawingMode: true,
+        freeDrawingBrush: {
+          width: '',
+          color: '',
+        },
+        observe: () => {},
+      };
+      const mockData = {
+        active: true,
+      };
+      component.freeHandDrawing(mockData);
     });
     it('should call freeHandDrawing function', () => {
       expect(component.freeHandDrawing).toBeDefined();
-    })
-  })
+    });
+  });
 });

@@ -79,8 +79,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.isDown = false;
     if (this.eventEmitterService.subsVar === undefined) {
       this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
-        (data: string) => {
-          switch (data['title']) {
+        (data: any) => {
+          switch (data.title) {
             case 'Draw Ellipse':
               this.drawEllipse(data);
               break;
@@ -122,12 +122,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
 
     this.canvas.on('object:selected', (evt) => {
-      // let selectedObject = this.canvas.getActiveObject();
-      // this.canvas.setActiveObject(selectedObject);
       const bodyRect = document.body.getBoundingClientRect();
       const right = bodyRect.right - this.canvas.getActiveObject().left;
       const top = this.canvas.getActiveObject().top - bodyRect.top;
-      if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode == false) {
+      if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
         this.dialog.open(this.controlsModel, {
           panelClass: 'my-class',
           hasBackdrop: false,
@@ -152,13 +150,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
   /**
    * Get Patient Instance ID
-   * @param {string} patientId Patient ID
+   * @param patientId Patient ID
    * @return void
    */
 
   /**
    * Get Patient Instance ID
-   * @param {string} patientId Patient ID
+   * @param patientId Patient ID
    * @return void
    */
 
@@ -189,7 +187,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Get Patient Image
-   * @param {string} instanceID Patient ID
+   * @param instanceID Patient ID
    * @return void
    */
 
@@ -282,16 +280,17 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   /**
-   Register click function from another component
+   * Register click function from another component
    */
   firstComponentFunction(title) {
     this.eventEmitterService.onComponentButtonClick(title);
   }
 
-  /**Draw Ellipse Functionality */
+  /**
+   * Draw Ellipse Functionality 
+   */
   drawEllipse(data, isMlAi?, diseaseItem?) {
     this.updateDisease = false;
-    var origX, origY;
     this.canvas.isDrawingMode = false;
     this.enableDrawEllipseMode = true;
     if (isMlAi) {
@@ -320,11 +319,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.canvas.observe('mouse:down', (e) => {
           if (this.enableDrawEllipseMode === true) {
             this.isDown = true;
-            let pointer = this.canvas.getPointer(e.e);
+            const pointer = this.canvas.getPointer(e.e);
             this.origX = pointer.x;
             this.origY = pointer.y;
 
-            let ellipse = new fabric.Ellipse({
+            const ellipse = new fabric.Ellipse({
               width: 0,
               height: 0,
               left: pointer.x,
@@ -340,9 +339,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
         });
         this.canvas.observe('mouse:move', (e) => {
-          if (!this.isDown) return;
-          let pointer = this.canvas.getPointer(e.e);
-          let activeObj = this.canvas.getActiveObject();
+          if (!this.isDown){
+            return;
+          }
+          const pointer = this.canvas.getPointer(e.e);
+          const activeObj = this.canvas.getActiveObject();
           if (this.origX > pointer.x) {
             activeObj.set({
               left: Math.abs(pointer.x),
@@ -375,9 +376,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   deleteEllipse() {
-    let activeObject = this.canvas.getActiveObject();
+    const activeObject = this.canvas.getActiveObject();
     if (activeObject) {
       this.dialog.open(this.deleteObjectModel, {
         height: '240px',
@@ -388,6 +388,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       alert('Please select object first');
     }
   }
+
 
   /**
    * Open pathology model
@@ -420,9 +421,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Emitting selected disease to Impression component
    */
   savePrediction() {
-    let id = Math.floor(Math.random() * 100 + 1);
-    this.canvas.getActiveObject().id = id;
-    let selectedObject = { id: id, name: this.selectedDisease };
+    const random = Math.floor(Math.random() * 100 + 1);
+    this.canvas.getActiveObject().id = random;
+    const selectedObject = { id: random, name: this.selectedDisease };
     this.eventEmitterService.onComponentDataShared(selectedObject);
     this.selectedDisease = '';
     this.activeIcon.active = false;
@@ -433,12 +434,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Delete active object
    */
   deletePrediction() {
-    let selectedObject = {
+    const selectedObject = {
       id: this.canvas.getActiveObject().id,
       check: 'delete',
     };
     this.eventEmitterService.onComponentButtonClick(selectedObject);
-    let activeObject = this.canvas.getActiveObject();
+    const activeObject = this.canvas.getActiveObject();
     this.canvas.remove(activeObject);
     this.dialog.closeAll();
   }
@@ -446,7 +447,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Update active object
    */
   updatePrediction() {
-    let selectedObject = {
+    const selectedObject = {
       id: this.canvas.getActiveObject().id,
       check: 'update',
       name: this.selectedDisease,

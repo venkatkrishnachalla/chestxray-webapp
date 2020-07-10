@@ -1,9 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { PatientListComponent } from './patient-list.component';
-import { throwError } from 'rxjs';
 import {HttpClientModule} from '@angular/common/http';
-import {HttpTestingController} from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DashboardService } from 'src/app/service/dashboard.service';
+import { HttpTestingController } from '@angular/common/http/testing';
+import { AgGridModule } from '../../../../../node_modules/ag-grid-angular';
+import { of } from 'rxjs';
+import { GridApi, ColumnApi } from 'ag-grid-community';
 
 describe('PatientListComponent', () => {
   let component: PatientListComponent;
@@ -12,27 +15,18 @@ describe('PatientListComponent', () => {
   const dashboardServiceSpy = jasmine.createSpyObj('DashboardService', [
     'getPatientList',
   ]);
-  let fixture: ComponentFixture<PatientListComponent>;
-
-  beforeEach(() => {
-    component = new PatientListComponent(
-      httpSpy,
-      elementRefSpy,
-      dashboardServiceSpy,
-    );
-  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
       declarations: [PatientListComponent],
-    }).compileComponents();
+      imports: [HttpClientModule, RouterTestingModule, AgGridModule.withComponents([])],
+      providers: [dashboardServiceSpy]
+    })
+    .compileComponents();
   }));
-
+  
   beforeEach(() => {
-    fixture = TestBed.createComponent(PatientListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new PatientListComponent(elementRefSpy, dashboardServiceSpy, httpSpy);
   });
 
   it('should create', () => {
@@ -40,40 +34,57 @@ describe('PatientListComponent', () => {
   });
 
   describe('#ngOnInit', () => {
+    const samplePatient = [{ patientId: 12, name: 'Krishna',
+                            gender: 'M', age: 56, priority: 'Minor',
+                            referenceDoctor: 'Corkery, Charley DDS',
+                            date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
+                            desc: 'Testing', status: 'in-process',
+                            instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08'
+                            }
+                          ];
     beforeEach(() => {
+      component.defaultColDef = { width: 200 };
+      component.columnDefs = component.constants.patientDashboard.headers;
+      dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
       component.ngOnInit();
     });
-    it('should call ngOnInit function', () => {
+    it('should call ngOnIit function', () => {
       const result = component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
     });
   });
 
   describe('#getPatientList', () => {
-    let service: DashboardService;
-    let httpMock: HttpTestingController;
+    const samplePatient = [{ patientId: 12, name: 'Krishna',
+                            gender: 'M', age: 56, priority: 'Minor',
+                            referenceDoctor: 'Corkery, Charley DDS',
+                            date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
+                            desc: 'Testing', status: 'in-process',
+                            instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08'
+                            }
+                          ];
     beforeEach(() => {
-      service = TestBed.get(DashboardService);
-      httpMock = TestBed.get(HttpTestingController);
+      dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
+      component.getPatientList();
     });
     it('should call getPatientList function', () => {
-      const samplePatient = [{ patientId:12,name:"Krishna",
-                                gender:"M",age:56,priority:"Minor",
-                                referenceDoctor:"Corkery, Charley DDS",
-                                date:"Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)",
-                                desc:"Testing",status:"in-process",
-                                instanceID:"4df09ebb-adb7-4d81-a7e0-7d108ceb8f08"}]
-      dashboardServiceSpy.getPatientList()
-        .subscribe((patientResponse: any) => {
-          expect(patientResponse[0].patientId).toBe(12);
-          // expect(patientResponse).toEqual(samplePatient);
+      dashboardServiceSpy.getPatientList().subscribe((patientResponse: any) => {
+          expect(patientResponse).toEqual(samplePatient);
         });
     });
   });
 
   describe('#onGridReady', () => {
+    const params = {
+      type: 'gridReady',
+      api:  GridApi,
+      columnApi: ColumnApi
+    };
     beforeEach(() => {
-      component.onGridReady({});
+      component.gridApi = params.api;
+      component.gridColumnApi = params.columnApi;
+      spyOn(component, 'autoSizeAll');
+      component.onGridReady(params);
     });
     it('should call onGridReady function', () => {
       const result = component.onGridReady({});
@@ -83,11 +94,13 @@ describe('PatientListComponent', () => {
 
   describe('#autoSizeAll', () => {
     beforeEach(() => {
-      component.autoSizeAll(true);
+      const skipHeader = true;
+      spyOn(component, 'autoSizeAll');
+      component.autoSizeAll(skipHeader);
     });
     it('should call autoSizeAll function', () => {
-      const result = component.autoSizeAll(true);
-      expect(component.autoSizeAll).toBeDefined();
+        const result = component.autoSizeAll(true);
+        expect(component.autoSizeAll).toBeDefined();
     });
   });
 });
