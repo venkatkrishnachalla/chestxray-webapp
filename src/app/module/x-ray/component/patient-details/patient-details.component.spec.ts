@@ -4,6 +4,7 @@ import { PatientDetailsComponent } from './patient-details.component';
 
 describe('PatientDetailsComponent', () => {
   let component: PatientDetailsComponent;
+  const sessionStorageSpy = jasmine.createSpyObj('sessionStorage', ['getItem']);
 
   beforeEach(() => {
     component = new PatientDetailsComponent();
@@ -15,15 +16,9 @@ describe('PatientDetailsComponent', () => {
 
   // describe('#ngOnInit', () => {
   //   beforeEach(() => {
-  //     const patient = {
-  //       name: 'abcde',
-  //       age: 25,
-  //       referringPhysicianName: 'mohan',
-  //       sex: 'M',
-  //       lastUpdate: '13/23/1234',
-  //       lastUlastUpdatepdate: '13/23/1234',
-  //       hospitalPatientId: '1004'
-  //     };
+  //     const patient = {"name":"abcde","age":25,"referringPhysicianName":"mohan","sex":"M","lastUpdate":"13/23/1234","hospitalPatientId":"1004"};
+  //     const mock = JSON.parse(patient);
+  //     sessionStorageSpy.getItem.and.returnValue(mock);
   //     component.ngOnInit();
   //   });
   //   it('should call ngOnInit', () => {

@@ -72,4 +72,22 @@ describe('ApiEndPointService', () => {
       expect(apiEndPointService.getPatientImage).toBeDefined();
     });
   });
+
+  describe('#getPatientList', () => {
+    beforeEach(() => {
+      apiEndPointService.getPatientList();
+    });
+    it('should call getPatientList function', () => {
+      expect(apiEndPointService.getPatientList).toBeDefined();
+    });
+  });
+
+  describe('#getAskAi', () => {
+    beforeEach(() => {
+      apiEndPointService.getAskAi();
+    });
+    it('should call getAskAi function', () => {
+      expect(apiEndPointService.getAskAi).toBeDefined();
+    });
+  });
 });

@@ -29,15 +29,35 @@ describe('AskAiComponent', () => {
     it('should call ngOnIit function', () => {
       xrayServiceSpy
         .getAskAiDetails('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD')
-        .subscribe((authResponse: any) => {
-        });
+        .subscribe((authResponse: any) => {});
       expect(component.ngOnInit).toBeDefined();
+    });
+  });
+
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      xrayServiceSpy.getAskAiDetails.and.returnValue(
+        throwError({ status: 404 })
+      );
+      component.ngOnInit();
+    });
+    it('should call ngOnIit function, when it returns error', () => {
+      expect(component.ngOnInit).toBeDefined();
+    });
+  });
+
+  describe('#acceptAI', () => {
+    beforeEach(() => {
+      component.acceptAI();
+    });
+    it('should call acceptAI function', () => {
+      const result = component.rejectAI();
+      expect(component.acceptAI).toBeDefined();
     });
   });
 
   describe('#rejectAI', () => {
     beforeEach(() => {
-      // spyOn(component, 'askAIEvent').and.callThrough();
       component.rejectAI();
     });
     it('should call rejectAI function', () => {

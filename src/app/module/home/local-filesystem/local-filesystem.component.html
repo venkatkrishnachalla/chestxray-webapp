@@ -18,7 +18,6 @@
             formControlName="name"
             name="name"
             autocomplete="off"
-            cxrInputValidator
           />
         </div>
         <div
@@ -142,7 +141,6 @@
             name="phoneNumber"
             autocomplete="off"
             maxlength="10"
-            cxrPhoneNumber
           />
         </div>
         <label for="">Address:</label>
@@ -163,7 +161,10 @@
     <div class="upload-image-local-file">
       <h2>UPLOAD X-RAY IMAGE *</h2>
       <form [formGroup]="uploadImageForm">
-        <cxr-drag-drop (dragImageSrc)="dragDropEvent($event)" (dragImageFile)="dragDropFile($event)"></cxr-drag-drop>
+        <cxr-drag-drop
+          (dragImageSrc)="dragDropEvent($event)"
+          (dragImageFile)="dragDropFile($event)"
+        ></cxr-drag-drop>
         <div style="text-align: center;">
           <!-- <pre>Drag & drop your files here</pre> -->
           <pre>(or)</pre>
@@ -190,7 +191,8 @@
         <button
           type="button"
           [disabled]="uploadImageForm.invalid"
-          mat-raised-button (click)="onSubmit()"
+          mat-raised-button
+          (click)="onSubmit()"
         >
           Report <img src="../../../../assets/images/arrow next.png" alt="" />
         </button>

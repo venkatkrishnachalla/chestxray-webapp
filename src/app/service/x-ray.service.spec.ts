@@ -8,14 +8,11 @@ describe('XRayService', () => {
   const endpointSpy = jasmine.createSpyObj('ApiEndPointService', [
     'getSingInURL',
     'getRefreshToken',
-    'getAskAi'
+    'getAskAi',
   ]);
 
   beforeEach(() => {
-    service = new XRayService(
-      mockHttpClient,
-      endpointSpy,
-    );
+    service = new XRayService(mockHttpClient, endpointSpy);
   });
 
   it('should create', () => {
@@ -35,7 +32,24 @@ describe('XRayService', () => {
         password: '123456',
         returnSecureToken: true,
       };
-      responsePromise = service.getAskAiDetails('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD');
+      responsePromise = service.getAskAiDetails(
+        'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD'
+      );
+      expect(service.getAskAiDetails).toBeDefined();
+    });
+  });
+
+  describe('#handleError', () => {
+    beforeEach(() => {
+      const mock = {
+        error: {
+          error: { message: 'not found' },
+        },
+      };
+      (service as any).handleError(mock);
+    });
+    it('should call getPatientInstanceId', () => {
+      expect((service as any).handleError).toBeDefined();
     });
   });
 });

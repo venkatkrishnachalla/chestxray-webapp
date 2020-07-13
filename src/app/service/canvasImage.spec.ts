@@ -27,6 +27,35 @@ describe('xrayImageService', () => {
     });
     it('should return expected image', () => {
       service.getPatientImage('123773ahbcbd');
+      expect(service.getPatientImage).toBeDefined();
+    });
+  });
+
+  describe('#getPatientInstanceId', () => {
+    beforeEach(() => {
+      const response = new HttpResponse({ status: 204 });
+      endpointSpy.getPatientInstanceId.and.returnValue(
+        'https://chestxrayqa.southindia.cloudapp.azure.com/api/instance/patient'
+      );
+      httpSpy.get.and.returnValue(of(response));
+    });
+    it('should call getPatientInstanceId', () => {
+      service.getPatientInstanceId('123773ahbcbd');
+      expect(service.getPatientInstanceId).toBeDefined();
+    });
+  });
+
+  describe('#handleError', () => {
+    beforeEach(() => {
+      const mock = {
+        error: {
+          error: { message: 'not found' },
+        },
+      };
+      (service as any).handleError(mock);
+    });
+    it('should call getPatientInstanceId', () => {
+      expect((service as any).handleError).toBeDefined();
     });
   });
 });

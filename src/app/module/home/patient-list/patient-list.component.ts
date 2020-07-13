@@ -9,15 +9,15 @@ import { AuthService } from 'src/app/module/auth/auth.service';
   styleUrls: ['./patient-list.component.scss'],
 })
 export class PatientListComponent implements OnInit {
-  private gridApi;
-  private gridColumnApi;
+  gridApi;
+  gridColumnApi;
   columnDefs;
   defaultColDef;
   rowData = [];
   readonly constants = home_constants;
   domLayout: any;
-  searchValue: String;
-  doctorId: string;
+  searchValue: string;
+  // doctorId: string;
   errorMessage: string;
   showError: boolean;
 
@@ -28,7 +28,7 @@ export class PatientListComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.showError = false;
-    this.doctorId = this.authService.user.id;
+    // this.doctorId = this.authService.user.id;
     this.defaultColDef = { width: 200 };
     this.columnDefs = this.constants.patientDashboard.headers;
     this.getPatientList();
@@ -44,8 +44,8 @@ export class PatientListComponent implements OnInit {
   }
 
   autoSizeAll(skipHeader) {
-    var allColumnIds = [];
-    this.gridColumnApi.getAllColumns().forEach(function(column) {
+    const allColumnIds = [];
+    this.gridColumnApi.getAllColumns().forEach((column) => {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);

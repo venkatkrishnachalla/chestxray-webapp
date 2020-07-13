@@ -78,6 +78,7 @@ describe('LocalFilesystemComponent', () => {
       ]);
       spyOn(window as any, 'FileReader').and.returnValue(mockReader);
       component.onFileChange(mockEvt as any);
+      expect(component.onFileChange).toBeDefined();
     });
   });
 

@@ -57,7 +57,7 @@ export class ImpressionComponent implements OnInit {
       );
       if (currEllipse.length === 1) {
         const impressionList = this.impression.filter(
-          (book) => book.name !== disease
+          (book) => book.name.toLowerCase() !== disease.toLowerCase()
         );
         this.impression = impressionList;
       } else {

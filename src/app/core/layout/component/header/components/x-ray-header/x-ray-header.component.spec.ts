@@ -24,8 +24,8 @@ describe('XRayHeaderComponent', () => {
 
   // describe('#ngOnInit', () => {
   //   beforeEach(() => {
-  //     sessionStorageSpy.getItem.and.returnValue(store.patientDetail);
-  //      component.patientID = '1004';
+  //     sessionStorageSpy.getItem.and.returnValue(mockPatientDetail);
+  //     component.patientID = '1004';
   //     component.ngOnInit();
   //   });
   //   it('should call ngOnInit function', () => {
