@@ -23,7 +23,7 @@ describe('HeaderComponent', () => {
     const mockInResponse = {
       username: 'mohan',
       userroles: ['hospitalradiologist'],
-    }
+    };
     beforeEach(() => {
       spyOn(component as any, 'initialize');
     });

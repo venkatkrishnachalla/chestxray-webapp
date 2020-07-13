@@ -20,11 +20,15 @@ export class ImpressionComponent implements OnInit {
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (info: object) => {
+        // tslint:disable-next-line: no-string-literal
         switch (info['check']) {
           case 'delete':
             this.deleteImpression(
+              // tslint:disable-next-line: no-string-literal
               info['id'],
+              // tslint:disable-next-line: no-string-literal
               info['disease'],
+              // tslint:disable-next-line: no-string-literal
               info['objectindex']
             );
             break;
@@ -77,7 +81,7 @@ export class ImpressionComponent implements OnInit {
   }
 
   updateImpression(info) {
-    let index = this.impression.findIndex((item) => item.id == info.id);
+    const index = this.impression.findIndex((item) => item.id === info.id);
     this.impression.splice(index, 1, { id: info.id, name: info.name });
   }
 

@@ -43,12 +43,14 @@ export class LocalFilesystemComponent implements OnInit {
   }
 
   /*** on image file changing event ***/
+
   onFileChange(event) {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name.toString();
       const filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
         const reader = new FileReader();
+        // tslint:disable-next-line: no-shadowed-variable
         reader.onload = (event: any) => {
           this.imageSource = event.target.result;
           this.images.push(event.target.result);
@@ -63,11 +65,13 @@ export class LocalFilesystemComponent implements OnInit {
   }
 
   /*** capture drag and drop of image ***/
+
   dragDropEvent(event) {
     this.imageSource = event;
   }
 
   /*** capture drag and drop of image file event ***/
+
   dragDropFile(event) {
     this.fileName = event.name.toString();
     this.uploadImageForm.patchValue({
@@ -77,6 +81,7 @@ export class LocalFilesystemComponent implements OnInit {
   }
 
   /*** new patient form submit ***/
+  
   onSubmit() {
     this.submitted = true;
     if (this.uploadImageForm.invalid) {
