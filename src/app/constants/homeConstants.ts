@@ -1,4 +1,4 @@
-export const home_constants = {
+export const homeConstants = {
   patientDashboard: {
     headers: [
       {
@@ -8,8 +8,8 @@ export const home_constants = {
         cellRenderer: (data) => {
           return '';
         },
-        cellStyle: function (params) {
-          if (params.value == 'Emergency') {
+        cellStyle: (params) => {
+          if (params.value === 'Emergency') {
             return {
               'border-left': '4px solid red',
               padding: '0',
@@ -35,27 +35,27 @@ export const home_constants = {
         field: 'status',
         sortable: true,
         minWidth: 124,
-        cellRenderer: function (params) {
+        cellRenderer : (params) => {
           if (params.value === 'Drafted') {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>" +
+              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Drafted.png\'  width=\'15px\' height=\'15px\'/></span><span>' +
               params.value +
               '</span>'
             );
           } else if (params.value === 'Unreported') {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Unreported.png' width='15px' height='15px'/></span><span>" +
+              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Unreported.png\' width=\'15px\' height=\'15px\'/></span><span>' +
               params.value +
               '</span>'
             );
           } else if (params.value === 'Reported') {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Reported.png' width='15px' height='15px'/></span><span>" +
+              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Reported.png\' width=\'15px\' height=\'15px\'/></span><span>' +
               params.value +
               '</span>'
             );
           } else if (params.value === false) {
-            return "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>invalid</span>";
+            return '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Drafted.png\'  width=\'15px\' height=\'15px\'/></span><span>invalid</span>';
           }
         },
       },
@@ -99,20 +99,26 @@ export const home_constants = {
         pinned: 'right',
         resizable: true,
         minWidth: 100,
-        cellStyle: function (params) {
+        cellStyle: (params) => {
           return { width: 'auto !important' };
         },
-        cellRenderer: (data) => {
-          return `<mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px; margin-right:10px" title="Patient Info" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
-                error_outline</mat-icon>
-                <mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
-                arrow_forward_ios</mat-icon>`;
-        },
-        onCellClicked: function make(params) {
-          const patientDetail = JSON.stringify(params.data);
-          sessionStorage.setItem('patientDetail', patientDetail);
-          window.location.assign('/x-ray');
-        },
+        template: `
+          <mat-icon data-action-type="viewInfo" style="color: #C5C5C5; cursor: pointer; margin-top:10px; margin-right:10px" title="Patient Info" (click)="patientInfo(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
+          error_outline</mat-icon>
+          <mat-icon data-action-type="redirect" style="color: #C5C5C5; cursor: pointer; margin-top:10px" title="View X-Ray" (click)="onClick()" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
+          arrow_forward_ios</mat-icon>
+        </div>`
+        // cellRenderer: (data) => {
+        //   return `<mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px; margin-right:10px" title="Patient Info" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
+        //         error_outline</mat-icon>
+        //         <mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
+        //         arrow_forward_ios</mat-icon>`;
+        // },
+        // onCellClicked: function make(params) {
+        //   const patientDetail = JSON.stringify(params.data);
+        //   sessionStorage.setItem('patientDetail', patientDetail);
+        //   window.location.assign('/x-ray');
+        // },
       },
     ],
   },

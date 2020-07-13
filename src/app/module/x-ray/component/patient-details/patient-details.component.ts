@@ -14,17 +14,20 @@ export class PatientDetailsComponent implements OnInit {
   Date: string;
   Time: string;
   history: string;
-  constructor() {}
+  patientDetails: [];
+  constructor() { }
 
   ngOnInit(): void {
-    const patient = JSON.parse(sessionStorage.getItem('patientDetail'));
+    const patient = history.state.patientDetails;
     this.value = 50;
-    this.PatientName = patient.name;
-    this.PatientAge = patient.age;
-    this.refPhysician = patient.referringPhysicianName;
-    this.PatientGender = patient.sex;
-    this.Date = patient.lastUpdate;
-    this.Time = patient.lastUpdate;
+    if (patient){
+      this.PatientName = patient.name;
+      this.PatientAge = patient.age;
+      this.refPhysician = patient.referringPhysicianName;
+      this.PatientGender = patient.sex;
+      this.Date = patient.lastUpdate;
+      this.Time = patient.lastUpdate;
+    }
     this.history = '';
   }
 }
