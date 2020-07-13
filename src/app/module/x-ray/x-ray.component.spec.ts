@@ -10,38 +10,44 @@ describe('XRayComponent', () => {
   const XRayServiceSpy = jasmine.createSpyObj('XRayService', [
     'getAskAiDetails',
   ]);
+  const routerSpy = jasmine.createSpyObj('Router', [
+    'naviagate',
+  ]);
+  const eventEmitterService = jasmine.createSpyObj('XRayService', [
+    'invokeReportFunction',
+    'onReportDataShared',
+    'onComponentReportButtonClick'
+  ]);
+  const anotatedXrayService = jasmine.createSpyObj('XRayService', [
+    'abcd',
+  ]);
+
+  beforeEach(() => {
+    component = new XRayComponent(XRayServiceSpy, spinnerServiceSpy, routerSpy, eventEmitterService, anotatedXrayService);
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('#ngOnInit', () => {
-    beforeEach(() => {
-      component.ngOnInit();
-    });
-    it('should call ngOnIit function', () => {
-      const result = component.ngOnInit();
-      expect(component.ngOnInit).toBeDefined();
-    });
-  });
-
   describe('#openAskAI', () => {
-    const mock = {
-      data: {
-        ndarray: [],
-      },
-    };
     beforeEach(() => {
-      XRayServiceSpy.getAskAiDetails.and.returnValue(of(mock));
+      const mLResponseNew = {
+        data: {
+          names: [],
+          ndarray: [{}],
+        },
+      };
+      XRayServiceSpy.getAskAiDetails.and.returnValue(of(mLResponseNew));
       const event = {};
       component.openAskAI(event);
     });
-    it('should call openAskAI function', () => {
+    it('should call openAskAI function, when returns success', () => {
       expect(spinnerServiceSpy.show).toHaveBeenCalled();
-      XRayServiceSpy.getAskAiDetails('test').subscribe((xrayResponse: any) => {
-        expect(xrayResponse).toEqual(mock);
-        expect(spinnerServiceSpy.hide).toHaveBeenCalled();
-      });
+      XRayServiceSpy.getAskAiDetails(
+        'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD'
+      ).subscribe((authResponse: any) => {});
+      expect(spinnerServiceSpy.hide).toHaveBeenCalled();
     });
   });
 
@@ -53,7 +59,7 @@ describe('XRayComponent', () => {
       component.openAskAI(event);
     });
     it('should call openAskAI function, when returns error message', () => {
-      expect(spinnerServiceSpy.hide).toHaveBeenCalled();
+      expect(component.openAskAI).toBeDefined();
     });
   });
 

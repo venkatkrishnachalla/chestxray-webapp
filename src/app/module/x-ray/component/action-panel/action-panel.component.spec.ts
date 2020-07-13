@@ -4,12 +4,12 @@ import { ActionPanelComponent } from './action-panel.component';
 
 describe('ActionPanelComponent', () => {
   let component: ActionPanelComponent;
-  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', ['onComponentButtonClick']);
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'onComponentButtonClick',
+  ]);
 
   beforeEach(() => {
-    component = new ActionPanelComponent(
-      eventEmitterServiceSpy
-    );
+    component = new ActionPanelComponent(eventEmitterServiceSpy);
   });
 
   describe('#ngOnInit', () => {
@@ -35,12 +35,33 @@ describe('ActionPanelComponent', () => {
 
   describe('#askAI', () => {
     beforeEach(() => {
-      component.iconAction([], 1)
+      const data = [
+        {
+          active: true,
+          key: 0,
+          index: 0,
+        },
+      ];
+      component.iconAction(data, 0);
     });
     it('should call icon Action function', () => {
-      const result = component.iconAction([], 1);
       expect(component.iconAction).toBeDefined();
     });
   });
 
+  describe('#askAI', () => {
+    beforeEach(() => {
+      const data = [
+        {
+          active: true,
+          key: 0,
+          index: 1,
+        },
+      ];
+      component.iconAction(data, 0);
+    });
+    it('should call icon Action function, when index is not equal to key', () => {
+      expect(component.iconAction).toBeDefined();
+    });
+  });
 });

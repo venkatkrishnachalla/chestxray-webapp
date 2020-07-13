@@ -88,7 +88,7 @@ export class AuthService {
       _token: string;
       _tokenExpirationDate: string;
       username: string;
-      userroles: any[]
+      userroles: any[];
     } = JSON.parse(localStorage.getItem('userAuthData'));
     if (!authData) {
       return;
@@ -159,11 +159,18 @@ export class AuthService {
     token: string,
     expiresIn: any,
     username: string,
-    userroles: any,
+    userroles: any
   ) {
     //  const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const expirationDate = new Date(expiresIn);
-    const user = new User(email, userID, token, expirationDate, username, userroles);
+    const user = new User(
+      email,
+      userID,
+      token,
+      expirationDate,
+      username,
+      userroles
+    );
 
     this.userSubject.next(user);
     const startDate = new Date().getTime();

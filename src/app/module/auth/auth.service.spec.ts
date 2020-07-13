@@ -12,11 +12,7 @@ describe('AuthService', () => {
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
   beforeEach(() => {
-    authService = new AuthService(
-      mockHttpClient,
-      endpointSpy,
-      routerSpy
-    );
+    authService = new AuthService(mockHttpClient, endpointSpy, routerSpy);
   });
 
   it('should create', () => {
@@ -80,6 +76,9 @@ describe('AuthService', () => {
 
   describe('#refreshToken', () => {
     beforeEach(() => {
+      const response = new HttpResponse({ status: 204 });
+      endpointSpy.getRefreshToken.and.returnValue('http://localhost:3000/auth');
+      mockHttpClient.post.and.returnValue(of(response));
       (authService as any).refreshToken();
     });
     it('should call refreshToken function', () => {

@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export class EventEmitterService {
   invokeComponentFunction = new EventEmitter();
   invokeComponentData = new EventEmitter();
-
+  invokeComponentEllipseData = new EventEmitter();
   invokeReportFunction = new EventEmitter();
   invokeReportData = new EventEmitter();
   subsVar: Subscription;
@@ -18,6 +18,9 @@ export class EventEmitterService {
   }
   onComponentDataShared(title) {
     this.invokeComponentData.emit(title);
+  }
+  onComponentEllipseDataShared(title) {
+    this.invokeComponentEllipseData.emit(title);
   }
   onComponentReportButtonClick(title) {
     this.invokeReportFunction.emit(title);

@@ -18,7 +18,11 @@ describe('EventEmitterService', () => {
     expect(service.onComponentButtonClick).toBeDefined();
   });
   it('should call onComponentDataShared function', () => {
-    const result = service.onComponentDataShared('')
+    const result = service.onComponentDataShared('');
     expect(service.onComponentDataShared).toBeDefined();
+  });
+  it('should call onComponentEllipseDataShared function', () => {
+    const result = service.onComponentEllipseDataShared('');
+    expect(service.onComponentEllipseDataShared).toBeDefined();
   });
 });

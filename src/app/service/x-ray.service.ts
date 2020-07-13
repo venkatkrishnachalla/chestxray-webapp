@@ -56,5 +56,4 @@ export class XRayService {
   xrayAnnotatedImpressionsService() {
     return this.annotatedXrayImpressionSubject.asObservable();
   }
-
 }

@@ -14,6 +14,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
 export class ImpressionComponent implements OnInit {
   impression = [];
   abnormalityColor = [];
+  ellipseList = [];
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedImpressionService: XRayService
@@ -25,7 +26,7 @@ export class ImpressionComponent implements OnInit {
       (info) => {
         switch (info.check) {
           case 'delete':
-            this.deleteImpression(info.id);
+            this.deleteImpression(info.id, info.disease, info.objectindex);
             break;
           case 'update':
             this.updateImpression(info);
@@ -41,11 +42,33 @@ export class ImpressionComponent implements OnInit {
       this.impression.push(obj);
       this.getColorMapping(obj.name);
     });
+    this.eventEmitterService.invokeComponentEllipseData.subscribe(
+      (objEllipse) => {
+        this.ellipseList.push(objEllipse);
+      }
+    );
   }
 
-  deleteImpression(id){
-    const index = this.impression.findIndex(item => item.id === id);
-    this.impression.splice(index, 1);
+  deleteImpression(id, disease, objectindex) {
+    if (disease) {
+      const currEllipse = this.ellipseList.filter(
+        (book) => book.name === disease
+      );
+      if (currEllipse.length === 1) {
+        const impressionList = this.impression.filter(
+          (book) => book.name.toLowerCase() !== disease.toLowerCase()
+        );
+        this.impression = impressionList;
+      } else {
+        const ellipseListArray = this.ellipseList.filter(
+          (book) => book.index !== objectindex
+        );
+        this.ellipseList = ellipseListArray;
+      }
+    } else {
+      const index = this.impression.findIndex((item) => item.id === id);
+      this.impression.splice(index, 1);
+    }
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name);

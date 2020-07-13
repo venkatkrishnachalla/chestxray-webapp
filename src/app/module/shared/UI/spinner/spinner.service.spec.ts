@@ -27,6 +27,7 @@ describe('SpinnerService', () => {
         .pipe(filter((res) => !!res))
         .subscribe((res) => expect(res).toEqual(value));
       subjectMock.next(true);
+      expect(service.show).toBeDefined();
     });
   });
 
@@ -44,6 +45,7 @@ describe('SpinnerService', () => {
         .pipe(filter((res) => !!res))
         .subscribe((res) => expect(res).toEqual(value));
       subjectMock.next(false);
+      expect(service.hide).toBeDefined();
     });
   });
 });
