@@ -35,7 +35,7 @@
             Name is required.
           </div>
         </div>
-
+        
         <label for="">Gender:</label>
         <div class="radio-button">
           <input
@@ -142,6 +142,15 @@
             autocomplete="off"
             maxlength="10"
           />
+        </div>
+        <div *ngIf="uploadImageForm.controls['phoneNumber'].errors">
+          <div
+            class="alert-danger"
+            style="margin: 0;"
+            *ngIf="uploadImageForm.controls['phoneNumber'].errors"
+          >
+            Mobile number is not a valid format.
+          </div>
         </div>
         <label for="">Address:</label>
         <div>

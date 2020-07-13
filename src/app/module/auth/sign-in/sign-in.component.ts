@@ -12,6 +12,7 @@ import { SpinnerService } from '../../shared/UI/spinner/spinner.service';
 })
 export class SignInComponent implements OnInit {
   auth: { email: string; password: string } = { email: '', password: '' };
+  hide = true;
   errorMessage = '';
   breakpoint: number;
   constructor(

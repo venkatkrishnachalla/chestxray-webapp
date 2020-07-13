@@ -1,0 +1,83 @@
+<div class="cxr-x-ray-patient-details">
+  <div class="patient-details-group">
+    <div class="profile-icon">
+      <img
+        src="../../../../../assets/images/user_icon@3x.png"
+        alt="profile-icon"
+      />
+      <span> PATIENT DETAILS</span>
+    </div>
+    <div class="patient-info">
+      <div class="patient-status">
+        <span>Patient ID: <a>{{patientInfo.hospitalPatientId}}</a> </span> 
+        <span>Status: <a>{{patientInfo.status}}</a></span>
+        <span>Date of creation: <a>{{patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</a></span> 
+
+      </div>
+      <div class="patient-name">
+        <span>Name: <a>{{patientInfo.name}}</a> </span>
+        <span>[{{patientInfo.sex}}]: <a>{{patientInfo.age}} Yrs</a></span>
+        <span>Time: <a>{{patientInfo.lastUpdate| date: 'HH:mm:ss'}}</a> </span> 
+      </div>
+      <div class="doctor-name">
+        <span>Ref. Physician: <a>{{patientInfo.referringPhysicianName}}</a></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="clinical-history-group">
+    <div class="clinical-history-icon">
+      <img
+        src="../../../../../assets/images/clinical_history@3x.png"
+        alt="clinical-history-icon"
+      />
+      <span> CLINICAL HISTORY</span>
+    </div>
+    <div class="clinical-info">
+      {{clinicalHistory}}
+    </div>
+  </div>
+
+  <div class="findings-group">
+    <div class="findings-icon">
+      <img
+        src="../../../../../assets/images/findings_icon@3x.png"
+        alt="finding-icon"
+      />
+      <span> FINDINGS</span>
+    </div>
+    <div class="findings-info">
+      <ul>
+        <li *ngFor="let finding of findings" contentEditable="true"> > {{finding}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="impression-group">
+    <div class="impression-icon">
+      <img
+        src="../../../../../assets/images/impression_icon@3x.png"
+        alt="finding-icon"
+      />
+      <span> IMPRESSION</span>
+    </div>
+    <div class="impression-info">
+      <ul>
+        <li *ngFor="let impression of annotatedImpression" contentEditable="true"> > {{impression.name}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="comments-group">
+    <div class="comments-icon">
+      <img
+        src="../../../../../assets/images/comment_icon@3x.png"
+        alt="comments-icon"
+      />
+      <span> COMMENTS</span>
+    </div>
+    <div contentEditable="true" class="comments-info">
+      {{comments}}
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { LocalFilesystemComponent } from './local-filesystem.component';
 import { FormGroup } from '@angular/forms';
+import { of } from 'rxjs';
 
 describe('LocalFilesystemComponent', () => {
   let component: LocalFilesystemComponent;
@@ -12,9 +13,15 @@ describe('LocalFilesystemComponent', () => {
     'markAsPristine',
     'value',
   ]);
+  const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(() => {
-    component = new LocalFilesystemComponent(FormBuilderSpy, routerSpy);
+    component = new LocalFilesystemComponent(
+      FormBuilderSpy,
+      routerSpy,
+      authServiceSpy
+    );
   });
 
   it('should create', () => {
@@ -23,6 +30,11 @@ describe('LocalFilesystemComponent', () => {
 
   describe('#ngOnInit', () => {
     beforeEach(() => {
+      const mockInResponse = {
+        username: 'mohan',
+        userroles: ['hospitalradiologist'],
+      };
+      authServiceSpy.userSubject = of(mockInResponse);
       component.uploadImageForm = formGroupSpy;
       component.ngOnInit();
     });
@@ -121,6 +133,14 @@ describe('LocalFilesystemComponent', () => {
       component.uploadImageForm = formGroupSpy;
       component.onSubmit();
       expect(component.onSubmit).toBeDefined();
+    });
+  });
+
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any).userSubscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });

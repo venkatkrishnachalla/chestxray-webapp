@@ -8,12 +8,13 @@ import { Component, OnInit } from '@angular/core';
 export class XRayHeaderComponent implements OnInit {
   patientID: string;
   isProcessed: boolean;
+  patientDetails: [];
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
-    const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
-    this.patientID = patientDetail.hospitalPatientId;
+    const patientDetail = history.state.patientDetails;
+    this.patientID = patientDetail ? patientDetail.hospitalPatientId : '';
     this.isProcessed = false;
   }
 }

@@ -15,6 +15,9 @@ describe('PatientListComponent', () => {
   const dashboardServiceSpy = jasmine.createSpyObj('DashboardService', [
     'getPatientList',
   ]);
+  const routerSpy = jasmine.createSpyObj('Router', [
+    'navigate',
+  ]);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,7 +35,8 @@ describe('PatientListComponent', () => {
     component = new PatientListComponent(
       elementRefSpy,
       dashboardServiceSpy,
-      httpSpy
+      httpSpy,
+      routerSpy
     );
   });
 

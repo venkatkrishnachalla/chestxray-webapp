@@ -1,7 +1,7 @@
 <div class="navigate-index">
   <section class="navigation-buttons">
     <div class="prev-button">
-      <button mat-button>
+      <button mat-button *ngIf="router.url != '/report'">
         <img
           class="pre-image"
           src="../../../../../../../assets/images/arrow back.png"
@@ -22,7 +22,7 @@
       </button>
     </div>
 
-    <div class="next-button">
+    <div class="next-button" *ngIf="router.url != '/report'">
       <button mat-button>
         Next&nbsp;
         <img
@@ -34,7 +34,7 @@
     </div>
   </section>
 
-  <section class="search-field">
+  <section class="search-field" *ngIf="router.url != '/report'">
     <div class="search">
       <span><i class="material-icons" matPrefix>search</i></span>
       <input type="text" />

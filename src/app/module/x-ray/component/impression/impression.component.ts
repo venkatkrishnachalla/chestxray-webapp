@@ -4,6 +4,7 @@ import {
   RANDOM_COLOR,
 } from '../../../../constants/findingColorConstants';
 import { EventEmitterService } from '../../../../service/event-emitter.service';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
   selector: 'cxr-impression',
@@ -14,23 +15,18 @@ export class ImpressionComponent implements OnInit {
   impression = [];
   abnormalityColor = [];
   ellipseList = [];
-  constructor(private eventEmitterService: EventEmitterService) {}
+  constructor(
+    private eventEmitterService: EventEmitterService,
+    private xrayAnnotatedImpressionService: XRayService
+  ) {}
 
   ngOnInit(): void {
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
-      (info: object) => {
-        // tslint:disable-next-line: no-string-literal
-        switch (info['check']) {
+      (info) => {
+        switch (info.check) {
           case 'delete':
-            this.deleteImpression(
-              // tslint:disable-next-line: no-string-literal
-              info['id'],
-              // tslint:disable-next-line: no-string-literal
-              info['disease'],
-              // tslint:disable-next-line: no-string-literal
-              info['objectindex']
-            );
+            this.deleteImpression(info.id, info.disease, info.objectindex);
             break;
           case 'update':
             this.updateImpression(info);
@@ -38,8 +34,7 @@ export class ImpressionComponent implements OnInit {
           default:
             break;
         }
-      }
-    );
+      });
   }
 
   getImpressions() {
@@ -80,13 +75,19 @@ export class ImpressionComponent implements OnInit {
     });
   }
 
-  updateImpression(info) {
-    const index = this.impression.findIndex((item) => item.id === info.id);
-    this.impression.splice(index, 1, { id: info.id, name: info.name });
+  updateImpression(info){
+    const index = this.impression.findIndex(item => item.id === info.id);
+    this.impression.splice(index, 1, {id: info.id, name: info.name});
   }
 
   getColorMapping(diseases) {
     const color = DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;
     this.abnormalityColor.push(color);
+  }
+
+  getImpressionsToReport() {
+    this.xrayAnnotatedImpressionService.xrayAnnotatedImpressions(
+      this.impression
+    );
   }
 }

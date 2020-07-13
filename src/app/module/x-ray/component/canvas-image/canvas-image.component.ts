@@ -6,6 +6,8 @@ import {
   OnDestroy,
   TemplateRef,
   ViewChild,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
@@ -16,7 +18,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { pathology } from 'src/app/constants/pathologyConstants';
 import { StateGroup } from '../../healthDetails';
 import { xrayImageService } from 'src/app/service/canvasImage';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
   selector: 'cxr-canvas-image',
@@ -29,6 +32,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
+  @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
   PatientImage: any;
@@ -60,12 +64,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   activeIcon: any;
   patientDetail: any;
   ellipseList: any[];
+  processedImage: any;
 
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
     private dialog: MatDialog,
-    private xRayService: xrayImageService
+    private xRayService: xrayImageService,
+    private annotatedXrayService: XRayService,
+    private router: Router
   ) {}
 
   @HostListener('window:resize', [])
@@ -106,12 +113,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    this.patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
-    this.PatientImage = sessionStorage.getItem('PatientImage');
-    const isUser = sessionStorage.getItem('isIndividualRadiologist');
-    this.patientId = this.patientDetail.id;
+    this.patientDetail = history.state.patientDetails;
+    this.PatientImage = this.patientDetail.imageSource
+      ? this.patientDetail.imageSource
+      : sessionStorage.getItem('PatientImage');
+    const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
+    this.patientId = this.patientDetail ? this.patientDetail.id : '';
 
-    if (this.PatientImage && isUser === 'true') {
+    if (this.PatientImage && isUser) {
       this.setCanvasDimension();
       this.generateCanvas();
     } else if (!this.instanceId) {
@@ -519,5 +528,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       panelClass: 'my-class',
       disableClose: true,
     });
+  }
+  onSubmitPatientDetails() {
+    this.processedImage = this.canvas.toDataURL('image/png');
+    this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
+    this.router.navigateByUrl('/report');
   }
 }

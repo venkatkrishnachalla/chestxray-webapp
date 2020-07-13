@@ -19,6 +19,10 @@ describe('CanvasImageComponent', () => {
     'getPatientInstanceId',
     'getPatientImage',
   ]);
+  const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+  const annotatedXrayServiceSpy = jasmine.createSpyObj('XRayService', [
+    'xrayAnnotatedService',
+  ]);
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(() => {
@@ -26,7 +30,9 @@ describe('CanvasImageComponent', () => {
       spinnerServiceSpy,
       eventEmitterServiceSpy,
       dialogSpy,
-      xRayServiceSpy
+      xRayServiceSpy,
+      annotatedXrayServiceSpy,
+      routerSpy
     );
   });
 
@@ -575,6 +581,20 @@ describe('CanvasImageComponent', () => {
     it('it should call updateEllipse', () => {
       component.updateEllipse();
       expect(component.updateEllipse).toBeDefined();
+    });
+  });
+
+  describe('#onSubmitPatientDetails', () => {
+    it('it should call onSubmitPatientDetails', () => {
+      component.canvas = {
+        toDataURL: '',
+      };
+      component.processedImage = 'data64:abcde';
+      component.onSubmitPatientDetails();
+      expect(annotatedXrayServiceSpy.xrayAnnotatedService).toHaveBeenCalledWith(
+        component.processedImage
+      );
+      expect(component.onSubmitPatientDetails).toBeDefined();
     });
   });
 });
