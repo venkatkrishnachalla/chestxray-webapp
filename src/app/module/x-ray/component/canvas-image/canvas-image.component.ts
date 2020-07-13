@@ -266,7 +266,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   mlApiEllipseLoop(mlList: any) {
     const mLArray = mlList.data.ndarray[0];
     mLArray.Impression.forEach((impression: any) => {
-      const impressionObject = { id: impression[0], name: impression[1] };
+      const impressionObject = {title: 'impression', id: impression[0], name: impression[1] };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
     mLArray.diseases.forEach((disease: any) => {
@@ -516,6 +516,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   onSubmitPatientDetails() {
     this.processedImage = this.canvas.toDataURL('image/png');
     this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
-    this.router.navigateByUrl('/report');
+    this.router.navigate(['report'], { state: { patientDetails: this.patientDetail } });
+    // this.router.navigateByUrl('/report');
   }
 }

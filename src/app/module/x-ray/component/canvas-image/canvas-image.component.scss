@@ -23,14 +23,6 @@
     max-height: 21rem;
   }
 }
-// ::ng-deep {
-//   mat-dialog-container {
-//     mat-dialog-content {
-//       min-height: 300px !important;
-//       width: 350px !important;
-//     }
-//   }
-// }
 
 ::ng-deep .mat-dialog-container {
   padding-top: 0 !important;
@@ -45,7 +37,7 @@
     margin-bottom: 5px;
   }
   .mat-form-field-appearance-outline .mat-form-field-outline {
-    background-color: #000000;
+    background-color: #000000 !important;
     color: #ffffff;
     border-radius: 5px;
     border-bottom-left-radius: 0;
@@ -87,11 +79,15 @@
   img {
     margin-right: 5px;
   }
-  .material-icons {
-    display: inline-block;
-    margin: 5px !important;
-    color: #ffffff;
-    margin-bottom: -15px !important;
+  ::ng-deep .material-icons {
+      display: inline-block;
+      // margin: 5px !important;
+      color: #ffffff;
+      // margin-bottom: -15px !important;
+      margin-right: 0px !important;
+  }
+  input.mat-input-element {
+    margin-top: -8px;
   }
   mat-dialog-content {
     margin: 0px;
@@ -129,6 +125,7 @@
       min-height: 42vh;
       width: 350px;
     }
+
     mat-dialog-content#deleteImpression {
       display: table-cell;
       padding: 10px 25px 23px 20px;
@@ -138,7 +135,7 @@
       width: 350px;
       h2 {
         font-weight: 400;
-        padding-bottom: 1.5rem;
+        padding-bottom: 1rem;
       }
       .sub-delete-title {
         font-size: 1.3rem;
@@ -168,10 +165,15 @@
         background-color: rgb(159, 160, 159);
       }
     }
-    // mat-dialog-content#controls{
-    //   background-color: black;
-    //   color: white;
-    //   opacity: 0.7;
-    // }
+  }
+
+  #controls{
+    height: 25px !important;
+    span{
+      padding: 10px 5px 10px 5px;
+    }
+  }
+  .deleteImpression{
+      margin-top: 2.5rem !important;
   }
 }
