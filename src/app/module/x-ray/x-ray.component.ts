@@ -6,6 +6,7 @@ import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
+import { ImpressionComponent } from './component/impression/impression.component';
 
 @Component({
   selector: 'cxr-x-ray',
@@ -31,6 +32,7 @@ export class XRayComponent implements OnInit {
   };
   mLResponse: any[];
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
+  @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
 
   constructor(
     private xrayService: XRayService,
@@ -84,6 +86,7 @@ export class XRayComponent implements OnInit {
   generateReport() {
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
     this.canvas.onSubmitPatientDetails();
+    this.impressions.getImpressionsToReport();
   }
 
 }

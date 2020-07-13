@@ -4,6 +4,7 @@ import {
   DISEASE_COLOR_MAPPING,
   RANDOM_COLOR,
 } from 'src/app/constants/findingColorConstants';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
   selector: 'cxr-x-ray-patient-details',
@@ -21,6 +22,7 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   // impression = ['Cardiomegaly', 'Lung Lesion', 'Cardiomegaly', 'Cardiomegaly'];
   patientInfo: any;
+  annotatedImpression: string;
 
   impressions = [];
   abnormalityColor = [];
@@ -29,7 +31,8 @@ export class XRayPatientDetailsComponent implements OnInit {
   clinicalHistory =
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
 
-  constructor(private eventEmitterService: EventEmitterService) {}
+  constructor(private eventEmitterService: EventEmitterService,
+              private xrayAnnotatedImpression: XRayService) {}
 
   ngOnInit(): void {
     this.patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
@@ -39,5 +42,11 @@ export class XRayPatientDetailsComponent implements OnInit {
         this.impressions.push(impression[i]);
       }
     });
+
+    this.xrayAnnotatedImpression
+      .xrayAnnotatedImpressionsService()
+      .subscribe((impression) => {
+        this.annotatedImpression = impression;
+      });
   }
 }

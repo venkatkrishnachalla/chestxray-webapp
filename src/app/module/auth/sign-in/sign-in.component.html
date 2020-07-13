@@ -35,7 +35,7 @@
               <input
                 matInput
                 name="password"
-                type="password"
+                [type]="hide ? 'password' : 'text'"
                 autocomplete="off"
                 required
                 [(ngModel)]="auth.password"
@@ -43,6 +43,7 @@
                 value=""
                 minlength="5"
               />
+              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
             <!-- Validation message -->
             <div
