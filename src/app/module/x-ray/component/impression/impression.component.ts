@@ -22,22 +22,18 @@ export class ImpressionComponent implements OnInit {
   ngOnInit(): void {
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
-      (info: object) => {
-        switch (info['check']) {
+      (info) => {
+        switch (info.check) {
           case 'delete':
-            this.deleteImpression(info['id']);
+            this.deleteImpression(info.id);
             break;
           case 'update':
             this.updateImpression(info);
             break;
-          case 'report':
-            this.getImpressionsToReport();
-            break;
           default:
             break;
         }
-      }
-    );
+      });
   }
 
   getImpressions() {
@@ -47,8 +43,8 @@ export class ImpressionComponent implements OnInit {
     });
   }
 
-  deleteImpression(id) {
-    let index = this.impression.findIndex((item) => item.id == id);
+  deleteImpression(id){
+    const index = this.impression.findIndex(item => item.id === id);
     this.impression.splice(index, 1);
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
@@ -56,9 +52,9 @@ export class ImpressionComponent implements OnInit {
     });
   }
 
-  updateImpression(info) {
-    let index = this.impression.findIndex((item) => item.id == info.id);
-    this.impression.splice(index, 1, { id: info.id, name: info.name });
+  updateImpression(info){
+    const index = this.impression.findIndex(item => item.id === info.id);
+    this.impression.splice(index, 1, {id: info.id, name: info.name});
   }
 
   getColorMapping(diseases) {

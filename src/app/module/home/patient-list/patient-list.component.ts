@@ -1,7 +1,8 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { home_constants } from 'src/app/constants/homeConstants';
+import { homeConstants } from 'src/app/constants/homeConstants';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cxr-patient-list',
@@ -14,7 +15,7 @@ export class PatientListComponent implements OnInit {
   columnDefs;
   defaultColDef;
   rowData = [];
-  readonly constants = home_constants;
+  readonly constants = homeConstants;
   domLayout: any;
   searchValue: string;
   // doctorId: string;
@@ -24,7 +25,8 @@ export class PatientListComponent implements OnInit {
   constructor(
     private elementRef: ElementRef,
     private dashboardService: DashboardService,
-    private authService: AuthService
+    private authService: AuthService,
+    public router: Router,
   ) {}
   ngOnInit() {
     this.showError = false;
@@ -49,6 +51,7 @@ export class PatientListComponent implements OnInit {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
+    this.gridApi.sizeColumnsToFit();
   }
 
   getPatientList() {
@@ -62,5 +65,25 @@ export class PatientListComponent implements OnInit {
         this.errorMessage = errorMessage;
       }
     );
+  }
+  public onRowClicked(e) {
+    if (e.event.target !== undefined) {
+      const data = e.data;
+      const actionType = e.event.target.getAttribute('data-action-type');
+      switch (actionType) {
+          case 'viewInfo':
+              return this.onActionViewClick(data);
+          case 'redirect':
+              return this.onActionRedirectClick(data);
+      }
+    }
+  }
+
+  public onActionViewClick(data: any){
+      alert('View action clicked');
+  }
+
+  public onActionRedirectClick(data: any){
+      this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
 }

@@ -112,10 +112,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    this.patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
+    this.patientDetail = history.state.patientDetails;
     this.PatientImage = sessionStorage.getItem('PatientImage');
     const isUser = sessionStorage.getItem('isIndividualRadiologist');
-    this.patientId = this.patientDetail.id;
+    this.patientId = this.patientDetail ? this.patientDetail.id : '';
 
     if (this.PatientImage && isUser === 'true') {
       this.setCanvasDimension();

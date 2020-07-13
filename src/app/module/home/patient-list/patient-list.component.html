@@ -12,6 +12,7 @@
   <ag-grid-angular
     id="patientGrid"
     class="ag-theme-material"
+    (rowClicked)="onRowClicked($event)"
     [columnDefs]="columnDefs"
     [defaultColDef]="defaultColDef"
     [rowData]="rowData"
