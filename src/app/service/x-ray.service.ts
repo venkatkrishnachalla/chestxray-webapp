@@ -17,6 +17,8 @@ interface AiData {
 export class XRayService {
 
   private annotatedXraySubject = new BehaviorSubject<any>({});
+  private annotatedXrayImpressionSubject = new BehaviorSubject<any>({});
+
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
   getAskAiDetails(PatientImage) {
@@ -45,6 +47,14 @@ export class XRayService {
 
   getAnnotatedImageData() {
     return this.annotatedXraySubject.asObservable();
+  }
+
+  xrayAnnotatedImpressions(event) {
+    this.annotatedXrayImpressionSubject.next(event);
+  }
+
+  xrayAnnotatedImpressionsService() {
+    return this.annotatedXrayImpressionSubject.asObservable();
   }
 
 }

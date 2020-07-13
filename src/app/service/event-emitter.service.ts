@@ -12,9 +12,6 @@ export class EventEmitterService {
   invokeReportFunction = new EventEmitter();
   invokeReportData = new EventEmitter();
   subsVar: Subscription;
-
-
-  private annotatedXrayImpressionSubject = new BehaviorSubject<any>({});
   constructor() {}
   onComponentButtonClick(title) {
     this.invokeComponentFunction.emit(title);
@@ -27,13 +24,5 @@ export class EventEmitterService {
   }
   onReportDataShared(title) {
     this.invokeReportData.emit(title);
-  }
-
-  xrayAnnotatedImpressions(event) {
-    this.annotatedXrayImpressionSubject.next(event);
-  }
-
-  xrayAnnotatedImpressionsService() {
-    this.annotatedXrayImpressionSubject.asObservable();
   }
 }

@@ -4,6 +4,7 @@ import {
   RANDOM_COLOR,
 } from '../../../../constants/findingColorConstants';
 import { EventEmitterService } from '../../../../service/event-emitter.service';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
   selector: 'cxr-impression',
@@ -13,7 +14,10 @@ import { EventEmitterService } from '../../../../service/event-emitter.service';
 export class ImpressionComponent implements OnInit {
   impression = [];
   abnormalityColor = [];
-  constructor(private eventEmitterService: EventEmitterService) {}
+  constructor(
+    private eventEmitterService: EventEmitterService,
+    private xrayAnnotatedImpressionService: XRayService
+  ) {}
 
   ngOnInit(): void {
     this.getImpressions();
@@ -63,6 +67,8 @@ export class ImpressionComponent implements OnInit {
   }
 
   getImpressionsToReport() {
-    this.eventEmitterService.xrayAnnotatedImpressions(this.impression);
+    this.xrayAnnotatedImpressionService.xrayAnnotatedImpressions(
+      this.impression
+    );
   }
 }
