@@ -5,7 +5,9 @@ export const environment = {
     // tslint:disable-next-line: no-string-literal
   RefreshToken: window['refreshToken'] || 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=',
     // tslint:disable-next-line: no-string-literal
-  patientList: window['patientList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/',  patientInstanceId: window['patientInstanceId'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/',
+  patientList: window['patientList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/',
+    // tslint:disable-next-line: no-string-literal
+  patientInstanceId: window['patientInstanceId'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/',
     // tslint:disable-next-line: no-string-literal
   PatientImage: window['patientImage'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/instance/',
     // tslint:disable-next-line: no-string-literal
