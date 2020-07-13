@@ -49,6 +49,7 @@ export class LocalFilesystemComponent implements OnInit {
       const filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
         const reader = new FileReader();
+        // tslint:disable-next-line: no-shadowed-variable
         reader.onload = (event: any) => {
           this.imageSource = event.target.result;
           this.images.push(event.target.result);

@@ -54,6 +54,7 @@ export class ActionPanelComponent implements OnInit {
   }
   iconAction(data, index) {
     for (const key in data) {
+      // tslint:disable-next-line: radix
       if (parseInt(key) !== index) {
         data[key].active = false;
       }

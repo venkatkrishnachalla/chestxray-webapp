@@ -108,17 +108,6 @@ export const homeConstants = {
           <mat-icon data-action-type="redirect" style="color: #C5C5C5; cursor: pointer; margin-top:10px" title="View X-Ray" (click)="onClick()" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
           arrow_forward_ios</mat-icon>
         </div>`
-        // cellRenderer: (data) => {
-        //   return `<mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px; margin-right:10px" title="Patient Info" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
-        //         error_outline</mat-icon>
-        //         <mat-icon style="color: #C5C5C5; cursor: pointer; margin-top:10px" title="View X-Ray" (click)="viewXray(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
-        //         arrow_forward_ios</mat-icon>`;
-        // },
-        // onCellClicked: function make(params) {
-        //   const patientDetail = JSON.stringify(params.data);
-        //   sessionStorage.setItem('patientDetail', patientDetail);
-        //   window.location.assign('/x-ray');
-        // },
       },
     ],
   },
