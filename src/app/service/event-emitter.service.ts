@@ -11,6 +11,7 @@ export class EventEmitterService {
   invokeComponentEllipseData = new EventEmitter();
   invokeReportFunction = new EventEmitter();
   invokeReportData = new EventEmitter();
+  invokeReportDataFunction = new EventEmitter();
   subsVar: Subscription;
   constructor() {}
   onComponentButtonClick(title) {
@@ -27,5 +28,8 @@ export class EventEmitterService {
   }
   onReportDataShared(title) {
     this.invokeReportData.emit(title);
+  }
+  onReportDataPatientDataShared(title) {
+    this.invokeReportDataFunction.emit(title);
   }
 }

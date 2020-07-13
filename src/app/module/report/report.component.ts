@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { EventEmitterService } from '../../service/event-emitter.service';
 
 @Component({
   selector: 'cxr-report',
@@ -8,13 +9,29 @@ import { Router } from '@angular/router';
 })
 export class ReportComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  patientInfo: [];
+
+  constructor(private router: Router,
+              private eventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
+      this.eventEmitterService.subsVar = this.eventEmitterService.invokeReportDataFunction.subscribe(
+        (data: any) => {
+          switch (data.title) {
+            case 'patientInfo':
+              this.patientInfo = data.data;
+              break;
+            default:
+              break;
+          }
+        }
+      );
   }
 
   goBackToXray() {
-    this.router.navigateByUrl('/x-ray');
+    this.eventEmitterService.onComponentButtonClick({data: [], title: 'stateData'});
+    this.router.navigate(['x-ray'], { state: { patientDetails: this.patientInfo } });
+    // this.router.navigateByUrl('/x-ray');
   }
 
 }

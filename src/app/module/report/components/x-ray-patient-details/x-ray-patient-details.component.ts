@@ -35,18 +35,35 @@ export class XRayPatientDetailsComponent implements OnInit {
               private xrayAnnotatedImpression: XRayService) {}
 
   ngOnInit(): void {
-    this.patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
-    this.eventEmitterService.invokeReportFunction.subscribe((impression) => {
-      // tslint:disable-next-line: forin
-      for (const i in impression) {
-        this.impressions.push(impression[i]);
-      }
-    });
+    this.patientInfo = history.state.patientDetails;
+    this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
+        (data: any) => {
+          switch (data.title) {
+            case 'stateData':
+              this.storePatientDetails();
+              break;
+            case 'impression':
+              this.storeImpressions(data);
+              break;
+            default:
+              break;
+          }
+        }
+      );
 
     this.xrayAnnotatedImpression
       .xrayAnnotatedImpressionsService()
       .subscribe((impression) => {
         this.annotatedImpression = impression;
       });
+  }
+  storeImpressions(impression){
+    // tslint:disable-next-line: forin
+    for (const i in impression) {
+      this.impressions.push(impression[i]);
+    }
+  }
+  storePatientDetails(){
+      this.eventEmitterService.onReportDataPatientDataShared({data: this.patientInfo, title: 'patientInfo'});
   }
 }

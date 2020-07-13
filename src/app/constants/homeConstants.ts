@@ -55,7 +55,7 @@ export const homeConstants = {
               '</span>'
             );
           } else if (params.value === false) {
-            return '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Drafted.png\'  width=\'15px\' height=\'15px\'/></span><span>invalid</span>';
+            return '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Drafted.png\'  width=\'15px\' height=\'15px\'/></span><span>Drafted</span>';
           }
         },
       },
