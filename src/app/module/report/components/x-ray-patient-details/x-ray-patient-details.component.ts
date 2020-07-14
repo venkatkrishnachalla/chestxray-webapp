@@ -12,25 +12,15 @@ import { XRayService } from 'src/app/service/x-ray.service';
   styleUrls: ['./x-ray-patient-details.component.scss'],
 })
 export class XRayPatientDetailsComponent implements OnInit {
-  findings = [
-    'Lungs are clear, no evidence of pulmonary parenchymal masses or consolidations.',
-    'Normal hilar vascular markings',
-    'both costophrenic angles are clear',
-    'there is cardiomegaly',
-    'the mediastinum is within normal limits',
-  ];
-
-  // impression = ['Cardiomegaly', 'Lung Lesion', 'Cardiomegaly', 'Cardiomegaly'];
+  findings = [];
   patientInfo: any;
   annotatedImpression: string;
+  annotatedFindings: string;
 
   impressions = [];
   abnormalityColor = [];
-  annotatedFindings: any[];
-  comments =
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
-  clinicalHistory =
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
+  comments = '';
+  clinicalHistory = '';
 
   constructor(
     private eventEmitterService: EventEmitterService,
