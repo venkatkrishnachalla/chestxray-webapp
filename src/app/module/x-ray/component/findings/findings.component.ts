@@ -11,7 +11,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
 export class FindingsComponent implements OnInit {
   constructor(
     private eventEmitterService: EventEmitterService,
-    private xrayAnnotatedImpressionService: XRayService
+    private xrayAnnotatedService: XRayService
   ) {}
   findings: any[];
 
@@ -29,6 +29,6 @@ export class FindingsComponent implements OnInit {
   }
 
   getFindingsToReport() {
-    this.xrayAnnotatedImpressionService.xrayAnnotatedFindings(this.findings);
+    this.xrayAnnotatedService.xrayAnnotatedFindings(this.findings);
   }
 }

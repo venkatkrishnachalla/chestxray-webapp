@@ -45,6 +45,7 @@ export class ImpressionComponent implements OnInit {
     this.eventEmitterService.invokeComponentEllipseData.subscribe(
       (objEllipse) => {
         this.ellipseList.push(objEllipse);
+        this.getColorMapping(objEllipse.name);
       }
     );
   }
@@ -81,7 +82,7 @@ export class ImpressionComponent implements OnInit {
   }
 
   getColorMapping(diseases) {
-    const color = DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;
+    const color = DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
     this.abnormalityColor.push(color);
   }
 
