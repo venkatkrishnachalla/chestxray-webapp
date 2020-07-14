@@ -18,7 +18,6 @@ export class PatientListComponent implements OnInit {
   readonly constants = homeConstants;
   domLayout: any;
   searchValue: string;
-  // doctorId: string;
   errorMessage: string;
   showError: boolean;
 
@@ -30,7 +29,6 @@ export class PatientListComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.showError = false;
-    // this.doctorId = this.authService.user.id;
     this.defaultColDef = { width: 200 };
     this.columnDefs = this.constants.patientDashboard.headers;
     this.getPatientList();
@@ -51,7 +49,6 @@ export class PatientListComponent implements OnInit {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
-    // this.gridApi.sizeColumnsToFit();
   }
 
   getPatientList() {

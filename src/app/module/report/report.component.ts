@@ -31,7 +31,6 @@ export class ReportComponent implements OnInit {
   goBackToXray() {
     this.eventEmitterService.onComponentButtonClick({data: [], title: 'stateData'});
     this.router.navigate(['x-ray'], { state: { patientDetails: this.patientInfo } });
-    // this.router.navigateByUrl('/x-ray');
   }
 
 }

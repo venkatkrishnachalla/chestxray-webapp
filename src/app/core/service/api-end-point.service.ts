@@ -85,10 +85,10 @@ export class ApiEndPointService {
     );
   }
 
-  public getAskAi(): string {
-    // if (environment.isMockAPI) {
-    //   return environment.mockApiEndPoint + '/predictions';
-    // }
-    return '/api/v1.0/predictions';
+  public getAskAi(): string {     
+    // if (environment.isMockAPI) {     
+    //   return environment.mockApiEndPoint + '/predictions';     
+    // }     
+    return '/api/v1.0/predictions';   
   }
 }
