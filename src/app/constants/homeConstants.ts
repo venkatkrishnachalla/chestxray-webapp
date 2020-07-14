@@ -34,7 +34,6 @@ export const homeConstants = {
         headerName: 'Report Status',
         field: 'status',
         sortable: true,
-        minWidth: 124,
         cellRenderer : (params) => {
           if (params.value === 'Drafted') {
             return (
@@ -63,32 +62,27 @@ export const homeConstants = {
         headerName: 'Patient Id',
         field: 'hospitalPatientId',
         sortable: true,
-        minWidth: 102,
       },
       {
         headerName: 'Patient Name',
         field: 'name',
         sortable: true,
-        minWidth: 124,
       },
       {
         headerName: 'Gender',
         field: 'sex',
         sortable: true,
-        minWidth: 89,
       },
       { headerName: 'Age', field: 'age', sortable: true, minWidth: 72 },
       {
         headerName: 'Ref. Doctor',
         field: 'referringPhysicianName',
         sortable: true,
-        minWidth: 111,
       },
       {
         headerName: 'Date & Time',
         field: 'lastUpdate',
         sortable: true,
-        minWidth: 117,
         cellRenderer: (data) => {
           return data.value ? new Date(data.value).toLocaleString() : '';
         },
@@ -98,7 +92,6 @@ export const homeConstants = {
         field: 'action',
         pinned: 'right',
         resizable: true,
-        minWidth: 100,
         cellStyle: (params) => {
           return { width: 'auto !important' };
         },
