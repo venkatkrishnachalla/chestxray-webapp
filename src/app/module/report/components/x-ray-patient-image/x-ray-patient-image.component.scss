@@ -1,7 +1,8 @@
 .x-ray-patient-image-container {
   margin-top: 10px;
   height: calc(100%-64px);
-  width: 100%;
+  width: 95%;
+  overflow-y: auto;
 
   .buttonGroup {
     background-color: #ebeded;
@@ -39,10 +40,32 @@
   .patientAnnotatedImage {
     display: flex;
     img {
-      height: 637px;
+      height: 635px;
       max-width: 100%;
-      @media (max-width: 950px) {
-        height: 600px;
+      width: 100%;
+      @media (max-height: 800px) {
+        height: 610px;
+      }
+      @media (max-height: 770px) {
+        height: 580px;
+      }
+      @media (max-height: 733px) {
+        height: 550px;
+      }
+      @media (max-height: 700px) {
+        height: 520px;
+      }
+      @media (max-height: 700px) {
+        height: 520px;
+      }
+      @media (max-height: 670px) {
+        height: 490px;
+      }
+      @media (max-height: 640px) {
+        height: 460px;
+      }
+      @media (max-height: 610px) {
+        height: 430px;
       }
     }
   }
