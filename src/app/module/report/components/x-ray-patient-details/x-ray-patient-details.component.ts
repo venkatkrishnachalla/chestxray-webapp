@@ -34,7 +34,7 @@ export class XRayPatientDetailsComponent implements OnInit {
     if (this.patientInfo.status === false) {
       this.status = 'Drafted';
     } else {
-      this.status = 'Reported';
+      this.status = 'Unreported';
     }
     this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: any) => {
