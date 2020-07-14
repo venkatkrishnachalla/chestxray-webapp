@@ -6,12 +6,20 @@
         >share</mat-icon
       >
     </button>
-    <button type="button" mat-flat-button>
+
+    <button
+      type="button"
+      mat-flat-button
+      printSectionId="print-section"
+      ngxPrint
+      styleSheetFile="assets/css/patient-details.css"
+    >
       PRINT
       <mat-icon aria-hidden="false" aria-label="Example print icon"
         >print</mat-icon
       >
     </button>
+
     <button type="button" mat-flat-button>
       SIGNATURE
       <mat-icon aria-hidden="false" aria-label="Example gesture icon"
@@ -29,3 +37,5 @@
     <img [src]="xrayAnnotatedImage" alt="" />
   </section>
 </div>
+
+<img class="hide-xray" [src]="xrayAnnotatedImage" alt="" />
