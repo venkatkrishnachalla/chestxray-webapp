@@ -26,44 +26,56 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   impressions = [];
   abnormalityColor = [];
+  annotatedFindings: any[];
   comments =
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
   clinicalHistory =
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
 
-  constructor(private eventEmitterService: EventEmitterService,
-              private xrayAnnotatedImpression: XRayService) {}
+  constructor(
+    private eventEmitterService: EventEmitterService,
+    private xrayAnnotatedImpression: XRayService
+  ) {}
 
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
     this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
-        (data: any) => {
-          switch (data.title) {
-            case 'stateData':
-              this.storePatientDetails();
-              break;
-            case 'impression':
-              this.storeImpressions(data);
-              break;
-            default:
-              break;
-          }
+      (data: any) => {
+        switch (data.title) {
+          case 'stateData':
+            this.storePatientDetails();
+            break;
+          case 'impression':
+            this.storeImpressions(data);
+            break;
+          default:
+            break;
         }
-      );
+      }
+    );
 
     this.xrayAnnotatedImpression
       .xrayAnnotatedImpressionsService()
       .subscribe((impression) => {
         this.annotatedImpression = impression;
       });
+
+    this.xrayAnnotatedImpression
+      .xrayAnnotatedFindingsService()
+      .subscribe((findings) => {
+        this.annotatedFindings = findings;
+      });
   }
-  storeImpressions(impression){
+  storeImpressions(impression) {
     // tslint:disable-next-line: forin
     for (const i in impression) {
       this.impressions.push(impression[i]);
     }
   }
-  storePatientDetails(){
-      this.eventEmitterService.onReportDataPatientDataShared({data: this.patientInfo, title: 'patientInfo'});
+  storePatientDetails() {
+    this.eventEmitterService.onReportDataPatientDataShared({
+      data: this.patientInfo,
+      title: 'patientInfo',
+    });
   }
 }
