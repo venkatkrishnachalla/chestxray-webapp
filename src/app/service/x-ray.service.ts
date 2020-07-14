@@ -15,13 +15,13 @@ interface AiData {
   providedIn: 'root',
 })
 export class XRayService {
-
   private annotatedXraySubject = new BehaviorSubject<any>({});
   private annotatedXrayImpressionSubject = new BehaviorSubject<any>({});
 
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
   getAskAiDetails(PatientImage) {
+    debugger;
     const data = {
       data: {
         ndarray: [PatientImage],
@@ -32,7 +32,7 @@ export class XRayService {
       headers: new HttpHeaders({
         'content-type': 'application/json',
         responseType: 'json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
       }),
     };
     return this.http.post(this.endpoint.getAskAi(), saveArray, httpOptions);

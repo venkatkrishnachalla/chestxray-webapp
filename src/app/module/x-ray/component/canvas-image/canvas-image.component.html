@@ -48,13 +48,24 @@
           let v = index
         "
       >
-        <mat-list-item class="pointer" (click)="onSelect($event, item.names)"
+        <!-- <mat-list-item class="pointer" (click)="onSelect($event, item.names)"
           >{{ v + 1 }}.&nbsp;&nbsp;{{ item.abnormality }}</mat-list-item
         >
         <mat-list class="sub-list">
           <div *ngFor="let subItem of item.names; let i = index">
             <mat-list-item class="pointer" (click)="onSelect($event, '')"
               >{{ v + 1 }}.{{ i + 1 }}&nbsp;&nbsp;{{ subItem }}</mat-list-item>
+          </div>
+        </mat-list> -->
+        <mat-list-item class="pointer" (click)="onSelect($event, item.names)"
+          ><span class="diseaseList"></span
+          >{{ item.abnormality }}</mat-list-item
+        >
+        <mat-list class="sub-list">
+          <div *ngFor="let subItem of item.names">
+            <mat-list-item class="pointer" (click)="onSelect($event, '')"
+              ><span class="diseaseSubList"></span>{{ subItem }}</mat-list-item
+            >
           </div>
         </mat-list>
       </ng-container>

@@ -43,20 +43,20 @@ export class XRayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.eventEmitterService.invokeReportFunction.subscribe(
-      (impressions) => {
-        this.eventEmitterService.onReportDataShared(impressions);
-      }
-    );
+    this.eventEmitterService.invokeReportFunction.subscribe((impressions) => {
+      this.eventEmitterService.onReportDataShared(impressions);
+    });
   }
 
   /* open ask ai model when user clicks on ask ai button */
   openAskAI(event: any) {
+    debugger;
     // this.showAskAI = !this.showAskAI;
     this.spinnerService.show();
     const PatientImage = sessionStorage.getItem('PatientImage');
     this.xrayService.getAskAiDetails(PatientImage).subscribe(
       (mLResponse: any) => {
+        console.log('mLResponse', mLResponse);
         this.mLResponse = mLResponse;
         this.eventsSubject.next(mLResponse);
         this.spinnerService.hide();
@@ -88,5 +88,4 @@ export class XRayComponent implements OnInit {
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
   }
-
 }

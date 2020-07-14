@@ -4,7 +4,7 @@ export const pathology = {
       abnormality: 'Anatomical variants',
       names: [
         'Aortic Arch variants',
-        'Azygous fissure',
+        'Azygos fissure',
         'Cervical rib',
         'Thymus',
       ],
@@ -25,8 +25,8 @@ export const pathology = {
       abnormality: 'Calcification',
       names: [
         'Calcified nodule',
-        'Calcified node',
-        'Calcified pleural plaque',
+        'Calcified nodes',
+        'Calcified pleural plaques',
         'Physiological calcification',
       ],
     },
@@ -63,7 +63,7 @@ export const pathology = {
       names: [],
     },
     {
-      abnormality: 'Diaphragmatic Abnormalitis',
+      abnormality: 'Diaphragmatic Abnormalities',
       names: [],
     },
     {
@@ -71,12 +71,12 @@ export const pathology = {
       names: [
         'bone cement',
         'mammary prosthesis/breast implant',
-        'Radio-opaque foregn body',
-        'Surgical  sutures',
+        'Radiopaque foreign body',
+        'Surgical sutures',
       ],
     },
     {
-      abnormality: 'Extrapulmonary Extrapleural Conditions',
+      abnormality: 'Extrapulmonary extrapleural conditions radiopaedia',
       names: [
         'Subcutaneous emphysema',
         'Thyroid calcification',
@@ -92,7 +92,7 @@ export const pathology = {
       names: [],
     },
     {
-      abnormality: 'Honey Combing',
+      abnormality: 'Honeycombing',
       names: [],
     },
     {
@@ -113,10 +113,6 @@ export const pathology = {
     },
     {
       abnormality: 'Nodule',
-      names: [],
-    },
-    {
-      abnormality: 'No Finding',
       names: [],
     },
     {
@@ -155,7 +151,7 @@ export const pathology = {
       names: [],
     },
     {
-      abnormality: 'Reticulo Nodular Pattern',
+      abnormality: 'Reticulonodular Pattern',
       names: [],
     },
     {

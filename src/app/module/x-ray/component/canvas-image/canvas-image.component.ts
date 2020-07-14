@@ -20,6 +20,10 @@ import { StateGroup } from '../../healthDetails';
 import { xrayImageService } from 'src/app/service/canvasImage';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
+import {
+  DISEASE_COLOR_MAPPING,
+  RANDOM_COLOR,
+} from '../../../../constants/findingColorConstants';
 
 @Component({
   selector: 'cxr-canvas-image',
@@ -270,7 +274,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
     mLArray.Impression.forEach((impression: any) => {
-      const impressionObject = {title: 'impression', id: impression[0], name: impression[1] };
+      const impressionObject = {
+        title: 'impression',
+        id: impression[0],
+        name: impression[1],
+      };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
     mLArray.diseases.forEach((disease: any) => {
@@ -447,6 +455,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.getActiveObject().id = random;
     const selectedObject = { id: random, name: this.selectedDisease };
     this.eventEmitterService.onComponentDataShared(selectedObject);
+    this.getColorMapping(this.selectedDisease);
     this.selectedDisease = '';
     this.activeIcon.active = false;
     this.dialog.closeAll();
@@ -477,6 +486,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       name: this.selectedDisease,
     };
     this.eventEmitterService.onComponentButtonClick(selectedObject);
+    this.getColorMapping(this.selectedDisease);
     this.selectedDisease = '';
     this.dialog.closeAll();
   }
@@ -516,7 +526,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   save() {
     if (this.canvas.isDrawingMode) {
       this.dialog.open(this.pathologyModal, {
-        panelClass: 'my-class',
+        height: '500px',
+        width: '320px',
         disableClose: true,
       });
       this.canvas.isDrawingMode = false;
@@ -525,14 +536,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   updateEllipse() {
     this.updateDisease = true;
     this.dialog.open(this.pathologyModal, {
-      panelClass: 'my-class',
+      height: '500px',
+      width: '320px',
       disableClose: true,
     });
   }
   onSubmitPatientDetails() {
     this.processedImage = this.canvas.toDataURL('image/png');
     this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
-    this.router.navigate(['report'], { state: { patientDetails: this.patientDetail } });
+    this.router.navigate(['report'], {
+      state: { patientDetails: this.patientDetail },
+    });
     // this.router.navigateByUrl('/report');
+  }
+  getColorMapping(diseases) {
+    const color = DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;
+    this.canvas.getActiveObject().set({
+      stroke: color,
+    });
   }
 }
