@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
 import { ImpressionComponent } from './component/impression/impression.component';
+import { FindingsComponent } from './component/findings/findings.component';
 
 @Component({
   selector: 'cxr-x-ray',
@@ -33,6 +34,7 @@ export class XRayComponent implements OnInit {
   mLResponse: any[];
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
+  @ViewChild(FindingsComponent) findings: FindingsComponent;
 
   constructor(
     private xrayService: XRayService,
@@ -43,11 +45,9 @@ export class XRayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.eventEmitterService.invokeReportFunction.subscribe(
-      (impressions) => {
-        this.eventEmitterService.onReportDataShared(impressions);
-      }
-    );
+    this.eventEmitterService.invokeReportFunction.subscribe((impressions) => {
+      this.eventEmitterService.onReportDataShared(impressions);
+    });
   }
 
   /* open ask ai model when user clicks on ask ai button */
@@ -87,6 +87,6 @@ export class XRayComponent implements OnInit {
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
+    this.findings.getFindingsToReport();
   }
-
 }

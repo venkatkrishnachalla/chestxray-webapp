@@ -15,9 +15,9 @@ interface AiData {
   providedIn: 'root',
 })
 export class XRayService {
-
   private annotatedXraySubject = new BehaviorSubject<any>({});
   private annotatedXrayImpressionSubject = new BehaviorSubject<any>({});
+  private annotatedXrayFindingsSubject = new BehaviorSubject<any>({});
 
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
@@ -32,7 +32,7 @@ export class XRayService {
       headers: new HttpHeaders({
         'content-type': 'application/json',
         responseType: 'json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
       }),
     };
     return this.http.post(this.endpoint.getAskAi(), saveArray, httpOptions);
@@ -55,5 +55,13 @@ export class XRayService {
 
   xrayAnnotatedImpressionsService() {
     return this.annotatedXrayImpressionSubject.asObservable();
+  }
+
+  xrayAnnotatedFindings(event) {
+    this.annotatedXrayFindingsSubject.next(event);
+  }
+
+  xrayAnnotatedFindingsService() {
+    return this.annotatedXrayFindingsSubject.asObservable();
   }
 }

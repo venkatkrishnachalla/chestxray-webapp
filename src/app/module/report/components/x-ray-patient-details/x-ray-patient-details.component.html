@@ -9,17 +9,32 @@
     </div>
     <div class="patient-info">
       <div class="patient-status">
-        <span>Patient ID: <a>{{patientInfo.hospitalPatientId}}</a> </span> 
-        <span>Status: <a>{{patientInfo.status}}</a></span>
-        <span>Date of creation: <a>{{patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</a></span>
+        <span
+          >Patient ID: <a>{{ patientInfo.hospitalPatientId }}</a>
+        </span>
+        <span
+          >Status: <a>{{ patientInfo.status }}</a></span
+        >
+        <span
+          >Date of creation:
+          <a>{{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</a></span
+        >
       </div>
       <div class="patient-name">
-        <span>Name: <a>{{patientInfo.name}}</a> </span>
-        <span>[{{patientInfo.sex}}]: <a>{{patientInfo.age}} Yrs</a></span>
-        <span>Time: <a>{{patientInfo.lastUpdate| date: 'HH:mm:ss'}}</a> </span> 
+        <span
+          >Name: <a>{{ patientInfo.name }}</a>
+        </span>
+        <span
+          >[{{ patientInfo.sex }}]: <a>{{ patientInfo.age }} Yrs</a></span
+        >
+        <span
+          >Time: <a>{{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</a>
+        </span>
       </div>
       <div class="doctor-name">
-        <span>Ref. Physician: <a>{{patientInfo.referringPhysicianName}}</a></span>
+        <span
+          >Ref. Physician: <a>{{ patientInfo.referringPhysicianName }}</a></span
+        >
       </div>
     </div>
   </div>
@@ -32,9 +47,7 @@
       />
       <span> CLINICAL HISTORY</span>
     </div>
-    <div class="clinical-info">
-      {{clinicalHistory}}
-    </div>
+    <div class="clinical-info"></div>
   </div>
 
   <div class="findings-group">
@@ -47,7 +60,9 @@
     </div>
     <div class="findings-info">
       <ul>
-        <li *ngFor="let finding of findings" contentEditable="true"> > {{finding}}</li>
+        <li *ngFor="let finding of annotatedFindings" contentEditable="true">
+          > {{ finding }}
+        </li>
       </ul>
     </div>
   </div>
@@ -62,7 +77,12 @@
     </div>
     <div class="impression-info">
       <ul>
-        <li *ngFor="let impression of annotatedImpression" contentEditable="true"> > {{impression.name}}</li>
+        <li
+          *ngFor="let impression of annotatedImpression"
+          contentEditable="true"
+        >
+          > {{ impression.name }}
+        </li>
       </ul>
     </div>
   </div>
@@ -75,8 +95,6 @@
       />
       <span> COMMENTS</span>
     </div>
-    <div contentEditable="true" class="comments-info">
-      {{comments}}
-    </div>
+    <div contentEditable="true" class="comments-info"></div>
   </div>
 </div>

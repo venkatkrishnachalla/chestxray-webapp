@@ -64,6 +64,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   activeIcon: any;
   patientDetail: any;
   ellipseList: any[];
+  findingsList: any[];
   processedImage: any;
 
   constructor(
@@ -265,22 +266,114 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.spinnerService.hide();
   }
 
-  /* draw ellipse, when user hits ask ai accept button */
+  /* draw ellipse, when user clicks ask ai accept button */
+
   mlApiEllipseLoop(mlList: any) {
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
+    this.findingsList = [];
     mLArray.Impression.forEach((impression: any) => {
-      const impressionObject = {title: 'impression', id: impression[0], name: impression[1] };
+      const impressionObject = {
+        title: 'impression',
+        id: impression[0],
+        name: impression[1],
+      };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
+
+    if (mLArray.Findings.ADDITIONAL.length === 0) {
+      const finalFinding = 'ADDITIONAL: ' + 'Normal';
+      this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+    } else {
+      mLArray.Findings.ADDITIONAL.forEach((finding: any) => {
+        const currentFinding = mLArray.Impression.filter(
+          (book) => book[0] === finding
+        );
+        const finalFinding = 'ADDITIONAL: ' + currentFinding[0][1];
+        this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      });
+    }
+
+    if (mLArray.Findings['BONY THORAX'].length === 0) {
+      const finalFinding = 'BONY THORAX: ' + 'Normal';
+      this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+    } else {
+      mLArray.Findings['BONY THORAX'].forEach((finding: any) => {
+        const currentFinding = mLArray.Impression.filter(
+          (book) => book[0] === finding
+        );
+        const finalFinding = 'BONY THORAX: ' + currentFinding[0][1];
+        this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      });
+    }
+
+    if (mLArray.Findings['CARDIAC SILHOUETTE'].length === 0) {
+      const finalFinding = 'CARDIAC SILHOUETTE: ' + 'Normal';
+      this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+    } else {
+      mLArray.Findings['CARDIAC SILHOUETTE'].forEach((finding: any) => {
+        const currentFinding = mLArray.Impression.filter(
+          (book) => book[0] === finding
+        );
+        const finalFinding = 'CARDIAC SILHOUETTE: ' + currentFinding[0][1];
+        this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      });
+    }
+    if (mLArray.Findings.COSTOPHRENIC_ANGLES.length === 0) {
+      const finalFinding = 'COSTOPHRENIC_ANGLES: ' + 'Normal';
+      this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+    } else {
+      mLArray.Findings.COSTOPHRENIC_ANGLES.forEach((finding: any) => {
+        const currentFinding = mLArray.Impression.filter(
+          (book) => book[0] === finding
+        );
+        const finalFinding = 'COSTOPHRENIC_ANGLES: ' + currentFinding[0][1];
+        this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      });
+    }
+
+    if (mLArray.Findings['DOMES OF DIAPHRAGM'].length === 0) {
+      const finalFinding = 'DOMES OF DIAPHRAGM: ' + 'Normal';
+      this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+    } else {
+      mLArray.Findings['DOMES OF DIAPHRAGM'].forEach((finding: any) => {
+        const currentFinding = mLArray.Impression.filter(
+          (book) => book[0] === finding
+        );
+        const finalFinding = 'DOMES OF DIAPHRAGM: ' + currentFinding[0][1];
+        this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      });
+    }
+
+    if (mLArray.Findings['HILAR/MEDIASTINAL'].length === 0) {
+      const finalFinding = 'HILAR/MEDIASTINAL: ' + ' Normal';
+      this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+    } else {
+      mLArray.Findings['HILAR/MEDIASTINAL'].forEach((finding: any) => {
+        const currentFinding = mLArray.Impression.filter(
+          (book) => book[0] === finding
+        );
+        const finalFinding = 'HILAR/MEDIASTINAL: ' + currentFinding[0][1];
+        this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      });
+    }
+
+    if (mLArray.Findings['LUNG FIELDS'].length === 0) {
+      const finalFinding = 'LUNG FIELDS: ' + 'Normal';
+      this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+    } else {
+      mLArray.Findings['LUNG FIELDS'].forEach((finding: any) => {
+        const currentFinding = mLArray.Impression.filter(
+          (book) => book[0] === finding
+        );
+        const finalFinding = 'LUNG FIELDS: ' + currentFinding[0][1];
+        this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      });
+    }
+
     mLArray.diseases.forEach((disease: any) => {
       disease.ellipses.forEach((ellipse: any, index) => {
         ellipse.id = ellipse.index;
-        ellipse.coordX = ellipse.x;
-        ellipse.coordY = ellipse.y;
-        ellipse.coordA = ellipse.a;
-        ellipse.coordB = ellipse.b;
-        ellipse.coordAngle = ellipse.r;
         ellipse.color = disease.color;
         ellipse.name = disease.name;
         ellipse.index = index;
@@ -532,7 +625,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   onSubmitPatientDetails() {
     this.processedImage = this.canvas.toDataURL('image/png');
     this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
-    this.router.navigate(['report'], { state: { patientDetails: this.patientDetail } });
+    this.router.navigate(['report'], {
+      state: { patientDetails: this.patientDetail },
+    });
     // this.router.navigateByUrl('/report');
   }
 }
