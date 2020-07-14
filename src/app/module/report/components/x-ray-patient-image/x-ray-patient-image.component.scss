@@ -1,20 +1,29 @@
 .x-ray-patient-image-container {
   margin-top: 10px;
+  height: calc(100%-64px);
   width: 100%;
 
   .buttonGroup {
     background-color: #ebeded;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     padding: 3px;
     border-radius: 3px;
     button {
-      width: 24%;
+      width: 25%;
+      padding: 0px 3px;
       background-color: #ebeded;
 
       mat-icon {
         height: 20px;
         width: 20px;
+      }
+      @media (max-width: 950px) {
+        width: 33.33%;
+      }
+      @media (max-width: 900px) {
+        width: 50%;
       }
     }
     button:hover {
@@ -32,6 +41,9 @@
     img {
       height: 637px;
       max-width: 100%;
+      @media (max-width: 950px) {
+        height: 600px;
+      }
     }
   }
 

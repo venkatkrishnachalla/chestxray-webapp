@@ -23,9 +23,5 @@ export class XRayPatientImageComponent implements OnInit {
       .subscribe((xrayAnnotatedImage) => {
         this.xrayAnnotatedImage = xrayAnnotatedImage;
       });
-
-  //   this.xrayAnnotatedImpressionService
-  //     .xrayAnnotatedImpressionsService()
-  //     .subscribe((impression) => (this.xrayAnnotatedImpression = impression));
   }
 }
