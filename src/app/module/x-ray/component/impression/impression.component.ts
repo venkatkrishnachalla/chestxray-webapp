@@ -85,7 +85,7 @@ export class ImpressionComponent implements OnInit {
   }
 
   getColorMapping(diseases) {
-    const color = DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
+    const color = DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;
     this.abnormalityColor.push(color);
   }
 

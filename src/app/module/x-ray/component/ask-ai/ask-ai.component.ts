@@ -81,7 +81,6 @@ export class AskAiComponent implements OnInit {
     this.xrayService.getAskAiDetails(PatientImage).subscribe(
       (mLResponse: any) => {
         this.mLResponse = mLResponse;
-        // console.log("this.mLResponse", this.mLResponse)
       },
       (errorMessage: any) => {}
     );
