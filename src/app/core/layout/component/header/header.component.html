@@ -22,10 +22,10 @@
 
   <span class="fill-remaining-space"></span>
 
-  <button class="icon-styles" *ngIf="router.url != '/x-ray'">
+  <button class="icon-styles" *ngIf="router.url != '/report' && router.url != '/x-ray'">
     <span class="material-icons">person_add_alt_1</span>
   </button>
-  <button class="icon-styles" [routerLink]="['/home/dashboard']" routerLinkActive="router-link-active"  *ngIf="router.url == '/x-ray'">
+  <button class="icon-styles" [routerLink]="['/home/dashboard']" routerLinkActive="router-link-active"  *ngIf="router.url == '/x-ray' || router.url =='/report'">
     <span class="material-icons">dashboard</span>
   </button>
   <button class="icon-styles notification-icon">

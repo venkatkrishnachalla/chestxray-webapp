@@ -14,6 +14,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
 export class XRayPatientDetailsComponent implements OnInit {
   findings = [];
   patientInfo: any;
+  status: string;
   annotatedImpression: string;
   annotatedFindings: string;
 
@@ -29,6 +30,12 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
+    // tslint:disable-next-line: no-conditional-assignment
+    if (this.patientInfo.status === false) {
+      this.status = 'Drafted';
+    } else {
+      this.status = 'Unreported';
+    }
     this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: any) => {
         switch (data.title) {

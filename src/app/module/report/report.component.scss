@@ -25,6 +25,10 @@
     }
   }
 
+  .hide-print-section{
+    display: none;
+  }
+
   .x-ray-patient-image {
     flex-basis: 50%;
     margin: 30px 20px 0px 70px;
