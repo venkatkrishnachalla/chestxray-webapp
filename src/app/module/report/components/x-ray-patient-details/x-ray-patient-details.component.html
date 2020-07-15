@@ -99,6 +99,7 @@
   </div>
 </div>
 
+<!-- Print option -->
 <div class="print-patient-details">
   <div class="patient-grid-container">
     <div>
@@ -120,7 +121,7 @@
   <div class="patient-grid-container">
     <div>
       <span class="field-title"
-        >Status: <a>{{ patientInfo.status }}</a></span
+        >Status: <a>{{ status }}</a></span
       >
     </div>
     <div>
@@ -147,48 +148,39 @@
   <p class="history">
     {{ clinicalHistory }}
   </p>
-  <div class="find-grid-container">
-    <div style="text-align: center; border: 1px solid black;">
-      FINDINGS
+
+  <div style="position: relative;">
+    <div class="image-container">
+      <div class="findings-left-content-top">
+        <h3 class="box--title">FINDINGS</h3>
+        <ol>
+          <li
+            style="text-align: left;"
+            *ngFor="let finding of findings"
+            contentEditable="true"
+          >
+            {{ finding }}
+          </li>
+        </ol>
+      </div>
+
+      <div class="findings-left-content-bottom">
+        <h3 class="box--title">IMPRESSIONS</h3>
+      </div>
     </div>
-    <div style="text-align: center; border: 1px solid black;">
-      IMPRESSIONS
-    </div>
-    <div style="text-align: center; border-right: 1px solid black;">
-      <ol>
-        <li
-          style="text-align: left;"
-          *ngFor="let finding of findings"
-          contentEditable="true"
-        >
-          {{ finding }}
-        </li>
-      </ol>
-    </div>
-    <div style="text-align: center;">
-      <ol>
-        <li
-          style="text-align: left;"
-          *ngFor="let impression of impressions"
-          contentEditable="true"
-        >
-          {{ impression.name }}
-        </li>
-        <li style="text-align: left;">CARDIOMEGALY</li>
-        <li style="text-align: left;">DEXTROCARDIA</li>
-      </ol>
+    <div class="findings-right-content" style="position: absolute;">
+      <h3 class="box--title">XRAY</h3>
+      <cxr-x-ray-patient-image></cxr-x-ray-patient-image>
     </div>
   </div>
-  <h4><span>COMMENTS & RECOMENDATIONS</span></h4>
+  <h4>
+    <span style="position: relative; left: 2%;">COMMENTS & RECOMENDATIONS</span>
+  </h4>
   <p class="history">
     {{ comments }}
   </p>
-  <span style="float: right;">...Continued On Next Page </span>
 
-  <div class="pagebreak">
+  <div>
     <cxr-report-footer></cxr-report-footer>
   </div>
-
-  <cxr-report-header></cxr-report-header>
-  <h4>FINDINGS</h4>
 </div>

@@ -1,9 +1,14 @@
 .upload-image-container {
   height: calc(100% - 64px);
-  // background: #fefefe;
 
   .alert-danger {
     color: #ff0000;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #3d3f44;
   }
 
   .upload-image-header {
@@ -47,17 +52,15 @@
             height: 35px;
             text-indent: 5px;
             border-radius: 6px;
-            border: solid 2px #ebeded;
+            border: solid 2px #adb2b7;
             background-color: #ffffff;
-            // border: 1px solid #c3c3c3;
           }
           textarea {
             width: 100%;
             text-indent: 5px;
             border-radius: 6px;
-            border: solid 2px #ebeded;
+            border: solid 2px #adb2b7;
             background-color: #ffffff;
-            // border: 1px solid #c3c3c3;
           }
         }
 
@@ -68,12 +71,6 @@
     }
     .upload-image-local-file {
       width: 45%;
-      h2 {
-        background-color: #f5efef;
-        width: 100%;
-        text-align: center;
-        margin: 5px 0px;
-      }
       label,
       div {
         margin: 0px 15px 10px 8px;
