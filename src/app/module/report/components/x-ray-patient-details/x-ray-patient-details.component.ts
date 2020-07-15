@@ -12,58 +12,67 @@ import { XRayService } from 'src/app/service/x-ray.service';
   styleUrls: ['./x-ray-patient-details.component.scss'],
 })
 export class XRayPatientDetailsComponent implements OnInit {
-  findings = [
-    'Lungs are clear, no evidence of pulmonary parenchymal masses or consolidations.',
-    'Normal hilar vascular markings',
-    'both costophrenic angles are clear',
-    'there is cardiomegaly',
-    'the mediastinum is within normal limits',
-  ];
-
-  // impression = ['Cardiomegaly', 'Lung Lesion', 'Cardiomegaly', 'Cardiomegaly'];
+  findings = [];
   patientInfo: any;
+  status: string;
   annotatedImpression: string;
+  annotatedFindings: string;
 
   impressions = [];
   abnormalityColor = [];
-  comments =
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
-  clinicalHistory =
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry';
+  comments = '';
+  clinicalHistory = '';
 
-  constructor(private eventEmitterService: EventEmitterService,
-              private xrayAnnotatedImpression: XRayService) {}
+  constructor(
+    private eventEmitterService: EventEmitterService,
+    private xrayAnnotatedImpression: XRayService
+  ) {}
 
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
+    // tslint:disable-next-line: no-conditional-assignment
+    if (this.patientInfo.status === false) {
+      this.status = 'Drafted';
+    } else {
+      this.status = 'Unreported';
+    }
     this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
-        (data: any) => {
-          switch (data.title) {
-            case 'stateData':
-              this.storePatientDetails();
-              break;
-            case 'impression':
-              this.storeImpressions(data);
-              break;
-            default:
-              break;
-          }
+      (data: any) => {
+        switch (data.title) {
+          case 'stateData':
+            this.storePatientDetails();
+            break;
+          case 'impression':
+            this.storeImpressions(data);
+            break;
+          default:
+            break;
         }
-      );
+      }
+    );
 
     this.xrayAnnotatedImpression
       .xrayAnnotatedImpressionsService()
       .subscribe((impression) => {
         this.annotatedImpression = impression;
       });
+
+    this.xrayAnnotatedImpression
+      .xrayAnnotatedFindingsService()
+      .subscribe((findings) => {
+        this.annotatedFindings = findings;
+      });
   }
-  storeImpressions(impression){
+  storeImpressions(impression) {
     // tslint:disable-next-line: forin
     for (const i in impression) {
       this.impressions.push(impression[i]);
     }
   }
-  storePatientDetails(){
-      this.eventEmitterService.onReportDataPatientDataShared({data: this.patientInfo, title: 'patientInfo'});
+  storePatientDetails() {
+    this.eventEmitterService.onReportDataPatientDataShared({
+      data: this.patientInfo,
+      title: 'patientInfo',
+    });
   }
 }

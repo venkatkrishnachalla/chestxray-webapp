@@ -18,7 +18,6 @@ export class PatientListComponent implements OnInit {
   readonly constants = homeConstants;
   domLayout: any;
   searchValue: string;
-  // doctorId: string;
   errorMessage: string;
   showError: boolean;
 
@@ -26,11 +25,10 @@ export class PatientListComponent implements OnInit {
     private elementRef: ElementRef,
     private dashboardService: DashboardService,
     private authService: AuthService,
-    public router: Router,
+    public router: Router
   ) {}
   ngOnInit() {
     this.showError = false;
-    // this.doctorId = this.authService.user.id;
     this.defaultColDef = { width: 200 };
     this.columnDefs = this.constants.patientDashboard.headers;
     this.getPatientList();
@@ -51,7 +49,6 @@ export class PatientListComponent implements OnInit {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
-    this.gridApi.sizeColumnsToFit();
   }
 
   getPatientList() {
@@ -71,19 +68,19 @@ export class PatientListComponent implements OnInit {
       const data = e.data;
       const actionType = e.event.target.getAttribute('data-action-type');
       switch (actionType) {
-          case 'viewInfo':
-              return this.onActionViewClick(data);
-          case 'redirect':
-              return this.onActionRedirectClick(data);
+        case 'viewInfo':
+          return this.onActionViewClick(data);
+        case 'redirect':
+          return this.onActionRedirectClick(data);
       }
     }
   }
 
-  public onActionViewClick(data: any){
-      alert('View action clicked');
+  public onActionViewClick(data: any) {
+    alert('View action clicked');
   }
 
-  public onActionRedirectClick(data: any){
-      this.router.navigate(['x-ray'], { state: { patientDetails: data } });
+  public onActionRedirectClick(data: any) {
+    this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
 }

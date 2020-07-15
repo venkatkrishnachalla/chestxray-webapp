@@ -6,10 +6,8 @@
   <div class="upload-image-body">
     <!-- left patient information -->
     <div class="upload-image-personal-info">
-      <h2>PATIENT DETAILS</h2>
       <form [formGroup]="uploadImageForm">
-        <strong>1.Personal Information *</strong>
-        <br />
+        <h3>1.Personal Information *</h3>
         <label for="">Name:</label>
         <div>
           <input
@@ -35,7 +33,7 @@
             Name is required.
           </div>
         </div>
-        
+
         <label for="">Gender:</label>
         <div class="radio-button">
           <input
@@ -109,9 +107,9 @@
             Date of birth is required.
           </div>
         </div>
-
-        <strong>2.Contact Information </strong>
         <br />
+
+        <h3>2.Contact Information</h3>
         <label for="">Email:</label>
         <div>
           <input
@@ -168,7 +166,8 @@
 
     <!-- Right image section -->
     <div class="upload-image-local-file">
-      <h2>UPLOAD X-RAY IMAGE *</h2>
+      <!-- <h2>UPLOAD X-RAY IMAGE *</h2> -->
+      <h3>3.Upload X-Ray Image *</h3>
       <form [formGroup]="uploadImageForm">
         <cxr-drag-drop
           (dragImageSrc)="dragDropEvent($event)"

@@ -68,6 +68,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   activeIcon: any;
   patientDetail: any;
   ellipseList: any[];
+  findingsList: any[];
   processedImage: any;
 
   constructor(
@@ -271,10 +272,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.spinnerService.hide();
   }
 
-  /* draw ellipse, when user hits ask ai accept button */
+  /* draw ellipse, when user clicks ask ai accept button */
+
   mlApiEllipseLoop(mlList: any) {
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
+    this.findingsList = [];
     mLArray.Impression.forEach((impression: any) => {
       const impressionObject = {
         title: 'impression',
@@ -283,14 +286,26 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
+
+    const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
+    for (const data of findingsData) {
+      if (mLArray.Findings[data].length === 0) {
+        const finalFinding = data + ': ' + 'Normal';
+        this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      } else {
+        mLArray.Findings[data].forEach((finding: any) => {
+          const currentFinding = mLArray.Impression.filter(
+            (book) => book[0] === finding
+          );
+          const finalFinding = data + ': ' + currentFinding[0][1];
+          this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+        });
+      }
+    }
+
     mLArray.diseases.forEach((disease: any) => {
       disease.ellipses.forEach((ellipse: any, index) => {
         ellipse.id = ellipse.index;
-        ellipse.coordX = ellipse.x;
-        ellipse.coordY = ellipse.y;
-        ellipse.coordA = ellipse.a;
-        ellipse.coordB = ellipse.b;
-        ellipse.coordAngle = ellipse.r;
         ellipse.color = disease.color;
         ellipse.name = disease.name;
         ellipse.index = index;
@@ -550,7 +565,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.router.navigate(['report'], {
       state: { patientDetails: this.patientDetail },
     });
-    // this.router.navigateByUrl('/report');
   }
   getColorMapping(diseases) {
     const color = DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;

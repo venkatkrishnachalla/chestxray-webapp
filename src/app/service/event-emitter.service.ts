@@ -9,6 +9,7 @@ export class EventEmitterService {
   invokeComponentFunction = new EventEmitter();
   invokeComponentData = new EventEmitter();
   invokeComponentEllipseData = new EventEmitter();
+  invokeComponentFindingsData = new EventEmitter();
   invokeReportFunction = new EventEmitter();
   invokeReportData = new EventEmitter();
   invokeReportDataFunction = new EventEmitter();
@@ -22,6 +23,9 @@ export class EventEmitterService {
   }
   onComponentEllipseDataShared(title) {
     this.invokeComponentEllipseData.emit(title);
+  }
+  onComponentFindingsDataShared(title) {
+    this.invokeComponentFindingsData.emit(title);
   }
   onComponentReportButtonClick(title) {
     this.invokeReportFunction.emit(title);

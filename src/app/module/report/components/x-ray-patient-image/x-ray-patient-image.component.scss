@@ -1,37 +1,70 @@
 .x-ray-patient-image-container {
   margin-top: 10px;
-  width: 100%;
+  height: calc(100% - 64px);
+  width: 95%;
+  overflow-y: auto;
 
   .buttonGroup {
     background-color: #ebeded;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     padding: 3px;
     border-radius: 3px;
     button {
-      width: 24%;
+      width: 25%;
+      padding: 0px 3px;
       background-color: #ebeded;
 
       mat-icon {
         height: 20px;
         width: 20px;
       }
+      @media (max-width: 950px) {
+        width: 33.33%;
+      }
+      @media (max-width: 900px) {
+        width: 50%;
+      }
     }
     button:hover {
-        background-color: #d8dcdc;
-
+      background-color: #d8dcdc;
     }
     button:focus {
       background-color: #7ca5ae;
       color: #fefefe;
     }
-
   }
   .patientAnnotatedImage {
     display: flex;
     img {
-      height: 637px;
+      height: 635px;
       max-width: 100%;
+      width: 100%;
+      @media (max-height: 800px) {
+        height: 610px;
+      }
+      @media (max-height: 770px) {
+        height: 580px;
+      }
+      @media (max-height: 733px) {
+        height: 550px;
+      }
+      @media (max-height: 700px) {
+        height: 520px;
+      }
+      @media (max-height: 700px) {
+        height: 520px;
+      }
+      @media (max-height: 670px) {
+        height: 490px;
+      }
+      @media (max-height: 640px) {
+        height: 460px;
+      }
+      @media (max-height: 610px) {
+        height: 430px;
+      }
     }
   }
 
@@ -41,4 +74,8 @@
       max-width: 70%;
     }
   }
+}
+
+.hide-xray {
+  display: none;
 }

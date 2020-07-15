@@ -25,14 +25,18 @@
     }
   }
 
-  .x-ray-patient-details {
-    flex-basis: 50%;
-    margin:30px 20px 0px 70px;
+  .hide-print-section {
+    display: none;
   }
 
   .x-ray-patient-image {
     flex-basis: 50%;
+    margin: 30px 20px 0px 70px;
+  }
+
+  .x-ray-patient-details {
+    flex-basis: 50%;
     margin: 30px 20px 10px 0px;
-    
+    overflow-y: auto;
   }
 }

@@ -9,18 +9,32 @@
     </div>
     <div class="patient-info">
       <div class="patient-status">
-        <span>Patient ID: <a>{{patientInfo.hospitalPatientId}}</a> </span> 
-        <span>Status: <a>{{patientInfo.status}}</a></span>
-        <span>Date of creation: <a>{{patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</a></span> 
-
+        <span
+          >Patient ID: <a>{{ patientInfo.hospitalPatientId }}</a>
+        </span>
+        <span
+          >Status: <a>{{ status }}</a></span
+        >
+        <span
+          >Date of creation:
+          <a>{{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</a></span
+        >
       </div>
       <div class="patient-name">
-        <span>Name: <a>{{patientInfo.name}}</a> </span>
-        <span>[{{patientInfo.sex}}]: <a>{{patientInfo.age}} Yrs</a></span>
-        <span>Time: <a>{{patientInfo.lastUpdate| date: 'HH:mm:ss'}}</a> </span> 
+        <span
+          >Name: <a>{{ patientInfo.name }}</a>
+        </span>
+        <span
+          >[{{ patientInfo.sex }}]: <a>{{ patientInfo.age }} Yrs</a></span
+        >
+        <span
+          >Time: <a>{{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</a>
+        </span>
       </div>
       <div class="doctor-name">
-        <span>Ref. Physician: <a>{{patientInfo.referringPhysicianName}}</a></span>
+        <span
+          >Ref. Physician: <a>{{ patientInfo.referringPhysicianName }}</a></span
+        >
       </div>
     </div>
   </div>
@@ -33,8 +47,26 @@
       />
       <span> CLINICAL HISTORY</span>
     </div>
-    <div class="clinical-info">
-      {{clinicalHistory}}
+    <div class="clinical-info"></div>
+  </div>
+
+  <div class="impression-group">
+    <div class="impression-icon">
+      <img
+        src="../../../../../assets/images/impression_icon@3x.png"
+        alt="finding-icon"
+      />
+      <span> IMPRESSION</span>
+    </div>
+    <div class="impression-info">
+      <ul>
+        <li
+          *ngFor="let impression of annotatedImpression"
+          contentEditable="false"
+        >
+          > {{ impression.name }}
+        </li>
+      </ul>
     </div>
   </div>
 
@@ -48,22 +80,9 @@
     </div>
     <div class="findings-info">
       <ul>
-        <li *ngFor="let finding of findings" contentEditable="true"> > {{finding}}</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="impression-group">
-    <div class="impression-icon">
-      <img
-        src="../../../../../assets/images/impression_icon@3x.png"
-        alt="finding-icon"
-      />
-      <span> IMPRESSION</span>
-    </div>
-    <div class="impression-info">
-      <ul>
-        <li *ngFor="let impression of annotatedImpression" contentEditable="true"> > {{impression.name}}</li>
+        <li *ngFor="let finding of annotatedFindings" contentEditable="true">
+          > {{ finding }}
+        </li>
       </ul>
     </div>
   </div>
@@ -76,8 +95,92 @@
       />
       <span> COMMENTS</span>
     </div>
-    <div contentEditable="true" class="comments-info">
-      {{comments}}
+    <div contentEditable="true" class="comments-info"></div>
+  </div>
+</div>
+
+<!-- Print option -->
+<div class="print-patient-details">
+  <div class="patient-grid-container">
+    <div>
+      <span class="field-title"
+        >Patient ID: <a>{{ patientInfo.hospitalPatientId }}</a>
+      </span>
     </div>
+    <div>
+      <span class="field-title"
+        >Name: <a>{{ patientInfo.name }}</a>
+      </span>
+    </div>
+    <div>
+      <span class="field-title"
+        >[{{ patientInfo.sex }}]: <a>{{ patientInfo.age }} Yrs</a></span
+      >
+    </div>
+  </div>
+  <div class="patient-grid-container">
+    <div>
+      <span class="field-title"
+        >Status: <a>{{ status }}</a></span
+      >
+    </div>
+    <div>
+      <span class="field-title"
+        >Date of creation:
+        <a>{{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</a></span
+      >
+    </div>
+    <div>
+      <span class="field-title"
+        >Time: <a>{{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</a>
+      </span>
+    </div>
+  </div>
+  <div class="patient-grid-container">
+    <div>
+      <span
+        >Ref. Physician: <a>{{ patientInfo.referringPhysicianName }}</a></span
+      >
+    </div>
+  </div>
+  <hr class="common-hr" />
+  <h4><span style="position: relative; left: 2%;"> CLINICAL HISTORY</span></h4>
+  <p class="history">
+    {{ clinicalHistory }}
+  </p>
+
+  <div style="position: relative;">
+    <div class="image-container">
+      <div class="findings-left-content-top">
+        <h3 class="box--title">FINDINGS</h3>
+        <ol>
+          <li
+            style="text-align: left;"
+            *ngFor="let finding of findings"
+            contentEditable="true"
+          >
+            {{ finding }}
+          </li>
+        </ol>
+      </div>
+
+      <div class="findings-left-content-bottom">
+        <h3 class="box--title">IMPRESSIONS</h3>
+      </div>
+    </div>
+    <div class="findings-right-content" style="position: absolute;">
+      <h3 class="box--title">XRAY</h3>
+      <cxr-x-ray-patient-image></cxr-x-ray-patient-image>
+    </div>
+  </div>
+  <h4>
+    <span style="position: relative; left: 2%;">COMMENTS & RECOMENDATIONS</span>
+  </h4>
+  <p class="history">
+    {{ comments }}
+  </p>
+
+  <div>
+    <cxr-report-footer></cxr-report-footer>
   </div>
 </div>
