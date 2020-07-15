@@ -21,7 +21,6 @@ export class XRayService {
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
   getAskAiDetails(PatientImage) {
-    debugger;
     const data = {
       data: {
         ndarray: [PatientImage],

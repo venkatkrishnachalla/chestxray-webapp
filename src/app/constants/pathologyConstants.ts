@@ -3,9 +3,9 @@ export const pathology = {
     {
       abnormality: 'Anatomical variants',
       names: [
-        'Aortic Arch variants',
-        'Azygos fissure',
         'Cervical rib',
+        'Azygos fissure',
+        'Aortic Arch variants',
         'Thymus',
       ],
     },
@@ -25,9 +25,9 @@ export const pathology = {
       abnormality: 'Calcification',
       names: [
         'Calcified nodule',
-        'Calcified nodes',
-        'Calcified pleural plaques',
         'Physiological calcification',
+        'Calcified pleural plaques',
+        'Calcified nodes',
       ],
     },
     {
@@ -69,9 +69,9 @@ export const pathology = {
     {
       abnormality: 'External Densities',
       names: [
+        'Radiopaque foreign body',
         'bone cement',
         'mammary prosthesis/breast implant',
-        'Radiopaque foreign body',
         'Surgical sutures',
       ],
     },
@@ -79,8 +79,8 @@ export const pathology = {
       abnormality: 'Extrapulmonary extrapleural conditions radiopaedia',
       names: [
         'Subcutaneous emphysema',
-        'Thyroid calcification',
         'Thyroid enlargement/mass',
+        'Thyroid calcification',
       ],
     },
     {
@@ -118,12 +118,12 @@ export const pathology = {
     {
       abnormality: 'Osseous Lesions',
       names: [
-        'Fracture',
-        'Implants',
-        'kyphosis',
         'Lytic',
         'sclerotic',
+        'Implants',
+        'kyphosis',
         'scoliosis',
+        'Fracture',
       ],
     },
     {
@@ -157,14 +157,14 @@ export const pathology = {
     {
       abnormality: 'Support Devices',
       names: [
-        'Artificial valves',
-        'Dialysis catheter',
         'ET tube',
-        'ICD',
-        'IJV',
         'NG tube',
-        'Pacemaker',
+        'IJV',
         'UAC/UVC',
+        'Dialysis catheter',
+        'Pacemaker',
+        'Artificial valves',
+        'ICD',
       ],
     },
     {

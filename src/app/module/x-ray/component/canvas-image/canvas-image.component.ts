@@ -211,8 +211,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.xRayService
       .getPatientImage(instanceID)
       .subscribe((PatientImageResponse: any) => {
-        this.PatientImage = 'data:image/png;base64,' + PatientImageResponse;
-        sessionStorage.setItem('PatientImage', this.PatientImage);
+        const imageResponse = JSON.parse(PatientImageResponse);
+        this.PatientImage =
+          'data:image/png;base64,' + imageResponse.base64Image;
+        sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
         this.setCanvasDimension();
         this.generateCanvas();
       });
@@ -304,6 +306,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.dialog.closeAll();
     this.eventsSubscription.unsubscribe();
   }
 
@@ -333,7 +336,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         rx: (diseaseItem.a as any) / canvasScaleX / 2,
         ry: (diseaseItem.b as any) / canvasScaleY / 2,
         angle: diseaseItem.r,
-        stroke: 'white',
+        stroke: '#ffff00',
         strokeWidth: 2,
         fill: '',
         selectable: true,
@@ -360,7 +363,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               left: pointer.x,
               top: pointer.y,
               strokeWidth: 2,
-              stroke: 'white',
+              stroke: '#ffff00',
               fill: '',
               selectable: true,
             });
@@ -512,7 +515,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.updateDisease = false;
       this.enableDrawEllipseMode = false;
       this.canvas.isDrawingMode = true;
-      this.canvas.freeDrawingBrush.color = 'white';
+      this.canvas.freeDrawingBrush.color = '#ffff00';
       this.canvas.freeDrawingBrush.width = 2;
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
