@@ -25,7 +25,12 @@ export class XRayPatientDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    debugger;
     this.patientInfo = history.state.patientDetails;
+    if (this.patientInfo == undefined) {
+      const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
+      this.patientInfo = patientInfo;
+    }
     // tslint:disable-next-line: no-conditional-assignment
     if (this.patientInfo.status === false) {
       this.status = 'Drafted';
@@ -53,11 +58,21 @@ export class XRayPatientDetailsComponent implements OnInit {
         this.annotatedImpression = impression;
       });
 
+    if (Object.keys(this.annotatedImpression).length === 0) {
+      const impression = JSON.parse(sessionStorage.getItem('impression'));
+      this.annotatedImpression = impression;
+      console.log('this.annotatedImpression', this.annotatedImpression);
+    }
+
     this.xrayAnnotatedImpression
       .xrayAnnotatedFindingsService()
       .subscribe((findings) => {
         this.annotatedFindings = findings;
       });
+    if (Object.keys(this.annotatedFindings).length === 0) {
+      const findings = JSON.parse(sessionStorage.getItem('findings'));
+      this.annotatedFindings = findings;
+    }
   }
   storeImpressions(impression) {
     // tslint:disable-next-line: forin

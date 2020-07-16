@@ -48,7 +48,7 @@ export const DISEASE_COLOR_MAPPING = {
   'aortic arch variants': ' #FFA500',
   thymus: '#FFD700',
   covid: '#780650',
-  'bone cement': '#42e8b57',
+  'bone cement': '#2e8b57',
   'mammary prosthesis/breast implant': '#808000',
   'surgical sutures': '#64DD17',
   mastectomy: '#dc143c',

@@ -14,8 +14,12 @@ export class XRayHeaderComponent implements OnInit {
   constructor(public router: Router) {}
 
   ngOnInit(): void {
-    const patientDetail = history.state.patientDetails;
-    this.patientID = patientDetail ? patientDetail.patientId : '';
+    let patientDetail = history.state.patientDetails;
+    if (patientDetail === undefined) {
+      const patient = JSON.parse(sessionStorage.getItem('patientDetail'));
+      patientDetail = patient;
+    }
+    this.patientID = patientDetail ? patientDetail.hospitalPatientId : '';
     this.isProcessed = patientDetail.status;
   }
 }
