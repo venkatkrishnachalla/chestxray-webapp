@@ -567,7 +567,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
   getColorMapping(diseases) {
-    const color = DISEASE_COLOR_MAPPING[diseases] || RANDOM_COLOR;
+    const color = DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
     this.canvas.getActiveObject().set({
       stroke: color,
     });

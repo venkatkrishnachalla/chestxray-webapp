@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
-import {
-  DISEASE_COLOR_MAPPING,
-  RANDOM_COLOR,
-} from 'src/app/constants/findingColorConstants';
 import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
