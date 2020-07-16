@@ -16,7 +16,7 @@ export class ReportComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.eventEmitterService.subsVar = this.eventEmitterService.invokeReportDataFunction.subscribe(
+    this.eventEmitterService.invokeReportDataFunction.subscribe(
       (data: any) => {
         switch (data.title) {
           case 'patientInfo':

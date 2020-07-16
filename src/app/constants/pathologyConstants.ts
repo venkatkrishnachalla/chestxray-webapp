@@ -172,4 +172,6 @@ export const pathology = {
       names: ['mastectomy', 'pneumonectomy', 'rib resection', 'sternotomy'],
     },
   ],
+  findings: ['LUNG FIELDS', 'COSTOPHRENIC_ANGLES', 'HILAR/MEDIASTINAL',  
+  'CARDIAC SILHOUETTE', 'DOMES OF DIAPHRAGM', 'BONY THORAX', 'ADDITIONAL']
 };

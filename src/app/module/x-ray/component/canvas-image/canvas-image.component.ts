@@ -91,25 +91,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
-    if (this.eventEmitterService.subsVar === undefined) {
-      this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
-        (data: any) => {
-          switch (data.title) {
-            case 'Draw Ellipse':
-              this.drawEllipse(data);
-              break;
-            case 'Free Hand Drawing':
-              this.freeHandDrawing(data);
-              break;
-            case 'Delete':
-              this.deleteEllipse();
-              break;
-            default:
-              break;
-          }
+    this.eventEmitterService.invokeComponentFunction.subscribe(
+      (data: any) => {
+        switch (data.title) {
+          case 'Draw Ellipse':
+            this.drawEllipse(data);
+            break;
+          case 'Free Hand Drawing':
+            this.freeHandDrawing(data);
+            break;
+          case 'Delete':
+            this.deleteEllipse();
+            break;
+          default:
+            break;
         }
-      );
-    }
+      }
+    );
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe((mlResponse: any) =>
       this.mlApiEllipseLoop(mlResponse)
@@ -138,16 +136,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
 
     this.canvas.on('object:selected', (evt) => {
-      const bodyRect = document.body.getBoundingClientRect();
-      const right = bodyRect.right - this.canvas.getActiveObject().left;
-      const top = this.canvas.getActiveObject().top - bodyRect.top;
-      if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
-        this.dialog.open(this.controlsModel, {
-          panelClass: 'my-class',
-          hasBackdrop: false,
-          position: { right: right - 390 + 'px', top: top + 'px' },
-        });
-      }
+      this.actionIconsModelDispaly();
     });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
@@ -159,6 +148,26 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.dialog.closeAll();
       }
     });
+    this.canvas.on('object:moved', (evt) => {
+      this.actionIconsModelDispaly();
+    });
+    this.canvas.on('selection:updated', (evt) => {
+      this.dialog.closeAll();
+      this.actionIconsModelDispaly();
+    });
+  }
+  actionIconsModelDispaly(){
+    const bodyRect = document.body.getBoundingClientRect();
+    const right = bodyRect.right - this.canvas.getActiveObject().left;
+    const top = this.canvas.getActiveObject().top - bodyRect.top;
+    if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
+      this.dialog.open(this.controlsModel, {
+        panelClass: 'my-class',
+        hasBackdrop: false,
+        // tslint:disable-next-line: max-line-length
+        position: (this.canvas.getActiveObject().top < 60) ? { right: right - 390 + 'px', top: top + 130 + 'px' } : { right: right - 390 + 'px', top: top + 'px' },
+      });
+    }
   }
 
   updateSearchModel(value) {
@@ -288,20 +297,27 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
 
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
-    for (const data of findingsData) {
-      if (mLArray.Findings[data].length === 0) {
+    const findingsOrdered = [];
+    const order = this.constants.findings;
+    order.forEach(element => {
+      if (findingsData.indexOf(element) > -1) {
+        findingsOrdered.push(element);
+      }
+    });
+    findingsOrdered.forEach(data => {
+      if (mLArray.Findings[data].length === 0 && data !== 'ADDITIONAL') {
         const finalFinding = data + ': ' + 'Normal';
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
       } else {
         mLArray.Findings[data].forEach((finding: any) => {
           const currentFinding = mLArray.Impression.filter(
-            (book) => book[0] === finding
+            (book) => book.index === finding
           );
-          const finalFinding = data + ': ' + currentFinding[0][1];
+          const finalFinding =  data !== 'ADDITIONAL' ? data + ': '  + currentFinding[0].sentence : currentFinding[0].sentence;
           this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
         });
       }
-    }
+    });
 
     mLArray.diseases.forEach((disease: any) => {
       disease.ellipses.forEach((ellipse: any, index) => {

@@ -80,6 +80,6 @@ export class ApiEndPointService {
     // if (environment.isMockAPI) {
     //   return environment.mockApiEndPoint + '/predictions';
     // }
-    return '/api/v1.0/predictions';
+    return 'https://cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/api/v1.0/predictions';
   }
 }
