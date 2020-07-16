@@ -376,7 +376,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         rx: (diseaseItem.a as any) / canvasScaleX / 2,
         ry: (diseaseItem.b as any) / canvasScaleY / 2,
         angle: diseaseItem.r,
-        stroke: '#ffff00',
+        stroke: diseaseItem.color,
         strokeWidth: 2,
         fill: '',
         selectable: true,
