@@ -28,14 +28,12 @@
       }
     }
     button:hover {
-        background-color: #d8dcdc;
-
+      background-color: #d8dcdc;
     }
     button:focus {
       background-color: #7ca5ae;
       color: #fefefe;
     }
-
   }
   .patientAnnotatedImage {
     display: flex;
@@ -78,6 +76,6 @@
   }
 }
 
-.hide-xray{
+.hide-xray {
   display: none;
 }

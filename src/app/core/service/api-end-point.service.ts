@@ -56,9 +56,8 @@ export class ApiEndPointService {
     //   return environment.mockApiEndPoint + '/auth';
     // }
     const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
-    return ( environment.RefreshToken +
-      'signInWithCustomToken?key=' +
-      FIREBASE_API_KEY
+    return (
+      environment.RefreshToken + 'signInWithCustomToken?key=' + FIREBASE_API_KEY
     );
   }
 
@@ -70,25 +69,17 @@ export class ApiEndPointService {
   }
 
   getPatientInstanceId(id): any {
-    return (
-      environment.patientInstanceId + id
-       +
-      '/studies'
-    );
+    return environment.patientInstanceId + id + '/studies';
   }
 
   getPatientImage(id): any {
-    return (
-      environment.PatientImage + id
-       +
-      '/image'
-    );
+    return environment.PatientImage + id + '/image';
   }
 
-  public getAskAi(): string {     
-    // if (environment.isMockAPI) {     
-    //   return environment.mockApiEndPoint + '/predictions';     
-    // }     
-    return '/api/v1.0/predictions';   
+  public getAskAi(): string {
+    // if (environment.isMockAPI) {
+    //   return environment.mockApiEndPoint + '/predictions';
+    // }
+    return '/api/v1.0/predictions';
   }
 }

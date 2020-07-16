@@ -16,7 +16,7 @@ import { EventEmitterService } from './service/event-emitter.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReportModule } from './module/report/report.module';
-import {NgxPrintModule} from 'ngx-print';
+import { NgxPrintModule } from 'ngx-print';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -35,7 +35,7 @@ import {NgxPrintModule} from 'ngx-print';
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    NgxPrintModule
+    NgxPrintModule,
   ],
   providers: [
     EventEmitterService,

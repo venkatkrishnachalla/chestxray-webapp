@@ -3,7 +3,7 @@ import { XRayHeaderComponent } from './x-ray-header.component';
 describe('XRayHeaderComponent', () => {
   let component: XRayHeaderComponent;
   const sessionStorageSpy = jasmine.createSpyObj('sessionStorage', ['getItem']);
-   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
   const mockPatientDetail = {
     age: 32,
     birthDate: '1988-05-06T00:00:00',

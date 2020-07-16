@@ -47,13 +47,13 @@ mat-toolbar {
     color: #7ca5ae;
     margin-bottom: 0.2rem;
   }
-  mat-menu {
-    z-index: 1000;
-  }
   cxr-x-ray-header {
     position: relative;
     width: 100%;
   }
+}
+::ng-deep .mat-menu-content:not(:empty) {
+  padding-top: 25px !important;
 }
 @media only screen and (min-width: 768px) {
   .x-ray_header_logo {
@@ -83,7 +83,6 @@ mat-toolbar {
     background-color: #285c68 !important;
   }
 }
-
 ::ng-deep.mat-menu-content:not(:empty) {
-  padding-top: 20px !important;
+  padding-top: 25px !important;
 }

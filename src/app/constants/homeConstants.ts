@@ -34,22 +34,22 @@ export const homeConstants = {
         headerName: 'Report Status',
         field: 'status',
         sortable: true,
-        cellRenderer : (params) => {
+        cellRenderer: (params) => {
           if (params.value === 'Drafted') {
             return (
-              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Drafted.png\'  width=\'15px\' height=\'15px\'/></span><span>' +
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>" +
               params.value +
               '</span>'
             );
           } else if (params.value === 'Unreported') {
             return (
-              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Unreported.png\' width=\'15px\' height=\'15px\'/></span><span>' +
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Unreported.png' width='15px' height='15px'/></span><span>" +
               params.value +
               '</span>'
             );
           } else if (params.value === 'Reported') {
             return (
-              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Reported.png\' width=\'15px\' height=\'15px\'/></span><span>' +
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Reported.png' width='15px' height='15px'/></span><span>" +
               params.value +
               '</span>'
             );
@@ -100,7 +100,7 @@ export const homeConstants = {
           error_outline</mat-icon>
           <mat-icon data-action-type="redirect" style="color: #C5C5C5; cursor: pointer; margin-top:10px" title="View X-Ray" (click)="onClick()" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
           arrow_forward_ios</mat-icon>
-        </div>`
+        </div>`,
       },
     ],
   },

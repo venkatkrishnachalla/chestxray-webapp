@@ -11,11 +11,11 @@ export class XRayHeaderComponent implements OnInit {
   isProcessed: boolean;
   patientDetails: [];
 
-  constructor(public router: Router) { }
+  constructor(public router: Router) {}
 
   ngOnInit(): void {
     const patientDetail = history.state.patientDetails;
     this.patientID = patientDetail ? patientDetail.hospitalPatientId : '';
-    this.isProcessed = false;
+    this.isProcessed = patientDetail.status;
   }
 }
