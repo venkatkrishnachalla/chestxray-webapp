@@ -76,10 +76,11 @@ export class ApiEndPointService {
     return environment.PatientImage + id + '/image';
   }
 
-  public getAskAi(): string {
-    // if (environment.isMockAPI) {
-    //   return environment.mockApiEndPoint + '/predictions';
-    // }
-    return 'https://cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/api/v1.0/predictions';
+  public getAskAi(): string {     
+    // if (environment.isMockAPI) {     
+    //   return environment.mockApiEndPoint + '/predictions';     
+    // }     
+    return 'https://cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/api/v1.0/predictions'; 
+   // return '/api/v1.0/predictions';   
   }
 }

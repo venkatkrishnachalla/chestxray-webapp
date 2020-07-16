@@ -37,6 +37,7 @@ export class XRayService {
     const headers = { 'content-type': 'application/json', responseType: 'json'};  
     return this.http.post(this.endpoint.getAskAi(), saveArray, httpOptions);
   }
+
   private handleError(errorResponse: HttpErrorResponse) {
     return throwError(errorResponse.error.error.message);
   }

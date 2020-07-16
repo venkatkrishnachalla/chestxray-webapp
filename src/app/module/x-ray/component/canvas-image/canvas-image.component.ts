@@ -290,8 +290,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     mLArray.Impression.forEach((impression: any) => {
       const impressionObject = {
         title: 'impression',
-        id: impression[0],
-        name: impression[1],
+        id: impression.index,
+        name: impression.sentence,
       };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
@@ -325,8 +325,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         ellipse.color = disease.color;
         ellipse.name = disease.name;
         ellipse.index = index;
-        this.drawEllipse([], true, ellipse);
         if (ellipse.a !== 0 && ellipse.b !== 0) {
+          this.drawEllipse([], true, ellipse);
           this.eventEmitterService.onComponentEllipseDataShared({
             name: disease.name,
             index: ellipse.index,
@@ -376,6 +376,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.add(ellipse);
       this.canvas.renderAll();
       this.canvas.setActiveObject(ellipse);
+      this.canvas.discardActiveObject();
+      this.enableDrawEllipseMode = false;
     } else {
       this.activeIcon = data;
       if (!this.activeIcon.active) {
