@@ -116,9 +116,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    debugger;
     this.patientDetail = history.state.patientDetails;
-    if (this.patientDetail == undefined) {
+    if (this.patientDetail === undefined) {
       const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientDetail = patientDetail;
     }
@@ -314,13 +313,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const finalFinding = data + ': ' + 'Normal';
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
       } else {
-        mLArray.Findings[data].forEach((finding: any) => {
+        let finalFinding = '';
+        mLArray.Findings[data].forEach((finding: any, index) => {
           const currentFinding = mLArray.Impression.filter(
             (book) => book.index === finding
           );
-          const finalFinding =  data !== 'ADDITIONAL' ? data + ': '  + currentFinding[0].sentence : currentFinding[0].sentence;
-          this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+          // tslint:disable-next-line: max-line-length
+          finalFinding += currentFinding[0].sentence + (mLArray.Findings[data].length > 1 && mLArray.Findings[data].length !== index ? ', ' : '') ;
         });
+        const finalData = data !== 'ADDITIONAL' ? data + ': '  + finalFinding : finalFinding;
+        if (finalData !== '') {
+          this.eventEmitterService.onComponentFindingsDataShared(finalData);
+        }
       }
     });
 

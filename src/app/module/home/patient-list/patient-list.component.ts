@@ -63,6 +63,9 @@ export class PatientListComponent implements OnInit {
         this.showloader = false;
         this.showTable = true;
         this.showError = false;
+        // patientsList.forEach((record, index) => {
+        //   record.patientId = '0000000' + (index + 1) ;
+        // });
         this.rowData = patientsList;
       },
       (errorMessage: any) => {
