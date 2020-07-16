@@ -78,7 +78,7 @@ export class AskAiComponent implements OnInit {
   ngOnInit(): void {
     const PatientImage = localStorage.getItem('PatientImage');
     /* post request to ml api to get prediction data */
-    this.xrayService.getAskAiDetails(PatientImage).subscribe(
+    this.xrayService.getAskAiDetails(PatientImage, '').subscribe(
       (mLResponse: any) => {
         this.mLResponse = mLResponse;
       },

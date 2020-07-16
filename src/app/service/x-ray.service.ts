@@ -21,20 +21,20 @@ export class XRayService {
 
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
-  getAskAiDetails(PatientImage) {
+  getAskAiDetails(PatientImage, fileName) {
+    const base64Image = 'data:image/png;base64,' + PatientImage;
     const data = {
       data: {
-        ndarray: [PatientImage],
+        ndarray: [base64Image, fileName],
       },
     };
     const saveArray = JSON.stringify(data);
     const httpOptions = {
       headers: new HttpHeaders({
         'content-type': 'application/json',
-        responseType: 'json',
-        'Access-Control-Allow-Origin': '*',
       }),
     };
+    const headers = { 'content-type': 'application/json', responseType: 'json'};  
     return this.http.post(this.endpoint.getAskAi(), saveArray, httpOptions);
   }
   private handleError(errorResponse: HttpErrorResponse) {

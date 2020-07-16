@@ -54,8 +54,8 @@ export class XRayComponent implements OnInit {
   openAskAI(event: any) {
     // this.showAskAI = !this.showAskAI;
     this.spinnerService.show();
-    const PatientImage = sessionStorage.getItem('PatientImage');
-    this.xrayService.getAskAiDetails(PatientImage).subscribe(
+    const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
+    this.xrayService.getAskAiDetails(patientImage.base64Image, patientImage.filename).subscribe(
       (mLResponse: any) => {
         this.mLResponse = mLResponse;
         this.eventsSubject.next(mLResponse);

@@ -32,7 +32,7 @@ export class XRayPatientDetailsComponent implements OnInit {
     } else {
       this.status = 'Unreported';
     }
-    this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
+    this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: any) => {
         switch (data.title) {
           case 'stateData':
