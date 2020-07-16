@@ -90,7 +90,7 @@
           </div>
         </div>
 
-        <label for="">Date 0f birth:</label>
+        <label for="">Date of birth:</label>
         <div>
           <input
             type="date"
@@ -176,7 +176,6 @@
 
     <!-- Right image section -->
     <div class="upload-image-local-file">
-      <!-- <h2>UPLOAD X-RAY IMAGE *</h2> -->
       <h3>3.Upload X-Ray Image *</h3>
       <form [formGroup]="uploadImageForm">
         <cxr-drag-drop
@@ -184,7 +183,6 @@
           (dragImageFile)="dragDropFile($event)"
         ></cxr-drag-drop>
         <div style="text-align: center;">
-          <!-- <pre>Drag & drop your files here</pre> -->
           <pre>(or)</pre>
         </div>
 

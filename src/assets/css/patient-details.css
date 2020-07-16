@@ -68,7 +68,7 @@ body {
   .divFooter-right-content {
     position: fixed;
     bottom: 10px;
-    right: 5px;
+    right: 10px;
   }
 }
 .patient-grid-container {
