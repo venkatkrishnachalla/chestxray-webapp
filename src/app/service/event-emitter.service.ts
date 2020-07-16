@@ -13,7 +13,6 @@ export class EventEmitterService {
   invokeReportFunction = new EventEmitter();
   invokeReportData = new EventEmitter();
   invokeReportDataFunction = new EventEmitter();
-  subsVar: Subscription;
   constructor() {}
   onComponentButtonClick(title) {
     this.invokeComponentFunction.emit(title);

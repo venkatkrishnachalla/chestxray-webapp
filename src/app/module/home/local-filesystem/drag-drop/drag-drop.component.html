@@ -7,7 +7,7 @@ ondragover="return false;"
 (dragleave)="handleDragLeave()"
 (drop)="handleDrop($event)"
 >
-<span style="font-size: 1.75rem;" *ngIf="!imageSrc">Drag &drop your files here!</span>
+<span style="font-size: 1.75rem;" *ngIf="!imageSrc">Drag & drop your files here!</span>
 <img
   [src]="imageSrc"
   (load)="handleImageLoad()"

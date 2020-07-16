@@ -20,6 +20,9 @@ export class PatientListComponent implements OnInit {
   searchValue: string;
   errorMessage: string;
   showError: boolean;
+  showloader: boolean;
+  showTable: boolean;
+  overlayNoRowsTemplate: string;
 
   constructor(
     private elementRef: ElementRef,
@@ -28,6 +31,7 @@ export class PatientListComponent implements OnInit {
     public router: Router
   ) {}
   ngOnInit() {
+    this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200 };
     this.columnDefs = this.constants.patientDashboard.headers;
@@ -52,8 +56,12 @@ export class PatientListComponent implements OnInit {
   }
 
   getPatientList() {
+    this.showloader = true;
+    this.showTable = false;
     this.dashboardService.getPatientList().subscribe(
       (patientsList: any) => {
+        this.showloader = false;
+        this.showTable = true;
         this.showError = false;
         this.rowData = patientsList;
       },

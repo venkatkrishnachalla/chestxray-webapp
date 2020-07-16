@@ -34,12 +34,22 @@
           </div>
         </div>
 
+        <div *ngIf="uploadImageForm.controls['name'].errors && uploadImageForm.controls['name'].touched">
+          <div
+            class="alert-danger"
+            style="margin: 0;"
+            *ngIf="uploadImageForm.controls['name'].errors && uploadImageForm.controls['name'].touched"
+          >
+            Name is not a valid format.
+          </div>
+        </div>
+
         <label for="">Gender:</label>
         <div class="radio-button">
           <input
             type="radio"
             id="test1"
-            value="M"
+            value="MALE"
             formControlName="gender"
             name="gender"
             autocomplete="off"
@@ -48,7 +58,7 @@
           <input
             type="radio"
             id="test2"
-            value="F"
+            value="FEMALE"
             formControlName="gender"
             name="gender"
             autocomplete="off"
@@ -80,7 +90,7 @@
           </div>
         </div>
 
-        <label for="">Date 0f birth:</label>
+        <label for="">Date of birth:</label>
         <div>
           <input
             type="date"
@@ -166,7 +176,6 @@
 
     <!-- Right image section -->
     <div class="upload-image-local-file">
-      <!-- <h2>UPLOAD X-RAY IMAGE *</h2> -->
       <h3>3.Upload X-Ray Image *</h3>
       <form [formGroup]="uploadImageForm">
         <cxr-drag-drop
@@ -174,7 +183,6 @@
           (dragImageFile)="dragDropFile($event)"
         ></cxr-drag-drop>
         <div style="text-align: center;">
-          <!-- <pre>Drag & drop your files here</pre> -->
           <pre>(or)</pre>
         </div>
 

@@ -165,3 +165,19 @@ label {
   border-radius: 0 0.25rem 0.25rem 0;
   height: 32px;
 }
+.loader {
+  z-index: 1;
+  position: absolute;
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid #337ab7;
+  width: 120px;
+  height:120px;
+  top:10%;
+  margin-left: -7%;
+  -webkit-animation: spin .8s linear infinite;
+  animation: spin .8s linear infinite;
+}
+.loaderContainer{
+  text-align: center !important;
+}

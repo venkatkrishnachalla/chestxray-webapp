@@ -41,10 +41,10 @@
 }
 
 /* This CSS is to not apply the border for the column having 'no-border' class */
-::ng-deep .ag-cell-focus,
-.ag-cell-no-focus {
-  border: none !important;
-}
+// ::ng-deep .ag-cell-focus,
+// .ag-cell-no-focus {
+//   border: none !important;
+// }
 
 /* Ag-grid-body horizontal scroll */
 ::ng-deep .ag-body-horizontal-scroll-viewport {

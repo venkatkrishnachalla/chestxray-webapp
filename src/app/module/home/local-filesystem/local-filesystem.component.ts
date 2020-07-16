@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './local-filesystem.component.html',
   styleUrls: ['./local-filesystem.component.scss'],
 })
-export class LocalFilesystemComponent implements OnInit {
+export class LocalFilesystemComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   uploadImageForm: FormGroup;
   submitted: boolean;
@@ -26,11 +26,15 @@ export class LocalFilesystemComponent implements OnInit {
   ) {}
 
   /*** class init function ***/
+  
   ngOnInit(): void {
     this.uploadImageForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      name: [
+        '',
+        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]*$/)],
+      ],
       dateOfBirth: ['', Validators.required],
-      gender: ['M', Validators.required],
+      gender: ['MALE', Validators.required],
       email: ['', [Validators.email]],
       phoneNumber: [
         '',

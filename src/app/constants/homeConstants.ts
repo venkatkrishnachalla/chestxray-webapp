@@ -28,7 +28,7 @@ export const homeConstants = {
               'margin-left': '7px',
             };
           }
-        },
+        }
       },
       {
         headerName: 'Report Status',
@@ -37,19 +37,19 @@ export const homeConstants = {
         cellRenderer: (params) => {
           if (params.value === 'Drafted') {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>" +
+              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Drafted.png\'  width=\'15px\' height=\'15px\'/></span><span>' +
               params.value +
               '</span>'
             );
           } else if (params.value === 'Unreported') {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Unreported.png' width='15px' height='15px'/></span><span>" +
+              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Unreported.png\' width=\'15px\' height=\'15px\'/></span><span>' +
               params.value +
               '</span>'
             );
           } else if (params.value === 'Reported') {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Reported.png' width='15px' height='15px'/></span><span>" +
+              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Reported.png\' width=\'15px\' height=\'15px\'/></span><span>' +
               params.value +
               '</span>'
             );
@@ -84,7 +84,7 @@ export const homeConstants = {
         field: 'lastUpdate',
         sortable: true,
         cellRenderer: (data) => {
-          return data.value ? new Date(data.value).toLocaleString() : '';
+          return data.value ? new Date(data.value).toLocaleString('es-CL') : '';
         },
       },
       {
