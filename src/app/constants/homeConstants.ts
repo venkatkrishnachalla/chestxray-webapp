@@ -84,7 +84,7 @@ export const homeConstants = {
         field: 'lastUpdate',
         sortable: true,
         cellRenderer: (data) => {
-          return data.value ? new Date(data.value).toLocaleString() : '';
+          return data.value ? new Date(data.value).toLocaleString('es-CL') : '';
         },
       },
       {

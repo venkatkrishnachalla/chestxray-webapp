@@ -28,52 +28,57 @@
       }
     }
     button:hover {
-        background-color: #d8dcdc;
-
+      background-color: #d8dcdc;
     }
     button:focus {
       background-color: #7ca5ae;
       color: #fefefe;
     }
-
-  }
-  .patientAnnotatedImage {
-    display: flex;
-    img {
-      height: 635px;
-      max-width: 100%;
-      width: 100%;
-      @media (max-height: 800px) {
-        height: 610px;
-      }
-      @media (max-height: 770px) {
-        height: 580px;
-      }
-      @media (max-height: 733px) {
-        height: 550px;
-      }
-      @media (max-height: 700px) {
-        height: 520px;
-      }
-      @media (max-height: 700px) {
-        height: 520px;
-      }
-      @media (max-height: 670px) {
-        height: 490px;
-      }
-      @media (max-height: 640px) {
-        height: 460px;
-      }
-      @media (max-height: 610px) {
-        height: 430px;
-      }
-    }
   }
 
-  @media (max-width: 800px) {
-    img {
-      height: 635px;
-      max-width: 70%;
-    }
-  }
+  // .patientAnnotatedImage {
+  //   display: flex;
+  //   img {
+  //     height: 635px;
+  //     max-width: 100%;
+  //     width: 100%;
+  //     @media (max-height: 800px) {
+  //       height: 610px;
+  //     }
+  //     @media (max-height: 770px) {
+  //       height: 580px;
+  //     }
+  //     @media (max-height: 733px) {
+  //       height: 550px;
+  //     }
+  //     @media (max-height: 700px) {
+  //       height: 520px;
+  //     }
+  //     @media (max-height: 700px) {
+  //       height: 520px;
+  //     }
+  //     @media (max-height: 670px) {
+  //       height: 490px;
+  //     }
+  //     @media (max-height: 640px) {
+  //       height: 460px;
+  //     }
+  //     @media (max-height: 610px) {
+  //       height: 430px;
+  //     }
+  //   }
+  // }
+
+  // @media (max-width: 800px) {
+  //   img {
+  //     height: 635px;
+  //     max-width: 70%;
+  //   }
+  // }
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+ }
 }

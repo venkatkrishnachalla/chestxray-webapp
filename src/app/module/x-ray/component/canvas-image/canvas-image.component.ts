@@ -208,8 +208,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.xRayService
       .getPatientImage(instanceID)
       .subscribe((PatientImageResponse: any) => {
-        this.PatientImage = 'data:image/png;base64,' + PatientImageResponse;
-        sessionStorage.setItem('PatientImage', this.PatientImage);
+        const imageResponse = JSON.parse(PatientImageResponse);
+        this.PatientImage =
+          'data:image/png;base64,' + imageResponse.base64Image;
+        sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
         this.setCanvasDimension();
         this.generateCanvas();
       });
@@ -275,23 +277,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     mLArray.Impression.forEach((impression: any) => {
       const impressionObject = {
         title: 'impression',
-        id: impression[0],
-        name: impression[1],
+        id: impression.index,
+        name: impression.sentence,
       };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
-    
+
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
-    for (const data of findingsData){
+    for (const data of findingsData) {
       if (mLArray.Findings[data].length === 0) {
         const finalFinding = data + ': ' + 'Normal';
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
       } else {
         mLArray.Findings[data].forEach((finding: any) => {
           const currentFinding = mLArray.Impression.filter(
-            (book) => book[0] === finding
+            (book) => book.index === finding
           );
-          const finalFinding =  data + ': '  + currentFinding[0][1];
+          const finalFinding = data + ': ' + currentFinding[0][1];
           this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
         });
       }
@@ -303,8 +305,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         ellipse.color = disease.color;
         ellipse.name = disease.name;
         ellipse.index = index;
-        this.drawEllipse([], true, ellipse);
         if (ellipse.a !== 0 && ellipse.b !== 0) {
+          this.drawEllipse([], true, ellipse);
           this.eventEmitterService.onComponentEllipseDataShared({
             name: disease.name,
             index: ellipse.index,
@@ -353,6 +355,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.add(ellipse);
       this.canvas.renderAll();
       this.canvas.setActiveObject(ellipse);
+      this.canvas.discardActiveObject();
+      this.enableDrawEllipseMode = false;
     } else {
       this.activeIcon = data;
       if (!this.activeIcon.active) {

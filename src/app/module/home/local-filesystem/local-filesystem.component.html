@@ -35,13 +35,23 @@
             Name is required.
           </div>
         </div>
-        
+
+        <div *ngIf="uploadImageForm.controls['name'].errors && uploadImageForm.controls['name'].touched">
+          <div
+            class="alert-danger"
+            style="margin: 0;"
+            *ngIf="uploadImageForm.controls['name'].errors && uploadImageForm.controls['name'].touched"
+          >
+            Name is not a valid format.
+          </div>
+        </div>
+
         <label for="">Gender:</label>
         <div class="radio-button">
           <input
             type="radio"
             id="test1"
-            value="M"
+            value="MALE"
             formControlName="gender"
             name="gender"
             autocomplete="off"
@@ -50,7 +60,7 @@
           <input
             type="radio"
             id="test2"
-            value="F"
+            value="FEMALE"
             formControlName="gender"
             name="gender"
             autocomplete="off"
