@@ -15,7 +15,7 @@ export class XRayHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     const patientDetail = history.state.patientDetails;
-    this.patientID = patientDetail ? patientDetail.hospitalPatientId : '';
+    this.patientID = patientDetail ? patientDetail.patientId : '';
     this.isProcessed = patientDetail.status;
   }
 }
