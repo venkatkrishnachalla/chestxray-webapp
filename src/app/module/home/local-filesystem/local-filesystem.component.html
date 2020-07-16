@@ -34,7 +34,7 @@
           </div>
         </div>
 
-        <div *ngIf="uploadImageForm.controls['name'].errors && uploadImageForm.controls['name'].touched">
+        <div *ngIf="uploadImageForm.controls['name'].errors && uploadImageForm.controls['name'].touched && !uploadImageForm.controls['name'].errors.required">
           <div
             class="alert-danger"
             style="margin: 0;"
