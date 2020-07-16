@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
-import {
-  DISEASE_COLOR_MAPPING,
-  RANDOM_COLOR,
-} from 'src/app/constants/findingColorConstants';
 import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
@@ -14,6 +10,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
 export class XRayPatientDetailsComponent implements OnInit {
   findings = [];
   patientInfo: any;
+  status: string;
   annotatedImpression: string;
   annotatedFindings: string;
 
@@ -29,7 +26,13 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
-    this.eventEmitterService.subsVar = this.eventEmitterService.invokeComponentFunction.subscribe(
+    // tslint:disable-next-line: no-conditional-assignment
+    if (this.patientInfo.status === false) {
+      this.status = 'Drafted';
+    } else {
+      this.status = 'Unreported';
+    }
+    this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: any) => {
         switch (data.title) {
           case 'stateData':

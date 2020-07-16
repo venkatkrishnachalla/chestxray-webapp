@@ -41,11 +41,11 @@ export class SignInComponent implements OnInit {
           this.errorMessage = errorMessage;
           if (networkStatus === false) {
             this.errorMessage =
-              'You are not connected to a network. Check your network connections and try again.';
+              'Please check your network connections and try again.';
           } else {
             this.errorMessage = 'Invalid Username or Password';
           }
-          this.alert.open(this.errorMessage, 'ERROR');
+          // this.alert.open(this.errorMessage, 'ERROR');
           form.reset();
         }
       );

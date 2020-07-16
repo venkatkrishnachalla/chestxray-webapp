@@ -13,7 +13,7 @@ describe('SearchFilterPipe', () => {
         abnormality: 'Anatomical variants',
         names: [
           'Aortic Arch variants',
-          'Azygous fissure',
+          'Azygos fissure',
           'Cervical rib',
           'Thymus',
         ],
@@ -42,7 +42,7 @@ describe('SearchFilterPipe', () => {
         abnormality: 'Anatomical variants',
         names: [
           'Aortic Arch variants',
-          'Azygous fissure',
+          'Azygos fissure',
           'Cervical rib',
           'Thymus',
         ],

@@ -20,14 +20,18 @@ export class PatientListComponent implements OnInit {
   searchValue: string;
   errorMessage: string;
   showError: boolean;
+  showloader: boolean;
+  showTable: boolean;
+  overlayNoRowsTemplate: string;
 
   constructor(
     private elementRef: ElementRef,
     private dashboardService: DashboardService,
     private authService: AuthService,
-    public router: Router,
+    public router: Router
   ) {}
   ngOnInit() {
+    this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200 };
     this.columnDefs = this.constants.patientDashboard.headers;
@@ -52,8 +56,12 @@ export class PatientListComponent implements OnInit {
   }
 
   getPatientList() {
+    this.showloader = true;
+    this.showTable = false;
     this.dashboardService.getPatientList().subscribe(
       (patientsList: any) => {
+        this.showloader = false;
+        this.showTable = true;
         this.showError = false;
         this.rowData = patientsList;
       },
@@ -68,19 +76,19 @@ export class PatientListComponent implements OnInit {
       const data = e.data;
       const actionType = e.event.target.getAttribute('data-action-type');
       switch (actionType) {
-          case 'viewInfo':
-              return this.onActionViewClick(data);
-          case 'redirect':
-              return this.onActionRedirectClick(data);
+        case 'viewInfo':
+          return this.onActionViewClick(data);
+        case 'redirect':
+          return this.onActionRedirectClick(data);
       }
     }
   }
 
-  public onActionViewClick(data: any){
-      alert('View action clicked');
+  public onActionViewClick(data: any) {
+    alert('View action clicked');
   }
 
-  public onActionRedirectClick(data: any){
-      this.router.navigate(['x-ray'], { state: { patientDetails: data } });
+  public onActionRedirectClick(data: any) {
+    this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
 }

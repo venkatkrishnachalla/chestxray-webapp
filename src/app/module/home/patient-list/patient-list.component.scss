@@ -1,6 +1,5 @@
-
 @import '../../../../styles/ag-grid.scss';
-#at-id-patientTable{
+#at-id-patientTable {
   height: 100% !important;
   #at-input-searchPatient {
     width: 40%;
@@ -15,15 +14,15 @@
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 0.5em 0 0.5em 0 !important;
 }
-::ng-deep .mat-form-field-outline{
+::ng-deep .mat-form-field-outline {
   background-color: white !important;
   border-radius: 5px !important;
 }
-::ng-deep .material-icons:hover{
+::ng-deep .material-icons:hover {
   color: #707070 !important;
 }
 @media only screen and (max-width: 1164px) {
-  ag-grid-angular{
+  ag-grid-angular {
     ::ng-deep .ag-header {
       margin-top: 80px !important;
     }
@@ -33,10 +32,21 @@
     }
   }
 }
-::ng-deep .ag-theme-material .ag-cell, ::ng-deep .ag-header-cell{
+::ng-deep .ag-theme-material .ag-cell,
+::ng-deep .ag-header-cell {
   width: auto !important;
 }
-::ng-deep .ag-center-cols-container{
+::ng-deep .ag-center-cols-container {
   width: auto !important;
 }
-  
+
+/* This CSS is to not apply the border for the column having 'no-border' class */
+// ::ng-deep .ag-cell-focus,
+// .ag-cell-no-focus {
+//   border: none !important;
+// }
+
+/* Ag-grid-body horizontal scroll */
+::ng-deep .ag-body-horizontal-scroll-viewport {
+  overflow-x: hidden !important;
+}
