@@ -20,6 +20,10 @@ export class XRayPatientImageComponent implements OnInit {
       .getAnnotatedImageData()
       .subscribe((xrayAnnotatedImage) => {
         this.xrayAnnotatedImage = xrayAnnotatedImage;
+        if (Object.keys(this.xrayAnnotatedImage).length === 0) {
+          const image = sessionStorage.getItem('annotatedImage');
+          this.xrayAnnotatedImage = image;
+        }
       });
   }
 }

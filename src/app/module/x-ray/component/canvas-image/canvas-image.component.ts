@@ -116,7 +116,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
+    debugger;
     this.patientDetail = history.state.patientDetails;
+    if (this.patientDetail == undefined) {
+      const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
+      this.patientDetail = patientDetail;
+    }
     this.PatientImage = this.patientDetail.imageSource
       ? this.patientDetail.imageSource
       : sessionStorage.getItem('PatientImage');
@@ -579,6 +584,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
   onSubmitPatientDetails() {
     this.processedImage = this.canvas.toDataURL('image/png');
+    sessionStorage.setItem('annotatedImage', this.processedImage);
     this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
     this.router.navigate(['report'], {
       state: { patientDetails: this.patientDetail },

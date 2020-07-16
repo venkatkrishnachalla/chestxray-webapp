@@ -28,6 +28,8 @@ export class FindingsComponent implements OnInit {
   }
 
   getFindingsToReport() {
+    const findings = JSON.stringify(this.findings);
+    sessionStorage.setItem('findings', findings);
     this.xrayAnnotatedService.xrayAnnotatedFindings(this.findings);
   }
 }
