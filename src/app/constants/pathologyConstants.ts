@@ -2,7 +2,7 @@ export const pathology = {
   diseases: [
     {
       abnormality: 'Anatomical variants',
-      names: [
+      Names: [
         'Cervical rib',
         'Azygos fissure',
         'Aortic Arch variants',
@@ -11,19 +11,19 @@ export const pathology = {
     },
     {
       abnormality: 'Bronchiectasis',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Bronchitis',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Bulla',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Calcification',
-      names: [
+      Names: [
         'Calcified nodule',
         'Physiological calcification',
         'Calcified pleural plaques',
@@ -32,43 +32,43 @@ export const pathology = {
     },
     {
       abnormality: 'Cardiomegaly',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Cavity',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Collapse/Atelectais',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Consolidation',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Covid',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Cyst with Air Crescent',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Cyst with Air Fluid Level',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Dextrocardia',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Diaphragmatic Abnormalities',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'External Densities',
-      names: [
+      Names: [
         'Radiopaque foreign body',
         'bone cement',
         'mammary prosthesis/breast implant',
@@ -77,7 +77,7 @@ export const pathology = {
     },
     {
       abnormality: 'Extrapulmonary extrapleural conditions radiopaedia',
-      names: [
+      Names: [
         'Subcutaneous emphysema',
         'Thyroid enlargement/mass',
         'Thyroid calcification',
@@ -85,39 +85,39 @@ export const pathology = {
     },
     {
       abnormality: 'Fibrosis',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Hilar Enlargement',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Honeycombing',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Hydropneumothorax',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Hyperinflation',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Mass',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Mediastinal widening',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Nodule',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Osseous Lesions',
-      names: [
+      Names: [
         'Lytic',
         'sclerotic',
         'Implants',
@@ -128,35 +128,35 @@ export const pathology = {
     },
     {
       abnormality: 'Osteopenia',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Pleural Effusion',
-      names: ['Pleural Effusion', 'Pleural Thickening'],
+      Names: ['Pleural Effusion', 'Pleural Thickening'],
     },
     {
       abnormality: 'Pneumomediastinum',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Pneumopericardium',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Pneumoperitoneum',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Pneumothorax',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Reticulonodular Pattern',
-      names: [],
+      Names: [],
     },
     {
       abnormality: 'Support Devices',
-      names: [
+      Names: [
         'ET tube',
         'NG tube',
         'IJV',
@@ -169,9 +169,15 @@ export const pathology = {
     },
     {
       abnormality: 'Surgery',
-      names: ['mastectomy', 'pneumonectomy', 'rib resection', 'sternotomy'],
+      Names: ['mastectomy', 'pneumonectomy', 'rib resection', 'sternotomy'],
     },
   ],
-  findings: ['LUNG FIELDS', 'COSTOPHRENIC_ANGLES', 'HILAR/MEDIASTINAL',  
-  'CARDIAC SILHOUETTE', 'DOMES OF DIAPHRAGM', 'BONY THORAX', 'ADDITIONAL']
+  findings: [{Name: 'LUNG FIELDS', Desc: 'Visualised lung fields are clear.'},
+              {Name: 'COSTOPHRENIC_ANGLES', Desc: 'Both costophrenic angles are clear'},
+              {Name: 'HILAR/MEDIASTINAL', Desc: 'No hilar or mediastinal mass seen.'},
+              {Name: 'CARDIAC SILHOUETTE', Desc: 'Cardiac silhouette is within normal limits.'},
+              {Name: 'DOMES OF DIAPHRAGM', Desc: 'Both domes of diaphragm are normal.'},
+              {Name: 'BONY THORAX', Desc: 'Visualised bony thorax is normal.'},                                              
+              {Name: 'ADDITIONAL', Desc: ''},
+             ]
 };
