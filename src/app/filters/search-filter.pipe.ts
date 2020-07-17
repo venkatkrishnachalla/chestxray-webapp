@@ -13,23 +13,26 @@ export class SearchFilterPipe implements PipeTransform {
     } else {
       return opt;
     }
-  }
+  };
   transform(list: any[], filterText: string): any {
-    if (filterText) { filterText = filterText.toLowerCase(); }
-    if (!filterText) { return list; }
+    if (filterText) {
+      filterText = filterText.toLowerCase();
+    }
+    if (!filterText) {
+      return list;
+    }
     if (filterText) {
       return list
         .map((group) => ({
           abnormality: group.abnormality,
-          names: this._filter(group.abnormality, group.names, filterText),
+          Names: this._filter(group.abnormality, group.Names, filterText),
         }))
         .filter((group) => {
           return (
             group.abnormality.toLowerCase().indexOf(filterText) === 0 ||
-            group.names.length > 0
+            group.Names.length > 0
           );
         });
     }
   }
 }
-
