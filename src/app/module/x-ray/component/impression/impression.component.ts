@@ -11,7 +11,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
   templateUrl: './impression.component.html',
   styleUrls: ['./impression.component.scss'],
 })
-export class ImpressionComponent implements OnInit {
+export class ImpressionComponent implements OnInit, OnDestroy {
   impression = [];
   abnormalityColor = [];
   ellipseList = [];
@@ -40,12 +40,11 @@ export class ImpressionComponent implements OnInit {
   getImpressions() {
     this.eventEmitterService.invokeComponentData.subscribe((obj) => {
       this.impression.push(obj);
-      this.getColorMapping(obj.name);
+      this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
     this.eventEmitterService.invokeComponentEllipseData.subscribe(
       (objEllipse) => {
         this.ellipseList.push(objEllipse);
-        this.getColorMapping(objEllipse.name);
       }
     );
   }
@@ -72,7 +71,7 @@ export class ImpressionComponent implements OnInit {
     }
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
-      this.getColorMapping(obj.name);
+      this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
   }
 
@@ -81,13 +80,19 @@ export class ImpressionComponent implements OnInit {
     this.impression.splice(index, 1, { id: info.id, name: info.name });
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
-      this.getColorMapping(obj.name);
+      this.getColorMapping(obj.name, '', '');
     });
   }
 
-  getColorMapping(diseases) {
-    const color = DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
-    this.abnormalityColor.push(color);
+  getColorMapping(diseases, isMLApi, impcolor) {
+    if (isMLApi) {
+      const color = impcolor;
+      this.abnormalityColor.push(color);
+    } else {
+      const color =
+        DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
+      this.abnormalityColor.push(color);
+    }
   }
 
   getImpressionsToReport() {

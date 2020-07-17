@@ -91,23 +91,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
-    this.eventEmitterService.invokeComponentFunction.subscribe(
-      (data: any) => {
-        switch (data.title) {
-          case 'Draw Ellipse':
-            this.drawEllipse(data);
-            break;
-          case 'Free Hand Drawing':
-            this.freeHandDrawing(data);
-            break;
-          case 'Delete':
-            this.deleteEllipse();
-            break;
-          default:
-            break;
-        }
+    this.eventEmitterService.invokeComponentFunction.subscribe((data: any) => {
+      switch (data.title) {
+        case 'Draw Ellipse':
+          this.drawEllipse(data);
+          break;
+        case 'Free Hand Drawing':
+          this.freeHandDrawing(data);
+          break;
+        case 'Delete':
+          this.deleteEllipse();
+          break;
+        default:
+          break;
       }
-    );
+    });
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe((mlResponse: any) =>
       this.mlApiEllipseLoop(mlResponse)
@@ -160,7 +158,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.actionIconsModelDispaly();
     });
   }
-  actionIconsModelDispaly(){
+  actionIconsModelDispaly() {
     const bodyRect = document.body.getBoundingClientRect();
     const right = bodyRect.right - this.canvas.getActiveObject().left;
     const top = this.canvas.getActiveObject().top - bodyRect.top;
@@ -169,7 +167,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         panelClass: 'my-class',
         hasBackdrop: false,
         // tslint:disable-next-line: max-line-length
-        position: (this.canvas.getActiveObject().top < 60) ? { right: right - 390 + 'px', top: top + 130 + 'px' } : { right: right - 390 + 'px', top: top + 'px' },
+        position:
+          this.canvas.getActiveObject().top < 60
+            ? { right: right - 390 + 'px', top: top + 130 + 'px' }
+            : { right: right - 390 + 'px', top: top + 'px' },
       });
     }
   }
@@ -292,10 +293,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.ellipseList = [];
     this.findingsList = [];
     mLArray.Impression.forEach((impression: any) => {
+      const colorFinding = mLArray.diseases.filter(
+        (book) => book.name.toLowerCase() === impression.sentence.toLowerCase()
+      );
       const impressionObject = {
         title: 'impression',
         id: impression.index,
         name: impression.sentence,
+        isMLApi: true,
+        color: colorFinding[0].color,
       };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
@@ -303,12 +309,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
     const findingsOrdered = [];
     const order = this.constants.findings;
-    order.forEach(element => {
+    order.forEach((element) => {
       if (findingsData.indexOf(element) > -1) {
         findingsOrdered.push(element);
       }
     });
-    findingsOrdered.forEach(data => {
+    findingsOrdered.forEach((data) => {
       if (mLArray.Findings[data].length === 0 && data !== 'ADDITIONAL') {
         const finalFinding = data + ': ' + 'Normal';
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
@@ -319,9 +325,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             (book) => book.index === finding
           );
           // tslint:disable-next-line: max-line-length
-          finalFinding += currentFinding[0].sentence + (mLArray.Findings[data].length > 1 && mLArray.Findings[data].length !== index ? ', ' : '') ;
+          finalFinding +=
+            currentFinding[0].sentence +
+            (mLArray.Findings[data].length > 1 &&
+            mLArray.Findings[data].length !== index
+              ? ', '
+              : '');
         });
-        const finalData = data !== 'ADDITIONAL' ? data + ': '  + finalFinding : finalFinding;
+        const finalData =
+          data !== 'ADDITIONAL' ? data + ': ' + finalFinding : finalFinding;
         if (finalData !== '') {
           this.eventEmitterService.onComponentFindingsDataShared(finalData);
         }
