@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   DISEASE_COLOR_MAPPING,
   RANDOM_COLOR,
@@ -11,7 +11,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
   templateUrl: './impression.component.html',
   styleUrls: ['./impression.component.scss'],
 })
-export class ImpressionComponent implements OnInit, OnDestroy {
+export class ImpressionComponent implements OnInit {
   impression = [];
   abnormalityColor = [];
   ellipseList = [];
@@ -96,13 +96,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   }
 
   getImpressionsToReport() {
+    const impression = JSON.stringify(this.impression);
+    sessionStorage.setItem('impression', impression);
     this.xrayAnnotatedImpressionService.xrayAnnotatedImpressions(
       this.impression
     );
-  }
-  /*** unsubscribe user subscription event ***/
-  ngOnDestroy() {
-    const impression = JSON.stringify(this.impression);
-    sessionStorage.setItem('impression', impression);
   }
 }

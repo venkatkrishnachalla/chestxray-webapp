@@ -14,7 +14,7 @@ describe('CanvasImageComponent', () => {
     'onComponentEllipseDataShared',
   ]);
   const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
-  const xRayServiceSpy = jasmine.createSpyObj('xrayImageService', [
+  const xRayServiceSpy = jasmine.createSpyObj('XRayImageService', [
     'getPatientInstanceId',
     'getPatientImage',
   ]);

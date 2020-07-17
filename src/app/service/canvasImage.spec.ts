@@ -1,9 +1,9 @@
-import { xrayImageService } from './canvasImage';
+import { XRayImageService } from './canvasImage';
 import { HttpResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 
-describe('xrayImageService', () => {
-  let service: xrayImageService;
+describe('XRayImageService', () => {
+  let service: XRayImageService;
   const httpSpy = jasmine.createSpyObj('HttpClient', ['get']);
   const endpointSpy = jasmine.createSpyObj('ApiEndPointService', [
     'getPatientImage',
@@ -11,7 +11,7 @@ describe('xrayImageService', () => {
   ]);
 
   beforeEach(() => {
-    service = new xrayImageService(httpSpy, endpointSpy);
+    service = new XRayImageService(httpSpy, endpointSpy);
   });
 
   describe('#getPatientImage', () => {
