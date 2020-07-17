@@ -304,24 +304,24 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const findingsOrdered = [];
     const order = this.constants.findings;
     order.forEach(element => {
-      if (findingsData.indexOf(element) > -1) {
+      if (findingsData.indexOf(element.Name) > -1) {
         findingsOrdered.push(element);
       }
     });
     findingsOrdered.forEach(data => {
-      if (mLArray.Findings[data].length === 0 && data !== 'ADDITIONAL') {
-        const finalFinding = data + ': ' + 'Normal';
+      if (mLArray.Findings[data.Name].length === 0 && data.Name !== 'ADDITIONAL') {
+        const finalFinding = data.Name + ': ' + data.Desc;
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
       } else {
         let finalFinding = '';
-        mLArray.Findings[data].forEach((finding: any, index) => {
+        mLArray.Findings[data.Name].forEach((finding: any, index) => {
           const currentFinding = mLArray.Impression.filter(
             (book) => book.index === finding
           );
           // tslint:disable-next-line: max-line-length
-          finalFinding += currentFinding[0].sentence + (mLArray.Findings[data].length > 1 && mLArray.Findings[data].length !== index ? ', ' : '') ;
+          finalFinding += currentFinding[0].sentence + (mLArray.Findings[data.Name].length > 1 && mLArray.Findings[data.Name].length !== index ? ', ' : '') ;
         });
-        const finalData = data !== 'ADDITIONAL' ? data + ': '  + finalFinding : finalFinding;
+        const finalData = data.Name !== 'ADDITIONAL' ? data.Name + ': '  + finalFinding : finalFinding;
         if (finalData !== '') {
           this.eventEmitterService.onComponentFindingsDataShared(finalData);
         }
