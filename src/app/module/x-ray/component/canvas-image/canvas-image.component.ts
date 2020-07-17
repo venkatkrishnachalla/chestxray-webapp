@@ -91,23 +91,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
-    this.eventEmitterService.invokeComponentFunction.subscribe(
-      (data: any) => {
-        switch (data.title) {
-          case 'Draw Ellipse':
-            this.drawEllipse(data);
-            break;
-          case 'Free Hand Drawing':
-            this.freeHandDrawing(data);
-            break;
-          case 'Delete':
-            this.deleteEllipse();
-            break;
-          default:
-            break;
-        }
+    this.eventEmitterService.invokeComponentFunction.subscribe((data: any) => {
+      switch (data.title) {
+        case 'Draw Ellipse':
+          this.drawEllipse(data);
+          break;
+        case 'Free Hand Drawing':
+          this.freeHandDrawing(data);
+          break;
+        case 'Delete':
+          this.deleteEllipse();
+          break;
+        default:
+          break;
       }
-    );
+    });
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe((mlResponse: any) =>
       this.mlApiEllipseLoop(mlResponse)
@@ -160,7 +158,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.actionIconsModelDispaly();
     });
   }
-  actionIconsModelDispaly(){
+  actionIconsModelDispaly() {
     const bodyRect = document.body.getBoundingClientRect();
     const right = bodyRect.right - this.canvas.getActiveObject().left;
     const top = this.canvas.getActiveObject().top - bodyRect.top;
@@ -169,7 +167,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         panelClass: 'my-class',
         hasBackdrop: false,
         // tslint:disable-next-line: max-line-length
-        position: (this.canvas.getActiveObject().top < 60) ? { right: right - 390 + 'px', top: top + 130 + 'px' } : { right: right - 390 + 'px', top: top + 'px' },
+        position:
+          this.canvas.getActiveObject().top < 60
+            ? { right: right - 390 + 'px', top: top + 130 + 'px' }
+            : { right: right - 390 + 'px', top: top + 'px' },
       });
     }
   }
@@ -292,10 +293,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.ellipseList = [];
     this.findingsList = [];
     mLArray.Impression.forEach((impression: any) => {
+      const colorFinding = mLArray.diseases.filter(
+        (book) => book.name.toLowerCase() === impression.sentence.toLowerCase()
+      );
       const impressionObject = {
         title: 'impression',
         id: impression.index,
         name: impression.sentence,
+        isMLApi: true,
+        color: colorFinding[0].color,
       };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
