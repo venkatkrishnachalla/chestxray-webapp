@@ -7,7 +7,7 @@ import { throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class xrayImageService {
+export class XRayImageService {
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
   getPatientImage(id) {

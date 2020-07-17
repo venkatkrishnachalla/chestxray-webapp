@@ -17,7 +17,7 @@ import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { pathology } from 'src/app/constants/pathologyConstants';
 import { StateGroup } from '../../healthDetails';
-import { xrayImageService } from 'src/app/service/canvasImage';
+import { XRayImageService } from 'src/app/service/canvasImage';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
 import {
@@ -75,7 +75,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
     private dialog: MatDialog,
-    private xRayService: xrayImageService,
+    private xRayService: XRayImageService,
     private annotatedXrayService: XRayService,
     private router: Router
   ) {}
@@ -309,13 +309,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
     const findingsOrdered = [];
     const order = this.constants.findings;
-    order.forEach(element => {
+    order.forEach((element) => {
       if (findingsData.indexOf(element.Name) > -1) {
         findingsOrdered.push(element);
       }
     });
-    findingsOrdered.forEach(data => {
-      if (mLArray.Findings[data.Name].length === 0 && data.Name !== 'ADDITIONAL') {
+    findingsOrdered.forEach((data) => {
+      if (
+        mLArray.Findings[data.Name].length === 0 &&
+        data.Name !== 'ADDITIONAL'
+      ) {
         const finalFinding = data.Name + ': ' + data.Desc;
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
       } else {
@@ -325,9 +328,17 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             (book) => book.index === finding
           );
           // tslint:disable-next-line: max-line-length
-          finalFinding += currentFinding[0].sentence + (mLArray.Findings[data.Name].length > 1 && mLArray.Findings[data.Name].length !== index ? ', ' : '') ;
+          finalFinding +=
+            currentFinding[0].sentence +
+            (mLArray.Findings[data.Name].length > 1 &&
+            mLArray.Findings[data.Name].length !== index
+              ? ', '
+              : '');
         });
-        const finalData = data.Name !== 'ADDITIONAL' ? data.Name + ': '  + finalFinding : finalFinding;
+        const finalData =
+          data.Name !== 'ADDITIONAL'
+            ? data.Name + ': ' + finalFinding
+            : finalFinding;
         if (finalData !== '') {
           this.eventEmitterService.onComponentFindingsDataShared(finalData);
         }
@@ -605,5 +616,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.getActiveObject().set({
       stroke: color,
     });
+    this.canvas.renderAll();
   }
 }

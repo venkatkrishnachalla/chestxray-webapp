@@ -4,7 +4,18 @@ import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-interface patientData {}
+interface PatientData {
+  age: number;
+  birthDate: string;
+  hospitalPatientId: string;
+  id: string;
+  lastUpdate: string;
+  name: string;
+  referringPhysicianName: string;
+  sex: string;
+  status: boolean;
+  studies: string[];
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -12,7 +23,7 @@ export class DashboardService {
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
   getPatientList() {
-    return this.http.get<patientData>(this.endpoint.getPatientList()).pipe(
+    return this.http.get<PatientData>(this.endpoint.getPatientList()).pipe(
       catchError(this.handleError),
       tap((responseData) => {
         return responseData;

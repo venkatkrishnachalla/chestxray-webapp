@@ -25,9 +25,8 @@ export class XRayPatientDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    debugger;
     this.patientInfo = history.state.patientDetails;
-    if (this.patientInfo == undefined) {
+    if (this.patientInfo === undefined) {
       const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientInfo = patientInfo;
     }
@@ -37,20 +36,18 @@ export class XRayPatientDetailsComponent implements OnInit {
     } else {
       this.status = 'Unreported';
     }
-    this.eventEmitterService.invokeComponentFunction.subscribe(
-      (data: any) => {
-        switch (data.title) {
-          case 'stateData':
-            this.storePatientDetails();
-            break;
-          case 'impression':
-            this.storeImpressions(data);
-            break;
-          default:
-            break;
-        }
+    this.eventEmitterService.invokeComponentFunction.subscribe((data: any) => {
+      switch (data.title) {
+        case 'stateData':
+          this.storePatientDetails();
+          break;
+        case 'impression':
+          this.storeImpressions(data);
+          break;
+        default:
+          break;
       }
-    );
+    });
 
     this.xrayAnnotatedImpression
       .xrayAnnotatedImpressionsService()
@@ -61,7 +58,6 @@ export class XRayPatientDetailsComponent implements OnInit {
     if (Object.keys(this.annotatedImpression).length === 0) {
       const impression = JSON.parse(sessionStorage.getItem('impression'));
       this.annotatedImpression = impression;
-      console.log('this.annotatedImpression', this.annotatedImpression);
     }
 
     this.xrayAnnotatedImpression

@@ -18,8 +18,8 @@ export class PatientDetailsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    var patient = history.state.patientDetails;
-    if (patient == undefined) {
+    let patient = history.state.patientDetails;
+    if (patient === undefined) {
       patient = JSON.parse(sessionStorage.getItem('patientDetail'));
     }
     this.value = 50;
