@@ -53,7 +53,7 @@
           >{{ item.abnormality }}</mat-list-item
         >
         <mat-list class="sub-list">
-          <div *ngFor="let subItem of item.names">
+          <div *ngFor="let subItem of item.Names">
             <mat-list-item class="pointer" (click)="onSelect($event, '')"
               ><span class="diseaseSubList"></span>{{ subItem }}</mat-list-item
             >
