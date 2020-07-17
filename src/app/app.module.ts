@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReportModule } from './module/report/report.module';
 import { NgxPrintModule } from 'ngx-print';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -36,6 +37,9 @@ import { NgxPrintModule } from 'ngx-print';
     ReactiveFormsModule,
     MatDialogModule,
     NgxPrintModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center'
+    }),
   ],
   providers: [
     EventEmitterService,
