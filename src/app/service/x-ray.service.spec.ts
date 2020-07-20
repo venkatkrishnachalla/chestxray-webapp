@@ -30,10 +30,10 @@ describe('XRayService', () => {
       const signInMock = {
         doctorName: 'test',
         password: '123456',
-        returnSecureToken: true,
+        returnSecureToken: true
       };
       responsePromise = service.getAskAiDetails(
-        'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD'
+        'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD', 'abcd'
       );
       expect(service.getAskAiDetails).toBeDefined();
     });

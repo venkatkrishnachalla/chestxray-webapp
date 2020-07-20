@@ -87,6 +87,8 @@ describe('CanvasImageComponent', () => {
       const PatientImageMock = 'abcdeffff';
       xRayServiceSpy.getPatientImage.and.returnValue(of(PatientImageMock));
       spyOn(document, 'getElementById').and.returnValue(controlCheckbox);
+      spyOn(component, 'setCanvasDimension');
+      spyOn(component, 'generateCanvas');
       component.getPatientImage('12662');
     });
     it('should call getPatientImage function', () => {
@@ -348,6 +350,7 @@ describe('CanvasImageComponent', () => {
           };
         },
       };
+      component.selectedDisease = 'Bulla';
       component.activeIcon = {
         active: true,
       };
@@ -560,6 +563,7 @@ describe('CanvasImageComponent', () => {
           return { id: 1 };
         },
       };
+      component.selectedDisease = 'Bulla';
       component.updatePrediction();
       expect(component.updatePrediction).toBeDefined();
     });

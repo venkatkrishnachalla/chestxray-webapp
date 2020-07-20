@@ -21,9 +21,10 @@ describe('XRayComponent', () => {
   const anotatedXrayService = jasmine.createSpyObj('XRayService', [
     'abcd',
   ]);
+  const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
 
   beforeEach(() => {
-    component = new XRayComponent(XRayServiceSpy, spinnerServiceSpy, routerSpy, eventEmitterService, anotatedXrayService);
+    component = new XRayComponent(XRayServiceSpy, spinnerServiceSpy, routerSpy, eventEmitterService, anotatedXrayService, authServiceSpy);
   });
 
   it('should create', () => {
