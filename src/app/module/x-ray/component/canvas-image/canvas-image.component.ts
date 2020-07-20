@@ -24,6 +24,7 @@ import {
   DISEASE_COLOR_MAPPING,
   RANDOM_COLOR,
 } from '../../../../constants/findingColorConstants';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'cxr-canvas-image',
@@ -77,7 +78,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private xRayService: XRayImageService,
     private annotatedXrayService: XRayService,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService
   ) {}
 
   @HostListener('window:resize', [])
@@ -521,6 +523,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedDisease = '';
     this.activeIcon.active = false;
     this.dialog.closeAll();
+    this.toastrService.success('Prediction saved successfully');
   }
 
   /**
@@ -537,6 +540,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const activeObject = this.canvas.getActiveObject();
     this.canvas.remove(activeObject);
     this.dialog.closeAll();
+    this.toastrService.success('Prediction deleted successfully');
   }
   /**
    * Update active object
@@ -551,6 +555,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.getColorMapping(this.selectedDisease);
     this.selectedDisease = '';
     this.dialog.closeAll();
+    this.toastrService.success('Prediction updated successfully');
   }
   /**
    * Close Pathology modal functionality

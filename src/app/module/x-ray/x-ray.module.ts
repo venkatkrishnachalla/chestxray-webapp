@@ -12,6 +12,7 @@ import { CanvasImageComponent } from './component/canvas-image/canvas-image.comp
 import { FormsModule } from '@angular/forms';
 import { SearchFilterPipe } from 'src/app/filters/search-filter.pipe';
 import { AskAiComponent } from './component/ask-ai/ask-ai.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,13 @@ import { AskAiComponent } from './component/ask-ai/ask-ai.component';
     SearchFilterPipe,
     AskAiComponent,
   ],
-  imports: [CommonModule, MaterialModule, Ng5SliderModule, FormsModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    Ng5SliderModule,
+    FormsModule,
+    ToastrModule,
+  ],
   exports: [SearchFilterPipe],
 })
 export class XRayModule {}

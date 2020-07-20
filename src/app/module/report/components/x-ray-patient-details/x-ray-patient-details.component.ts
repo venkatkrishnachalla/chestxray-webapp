@@ -16,7 +16,7 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   impressions = [];
   abnormalityColor = [];
-  comments = '';
+  comments: string;
   clinicalHistory = '';
 
   constructor(
