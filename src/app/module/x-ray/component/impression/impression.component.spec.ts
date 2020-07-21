@@ -128,7 +128,7 @@ describe('ImpressionComponent', () => {
 
   describe('#getColorMapping', () => {
     beforeEach(() => {
-      component.getColorMapping('abcde');
+      component.getColorMapping('abcde', false, 'red');
     });
     it('should call getColorMapping', () => {
       expect(component.getColorMapping).toBeDefined();

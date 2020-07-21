@@ -1,21 +1,20 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FindingsComponent } from './findings.component';
+import { of, throwError } from 'rxjs';
 
 describe('FindingsComponent', () => {
   let component: FindingsComponent;
-  let fixture: ComponentFixture<FindingsComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [FindingsComponent],
-    }).compileComponents();
-  }));
+  const eventEmitterServiceSpy = jasmine.createSpyObj('XRayService', [
+    'invokeComponentFindingsData',
+  ]);
+  const xrayAnnotatedImpressionSpy = jasmine.createSpyObj('XRayService', [
+    'xrayAnnotatedFindings',
+  ]);
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FindingsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new FindingsComponent(
+      eventEmitterServiceSpy,
+      xrayAnnotatedImpressionSpy
+    );
   });
 
   it('should create', () => {
@@ -23,12 +22,30 @@ describe('FindingsComponent', () => {
   });
 
   describe('#ngOnInit', () => {
-    beforeEach(() => {
+    it('should call ngOnIit function', () => {
+      spyOn(component, 'getFindings');
       component.ngOnInit();
+      expect(component.getFindings).toHaveBeenCalled();
     });
-    it('should call ngOnInit function', () => {
-      const result = component.ngOnInit();
-      expect(component.ngOnInit).toBeDefined();
+  });
+
+  describe('#getFindings', () => {
+    beforeEach(() => {
+      const mockData = { name: 'Bulla', index: 0 };
+      component.findings = [];
+      eventEmitterServiceSpy.invokeComponentFindingsData = of(mockData);
+    });
+    it('should call getFindings function', () => {
+      component.getFindings();
+      expect(component.getFindings).toBeDefined();
+    });
+  });
+
+  describe('#getFindingsToReport', () => {
+    beforeEach(() => {});
+    it('should call getFindingsToReport function', () => {
+      component.getFindingsToReport();
+      expect(component.getFindingsToReport).toBeDefined();
     });
   });
 });
