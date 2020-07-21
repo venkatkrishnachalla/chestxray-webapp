@@ -32,6 +32,8 @@ export class XRayComponent implements OnInit {
     vertical: true,
   };
   mLResponse: any[];
+  displayCanvas = true;
+  displayErrorBlock = false;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
@@ -55,16 +57,23 @@ export class XRayComponent implements OnInit {
     // this.showAskAI = !this.showAskAI;
     this.spinnerService.show();
     const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
-    this.xrayService.getAskAiDetails(patientImage.base64Image, patientImage.filename).subscribe(
-      (mLResponse: any) => {
-        this.mLResponse = mLResponse;
-        this.eventsSubject.next(mLResponse);
-        this.spinnerService.hide();
-      },
-      (errorMessage: any) => {
-        this.spinnerService.hide();
-      }
-    );
+    this.xrayService
+      .getAskAiDetails(patientImage.base64Image, patientImage.filename)
+      .subscribe(
+        (mLResponse: any) => {
+          this.mLResponse = mLResponse;
+          this.eventsSubject.next(mLResponse);
+          this.spinnerService.hide();
+        },
+        (errorMessage: any) => {
+          this.displayCanvas = false;
+          this.displayErrorBlock = true;
+          this.spinnerService.hide();
+          this.eventEmitterService.onErrorMessage({
+            data: errorMessage,
+          });
+        }
+      );
   }
 
   /* close ask ai model when user clicks on reject button */

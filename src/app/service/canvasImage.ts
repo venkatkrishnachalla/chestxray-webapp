@@ -44,6 +44,6 @@ export class XRayImageService {
       );
   }
   private handleError(errorResponse: HttpErrorResponse) {
-    return throwError(errorResponse.error.error.message);
+    return throwError(errorResponse);
   }
 }

@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { SearchFilterPipe } from 'src/app/filters/search-filter.pipe';
 import { AskAiComponent } from './component/ask-ai/ask-ai.component';
 import { ToastrModule } from 'ngx-toastr';
+import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ToastrModule } from 'ngx-toastr';
     Ng5SliderModule,
     FormsModule,
     ToastrModule,
+    CoreModule,
   ],
   exports: [SearchFilterPipe],
 })

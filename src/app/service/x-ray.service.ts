@@ -34,7 +34,10 @@ export class XRayService {
         'content-type': 'application/json',
       }),
     };
-    const headers = { 'content-type': 'application/json', responseType: 'json'};  
+    const headers = {
+      'content-type': 'application/json',
+      responseType: 'json',
+    };
     return this.http.post(this.endpoint.getAskAi(), saveArray, httpOptions);
   }
 
