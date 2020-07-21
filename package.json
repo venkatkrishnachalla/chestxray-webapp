@@ -1,10 +1,11 @@
 {
   "name": "cxr-web-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build",
+    "prebuild": "npm --no-git-tag-version version patch",
+    "build": "ng build --prod --aot",
     "test": "ng test --code-coverage --sourceMap=true  --watch=true",
     "lint": "ng lint",
     "generate-mock-data": "node api/generate-mock-data",
