@@ -15,7 +15,8 @@ export class ImpressionComponent implements OnInit {
   impression = [];
   abnormalityColor = [];
   ellipseList = [];
-  impressionList: any;
+  impressionList = [];
+  uniqueImpressions = [];
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedImpressionService: XRayService
@@ -23,7 +24,7 @@ export class ImpressionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getImpressions();
-    this.eventEmitterService.invokeComponentFunction.subscribe((info) => {
+    this.eventEmitterService.invokeComponentFunction.subscribe((info: { check: any; id: any; disease: any; objectindex: any; }) => {
       switch (info.check) {
         case 'delete':
           this.deleteImpression(info.id, info.disease, info.objectindex);
@@ -38,18 +39,31 @@ export class ImpressionComponent implements OnInit {
   }
 
   getImpressions() {
-    this.eventEmitterService.invokeComponentData.subscribe((obj) => {
+    this.eventEmitterService.invokeComponentData.subscribe((obj: { name: any; isMLApi: any; color: any; }) => {
       this.impression.push(obj);
+      this.uniqueImpressionsData();
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
     this.eventEmitterService.invokeComponentEllipseData.subscribe(
-      (objEllipse) => {
+      (objEllipse: any) => {
         this.ellipseList.push(objEllipse);
       }
     );
   }
 
-  deleteImpression(id, disease, objectindex) {
+  uniqueImpressionsData(){
+    this.uniqueImpressions = [];
+    this.impression.filter((item) => {
+      const i = this.uniqueImpressions.findIndex(x => x.name === item.name);
+      if (i <= -1){
+        this.uniqueImpressions.push({id: item.id, name: item.name});
+      }
+      return null;
+    });
+    this.updateFindings();
+  }
+
+  deleteImpression(id: number, disease: string, objectindex: number) {
     if (disease) {
       const currEllipse = this.ellipseList.filter(
         (book) => book.name === disease
@@ -65,14 +79,20 @@ export class ImpressionComponent implements OnInit {
         );
         this.ellipseList = ellipseListArray;
       }
+      this.uniqueImpressionsData();
     } else {
       const index = this.impression.findIndex((item) => item.id === id);
       this.impression.splice(index, 1);
+      this.uniqueImpressionsData();
     }
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
+  }
+
+  updateFindings(){
+    this.eventEmitterService.onImpressionDataShared(this.impression);
   }
 
   updateImpression(info) {
@@ -84,7 +104,7 @@ export class ImpressionComponent implements OnInit {
     });
   }
 
-  getColorMapping(diseases, isMLApi, impcolor) {
+  getColorMapping(diseases: string, isMLApi: string, impcolor: string) {
     if (isMLApi) {
       const color = impcolor;
       this.abnormalityColor.push(color);
