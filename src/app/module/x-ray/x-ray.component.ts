@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Options } from 'ng5-slider';
 import { Subject, Subscription } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
@@ -16,7 +16,7 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './x-ray.component.html',
   styleUrls: ['./x-ray.component.scss'],
 })
-export class XRayComponent implements OnInit {
+export class XRayComponent implements OnInit, OnDestroy {
   eventsSubject: Subject<any> = new Subject<any>();
   showAskAI = false;
   acceptStatus = false;

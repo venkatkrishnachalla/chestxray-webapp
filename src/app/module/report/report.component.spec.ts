@@ -25,7 +25,7 @@ describe('ReportComponent', () => {
         title: 'patientInfo',
         name: 'Mohan'
       };
-      eventEmitterServiceSpy.invokeReportDataFunction.and.returnValue(of(mockData));
+      eventEmitterServiceSpy.invokeReportDataFunction = of(mockData);
     });
     it('should call ngOnIit function', () => {
       component.ngOnInit();

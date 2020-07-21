@@ -22,24 +22,19 @@ describe('FindingsComponent', () => {
   });
 
   describe('#ngOnInit', () => {
-    beforeEach(() => {
-      const mockData = [{}];
-      eventEmitterServiceSpy.invokeComponentFindingsData.and.returnValue(
-        of(mockData)
-      );
-    });
     it('should call ngOnIit function', () => {
+      spyOn(component, 'getFindings');
       component.ngOnInit();
-      expect(component.ngOnInit).toBeDefined();
-    });
-    it('should call ngOnIit function, when getAnnotatedImageData returns error', () => {
-      component.ngOnInit();
-      expect(component.ngOnInit).toBeDefined();
+      expect(component.getFindings).toHaveBeenCalled();
     });
   });
 
   describe('#getFindings', () => {
-    beforeEach(() => {});
+    beforeEach(() => {
+      const mockData = { name: 'Bulla', index: 0 };
+      component.findings = [];
+      eventEmitterServiceSpy.invokeComponentFindingsData = of(mockData);
+    });
     it('should call getFindings function', () => {
       component.getFindings();
       expect(component.getFindings).toBeDefined();

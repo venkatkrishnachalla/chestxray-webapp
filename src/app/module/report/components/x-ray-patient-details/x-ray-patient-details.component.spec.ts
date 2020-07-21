@@ -1,4 +1,5 @@
 import { XRayPatientDetailsComponent } from './x-ray-patient-details.component';
+import { of, throwError } from 'rxjs';
 
 describe('XRayPatientDetailsComponent', () => {
   let component: XRayPatientDetailsComponent;
@@ -8,6 +9,7 @@ describe('XRayPatientDetailsComponent', () => {
   ]);
   const xrayAnnotatedImpressionSpy = jasmine.createSpyObj('XRayService', [
     'xrayAnnotatedImpressionsService',
+    'xrayAnnotatedFindingsService'
   ]);
 
   beforeEach(() => {
@@ -35,7 +37,15 @@ describe('XRayPatientDetailsComponent', () => {
         status: false,
         instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
       };
-      window.history.pushState(patientMock, '', '');
+      const mockData = {
+        title: 'stateData',
+      };
+      const findingsMock = { name: 'Bulla', index: 0 };
+      const impressionsMock = { name: 'Bulla', index: 0 };
+      window.history.pushState({ patientDetails: patientMock }, '', '');
+      eventEmitterServiceSpy.invokeComponentFunction = of(mockData);
+      xrayAnnotatedImpressionSpy.xrayAnnotatedImpressionsService.and.returnValue(of(findingsMock));
+      xrayAnnotatedImpressionSpy.xrayAnnotatedFindingsService.and.returnValue(of(impressionsMock));
     });
     it('should call ngOnIit function', () => {
       component.ngOnInit();
