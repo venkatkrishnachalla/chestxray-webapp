@@ -13,6 +13,7 @@ export class EventEmitterService {
   invokeReportFunction = new EventEmitter();
   invokeReportData = new EventEmitter();
   invokeReportDataFunction = new EventEmitter();
+  invokeFindingsDataFunction = new EventEmitter();
   constructor() {}
   onComponentButtonClick(title) {
     this.invokeComponentFunction.emit(title);
@@ -34,5 +35,8 @@ export class EventEmitterService {
   }
   onReportDataPatientDataShared(title) {
     this.invokeReportDataFunction.emit(title);
+  }
+  onImpressionDataShared(data){
+    this.invokeFindingsDataFunction.emit(data);
   }
 }
