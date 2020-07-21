@@ -7,6 +7,7 @@ export const environment = {
   isMockAPI: false,
   apiEndPoint: '',
   mockApiEndPoint: 'http://localhost:3000',
+  appVersion: require('../../package.json').version + ' ' + '- dev',
 
   // tslint:disable-next-line: no-string-literal
   loginAPI : window['login'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login/',
