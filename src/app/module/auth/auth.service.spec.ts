@@ -97,6 +97,10 @@ describe('AuthService', () => {
 
   describe('#refreshTokenTimeOut', () => {
     beforeEach(() => {
+      const response = new HttpResponse({ status: 204 });
+      endpointSpy.getRefreshToken.and.returnValue('http://localhost:3000/auth');
+      mockHttpClient.post.and.returnValue(of(response));
+      (authService as any).refreshToken();
       authService.refreshTokenTimeOut('axhyysss', 4563);
     });
     it('should call refreshTokenTimeOut function', () => {

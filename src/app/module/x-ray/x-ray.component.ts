@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Options } from 'ng5-slider';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 import { Router } from '@angular/router';
@@ -8,13 +8,15 @@ import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
 import { ImpressionComponent } from './component/impression/impression.component';
 import { FindingsComponent } from './component/findings/findings.component';
+import { ActionPanelComponent } from './component/action-panel/action-panel.component';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'cxr-x-ray',
   templateUrl: './x-ray.component.html',
   styleUrls: ['./x-ray.component.scss'],
 })
-export class XRayComponent implements OnInit {
+export class XRayComponent implements OnInit, OnDestroy {
   eventsSubject: Subject<any> = new Subject<any>();
   showAskAI = false;
   acceptStatus = false;
@@ -32,16 +34,20 @@ export class XRayComponent implements OnInit {
     vertical: true,
   };
   mLResponse: any[];
+  isHospitalRadiologist: boolean;
+  userSubscription: Subscription;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
+  @ViewChild(ActionPanelComponent) actionPanel: ActionPanelComponent;
 
   constructor(
     private xrayService: XRayService,
     private spinnerService: SpinnerService,
     private router: Router,
     private eventEmitterService: EventEmitterService,
-    private anotatedXrayService: XRayService
+    private anotatedXrayService: XRayService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -55,14 +61,25 @@ export class XRayComponent implements OnInit {
     // this.showAskAI = !this.showAskAI;
     this.spinnerService.show();
     const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
-    this.xrayService.getAskAiDetails(patientImage.base64Image, patientImage.filename).subscribe(
-      (mLResponse: any) => {
-        this.mLResponse = mLResponse;
-        this.eventsSubject.next(mLResponse);
-        this.spinnerService.hide();
-      },
-      (errorMessage: any) => {
-        this.spinnerService.hide();
+    this.xrayService
+      .getAskAiDetails(patientImage.base64Image, patientImage.filename)
+      .subscribe(
+        (mLResponse: any) => {
+          this.mLResponse = mLResponse;
+          this.eventsSubject.next(mLResponse);
+          this.actionPanel.disableAskAiButton();
+          this.spinnerService.hide();
+        },
+        (errorMessage: any) => {
+          this.spinnerService.hide();
+        }
+      );
+    this.userSubscription = this.authService.userSubject.subscribe(
+      (user: any) => {
+        if (user) {
+          this.isHospitalRadiologist =
+            user.userroles[0] === 'HospitalRadiologist' ? true : false;
+        }
       }
     );
   }
@@ -88,5 +105,10 @@ export class XRayComponent implements OnInit {
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
+  }
+
+  /*** unsubscribe userSubscription event ***/
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 }
