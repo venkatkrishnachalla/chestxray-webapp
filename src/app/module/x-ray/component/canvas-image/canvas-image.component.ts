@@ -89,16 +89,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', [])
   public onResize() {
-    this.canvas.clear(fabric.Ellipse);
-    this.canvas.clear(fabric.Path);
-    this.canvasDynamicHeight = 0;
-    this.canvasDynamicWidth = 0;
-    this.canvasScaleX = 0;
-    this.canvasScaleY = 0;
     this.setCanvasDimension();
-    this.generateCanvas();
     this.setCanvasBackground();
-    console.log('this.savedObjects', this.savedObjects);
   }
 
   /* initialization method */
@@ -315,7 +307,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
     this.canvas.renderAll();
     this.spinnerService.hide();
-    this.getPrediction();
   }
 
   /* draw ellipse, when user clicks ask ai accept button */
@@ -655,24 +646,5 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       stroke: color,
     });
     this.canvas.renderAll();
-  }
-
-  getPrediction() {
-    this.savedObjects.forEach((element) => {
-      const ellipses = new fabric.Ellipse({
-        left: element.left / this.canvasScaleX,
-        top: element.top / this.canvasScaleY,
-        rx: element.rx / this.canvasScaleX / 2,
-        ry: element.ry / this.canvasScaleY / 2,
-        angle: element.angle,
-        stroke: 'red',
-        strokeWidth: 2,
-        fill: '',
-        selectable: true,
-      });
-      this.canvas.add(ellipses);
-      console.log('ellipses', ellipses);
-      this.canvas.renderAll();
-    });
   }
 }
