@@ -7,6 +7,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { NgxPrintModule } from 'ngx-print';
 import { ReportFooterComponent } from './components/report-footer/report-footer.component';
 import { ReportHeaderComponent } from './components/report-header/report-header.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,6 @@ import { ReportHeaderComponent } from './components/report-header/report-header.
     ReportFooterComponent,
     ReportHeaderComponent,
   ],
-  imports: [CommonModule, MaterialModule, NgxPrintModule],
+  imports: [CommonModule, MaterialModule, NgxPrintModule, FormsModule],
 })
 export class ReportModule {}

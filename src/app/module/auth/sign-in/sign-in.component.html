@@ -43,16 +43,11 @@
                 value=""
                 minlength="5"
               />
-              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              <mat-icon matSuffix (click)="hide = !hide">{{
+                hide ? 'visibility_off' : 'visibility'
+              }}</mat-icon>
             </mat-form-field>
-            <!-- Validation message -->
-            <div
-              *ngIf="errorMessage"
-              class="error"
-              style="text-align: center; color: #ff0000;"
-            >
-              <p>{{ errorMessage }}</p>
-            </div>
+
             <mat-card-actions>
               <!-- Login button -->
               <button
@@ -67,7 +62,6 @@
           </form>
         </mat-card-content>
         <mat-card-actions>
-          <!-- <mat-checkbox>Remember me!</mat-checkbox> -->
           <a style="text-decoration: none; color: #2781fc; margin-left: 2%;"
             >Forgot password ?</a
           >

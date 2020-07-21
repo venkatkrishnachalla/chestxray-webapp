@@ -5,6 +5,7 @@ import { AuthService } from '../auth.service';
 import { ConsoleService } from 'src/app/core/service/console.service';
 import { Router } from '@angular/router';
 import { SpinnerService } from '../../shared/UI/spinner/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'cxr-sign-in',
   templateUrl: './sign-in.component.html',
@@ -20,7 +21,8 @@ export class SignInComponent implements OnInit {
     private authService: AuthService,
     private console: ConsoleService,
     private router: Router,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {}
@@ -40,19 +42,22 @@ export class SignInComponent implements OnInit {
           this.spinnerService.hide();
           this.errorMessage = errorMessage;
           if (networkStatus === false) {
-            this.errorMessage =
-              'Please check your network connections and try again.';
+            this.toastrService.error(
+              'Please check your network connections and try again.'
+            );
           } else {
-            this.errorMessage = 'Invalid Username or Password';
+            this.toastrService.error(
+              'Invalid Username or Password'
+            );
           }
-          // this.alert.open(this.errorMessage, 'ERROR');
           form.reset();
         }
       );
     } else {
       this.spinnerService.hide();
-      this.errorMessage = 'Enter all the required fields';
-      this.alert.open(this.errorMessage, 'ERROR');
+      this.toastrService.error(
+        'Enter all the required fields'
+      );
     }
   }
 }
