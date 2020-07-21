@@ -25,7 +25,6 @@ import {
   RANDOM_COLOR,
 } from '../../../../constants/findingColorConstants';
 import { ToastrService } from 'ngx-toastr';
-
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -71,6 +70,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   ellipseList: any[];
   findingsList: any[];
   processedImage: any;
+  showError: boolean;
+  errorMessage: string;
+  errorStatus: any;
+  canvasScaleX: number;
+  canvasScaleY: number;
+  savedObjects: any[] = [];
   mlArray: any;
 
   constructor(
@@ -109,8 +114,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     this.spinnerService.show();
-    this.eventsSubscription = this.events.subscribe((mlResponse: any) =>
-      this.mlApiEllipseLoop(mlResponse, '')
+    this.eventsSubscription = this.events.subscribe(
+      (mlResponse: any) => this.mlApiEllipseLoop(mlResponse, ''),
+      (errorMessage: any) => {
+        this.showError = true;
+        this.spinnerService.hide();
+        this.eventEmitterService.onErrorMessage({
+          data: errorMessage,
+        });
+      }
     );
     this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', { selection: false });
     fabric.Object.prototype.cornerColor = 'white';
@@ -160,6 +172,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.actionIconsModelDispaly();
     });
   }
+
   actionIconsModelDispaly() {
     const bodyRect = document.body.getBoundingClientRect();
     const right = bodyRect.right - this.canvas.getActiveObject().left;
@@ -180,27 +193,27 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   updateSearchModel(value) {
     this.searchModel = value;
   }
-  /**
-   * Get Patient Instance ID
-   * @param patientId Patient ID
-   * @return void
-   */
 
   /**
    * Get Patient Instance ID
    * @param patientId Patient ID
    * @return void
    */
-
   /* retrieve patient instance id from server */
   getPatientInstanceId(id) {
-    this.xRayService
-      .getPatientInstanceId(id)
-      .subscribe((patientInstanceIdResponse: any) => {
+    this.xRayService.getPatientInstanceId(id).subscribe(
+      (patientInstanceIdResponse: any) => {
         this.instanceId =
           patientInstanceIdResponse[0].seriesList[0].instanceList[0].id;
         this.getPatientImage(this.instanceId);
-      });
+      },
+      (errorMessage: any) => {
+        this.spinnerService.hide();
+        this.eventEmitterService.onErrorMessage({
+          data: errorMessage,
+        });
+      }
+    );
   }
 
   /* setting dimension for canvas container */
@@ -225,16 +238,22 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /* retrieve patient image from server */
   getPatientImage(instanceID: string) {
-    this.xRayService
-      .getPatientImage(instanceID)
-      .subscribe((PatientImageResponse: any) => {
+    this.xRayService.getPatientImage(instanceID).subscribe(
+      (PatientImageResponse: any) => {
         const imageResponse = JSON.parse(PatientImageResponse);
         this.PatientImage =
           'data:image/png;base64,' + imageResponse.base64Image;
         sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
         this.setCanvasDimension();
         this.generateCanvas();
-      });
+      },
+      (errorMessage: any) => {
+        this.spinnerService.hide();
+        this.eventEmitterService.onErrorMessage({
+          data: errorMessage,
+        });
+      }
+    );
   }
 
   /* generate a canvas using fabric.js */
@@ -275,6 +294,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       scaleX: this.canvasCorrectedWidth / this.xRayImage.width,
       scaleY: this.canvasCorrectedHeight / this.xRayImage.height,
     });
+    this.canvasScaleX = this.xRayImage.width / this.canvas.width;
+    this.canvasScaleY = this.xRayImage.height / this.canvas.height;
     this.canvas.setBackgroundImage(
       this.xRayImage,
       this.canvas.renderAll.bind(this.canvas),
@@ -308,7 +329,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     });
-  
+
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
     const findingsOrdered = [];
     const order = this.constants.findings;
@@ -331,25 +352,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             (book) => book.index === finding
           );
           // tslint:disable-next-line: max-line-length
-          if (currentFinding.length !== 0){
+          if (currentFinding.length !== 0) {
             finalFinding +=
-            currentFinding[0].sentence +
-            (mLArray.Findings[info.Name].length > 1 &&
-            mLArray.Findings[info.Name].length !== index
-              ? ', '
-              : '');
-          }
-          else{
+              currentFinding[0].sentence +
+              (mLArray.Findings[info.Name].length > 1 &&
+              mLArray.Findings[info.Name].length !== index
+                ? ', '
+                : '');
+          } else {
             finalFinding += '';
           }
         });
-        if (finalFinding === '' && info.Name !== 'ADDITIONAL'){
+        if (finalFinding === '' && info.Name !== 'ADDITIONAL') {
           const finalFinding1 = info.Name + ': ' + info.Desc;
           this.eventEmitterService.onComponentFindingsDataShared(finalFinding1);
-        }
-        else{
+        } else {
           const finalData =
-          info.Name !== 'ADDITIONAL'
+            info.Name !== 'ADDITIONAL'
               ? info.Name + ': ' + finalFinding
               : finalFinding;
           if (finalData !== '') {
@@ -396,16 +415,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.isDrawingMode = false;
     this.enableDrawEllipseMode = true;
     if (isMlAi) {
-      const canvasScaleX = this.xRayImage.width / this.canvas.width;
-      const canvasScaleY = this.xRayImage.height / this.canvas.height;
+      this.canvasScaleX = this.xRayImage.width / this.canvas.width;
+      this.canvasScaleY = this.xRayImage.height / this.canvas.height;
       const ellipse = new fabric.Ellipse({
         width: 0,
         height: 0,
         disease: diseaseItem.name,
-        left: (diseaseItem.x as any) / canvasScaleX,
-        top: (diseaseItem.y as any) / canvasScaleY,
-        rx: (diseaseItem.a as any) / canvasScaleX / 2,
-        ry: (diseaseItem.b as any) / canvasScaleY / 2,
+        left: (diseaseItem.x as any) / this.canvasScaleX,
+        top: (diseaseItem.y as any) / this.canvasScaleY,
+        rx: (diseaseItem.a as any) / this.canvasScaleX / 2,
+        ry: (diseaseItem.b as any) / this.canvasScaleY / 2,
         angle: diseaseItem.r,
         stroke: diseaseItem.color,
         strokeWidth: 2,
@@ -528,8 +547,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   savePrediction() {
     const random = Math.floor(Math.random() * 100 + 1);
-    this.canvas.getActiveObject().id = random;
+    const selectedObjectPrediction = this.canvas.getActiveObject();
+    selectedObjectPrediction.id = random;
     const selectedObject = { id: random, name: this.selectedDisease };
+    this.savedObjects.push(selectedObjectPrediction);
     this.eventEmitterService.onComponentDataShared(selectedObject);
     this.getColorMapping(this.selectedDisease);
     this.selectedDisease = '';

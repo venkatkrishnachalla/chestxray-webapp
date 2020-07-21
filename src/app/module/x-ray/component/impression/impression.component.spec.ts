@@ -8,12 +8,16 @@ describe('ImpressionComponent', () => {
     'invokeComponentData',
     'invokeComponentEllipseData',
   ]);
-  const xrayAnnotatedImpressionServiceSpy = jasmine.createSpyObj('EventEmitterService', [
-    'XRayService'
-  ]);
+  const xrayAnnotatedImpressionServiceSpy = jasmine.createSpyObj(
+    'EventEmitterService',
+    ['XRayService']
+  );
 
   beforeEach(() => {
-    component = new ImpressionComponent(eventEmitterServiceSpy, xrayAnnotatedImpressionServiceSpy);
+    component = new ImpressionComponent(
+      eventEmitterServiceSpy,
+      xrayAnnotatedImpressionServiceSpy
+    );
   });
 
   it('should create', () => {

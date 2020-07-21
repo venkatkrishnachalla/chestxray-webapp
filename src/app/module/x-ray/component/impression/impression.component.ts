@@ -24,26 +24,30 @@ export class ImpressionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getImpressions();
-    this.eventEmitterService.invokeComponentFunction.subscribe((info: { check: any; id: any; disease: any; objectindex: any; }) => {
-      switch (info.check) {
-        case 'delete':
-          this.deleteImpression(info.id, info.disease, info.objectindex);
-          break;
-        case 'update':
-          this.updateImpression(info);
-          break;
-        default:
-          break;
+    this.eventEmitterService.invokeComponentFunction.subscribe(
+      (info: { check: any; id: any; disease: any; objectindex: any }) => {
+        switch (info.check) {
+          case 'delete':
+            this.deleteImpression(info.id, info.disease, info.objectindex);
+            break;
+          case 'update':
+            this.updateImpression(info);
+            break;
+          default:
+            break;
+        }
       }
-    });
+    );
   }
 
   getImpressions() {
-    this.eventEmitterService.invokeComponentData.subscribe((obj: { name: any; isMLApi: any; color: any; }) => {
-      this.impression.push(obj);
-      this.uniqueImpressionsData();
-      this.getColorMapping(obj.name, obj.isMLApi, obj.color);
-    });
+    this.eventEmitterService.invokeComponentData.subscribe(
+      (obj: { name: any; isMLApi: any; color: any }) => {
+        this.impression.push(obj);
+        this.uniqueImpressionsData();
+        this.getColorMapping(obj.name, obj.isMLApi, obj.color);
+      }
+    );
     this.eventEmitterService.invokeComponentEllipseData.subscribe(
       (objEllipse: any) => {
         this.ellipseList.push(objEllipse);
@@ -51,12 +55,12 @@ export class ImpressionComponent implements OnInit {
     );
   }
 
-  uniqueImpressionsData(){
+  uniqueImpressionsData() {
     this.uniqueImpressions = [];
     this.impression.filter((item) => {
-      const i = this.uniqueImpressions.findIndex(x => x.name === item.name);
-      if (i <= -1){
-        this.uniqueImpressions.push({id: item.id, name: item.name});
+      const i = this.uniqueImpressions.findIndex((x) => x.name === item.name);
+      if (i <= -1) {
+        this.uniqueImpressions.push({ id: item.id, name: item.name });
       }
       return null;
     });
@@ -91,7 +95,7 @@ export class ImpressionComponent implements OnInit {
     });
   }
 
-  updateFindings(){
+  updateFindings() {
     this.eventEmitterService.onImpressionDataShared(this.impression);
   }
 

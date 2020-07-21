@@ -1,5 +1,5 @@
 <div class="loaderContainer">
-  <span class="loader" *ngIf='showloader'></span>
+  <span class="loader" *ngIf="showloader"></span>
 </div>
 <div id="at-id-patientTable" *ngIf="!showError && showTable">
   <mat-form-field id="at-input-searchPatient" appearance="outline">
@@ -10,7 +10,7 @@
       [(ngModel)]="searchValue"
       placeholder="Search Patient"
       class="search-patient"
-      (keydown.space)='$event.preventDefault();'
+      (keydown.space)="$event.preventDefault()"
     />
   </mat-form-field>
   <ag-grid-angular
@@ -27,6 +27,7 @@
   >
   </ag-grid-angular>
 </div>
-<div class="errorBlock" *ngIf="showError">
-  {{ errorMessage }}
-</div>
+
+<ng-container>
+  <cxr-error-message></cxr-error-message>
+</ng-container>

@@ -27,39 +27,56 @@ export class FindingsComponent implements OnInit {
     this.findings = [];
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse) => {
-          this.findings.push(objEllipse);
+        this.findings.push(objEllipse);
       }
     );
-    this.eventEmitterService.invokeFindingsDataFunction.subscribe(
-      (data) => {
-        const uniqueImpressions = [];
-        data.filter((item) => {
-          const i = uniqueImpressions.findIndex(x => x.name === item.name);
-          if (i <= -1){
-            uniqueImpressions.push({id: item.id, name: item.name});
+    this.eventEmitterService.invokeFindingsDataFunction.subscribe((data) => {
+      const uniqueImpressions = [];
+      data.filter((item) => {
+        const i = uniqueImpressions.findIndex((x) => x.name === item.name);
+        if (i <= -1) {
+          uniqueImpressions.push({ id: item.id, name: item.name });
+        }
+        return null;
+      });
+      this.findings.forEach((element, index) => {
+        const result = uniqueImpressions.findIndex(
+          (ele) => ele.name === element.split(':')[1].trim()
+        );
+        if (result === -1) {
+          const desc = this.order.findIndex(
+            (a) => a.Name === element.split(':')[0]
+          );
+          if (element.split(':')[1].split(',').length === 1) {
+            this.findings.splice(
+              index,
+              1,
+              element.split(':')[0] + ': ' + this.order[desc].Desc
+            );
+          } else {
+            element
+              .split(':')[1]
+              .split(',')
+              .forEach((newEle) => {
+                const result2 = uniqueImpressions.findIndex(
+                  (ele) => ele.name === newEle.trim()
+                );
+                if (result2 === -1) {
+                  const newResult = element
+                    .split(':')[1]
+                    .split(',')
+                    .filter((item) => item !== newEle);
+                  this.findings.splice(
+                    index,
+                    1,
+                    element.split(':')[0] + ': ' + newResult.join(',')
+                  );
+                }
+              });
           }
-          return null;
-        });
-        this.findings.forEach((element, index) => {
-          const result = uniqueImpressions.findIndex(ele => ele.name === element.split(':')[1].trim());
-          if (result === -1){
-               const desc = this.order.findIndex(a => a.Name === element.split(':')[0]);
-               if (element.split(':')[1].split(',').length === 1){
-                this.findings.splice(index, 1, element.split(':')[0] + ': ' + this.order[desc].Desc);
-               }
-               else{
-                element.split(':')[1].split(',').forEach(newEle => {
-                  const result2 = uniqueImpressions.findIndex(ele => ele.name === newEle.trim());
-                  if (result2 === -1){
-                    const newResult = element.split(':')[1].split(',').filter(item => item !== newEle);
-                    this.findings.splice(index, 1, element.split(':')[0] + ': ' + newResult.join(','));
-                  }
-                });
-               }
-          }
-        });
-      }
-    );
+        }
+      });
+    });
   }
 
   getFindingsToReport() {

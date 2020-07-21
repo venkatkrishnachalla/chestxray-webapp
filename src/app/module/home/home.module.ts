@@ -13,6 +13,7 @@ import { ImplicitReceiver } from '@angular/compiler';
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { LocalFilesystemComponent } from './local-filesystem/local-filesystem.component';
 import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.component';
+import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.compon
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    CoreModule,
     AgGridModule.withComponents([]),
   ],
 })

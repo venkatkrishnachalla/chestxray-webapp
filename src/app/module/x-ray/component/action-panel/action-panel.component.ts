@@ -42,9 +42,9 @@ export class ActionPanelComponent implements OnInit {
   };
 
   readonly constants = actionPanelConstants;
-  actionPanel: { image: string; alt: string, title: string }[];
-  middlePanel: { image: string; alt: string , title: string, active: boolean}[];
-  brightnessPanel: { image: string; alt: string, title: string }[];
+  actionPanel: { image: string; alt: string; title: string }[];
+  middlePanel: { image: string; alt: string; title: string; active: boolean }[];
+  brightnessPanel: { image: string; alt: string; title: string }[];
   disableAskAI: boolean;
 
   constructor(private eventEmitterService: EventEmitterService) {}
@@ -62,8 +62,8 @@ export class ActionPanelComponent implements OnInit {
         data[key].active = false;
       }
     }
-    data[index].active = (data[index].active) ?  false : true;
-    this.eventEmitterService.onComponentButtonClick(data[index]); 
+    data[index].active = data[index].active ? false : true;
+    this.eventEmitterService.onComponentButtonClick(data[index]);
   }
 
   askAI() {
@@ -71,6 +71,6 @@ export class ActionPanelComponent implements OnInit {
   }
 
   disableAskAiButton() {
-     this.disableAskAI = true;
+    this.disableAskAI = true;
   }
 }

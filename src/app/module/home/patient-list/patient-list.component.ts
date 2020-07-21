@@ -3,6 +3,7 @@ import { homeConstants } from 'src/app/constants/homeConstants';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-patient-list',
@@ -18,17 +19,19 @@ export class PatientListComponent implements OnInit {
   readonly constants = homeConstants;
   domLayout: any;
   searchValue: string;
-  errorMessage: string;
+  errorStatus: any;
   showError: boolean;
   showloader: boolean;
   showTable: boolean;
   overlayNoRowsTemplate: string;
+  errorMessage: string;
 
   constructor(
     private elementRef: ElementRef,
     private dashboardService: DashboardService,
     private authService: AuthService,
-    public router: Router
+    public router: Router,
+    private eventEmitterService: EventEmitterService
   ) {}
   ngOnInit() {
     this.overlayNoRowsTemplate = 'No Data Available';
@@ -69,8 +72,11 @@ export class PatientListComponent implements OnInit {
         this.rowData = patientsList;
       },
       (errorMessage: any) => {
-        this.showError = true;
-        this.errorMessage = errorMessage;
+        this.showloader = false;
+        this.showTable = false;
+        this.eventEmitterService.onErrorMessage({
+          data: errorMessage,
+        });
       }
     );
   }

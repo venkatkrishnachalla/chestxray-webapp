@@ -34,6 +34,8 @@ export class XRayComponent implements OnInit, OnDestroy {
     vertical: true,
   };
   mLResponse: any[];
+  displayCanvas = true;
+  displayErrorBlock = false;
   isHospitalRadiologist: boolean;
   userSubscription: Subscription;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
@@ -71,7 +73,12 @@ export class XRayComponent implements OnInit, OnDestroy {
           this.spinnerService.hide();
         },
         (errorMessage: any) => {
+          this.displayCanvas = false;
+          this.displayErrorBlock = true;
           this.spinnerService.hide();
+          this.eventEmitterService.onErrorMessage({
+            data: errorMessage,
+          });
         }
       );
     this.userSubscription = this.authService.userSubject.subscribe(

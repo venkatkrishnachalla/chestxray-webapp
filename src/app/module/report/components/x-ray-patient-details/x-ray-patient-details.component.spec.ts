@@ -9,7 +9,7 @@ describe('XRayPatientDetailsComponent', () => {
   ]);
   const xrayAnnotatedImpressionSpy = jasmine.createSpyObj('XRayService', [
     'xrayAnnotatedImpressionsService',
-    'xrayAnnotatedFindingsService'
+    'xrayAnnotatedFindingsService',
   ]);
 
   beforeEach(() => {
@@ -44,8 +44,12 @@ describe('XRayPatientDetailsComponent', () => {
       const impressionsMock = { name: 'Bulla', index: 0 };
       window.history.pushState({ patientDetails: patientMock }, '', '');
       eventEmitterServiceSpy.invokeComponentFunction = of(mockData);
-      xrayAnnotatedImpressionSpy.xrayAnnotatedImpressionsService.and.returnValue(of(findingsMock));
-      xrayAnnotatedImpressionSpy.xrayAnnotatedFindingsService.and.returnValue(of(impressionsMock));
+      xrayAnnotatedImpressionSpy.xrayAnnotatedImpressionsService.and.returnValue(
+        of(findingsMock)
+      );
+      xrayAnnotatedImpressionSpy.xrayAnnotatedFindingsService.and.returnValue(
+        of(impressionsMock)
+      );
     });
     it('should call ngOnIit function', () => {
       component.ngOnInit();

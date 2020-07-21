@@ -28,7 +28,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   ) {}
 
   /*** class init function ***/
-  
+
   ngOnInit(): void {
     this.uploadImageForm = this.formBuilder.group({
       name: [

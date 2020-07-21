@@ -3,12 +3,10 @@ import { of, throwError } from 'rxjs';
 
 describe('ReportComponent', () => {
   let component: ReportComponent;
-  const routerSpy = jasmine.createSpyObj('Router', [
-    'navigate',
-  ]);
+  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'invokeReportDataFunction',
-    'onComponentButtonClick'
+    'onComponentButtonClick',
   ]);
 
   beforeEach(() => {
@@ -23,7 +21,7 @@ describe('ReportComponent', () => {
     beforeEach(() => {
       const mockData = {
         title: 'patientInfo',
-        name: 'Mohan'
+        name: 'Mohan',
       };
       eventEmitterServiceSpy.invokeReportDataFunction = of(mockData);
     });

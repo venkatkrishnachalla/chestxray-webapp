@@ -22,7 +22,10 @@
       </button>
     </div>
 
-    <div class="next-button" *ngIf="router.url != '/report' && isHospitalRadiologist">
+    <div
+      class="next-button"
+      *ngIf="router.url != '/report' && isHospitalRadiologist"
+    >
       <button mat-button>
         Next&nbsp;
         <img
@@ -34,7 +37,10 @@
     </div>
   </section>
 
-  <section class="search-field" *ngIf="router.url != '/report' && isHospitalRadiologist">
+  <section
+    class="search-field"
+    *ngIf="router.url != '/report' && isHospitalRadiologist"
+  >
     <div class="search">
       <span><i class="material-icons" matPrefix>search</i></span>
       <input type="text" />

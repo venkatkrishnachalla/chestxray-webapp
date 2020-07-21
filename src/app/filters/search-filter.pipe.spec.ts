@@ -25,10 +25,8 @@ describe('SearchFilterPipe', () => {
     const list = [
       {
         abnormality: 'Anatomical variants',
-        names: [
-          'Aortic Arch variants'
-        ],
-      }
+        names: ['Aortic Arch variants'],
+      },
     ];
     const pipe = new SearchFilterPipe();
     const result = pipe.transform(list, input);

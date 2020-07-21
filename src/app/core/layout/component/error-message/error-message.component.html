@@ -1,0 +1,11 @@
+<div class="errorBlock" *ngIf="showError">
+  <mat-card>
+    <mat-card-title>
+      Oops!...something went wrong..
+    </mat-card-title>
+    <h1>Error {{ errorStatus.status }}</h1>
+    <p>
+      {{ errorMessage }}
+    </p>
+  </mat-card>
+</div>

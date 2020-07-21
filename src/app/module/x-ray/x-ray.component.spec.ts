@@ -18,7 +18,9 @@ describe('XRayComponent', () => {
   ]);
   const anotatedXrayService = jasmine.createSpyObj('XRayService', ['abcd']);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
-  const actionPanelSpy = jasmine.createSpyObj('ActionPanelComponent', ['disableAskAiButton']);
+  const actionPanelSpy = jasmine.createSpyObj('ActionPanelComponent', [
+    'disableAskAiButton',
+  ]);
 
   beforeEach(() => {
     component = new XRayComponent(
@@ -73,7 +75,7 @@ describe('XRayComponent', () => {
       XRayServiceSpy.getAskAiDetails.and.returnValue(throwError(errorResponse));
       const mockInResponse = {
         username: 'mohan',
-        userroles: ['hospitalradiologist']
+        userroles: ['hospitalradiologist'],
       };
       authServiceSpy.userSubject = of(mockInResponse);
       const event = {};

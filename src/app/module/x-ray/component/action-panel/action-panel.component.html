@@ -30,9 +30,9 @@
     </div>
 
     <div class="middleItems">
-      <div class="menus" *ngFor="let middle of middlePanel; let i=index">
+      <div class="menus" *ngFor="let middle of middlePanel; let i = index">
         <img
-          [ngClass]="{'icon-select-BG': middlePanel[i].active}"
+          [ngClass]="{ 'icon-select-BG': middlePanel[i].active }"
           [src]="middle.image"
           [alt]="middle.alt"
           (click)="iconAction(middlePanel, i)"

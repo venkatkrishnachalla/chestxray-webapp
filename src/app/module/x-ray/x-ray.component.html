@@ -6,7 +6,11 @@
 
   <!-- Main Content, X-Ray Aspect Ratio Part -->
   <section class="xray-panel">
-    <cxr-canvas-image [events]="eventsSubject.asObservable()"></cxr-canvas-image>
+    <cxr-canvas-image
+      *ngIf="displayCanvas"
+      [events]="eventsSubject.asObservable()"
+    ></cxr-canvas-image>
+    <cxr-error-message></cxr-error-message>
   </section>
 
   <!-- Right Side Content -->
