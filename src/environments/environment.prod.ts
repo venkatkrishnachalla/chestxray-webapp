@@ -1,5 +1,7 @@
 export const environment = {
   production: true,
+  appVersion: require('../../package.json').version,
+  
   // tslint:disable-next-line: no-string-literal
   loginAPI : window['login'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login/',
     // tslint:disable-next-line: no-string-literal
