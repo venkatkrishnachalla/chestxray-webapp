@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EventEmitterService } from '../../../../service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
+import { pathology } from 'src/app/constants/pathologyConstants';
 
 @Component({
   selector: 'cxr-findings',
@@ -8,6 +9,8 @@ import { XRayService } from 'src/app/service/x-ray.service';
   styleUrls: ['./findings.component.scss'],
 })
 export class FindingsComponent implements OnInit {
+  readonly constants = pathology;
+  order = [];
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedService: XRayService
@@ -20,11 +23,60 @@ export class FindingsComponent implements OnInit {
   }
 
   getFindings() {
+    this.order = this.constants.findings;
+    this.findings = [];
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse) => {
         this.findings.push(objEllipse);
       }
     );
+    this.eventEmitterService.invokeFindingsDataFunction.subscribe((data) => {
+      const uniqueImpressions = [];
+      data.filter((item) => {
+        const i = uniqueImpressions.findIndex((x) => x.name === item.name);
+        if (i <= -1) {
+          uniqueImpressions.push({ id: item.id, name: item.name });
+        }
+        return null;
+      });
+      this.findings.forEach((element, index) => {
+        const result = uniqueImpressions.findIndex(
+          (ele) => ele.name === element.split(':')[1].trim()
+        );
+        if (result === -1) {
+          const desc = this.order.findIndex(
+            (a) => a.Name === element.split(':')[0]
+          );
+          if (element.split(':')[1].split(',').length === 1) {
+            this.findings.splice(
+              index,
+              1,
+              element.split(':')[0] + ': ' + this.order[desc].Desc
+            );
+          } else {
+            element
+              .split(':')[1]
+              .split(',')
+              .forEach((newEle) => {
+                const result2 = uniqueImpressions.findIndex(
+                  (ele) => ele.name === newEle.trim()
+                );
+                if (result2 === -1) {
+                  const newResult = element
+                    .split(':')[1]
+                    .split(',')
+                    .filter((item) => item !== newEle);
+                  this.findings.splice(
+                    index,
+                    1,
+                    element.split(':')[0] + ': ' + newResult.join(',')
+                  );
+                }
+              });
+          }
+        }
+      });
+    });
   }
 
   getFindingsToReport() {

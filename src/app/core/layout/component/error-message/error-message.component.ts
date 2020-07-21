@@ -16,7 +16,6 @@ export class ErrorMessageComponent implements OnInit {
   ngOnInit(): void {
     this.eventEmitterService.invokeDisplayErrorMessage.subscribe(
       (errorResponse) => {
-        console.log('errorResponse.data.status', errorResponse.data.status);
         this.showError = true;
         this.errorStatus = errorResponse.data;
         switch (errorResponse.data.status) {

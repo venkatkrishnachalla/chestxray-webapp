@@ -63,4 +63,8 @@ export class DragDropComponent implements OnInit {
     this.dragImageFile.emit(this.file);
     this.loaded = true;
   }
+
+  getLocalImageSrc(event: string) {
+    this.imageSrc = event;
+  }
 }

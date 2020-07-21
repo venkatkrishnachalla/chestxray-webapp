@@ -1,6 +1,6 @@
 <div class="navigate-index">
   <section class="navigation-buttons">
-    <div class="prev-button">
+    <div class="prev-button" *ngIf="isHospitalRadiologist">
       <button mat-button *ngIf="router.url != '/report'">
         <img
           class="pre-image"
@@ -10,7 +10,7 @@
       </button>
     </div>
 
-    <div class="navigate-button">
+    <div class="navigate-button" *ngIf="isHospitalRadiologist">
       <button mat-button>
         <button
           [ngStyle]="{
@@ -22,7 +22,10 @@
       </button>
     </div>
 
-    <div class="next-button" *ngIf="router.url != '/report'">
+    <div
+      class="next-button"
+      *ngIf="router.url != '/report' && isHospitalRadiologist"
+    >
       <button mat-button>
         Next&nbsp;
         <img
@@ -34,7 +37,10 @@
     </div>
   </section>
 
-  <section class="search-field" *ngIf="router.url != '/report'">
+  <section
+    class="search-field"
+    *ngIf="router.url != '/report' && isHospitalRadiologist"
+  >
     <div class="search">
       <span><i class="material-icons" matPrefix>search</i></span>
       <input type="text" />

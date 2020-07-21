@@ -1,25 +1,43 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ReportComponent } from './report.component';
+import { of, throwError } from 'rxjs';
 
 describe('ReportComponent', () => {
   let component: ReportComponent;
-  let fixture: ComponentFixture<ReportComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ReportComponent ]
-    })
-    .compileComponents();
-  }));
+  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'invokeReportDataFunction',
+    'onComponentButtonClick',
+  ]);
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReportComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new ReportComponent(routerSpy, eventEmitterServiceSpy);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const mockData = {
+        title: 'patientInfo',
+        name: 'Mohan',
+      };
+      eventEmitterServiceSpy.invokeReportDataFunction = of(mockData);
+    });
+    it('should call ngOnIit function', () => {
+      component.ngOnInit();
+      expect(component.ngOnInit).toBeDefined();
+    });
+  });
+
+  describe('#goBackToXray', () => {
+    beforeEach(() => {
+      const imageMock = 'data64/image:abcdefh';
+    });
+    it('should call goBackToXray function', () => {
+      component.goBackToXray();
+      expect(component.goBackToXray).toBeDefined();
+    });
   });
 });

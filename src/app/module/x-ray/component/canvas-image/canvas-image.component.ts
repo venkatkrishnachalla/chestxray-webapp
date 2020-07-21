@@ -76,6 +76,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   canvasScaleX: number;
   canvasScaleY: number;
   savedObjects: any[] = [];
+  mlArray: any;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -107,7 +108,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           this.freeHandDrawing(data);
           break;
         case 'Delete':
-          this.deleteEllipse();
           break;
         default:
           break;
@@ -115,7 +115,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
-      (mlResponse: any) => this.mlApiEllipseLoop(mlResponse),
+      (mlResponse: any) => this.mlApiEllipseLoop(mlResponse, ''),
       (errorMessage: any) => {
         this.showError = true;
         this.spinnerService.hide();
@@ -311,7 +311,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /* draw ellipse, when user clicks ask ai accept button */
 
-  mlApiEllipseLoop(mlList: any) {
+  mlApiEllipseLoop(mlList: any, data: any) {
+    this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
     this.findingsList = [];
@@ -337,33 +338,42 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         findingsOrdered.push(element);
       }
     });
-    findingsOrdered.forEach((data) => {
+    findingsOrdered.forEach((info) => {
       if (
-        mLArray.Findings[data.Name].length === 0 &&
-        data.Name !== 'ADDITIONAL'
+        mLArray.Findings[info.Name].length === 0 &&
+        info.Name !== 'ADDITIONAL'
       ) {
-        const finalFinding = data.Name + ': ' + data.Desc;
+        const finalFinding = info.Name + ': ' + info.Desc;
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
       } else {
         let finalFinding = '';
-        mLArray.Findings[data.Name].forEach((finding: any, index) => {
+        mLArray.Findings[info.Name].forEach((finding: any, index) => {
           const currentFinding = mLArray.Impression.filter(
             (book) => book.index === finding
           );
           // tslint:disable-next-line: max-line-length
-          finalFinding +=
-            currentFinding[0].sentence +
-            (mLArray.Findings[data.Name].length > 1 &&
-            mLArray.Findings[data.Name].length !== index
-              ? ', '
-              : '');
+          if (currentFinding.length !== 0) {
+            finalFinding +=
+              currentFinding[0].sentence +
+              (mLArray.Findings[info.Name].length > 1 &&
+              mLArray.Findings[info.Name].length !== index
+                ? ', '
+                : '');
+          } else {
+            finalFinding += '';
+          }
         });
-        const finalData =
-          data.Name !== 'ADDITIONAL'
-            ? data.Name + ': ' + finalFinding
-            : finalFinding;
-        if (finalData !== '') {
-          this.eventEmitterService.onComponentFindingsDataShared(finalData);
+        if (finalFinding === '' && info.Name !== 'ADDITIONAL') {
+          const finalFinding1 = info.Name + ': ' + info.Desc;
+          this.eventEmitterService.onComponentFindingsDataShared(finalFinding1);
+        } else {
+          const finalData =
+            info.Name !== 'ADDITIONAL'
+              ? info.Name + ': ' + finalFinding
+              : finalFinding;
+          if (finalData !== '') {
+            this.eventEmitterService.onComponentFindingsDataShared(finalData);
+          }
         }
       }
     });
@@ -536,7 +546,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Emitting selected disease to Impression component
    */
   savePrediction() {
-    debugger;
     const random = Math.floor(Math.random() * 100 + 1);
     const selectedObjectPrediction = this.canvas.getActiveObject();
     selectedObjectPrediction.id = random;
@@ -560,9 +569,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       disease: this.canvas.getActiveObject().disease,
       objectindex: this.canvas.getActiveObject().index,
     };
+    this.canvas.remove(this.canvas.getActiveObject());
     this.eventEmitterService.onComponentButtonClick(selectedObject);
-    const activeObject = this.canvas.getActiveObject();
-    this.canvas.remove(activeObject);
     this.dialog.closeAll();
     this.toastrService.success('Prediction deleted successfully');
   }

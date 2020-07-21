@@ -42,9 +42,11 @@ export class ActionPanelComponent implements OnInit {
   };
 
   readonly constants = actionPanelConstants;
-  actionPanel: { image: string; alt: string, title: string }[];
-  middlePanel: { image: string; alt: string , title: string, active: boolean}[];
-  brightnessPanel: { image: string; alt: string, title: string }[];
+  actionPanel: { image: string; alt: string; title: string }[];
+  middlePanel: { image: string; alt: string; title: string; active: boolean }[];
+  brightnessPanel: { image: string; alt: string; title: string }[];
+  disableAskAI: boolean;
+
   constructor(private eventEmitterService: EventEmitterService) {}
 
   ngOnInit(): void {
@@ -52,6 +54,7 @@ export class ActionPanelComponent implements OnInit {
     this.middlePanel = this.constants.actionPanelMiddle;
     this.brightnessPanel = this.constants.actionPanelBrightness;
   }
+
   iconAction(data, index) {
     for (const key in data) {
       // tslint:disable-next-line: radix
@@ -59,11 +62,15 @@ export class ActionPanelComponent implements OnInit {
         data[key].active = false;
       }
     }
-    data[index].active = (data[index].active) ?  false : true;
-    this.eventEmitterService.onComponentButtonClick(data[index]); 
+    data[index].active = data[index].active ? false : true;
+    this.eventEmitterService.onComponentButtonClick(data[index]);
   }
 
   askAI() {
     this.askAIEvent.emit(true);
+  }
+
+  disableAskAiButton() {
+    this.disableAskAI = true;
   }
 }

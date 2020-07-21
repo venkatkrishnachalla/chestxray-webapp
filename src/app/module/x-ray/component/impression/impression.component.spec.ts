@@ -8,12 +8,16 @@ describe('ImpressionComponent', () => {
     'invokeComponentData',
     'invokeComponentEllipseData',
   ]);
-  const xrayAnnotatedImpressionServiceSpy = jasmine.createSpyObj('EventEmitterService', [
-    'XRayService'
-  ]);
+  const xrayAnnotatedImpressionServiceSpy = jasmine.createSpyObj(
+    'EventEmitterService',
+    ['XRayService']
+  );
 
   beforeEach(() => {
-    component = new ImpressionComponent(eventEmitterServiceSpy, xrayAnnotatedImpressionServiceSpy);
+    component = new ImpressionComponent(
+      eventEmitterServiceSpy,
+      xrayAnnotatedImpressionServiceSpy
+    );
   });
 
   it('should create', () => {
@@ -128,7 +132,7 @@ describe('ImpressionComponent', () => {
 
   describe('#getColorMapping', () => {
     beforeEach(() => {
-      component.getColorMapping('abcde');
+      component.getColorMapping('abcde', false, 'red');
     });
     it('should call getColorMapping', () => {
       expect(component.getColorMapping).toBeDefined();

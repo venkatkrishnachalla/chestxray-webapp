@@ -1,7 +1,7 @@
 <div class="x-ray-left-container">
   <div class="action-panel">
     <div class="topItem">
-      <button mat-button (click)="askAI()">
+      <button mat-button (click)="askAI()" [disabled]="disableAskAI">
         Ask AI <img src="../../../assets/images/askAI.png" alt="Ask AI" />
       </button>
       <button mat-button>
@@ -30,9 +30,9 @@
     </div>
 
     <div class="middleItems">
-      <div class="menus" *ngFor="let middle of middlePanel; let i=index">
+      <div class="menus" *ngFor="let middle of middlePanel; let i = index">
         <img
-          [ngClass]="{'icon-select-BG': middlePanel[i].active}"
+          [ngClass]="{ 'icon-select-BG': middlePanel[i].active }"
           [src]="middle.image"
           [alt]="middle.alt"
           (click)="iconAction(middlePanel, i)"

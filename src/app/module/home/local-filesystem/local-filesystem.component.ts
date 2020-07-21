@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
+import { DragDropComponent } from './drag-drop/drag-drop.component';
 
 @Component({
   selector: 'cxr-local-filesystem',
@@ -18,6 +19,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   fileName = 'Choose file';
   imageSource: string;
   doctorName: string;
+  @ViewChild(DragDropComponent) dragAndDrop: DragDropComponent;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,7 +28,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   ) {}
 
   /*** class init function ***/
-  
+
   ngOnInit(): void {
     this.uploadImageForm = this.formBuilder.group({
       name: [
@@ -75,6 +77,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
         // tslint:disable-next-line: no-shadowed-variable
         reader.onload = (event: any) => {
           this.imageSource = event.target.result;
+          this.dragAndDrop.getLocalImageSrc(this.imageSource);
           this.images.push(event.target.result);
           this.uploadImageForm.patchValue({
             fileSource: this.images,

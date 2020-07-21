@@ -14,7 +14,7 @@ export class EventEmitterService {
   invokeReportData = new EventEmitter();
   invokeReportDataFunction = new EventEmitter();
   invokeDisplayErrorMessage = new EventEmitter();
-
+  invokeFindingsDataFunction = new EventEmitter();
   constructor() {}
   onComponentButtonClick(title) {
     this.invokeComponentFunction.emit(title);
@@ -39,5 +39,8 @@ export class EventEmitterService {
   }
   onErrorMessage(title) {
     this.invokeDisplayErrorMessage.emit(title);
+  }
+  onImpressionDataShared(data) {
+    this.invokeFindingsDataFunction.emit(data);
   }
 }
