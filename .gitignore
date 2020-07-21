@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/sonar-project.properties
 
 # profiling files
 chrome-profiler-events*.json
