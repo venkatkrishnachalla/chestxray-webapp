@@ -15,6 +15,7 @@ describe('XRayComponent', () => {
     'invokeReportFunction',
     'onReportDataShared',
     'onComponentReportButtonClick',
+    'onErrorMessage'
   ]);
   const anotatedXrayService = jasmine.createSpyObj('XRayService', ['abcd']);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
@@ -35,6 +36,22 @@ describe('XRayComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const mockInResponse = {
+        username: 'mohan',
+        userroles: ['hospitalradiologist'],
+      };
+      const impressionsMock = [{ name: 'abcd', id: 1}];
+      authServiceSpy.userSubject = of(mockInResponse);
+      eventEmitterService.invokeReportFunction = of(impressionsMock);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function', () => {
+      expect(component.ngOnInit).toBeDefined();
+    });
   });
 
   describe('#openAskAI', () => {
