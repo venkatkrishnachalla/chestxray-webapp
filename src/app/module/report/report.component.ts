@@ -9,7 +9,7 @@ import { EventEmitterService } from '../../service/event-emitter.service';
 })
 export class ReportComponent implements OnInit {
   patientInfo: [];
-
+  showPrintForm = false;
   constructor(
     private router: Router,
     private eventEmitterService: EventEmitterService
@@ -35,5 +35,9 @@ export class ReportComponent implements OnInit {
     this.router.navigate(['x-ray'], {
       state: { patientDetails: this.patientInfo },
     });
+  }
+
+  enablePrint(event) {
+    this.showPrintForm = event;
   }
 }
