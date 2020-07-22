@@ -16,7 +16,7 @@ import { DashboardService } from 'src/app/service/dashboard.service';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { pathology } from 'src/app/constants/pathologyConstants';
-import { StateGroup } from '../../healthDetails';
+import { StateGroup, SaveEllipse } from '../../healthDetails';
 import { XRayImageService } from 'src/app/service/canvasImage';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
@@ -25,6 +25,7 @@ import {
   RANDOM_COLOR,
 } from '../../../../constants/findingColorConstants';
 import { ToastrService } from 'ngx-toastr';
+import { timeStamp } from 'console';
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -75,8 +76,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   errorStatus: any;
   canvasScaleX: number;
   canvasScaleY: number;
-  savedObjects: any[] = [];
+  savedObjects = [];
   mlArray: any;
+  getObject: boolean;
+  selectedObjectPrediction: any;
+  data = [];
+  mlPrediction = [];
 
   constructor(
     private spinnerService: SpinnerService,
@@ -90,12 +95,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', [])
   public onResize() {
+    // this.scalePrediction();
+    this.canvas.clear(fabric.Ellipse);
+    this.canvasDynamicHeight = 0;
+    this.canvasDynamicWidth = 0;
+    this.canvasScaleX = 0;
+    this.canvasScaleY = 0;
     this.setCanvasDimension();
     this.setCanvasBackground();
+    this.drawPredictions();
   }
 
   /* initialization method */
   ngOnInit() {
+    sessionStorage.removeItem('objects');
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
@@ -115,7 +128,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
-      (mlResponse: any) => this.mlApiEllipseLoop(mlResponse, ''),
+      (mlResponse: any) => this.mlApiEllipseLoop(mlResponse),
       (errorMessage: any) => {
         this.showError = true;
         this.spinnerService.hide();
@@ -311,7 +324,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /* draw ellipse, when user clicks ask ai accept button */
 
-  mlApiEllipseLoop(mlList: any, data: any) {
+  mlApiEllipseLoop(mlList: any) {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
@@ -380,6 +393,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
     mLArray.diseases.forEach((disease: any) => {
       disease.ellipses.forEach((ellipse: any, index) => {
+        this.mlPrediction.push(ellipse);
         ellipse.id = ellipse.index;
         ellipse.color = disease.color;
         ellipse.name = disease.name;
@@ -547,18 +561,17 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   savePrediction() {
     const random = Math.floor(Math.random() * 100 + 1);
-    const selectedObjectPrediction = this.canvas.getActiveObject();
-    selectedObjectPrediction.id = random;
+    this.selectedObjectPrediction = this.canvas.getActiveObject();
+    this.selectedObjectPrediction.id = random;
     const selectedObject = { id: random, name: this.selectedDisease };
-    this.savedObjects.push(selectedObjectPrediction);
     this.eventEmitterService.onComponentDataShared(selectedObject);
     this.getColorMapping(this.selectedDisease);
     this.selectedDisease = '';
     this.activeIcon.active = false;
     this.dialog.closeAll();
+    this.scalePrediction();
     this.toastrService.success('Prediction saved successfully');
   }
-
   /**
    * Delete active object
    */
@@ -654,5 +667,65 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       stroke: color,
     });
     this.canvas.renderAll();
+  }
+
+  scalePrediction() {
+    const saveEllipse = {} as SaveEllipse;
+    saveEllipse.width = this.selectedObjectPrediction.width * this.canvasScaleX;
+    saveEllipse.height =
+      this.selectedObjectPrediction.height * this.canvasScaleY;
+    saveEllipse.top = this.selectedObjectPrediction.top * this.canvasScaleX;
+    saveEllipse.left = this.selectedObjectPrediction.left * this.canvasScaleY;
+    saveEllipse.rx =
+      this.selectedObjectPrediction.width *
+      this.selectedObjectPrediction.scaleX *
+      this.canvasScaleX;
+    saveEllipse.ry =
+      this.selectedObjectPrediction.height *
+      this.selectedObjectPrediction.scaleY *
+      this.canvasScaleY;
+    saveEllipse.color = this.selectedObjectPrediction.stroke;
+    const values = saveEllipse;
+    this.data.push(values);
+    sessionStorage.setItem('objects', JSON.stringify(this.data));
+  }
+
+  drawPredictions() {
+    const data = JSON.parse(sessionStorage.getItem('objects'));
+    if (this.mlPrediction.length !== 0) {
+      this.mlPrediction.forEach((element) => {
+        const ellipse = new fabric.Ellipse({
+          left: element.x / this.canvasScaleX,
+          top: element.y / this.canvasScaleY,
+          rx: element.a / this.canvasScaleX / 2,
+          ry: element.b / this.canvasScaleY / 2,
+          stroke: element.color,
+          strokeWidth: 2,
+          fill: '',
+          selectable: true,
+          angle: element.r,
+        });
+        this.canvas.add(ellipse);
+        this.canvas.renderAll();
+      });
+    } else if (data == null) {
+      return true;
+    }
+    data.forEach((element) => {
+      const ellipse = new fabric.Ellipse({
+        width: element.width / this.canvasScaleX,
+        height: element.height / this.canvasScaleY,
+        left: element.left / this.canvasScaleX,
+        top: element.top / this.canvasScaleY,
+        rx: element.rx / this.canvasScaleX / 2,
+        ry: element.ry / this.canvasScaleY / 2,
+        stroke: element.color,
+        strokeWidth: 2,
+        fill: '',
+        selectable: true,
+      });
+      this.canvas.add(ellipse);
+      this.canvas.renderAll();
+    });
   }
 }
