@@ -56,6 +56,14 @@ export class XRayComponent implements OnInit, OnDestroy {
     this.eventEmitterService.invokeReportFunction.subscribe((impressions) => {
       this.eventEmitterService.onReportDataShared(impressions);
     });
+    this.userSubscription = this.authService.userSubject.subscribe(
+      (user: any) => {
+        if (user) {
+          this.isHospitalRadiologist =
+            user.userroles[0] === 'HospitalRadiologist' ? true : false;
+        }
+      }
+    );
   }
 
   /* open ask ai model when user clicks on ask ai button */
@@ -81,14 +89,6 @@ export class XRayComponent implements OnInit, OnDestroy {
           });
         }
       );
-    this.userSubscription = this.authService.userSubject.subscribe(
-      (user: any) => {
-        if (user) {
-          this.isHospitalRadiologist =
-            user.userroles[0] === 'HospitalRadiologist' ? true : false;
-        }
-      }
-    );
   }
 
   /* close ask ai model when user clicks on reject button */
