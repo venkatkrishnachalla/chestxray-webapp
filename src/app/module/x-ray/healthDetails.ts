@@ -12,3 +12,8 @@ export type SaveEllipse = {
   ry: number;
   color: string;
 };
+
+export interface SaveFreeHandDrawing {
+  coordinateValue: any;
+  color: string;
+}

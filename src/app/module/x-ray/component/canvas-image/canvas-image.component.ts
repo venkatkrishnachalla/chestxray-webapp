@@ -16,7 +16,11 @@ import { DashboardService } from 'src/app/service/dashboard.service';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { pathology } from 'src/app/constants/pathologyConstants';
-import { StateGroup, SaveEllipse } from '../../healthDetails';
+import {
+  StateGroup,
+  SaveEllipse,
+  SaveFreeHandDrawing,
+} from '../../healthDetails';
 import { XRayImageService } from 'src/app/service/canvasImage';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { XRayService } from 'src/app/service/x-ray.service';
@@ -82,6 +86,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   selectedObjectPrediction: any;
   data = [];
   mlPrediction = [];
+  selectedPathArray = [];
+  freeHandDrawings = [];
+  coordinateList = [];
+  freeHandDrawStroke: any;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -95,7 +103,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', [])
   public onResize() {
-    // this.scalePrediction();
     this.canvas.clear(fabric.Ellipse);
     this.canvasDynamicHeight = 0;
     this.canvasDynamicWidth = 0;
@@ -104,11 +111,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.setCanvasDimension();
     this.setCanvasBackground();
     this.drawPredictions();
+    this.drawSavedFreeHandPrediction();
   }
 
   /* initialization method */
   ngOnInit() {
     sessionStorage.removeItem('objects');
+    sessionStorage.removeItem('freeHandDrawing');
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
@@ -569,7 +578,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedDisease = '';
     this.activeIcon.active = false;
     this.dialog.closeAll();
-    this.scalePrediction();
+    if (this.selectedObjectPrediction.type === 'ellipse') {
+      this.scalePrediction();
+    } else {
+      this.scaleFreeHandDrawing();
+    }
     this.toastrService.success('Prediction saved successfully');
   }
   /**
@@ -690,11 +703,35 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('objects', JSON.stringify(this.data));
   }
 
+  scaleFreeHandDrawing() {
+    this.selectedPathArray = [];
+    const saveFreeHandDrawing = {} as SaveFreeHandDrawing;
+    const SelectedPath = this.selectedObjectPrediction.canvas.freeDrawingBrush
+      ._points;
+    const selectedPathString = SelectedPath.join(' ');
+    const selectedPathStrings = selectedPathString.split(' ');
+    selectedPathStrings.forEach((pathElement) => {
+      const pathArray = pathElement.split(',');
+      const x = pathArray[0] * this.canvasScaleX;
+      const y = pathArray[1] * this.canvasScaleY;
+      this.selectedPathArray.push(x);
+      this.selectedPathArray.push(y);
+    });
+    const selectedObjectPath = this.selectedPathArray.join(' ');
+    saveFreeHandDrawing.coordinateValue = selectedObjectPath;
+    saveFreeHandDrawing.color = this.selectedObjectPrediction.stroke;
+    this.freeHandDrawings.push(saveFreeHandDrawing);
+    sessionStorage.setItem(
+      'freeHandDrawing',
+      JSON.stringify(this.freeHandDrawings)
+    );
+  }
+
   drawPredictions() {
-    const data = JSON.parse(sessionStorage.getItem('objects'));
+    const ellipse = JSON.parse(sessionStorage.getItem('objects'));
     if (this.mlPrediction.length !== 0) {
       this.mlPrediction.forEach((element) => {
-        const ellipse = new fabric.Ellipse({
+        const mlEllipse = new fabric.Ellipse({
           left: element.x / this.canvasScaleX,
           top: element.y / this.canvasScaleY,
           rx: element.a / this.canvasScaleX / 2,
@@ -705,27 +742,60 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           selectable: true,
           angle: element.r,
         });
-        this.canvas.add(ellipse);
+        this.canvas.add(mlEllipse);
         this.canvas.renderAll();
       });
-    } else if (data == null) {
-      return true;
-    }
-    data.forEach((element) => {
-      const ellipse = new fabric.Ellipse({
-        width: element.width / this.canvasScaleX,
-        height: element.height / this.canvasScaleY,
-        left: element.left / this.canvasScaleX,
-        top: element.top / this.canvasScaleY,
-        rx: element.rx / this.canvasScaleX / 2,
-        ry: element.ry / this.canvasScaleY / 2,
-        stroke: element.color,
-        strokeWidth: 2,
-        fill: '',
-        selectable: true,
+    } else if (ellipse !== null) {
+      ellipse.forEach((element) => {
+        const sessionEllipse = new fabric.Ellipse({
+          width: element.width / this.canvasScaleX,
+          height: element.height / this.canvasScaleY,
+          left: element.left / this.canvasScaleX,
+          top: element.top / this.canvasScaleY,
+          rx: element.rx / this.canvasScaleX / 2,
+          ry: element.ry / this.canvasScaleY / 2,
+          stroke: element.color,
+          strokeWidth: 2,
+          fill: '',
+          selectable: true,
+        });
+        this.canvas.add(sessionEllipse);
+        this.canvas.renderAll();
       });
-      this.canvas.add(ellipse);
-      this.canvas.renderAll();
-    });
+    }
+  }
+  drawSavedFreeHandPrediction() {
+    const path = JSON.parse(sessionStorage.getItem('freeHandDrawing'));
+    if (path !== null) {
+      path.forEach((element) => {
+        const coordinatePath = element.coordinateValue.split(' ');
+        for (let i = 0; i < coordinatePath.length; i++) {
+          if (i % 2 === 0) {
+            let xPosition: any = coordinatePath[i];
+            xPosition = xPosition / this.canvasScaleX;
+            this.coordinateList.push(xPosition);
+          } else {
+            let yPosition: any = coordinatePath[i];
+            yPosition = yPosition / this.canvasScaleY;
+            this.coordinateList.push(yPosition);
+          }
+        }
+        const appendCharacter = 'M' + ' ';
+        this.coordinateList.unshift(appendCharacter);
+        this.canvas.add(
+          new fabric.Path(this.coordinateList.join(' '), {
+            // @ts-ignore
+            stroke: element.color,
+            strokeWidth: 2,
+            fill: '',
+            originX: 'center',
+            originY: 'center',
+            opacity: 0.8,
+          })
+        );
+        this.dialog.closeAll();
+        this.coordinateList = [];
+      });
+    }
   }
 }
