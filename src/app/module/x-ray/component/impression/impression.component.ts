@@ -106,6 +106,7 @@ export class ImpressionComponent implements OnInit {
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, '', '');
     });
+    this.uniqueImpressionsData();
   }
 
   getColorMapping(diseases: string, isMLApi: string, impcolor: string) {

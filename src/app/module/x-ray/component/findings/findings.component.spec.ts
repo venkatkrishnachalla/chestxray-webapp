@@ -5,6 +5,7 @@ describe('FindingsComponent', () => {
   let component: FindingsComponent;
   const eventEmitterServiceSpy = jasmine.createSpyObj('XRayService', [
     'invokeComponentFindingsData',
+    'invokeFindingsDataFunction'
   ]);
   const xrayAnnotatedImpressionSpy = jasmine.createSpyObj('XRayService', [
     'xrayAnnotatedFindings',
@@ -32,8 +33,10 @@ describe('FindingsComponent', () => {
   describe('#getFindings', () => {
     beforeEach(() => {
       const mockData = { name: 'Bulla', index: 0 };
+      const findingsmock = [{ name: 'Bulla', index: 0 }];
       component.findings = [];
       eventEmitterServiceSpy.invokeComponentFindingsData = of(mockData);
+      eventEmitterServiceSpy.invokeFindingsDataFunction = of(findingsmock);
     });
     it('should call getFindings function', () => {
       component.getFindings();

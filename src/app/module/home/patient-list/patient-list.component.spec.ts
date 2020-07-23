@@ -18,6 +18,9 @@ describe('PatientListComponent', () => {
   const routerSpy = jasmine.createSpyObj('Router', [
     'navigate',
   ]);
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'onErrorMessage',
+  ]);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,7 +39,8 @@ describe('PatientListComponent', () => {
       elementRefSpy,
       dashboardServiceSpy,
       httpSpy,
-      routerSpy
+      routerSpy,
+      eventEmitterServiceSpy
     );
   });
 

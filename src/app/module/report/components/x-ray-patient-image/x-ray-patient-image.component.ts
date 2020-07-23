@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
@@ -10,10 +10,9 @@ export class XRayPatientImageComponent implements OnInit {
   patientImage: any;
   xrayAnnotatedImage: string;
   xrayAnnotatedImpression: string;
+  @Output() printEvent = new EventEmitter();
 
-  constructor(
-    private annotatedXrayService: XRayService
-  ) {}
+  constructor(private annotatedXrayService: XRayService) {}
 
   ngOnInit(): void {
     this.annotatedXrayService
@@ -25,5 +24,9 @@ export class XRayPatientImageComponent implements OnInit {
           this.xrayAnnotatedImage = image;
         }
       });
+  }
+
+  printClick() {
+    this.printEvent.emit(true);
   }
 }
