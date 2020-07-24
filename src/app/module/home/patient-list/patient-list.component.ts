@@ -34,6 +34,7 @@ export class PatientListComponent implements OnInit {
     private eventEmitterService: EventEmitterService
   ) {}
   ngOnInit() {
+    sessionStorage.clear();
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200 };

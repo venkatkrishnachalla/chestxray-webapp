@@ -53,12 +53,14 @@ export class ImpressionComponent implements OnInit {
         this.ellipseList.push(objEllipse);
       }
     );
+    const impression = JSON.parse(sessionStorage.getItem('impression'));
+    this.uniqueImpressions = impression;
   }
 
   uniqueImpressionsData() {
     this.uniqueImpressions = [];
     this.impression.filter((item) => {
-      const i = this.uniqueImpressions.findIndex((x) => x.name === item.name);
+      const i = this.uniqueImpressions.findIndex((x) => x.name.toLowerCase() === item.name.toLowerCase());
       if (i <= -1) {
         this.uniqueImpressions.push({ id: item.id, name: item.name });
       }
@@ -124,7 +126,7 @@ export class ImpressionComponent implements OnInit {
     const impression = JSON.stringify(this.impression);
     sessionStorage.setItem('impression', impression);
     this.xrayAnnotatedImpressionService.xrayAnnotatedImpressions(
-      this.impression
+      this.uniqueImpressions
     );
   }
 }
