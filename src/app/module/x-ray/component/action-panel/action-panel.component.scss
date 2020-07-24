@@ -212,7 +212,7 @@
 
       .contrast {
         width: calc(50% - 10px);
-        margin-left: 5px;
+        margin-left: 4px;
         margin-top: 10px;
         text-align: center;
 
@@ -220,6 +220,12 @@
           height: 2rem;
           width: 2rem;
           cursor: pointer;
+        }
+
+        @media only screen and (min-width: 1440px) {
+          .contrast {
+            margin-left: 6px;
+          }
         }
       }
     }

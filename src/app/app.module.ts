@@ -38,7 +38,8 @@ import { ToastrModule } from 'ngx-toastr';
     MatDialogModule,
     NgxPrintModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-top-center'
+      positionClass: 'toast-top-center',
+      timeOut: 1200
     }),
   ],
   providers: [

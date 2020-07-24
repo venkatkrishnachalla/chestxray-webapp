@@ -614,10 +614,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.getActiveObject().index = random;
     const selectedObjectPrediction = this.canvas.getActiveObject();
     selectedObjectPrediction.id = random;
-    // const randomData = sessionStorage.getItem('randomIds');
-    // const randomDatanew = randomData ? ((JSON.parse(randomData).length !== 0) ? JSON.parse(randomData) : []) : [];
-    // randomDatanew.push({ id: random, name: this.selectedDisease });
-    // sessionStorage.setItem('randomIds', JSON.stringify(randomData));
     const selectedObject = { id: random, name: this.selectedDisease };
     this.savedObjects.push(selectedObjectPrediction);
     this.storeDataInSession({ index: random, sentence: this.selectedDisease }, 'impression');
