@@ -68,27 +68,9 @@ export class ImpressionComponent implements OnInit {
   }
 
   deleteImpression(id: number, disease: string, objectindex: number) {
-    if (disease) {
-      const currEllipse = this.ellipseList.filter(
-        (book) => book.name === disease
-      );
-      if (currEllipse.length === 1) {
-        const impressionList = this.impression.filter(
-          (book) => book.name.toLowerCase() !== disease.toLowerCase()
-        );
-        this.impression = impressionList;
-      } else {
-        const ellipseListArray = this.ellipseList.filter(
-          (book) => book.index !== objectindex
-        );
-        this.ellipseList = ellipseListArray;
-      }
-      this.uniqueImpressionsData();
-    } else {
-      const index = this.impression.findIndex((item) => item.id === id);
-      this.impression.splice(index, 1);
-      this.uniqueImpressionsData();
-    }
+    const index = this.impression.findIndex((item) => item.id === id);
+    this.impression.splice(index, 1);
+    this.uniqueImpressionsData();
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
@@ -104,7 +86,7 @@ export class ImpressionComponent implements OnInit {
     this.impression.splice(index, 1, { id: info.id, name: info.name });
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
-      this.getColorMapping(obj.name, '', '');
+      this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
     this.uniqueImpressionsData();
   }
