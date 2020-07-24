@@ -14,10 +14,12 @@ describe('DashboardComponent', () => {
     component = new DashboardComponent(authServiceSpy);
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit ***/
   describe('#ngOnInit', () => {
     const mockInResponse = {
       username: 'mohan',
@@ -44,6 +46,7 @@ describe('DashboardComponent', () => {
     });
   });
 
+  /*** it should call ngOnDestroy ***/
   describe('#ngOnDestroy', () => {
     it('it should call ngOnDestroy', () => {
       (component as any).userSubscription = subscriptionSpy;

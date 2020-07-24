@@ -5,7 +5,7 @@ export default class User {
     private _token: string,
     private _tokenExpirationDate: Date,
     public username: string,
-    public userroles: any[],
+    public userroles: any[]
   ) {}
 
   get token() {

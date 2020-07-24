@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventEmitterService } from '../../service/event-emitter.service';
+import { PatientDetailData, InvokeReportData } from '../auth/interface.modal';
 
 @Component({
   selector: 'cxr-report',
@@ -8,25 +9,29 @@ import { EventEmitterService } from '../../service/event-emitter.service';
   styleUrls: ['./report.component.scss'],
 })
 export class ReportComponent implements OnInit {
-  patientInfo: [];
+  patientInfo: PatientDetailData;
   showPrintForm = false;
   constructor(
     private router: Router,
     private eventEmitterService: EventEmitterService
   ) {}
 
+  /*** class init function ***/
   ngOnInit(): void {
-    this.eventEmitterService.invokeReportDataFunction.subscribe((data: any) => {
-      switch (data.title) {
-        case 'patientInfo':
-          this.patientInfo = data.data;
-          break;
-        default:
-          break;
+    this.eventEmitterService.invokeReportDataFunction.subscribe(
+      (data: InvokeReportData) => {
+        switch (data.title) {
+          case 'patientInfo':
+            this.patientInfo = data.data;
+            break;
+          default:
+            break;
+        }
       }
-    });
+    );
   }
 
+  /*** event to go back to xray page ***/
   goBackToXray() {
     this.eventEmitterService.onComponentButtonClick({
       data: [],
@@ -37,6 +42,7 @@ export class ReportComponent implements OnInit {
     });
   }
 
+  /*** event to enable print preview selector ***/
   enablePrint(event) {
     this.showPrintForm = event;
   }

@@ -25,10 +25,12 @@ describe('SignInComponent', () => {
     );
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
@@ -39,6 +41,7 @@ describe('SignInComponent', () => {
     });
   });
 
+  /*** it should call onSignIn function ***/
   describe('#onSignIn', () => {
     beforeEach(() => {
       const signInResponse = {
@@ -68,6 +71,7 @@ describe('SignInComponent', () => {
     });
   });
 
+  /*** it should call onSignIn function, when network error ***/
   describe('#onSignIn', () => {
     const testForm = {
       value: {
@@ -99,6 +103,7 @@ describe('SignInComponent', () => {
     });
   });
 
+  /*** it should call onSignIn function, when error ***/
   describe('#onSignIn', () => {
     beforeEach(() => {
       const testForm = {

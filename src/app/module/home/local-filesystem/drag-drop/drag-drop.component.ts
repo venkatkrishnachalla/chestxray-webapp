@@ -14,31 +14,37 @@ export class DragDropComponent implements OnInit {
   dragging = false;
   loaded = false;
   imageLoaded = false;
-  imageSrc = '';
-  file: any;
+  imageSrc: string;
+  file: string;
 
   constructor() {}
 
+  /*** class init function ***/
   ngOnInit(): void {}
 
+  /*** handleDragEnter function, when handle drag ***/
   handleDragEnter() {
     this.dragging = true;
   }
 
+  /*** handleDragLeave function, when handle leave ***/
   handleDragLeave() {
     this.dragging = false;
   }
 
+  /*** handleDrop function, when handle drop ***/
   handleDrop(e) {
     e.preventDefault();
     this.dragging = false;
     this.handleInputChange(e);
   }
 
+  /*** handleImageLoad function ***/
   handleImageLoad() {
     this.imageLoaded = true;
   }
 
+  /*** handleInputChange function, to detect input change ***/
   handleInputChange(e) {
     const file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
 
@@ -56,6 +62,7 @@ export class DragDropComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
+  /*** _handleReaderLoaded function, to detect reader change ***/
   _handleReaderLoaded(e) {
     const reader = e.target;
     this.imageSrc = reader.result;
@@ -64,6 +71,7 @@ export class DragDropComponent implements OnInit {
     this.loaded = true;
   }
 
+  /*** getLocalImageSrc function, to store image source ***/
   getLocalImageSrc(event: string) {
     this.imageSrc = event;
   }

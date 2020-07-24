@@ -14,6 +14,12 @@ describe('XRayImageService', () => {
     service = new XRayImageService(httpSpy, endpointSpy);
   });
 
+  /*** it should create xray image service ***/
+  it('should create', () => {
+    expect(service).toBeTruthy();
+  });
+
+  /*** it should call getPatientImage function ***/
   describe('#getPatientImage', () => {
     let expectedImg;
     beforeEach(() => {
@@ -31,6 +37,7 @@ describe('XRayImageService', () => {
     });
   });
 
+  /*** it should call getPatientInstanceId function ***/
   describe('#getPatientInstanceId', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 204 });
@@ -45,6 +52,7 @@ describe('XRayImageService', () => {
     });
   });
 
+  /*** handle error block ***/
   describe('#handleError', () => {
     beforeEach(() => {
       const mock = {

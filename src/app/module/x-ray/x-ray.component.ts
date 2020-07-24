@@ -10,6 +10,9 @@ import { ImpressionComponent } from './component/impression/impression.component
 import { FindingsComponent } from './component/findings/findings.component';
 import { ActionPanelComponent } from './component/action-panel/action-panel.component';
 import { AuthService } from '../auth/auth.service';
+import User from '../auth/user.modal';
+import { MlApiData } from '../auth/interface.modal';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'cxr-x-ray',
@@ -33,7 +36,7 @@ export class XRayComponent implements OnInit, OnDestroy {
     ceil: 100,
     vertical: true,
   };
-  mLResponse: any[];
+  mLResponse;
   displayCanvas = true;
   displayErrorBlock = false;
   isHospitalRadiologist: boolean;
@@ -49,15 +52,17 @@ export class XRayComponent implements OnInit, OnDestroy {
     private router: Router,
     private eventEmitterService: EventEmitterService,
     private anotatedXrayService: XRayService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastrService: ToastrService
   ) {}
 
+  /*** component init function ***/
   ngOnInit(): void {
     this.eventEmitterService.invokeReportFunction.subscribe((impressions) => {
       this.eventEmitterService.onReportDataShared(impressions);
     });
     this.userSubscription = this.authService.userSubject.subscribe(
-      (user: any) => {
+      (user: User) => {
         if (user) {
           this.isHospitalRadiologist =
             user.userroles[0] === 'HospitalRadiologist' ? true : false;
@@ -66,21 +71,26 @@ export class XRayComponent implements OnInit, OnDestroy {
     );
   }
 
-  /* open ask ai model when user clicks on ask ai button */
+  /*** open ask ai model when user clicks on ask ai button ***/
   openAskAI(event: any) {
-    // this.showAskAI = !this.showAskAI;
     this.spinnerService.show();
     const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
     this.xrayService
       .getAskAiDetails(patientImage.base64Image, patientImage.filename)
       .subscribe(
-        (mLResponse: any) => {
+        (mLResponse: MlApiData) => {
           this.mLResponse = mLResponse;
+          const mLArray = this.mLResponse.data.ndarray[0].diseases;
           this.eventsSubject.next(mLResponse);
           this.actionPanel.disableAskAiButton();
           this.spinnerService.hide();
+          if (mLArray.length === 0 || mLArray === undefined) {
+            this.toastrService.error('No ML Predictions found');
+          } else {
+            this.toastrService.success('ML Predictions updated successfully');
+          }
         },
-        (errorMessage: any) => {
+        (errorMessage: string) => {
           this.displayCanvas = false;
           this.displayErrorBlock = true;
           this.spinnerService.hide();
@@ -107,6 +117,8 @@ export class XRayComponent implements OnInit, OnDestroy {
   //   this.router.navigateByUrl('/report');
   // }
 
+  /*** report button click event ***/
+
   generateReport() {
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
     this.canvas.onSubmitPatientDetails();
@@ -115,6 +127,7 @@ export class XRayComponent implements OnInit, OnDestroy {
   }
 
   /*** unsubscribe userSubscription event ***/
+
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }

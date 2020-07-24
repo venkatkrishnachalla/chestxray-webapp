@@ -8,10 +8,12 @@ describe('MainLayoutComponent', () => {
     component = new MainLayoutComponent();
   });
 
+  /*** should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
@@ -21,6 +23,7 @@ describe('MainLayoutComponent', () => {
     });
   });
 
+  /*** should call close function ***/
   describe('#close', () => {
     beforeEach(() => {
     component.sidenav =  matSidenavSpy;
@@ -32,6 +35,7 @@ describe('MainLayoutComponent', () => {
     });
   });
 
+  /*** should call toggleSidenavBar function ***/
   describe('#toggleSidenavBar', () => {
     beforeEach(() => {
       component.sidenav =  matSidenavSpy;

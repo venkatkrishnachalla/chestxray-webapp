@@ -21,10 +21,12 @@ xdescribe('ImpressionComponent', () => {
     );
   });
 
+  /**** it should create impression component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       spyOn(component, 'getImpressions');
@@ -44,6 +46,7 @@ xdescribe('ImpressionComponent', () => {
     });
   });
 
+   /*** it should call ngOnInit function, when info is update ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       spyOn(component, 'getImpressions');
@@ -63,6 +66,7 @@ xdescribe('ImpressionComponent', () => {
     });
   });
 
+   /*** it should call ngOnInit function, when info is empty ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       spyOn(component, 'getImpressions');
@@ -82,6 +86,7 @@ xdescribe('ImpressionComponent', () => {
     });
   });
 
+   /*** it should call getImpressions function ***/
   describe('#getImpressions', () => {
     beforeEach(() => {
       const response = {
@@ -100,6 +105,7 @@ xdescribe('ImpressionComponent', () => {
     });
   });
 
+  /*** it should call delete impression ***/
   describe('#deleteImpression', () => {
     beforeEach(() => {
       component.impression = [
@@ -115,6 +121,7 @@ xdescribe('ImpressionComponent', () => {
     });
   });
 
+  /*** it should call updateImpression function ***/
   describe('#updateImpression', () => {
     beforeEach(() => {
       const response = { name: 'abcde' };
@@ -131,6 +138,7 @@ xdescribe('ImpressionComponent', () => {
     });
   });
 
+    /*** it should call getColorMapping function ***/
   describe('#getColorMapping', () => {
     beforeEach(() => {
       component.getColorMapping('abcde', 'false', 'red');

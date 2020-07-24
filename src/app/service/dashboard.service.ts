@@ -22,6 +22,7 @@ interface PatientData {
 export class DashboardService {
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
+  /*** get list patient list from rest api call ***/
   getPatientList() {
     return this.http.get<PatientData>(this.endpoint.getPatientList()).pipe(
       catchError(this.handleError),
@@ -30,6 +31,8 @@ export class DashboardService {
       })
     );
   }
+
+  /** handle error block ***/
   private handleError(errorResponse: HttpErrorResponse) {
     return throwError(errorResponse);
   }

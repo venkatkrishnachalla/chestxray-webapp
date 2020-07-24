@@ -15,10 +15,12 @@ describe('XRayService', () => {
     service = new XRayService(mockHttpClient, endpointSpy);
   });
 
+  /*** it should create xray service ***/
   it('should create', () => {
     expect(service).toBeTruthy();
   });
 
+  /*** it should call get ask ai detail function ***/
   describe('#getAskAiDetails', () => {
     let responsePromise;
     beforeEach(() => {
@@ -40,6 +42,7 @@ describe('XRayService', () => {
     });
   });
 
+  /** it should call handleError event ***/
   describe('#handleError', () => {
     beforeEach(() => {
       const mock = {
@@ -51,6 +54,54 @@ describe('XRayService', () => {
     });
     it('should call getPatientInstanceId', () => {
       expect((service as any).handleError).toBeDefined();
+    });
+  });
+
+  /*** it should call xrayAnnotatedService function ***/
+  describe('#xrayAnnotatedService', () => {
+    it('should call xrayAnnotatedService', () => {
+      service.xrayAnnotatedService({});
+      expect(service.xrayAnnotatedService).toBeDefined();
+    });
+  });
+
+  /*** it should call getAnnotatedImageData function ***/
+  describe('#getAnnotatedImageData', () => {
+    it('should call getAnnotatedImageData', () => {
+      service.getAnnotatedImageData();
+      expect(service.getAnnotatedImageData).toBeDefined();
+    });
+  });
+
+  /*** it should call xrayAnnotatedImpressions function ***/
+  describe('#xrayAnnotatedImpressions', () => {
+    it('should call xrayAnnotatedImpressions', () => {
+      service.xrayAnnotatedImpressions({});
+      expect(service.xrayAnnotatedImpressions).toBeDefined();
+    });
+  });
+
+  /*** it should call xrayAnnotatedImpressionsService function ***/
+  describe('#xrayAnnotatedImpressionsService', () => {
+    it('should call xrayAnnotatedImpressionsService', () => {
+      service.xrayAnnotatedImpressionsService();
+      expect(service.xrayAnnotatedImpressionsService).toBeDefined();
+    });
+  });
+
+  /*** it should call xrayAnnotatedFindings function ***/
+  describe('#xrayAnnotatedFindings', () => {
+    it('should call xrayAnnotatedFindings', () => {
+      service.xrayAnnotatedFindings({});
+      expect(service.xrayAnnotatedFindings).toBeDefined();
+    });
+  });
+
+  /*** it should call xrayAnnotatedFindingsService function ***/
+  describe('#xrayAnnotatedFindingsService', () => {
+    it('should call xrayAnnotatedFindingsService', () => {
+      service.xrayAnnotatedFindingsService();
+      expect(service.xrayAnnotatedFindingsService).toBeDefined();
     });
   });
 });

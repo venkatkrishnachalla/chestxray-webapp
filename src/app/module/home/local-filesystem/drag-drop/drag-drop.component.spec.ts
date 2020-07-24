@@ -7,10 +7,12 @@ describe('DragDropComponent', () => {
     component = new DragDropComponent();
   });
 
+  /*** should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** should call ngOnInit method ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
@@ -20,6 +22,7 @@ describe('DragDropComponent', () => {
     });
   });
 
+  /*** should call handleDragEnter method ***/
   describe('#handleDragEnter', () => {
     beforeEach(() => {
       component.handleDragEnter();
@@ -29,6 +32,7 @@ describe('DragDropComponent', () => {
     });
   });
 
+  /*** should call handleDragLeave method ***/
   describe('#handleDragLeave', () => {
     beforeEach(() => {
       component.handleDragLeave();
@@ -38,6 +42,7 @@ describe('DragDropComponent', () => {
     });
   });
 
+  /*** should call handleDrop method ***/
   describe('#handleDrop', () => {
     beforeEach(() => {
       const event = {
@@ -74,6 +79,7 @@ describe('DragDropComponent', () => {
     });
   });
 
+  /*** should call handleImageLoad method ***/
   describe('#handleImageLoad', () => {
     beforeEach(() => {
       component.handleImageLoad();
@@ -83,6 +89,7 @@ describe('DragDropComponent', () => {
     });
   });
 
+  /*** should call handleInputChange method ***/
   describe('#handleInputChange', () => {
     beforeEach(() => {
       const event = {
@@ -118,6 +125,7 @@ describe('DragDropComponent', () => {
     });
   });
 
+  /*** should call _handleReaderLoaded method ***/
   describe('#_handleReaderLoaded', () => {
     beforeEach(() => {
       const event = {

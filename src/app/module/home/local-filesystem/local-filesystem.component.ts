@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
+import User from '../../auth/user.modal';
 
 @Component({
   selector: 'cxr-local-filesystem',
@@ -14,11 +15,11 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   uploadImageForm: FormGroup;
   submitted: boolean;
-  imageWidth: any;
   images = [];
   fileName = 'Choose file';
   imageSource: string;
   doctorName: string;
+  emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   @ViewChild(DragDropComponent) dragAndDrop: DragDropComponent;
 
   constructor(
@@ -28,7 +29,6 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   ) {}
 
   /*** class init function ***/
-
   ngOnInit(): void {
     this.uploadImageForm = this.formBuilder.group({
       name: [
@@ -37,7 +37,14 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       ],
       dateOfBirth: ['', Validators.required],
       gender: ['MALE', Validators.required],
-      email: ['', [Validators.email]],
+      email: [
+        '',
+        [
+          Validators.pattern(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          ),
+        ],
+      ],
       phoneNumber: [
         '',
         [Validators.maxLength(10), Validators.pattern('^[0-9]*$')],
@@ -50,7 +57,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       }),
     });
     this.userSubscription = this.authService.userSubject.subscribe(
-      (user: any) => {
+      (user: User) => {
         if (user) {
           this.doctorName = user.username;
         }
@@ -62,12 +69,12 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     return this.uploadImageForm.controls;
   }
 
+  /*** get today date to disable future dates in date picker ***/
   getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
 
   /*** on image file changing event ***/
-
   onFileChange(event) {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name.toString();
@@ -90,13 +97,11 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   }
 
   /*** capture drag and drop of image ***/
-
   dragDropEvent(event) {
     this.imageSource = event;
   }
 
   /*** capture drag and drop of image file event ***/
-
   dragDropFile(event) {
     this.fileName = event.name.toString();
     this.uploadImageForm.patchValue({
@@ -106,7 +111,6 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   }
 
   /*** new patient form submit ***/
-
   onSubmit() {
     this.submitted = true;
     if (this.uploadImageForm.invalid) {
@@ -128,6 +132,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     });
   }
 
+  /*** unsubscribe user subscription after moving out from this component ***/
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }

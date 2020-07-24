@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
@@ -13,10 +12,12 @@ describe('HomeComponent', () => {
     component = new HomeComponent(authServiceSpy);
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
@@ -27,6 +28,7 @@ describe('HomeComponent', () => {
     });
   });
 
+  /*** it should call logOut function ***/
   describe('#logOut', () => {
     beforeEach(() => {
       component.logOut();
