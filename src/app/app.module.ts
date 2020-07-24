@@ -18,7 +18,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ReportModule } from './module/report/report.module';
 import { NgxPrintModule } from 'ngx-print';
 import { ToastrModule } from 'ngx-toastr';
-import { AdminModule } from './module/admin/admin.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -29,7 +28,6 @@ import { AdminModule } from './module/admin/admin.module';
     AppRoutingModule,
     CoreModule,
     HomeModule,
-    AdminModule,
     AuthModule, // Load AuthModule with the app,
     LayoutModule,
     SharedModule,
