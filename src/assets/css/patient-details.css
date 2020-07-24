@@ -8,41 +8,33 @@ body {
   display: grid;
   grid-template-columns: 20% 50% 30%;
 }
+
+.cxr-x-ray-patient-details {
+  display: none;
+}
+.x-ray-patient-image-container {
+  display: none;
+}
+
+.image-container {
+  width: 95%;
+  position: relative;
+  left: 2%;
+  display: block;
+}
+
 .patient-grid-container {
   padding: 1px;
   display: grid;
-  grid-template-columns: 35% 40% 30%;
-}
-.find-grid-container {
+  grid-template-columns: 35% 34% 30%;
   position: relative;
   left: 2%;
-  width: 97%;
-  display: grid;
-  grid-template-columns: 50% 50%;
 }
-.footer-grid-container {
-  display: grid;
-  grid-template-columns: 70%;
-}
-.footer-grid-container {
-  display: grid;
-  grid-template-columns: 50% 50%;
-}
-.top-thin {
-  border: 1px solid black;
-  width: 95%;
-  text-align: center;
-}
+
 .common-hr {
   border: 1px solid black;
-  width: 95%;
+  width: 96.4%;
   text-align: center;
-}
-.top-thik {
-  width: 100%;
-  text-align: center;
-  border: 1px solid black;
-  border-width: 1px;
 }
 .details-heading {
   display: none;
@@ -54,73 +46,69 @@ body {
   font: italic small-caps bold;
 }
 .history {
-  width: 95%;
+  width: 95.3%;
   left: 2%;
   position: relative;
-  padding: 8px;
+  padding: 5px;
   border: 1px solid black;
+  min-height: 50px;
+  height: auto;
 }
-@media print {
-  .divFooter-left-content {
-    position: fixed;
-    bottom: 10px;
-  }
-  .divFooter-right-content {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-  }
-}
-.patient-grid-container {
-  position: relative;
-  left: 2%;
-}
-
+ 
 .cxr-x-ray-patient-details {
   display: none;
 }
-.x-ray-patient-image-container {
-  display: none;
-}
-
+ 
 @media print {
   .pagebreak {
     page-break-after: always;
-  } /* page-break-after works, as well */
+  }
 }
 
-.image-container {
-  width: 95%;
-  position: relative;
-  left: 2%;
-  display: block;
+h4 {
+	margin: 15px 0px -10px 0px;
 }
 .findings-left-content-top {
   width: 45%;
-  height: 225px;
+  min-height: 170px;
+  height: auto;
   border: 1px solid black;
-}
-.findings-left-content-bottom {
-  width: 45%;
-  height: 225px;
-  border: 1px solid black;
-  margin-top: 5px;
+  padding-bottom: 10px;
 }
 
-.findings-right-content {
+.findings-left-content-bottom {
+  width: 45%;
+  min-height: 232px;
+  height: auto;
+  border: 1px solid black;
+  margin-top: 5px;
+  padding-bottom: 10px;
+}
+ 
+.xray-right-content {
   width: 53%;
-  height: 450px;
+  height: 430px;
   border: 1px solid black;
   margin-left: 5px;
   float: right;
-  position: absolute;
+  position: relative;
   left: 45%;
-  top: 6px;
+  top: 0px;
 }
-.box--title {
+
+.inside-content-align {
+	padding: 1px 3px;
+}
+
+.footer-left-content {
+	padding: 0px 15px 0px 10px;
+}
+.box-title {
   text-align: left;
   border-bottom: 1px solid black;
-  margin-top: -2px;
+  font-weight: 600;
+  padding: 3px;
+  font-size: 16px;
 }
 .hide-xray {
   width: 100%;

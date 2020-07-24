@@ -71,6 +71,19 @@
   </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Print option -->
 <div class="print-patient-details">
   <div class="patient-grid-container">
@@ -114,24 +127,20 @@
   <div style="position: relative;">
     <div class="image-container">
       <div class="findings-left-content-top">
-        <h3 class="box--title">IMPRESSIONS</h3>
-        <ol>
-          <li style="text-align: left;" *ngFor="let impression of annotatedImpression" contentEditable="false">
-            {{ impression.name }}
-          </li>
-        </ol>
+        <div class="box-title">IMPRESSIONS</div>
+        <div class="inside-content-align" *ngFor="let impression of annotatedImpression">
+          > {{impression.name}}
+        </div>
       </div>
       <div class="findings-left-content-bottom">
-        <h3 class="box--title">FINDINGS</h3>
-        <ol>
-          <li style="text-align: left;" *ngFor="let finding of annotatedFindings" contentEditable="true">
-            {{ finding }}
-          </li>
-        </ol>
+        <div class="box-title">FINDINGS</div>
+        <div class="inside-content-align" *ngFor="let finding of annotatedFindings">
+          > {{ finding }}
+        </div>
       </div>
     </div>
-    <div class="findings-right-content" style="position: absolute;">
-      <h3 class="box--title">XRAY</h3>
+    <div class="xray-right-content" style="position: absolute;">
+      <div class="box-title">XRAY</div>
       <cxr-x-ray-patient-image></cxr-x-ray-patient-image>
     </div>
   </div>
