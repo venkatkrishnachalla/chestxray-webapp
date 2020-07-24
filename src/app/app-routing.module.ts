@@ -14,6 +14,7 @@ import { HeaderComponent } from './core/layout/component/header/header.component
 import { XRayComponent } from './module/x-ray/x-ray.component';
 import { AskAiComponent } from './module/x-ray/component/ask-ai/ask-ai.component';
 import { ReportComponent } from './module/report/report.component';
+import { AdminComponent } from './module/admin/admin.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,18 @@ const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'my-account', component: MyAccountComponent },
+      { path: 'chat-room', component: ChatRoomComponent },
+      { path: 'calendar', component: CalendarComponent },
+      { path: 'settings', component: SettingsComponent },
+    ],
+  },
+  {
+    path: 'admin',
+    canActivate: [AuthGuard],
+    component: MainLayoutComponent,
+    children: [
+      { path: 'dashboard', component: AdminComponent },
       { path: 'my-account', component: MyAccountComponent },
       { path: 'chat-room', component: ChatRoomComponent },
       { path: 'calendar', component: CalendarComponent },
