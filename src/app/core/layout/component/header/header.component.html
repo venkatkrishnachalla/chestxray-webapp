@@ -1,7 +1,7 @@
 <mat-toolbar>
   <button
     (click)="toggleSidenav()"
-    *ngIf="router.url == '/home/dashboard'"
+    *ngIf="router.url == '/home/dashboard' || router.url == '/admin/dashboard'"
     class="menu_icon"
     mat-button
   >

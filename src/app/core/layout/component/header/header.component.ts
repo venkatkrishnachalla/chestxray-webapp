@@ -1,4 +1,10 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  OnDestroy,
+} from '@angular/core';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -16,10 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(
-    private authService: AuthService,
-    public router: Router,
-    ) {}
+  constructor(private authService: AuthService, public router: Router) {}
 
   /*** class init function ***/
   ngOnInit(): void {
@@ -39,6 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
+    sessionStorage.clear();
     this.authService.logOut();
   }
 

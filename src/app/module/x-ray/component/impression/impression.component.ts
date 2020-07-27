@@ -52,6 +52,8 @@ export class ImpressionComponent implements OnInit {
         this.ellipseList.push(objEllipse);
       }
     );
+    const impression = JSON.parse(sessionStorage.getItem('impression'));
+    this.uniqueImpressions = impression;
   }
 
   uniqueImpressionsData() {
@@ -77,28 +79,9 @@ export class ImpressionComponent implements OnInit {
   }
 
   deleteImpression(id: number, disease: string, objectindex: number) {
-    // if (disease) {
-    //   const currEllipse = this.ellipseList.filter(
-    //     (book) => book.name === disease
-    //   );
-    //   if (currEllipse.length === 1) {
-    //     const impressionList = this.impression.filter(
-    //       (book) => book.name.toLowerCase() !== disease.toLowerCase()
-    //     );
-    //     this.impression = impressionList;
-    //   } else {
-    //     const ellipseListArray = this.ellipseList.filter(
-    //       (book) => book.index !== objectindex
-    //     );
-    //     this.ellipseList = ellipseListArray;
-    //   }
-    //   this.uniqueImpressionsData();
-    // }
-    // else {
     const index = this.impression.findIndex((item) => item.id === id);
     this.impression.splice(index, 1);
     this.uniqueImpressionsData();
-    // }
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
@@ -126,8 +109,6 @@ export class ImpressionComponent implements OnInit {
     } else {
       const color =
         DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
-      // this.abnormalityColor.push(color);
-      // this.abnormalityColor.push({ name: diseases, color: color });
     }
   }
 
@@ -135,7 +116,7 @@ export class ImpressionComponent implements OnInit {
     const impression = JSON.stringify(this.impression);
     sessionStorage.setItem('impression', impression);
     this.xrayAnnotatedImpressionService.xrayAnnotatedImpressions(
-      this.impression
+      this.uniqueImpressions
     );
   }
 }

@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventEmitterService } from '../../service/event-emitter.service';
+import { CanvasImageComponent } from '../x-ray/component/canvas-image/canvas-image.component';
+import { ImpressionComponent } from '../x-ray/component/impression/impression.component';
+import { FindingsComponent } from '../x-ray/component/findings/findings.component';
 
 @Component({
   selector: 'cxr-report',
@@ -10,6 +13,9 @@ import { EventEmitterService } from '../../service/event-emitter.service';
 export class ReportComponent implements OnInit {
   patientInfo: [];
   showPrintForm = false;
+  @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
+  @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
+  @ViewChild(FindingsComponent) findings: FindingsComponent;
   constructor(
     private router: Router,
     private eventEmitterService: EventEmitterService
