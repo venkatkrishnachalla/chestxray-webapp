@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventEmitterService } from '../../service/event-emitter.service';
 import { PatientDetailData, InvokeReportData } from '../auth/interface.modal';
+import { CanvasImageComponent } from '../x-ray/component/canvas-image/canvas-image.component';
+import { ImpressionComponent } from '../x-ray/component/impression/impression.component';
+import { FindingsComponent } from '../x-ray/component/findings/findings.component';
 
 @Component({
   selector: 'cxr-report',
@@ -11,6 +14,9 @@ import { PatientDetailData, InvokeReportData } from '../auth/interface.modal';
 export class ReportComponent implements OnInit {
   patientInfo: PatientDetailData;
   showPrintForm = false;
+  @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
+  @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
+  @ViewChild(FindingsComponent) findings: FindingsComponent;
   constructor(
     private router: Router,
     private eventEmitterService: EventEmitterService
@@ -18,17 +24,16 @@ export class ReportComponent implements OnInit {
 
   /*** class init function ***/
   ngOnInit(): void {
-    this.eventEmitterService.invokeReportDataFunction.subscribe(
-      (data: InvokeReportData) => {
-        switch (data.title) {
-          case 'patientInfo':
-            this.patientInfo = data.data;
-            break;
-          default:
-            break;
-        }
+    this.showPrintForm = false;
+    this.eventEmitterService.invokeReportDataFunction.subscribe((data: InvokeReportData) => {
+      switch (data.title) {
+        case 'patientInfo':
+          this.patientInfo = data.data;
+          break;
+        default:
+          break;
       }
-    );
+    });
   }
 
   /*** event to go back to xray page ***/

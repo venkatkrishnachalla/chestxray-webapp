@@ -19,7 +19,8 @@ mat-toolbar {
   }
   .icon-styles {
     height: 100%;
-    width: 7rem;
+    width: 6rem;
+    margin: 0px 2px;
     background-color: #434343;
     border: 0;
     cursor: pointer;
@@ -49,7 +50,7 @@ mat-toolbar {
   }
   cxr-x-ray-header {
     position: relative;
-    width: 100%;
+    width: 75%;
   }
 }
 ::ng-deep .mat-menu-content:not(:empty) {

@@ -42,43 +42,45 @@ export class FindingsComponent implements OnInit {
         }
         return null;
       });
-      this.findings.forEach((element, index) => {
-        const result = uniqueImpressions.findIndex(
-          (ele) => ele.name === element.split(':')[1].trim()
-        );
-        if (result === -1) {
-          const desc = this.order.findIndex(
-            (a) => a.Name === element.split(':')[0]
+      if (this.findings.length !== 0) {
+        this.findings.forEach((element, index) => {
+          const result = uniqueImpressions.findIndex(
+            (ele) => ele.name === element.split(':')[1].trim()
           );
-          if (element.split(':')[1].split(',').length === 1) {
-            this.findings.splice(
-              index,
-              1,
-              element.split(':')[0] + ': ' + this.order[desc].Desc
+          if (result === -1) {
+            const desc = this.order.findIndex(
+              (a) => a.Name === element.split(':')[0]
             );
-          } else {
-            element
-              .split(':')[1]
-              .split(',')
-              .forEach((newEle) => {
-                const result2 = uniqueImpressions.findIndex(
-                  (ele) => ele.name === newEle.trim()
-                );
-                if (result2 === -1) {
-                  const newResult = element
-                    .split(':')[1]
-                    .split(',')
-                    .filter((item) => item !== newEle);
-                  this.findings.splice(
-                    index,
-                    1,
-                    element.split(':')[0] + ': ' + newResult.join(',')
+            if (element.split(':')[1].split(',').length === 1) {
+              this.findings.splice(
+                index,
+                1,
+                element.split(':')[0] + ': ' + this.order[desc].Desc
+              );
+            } else {
+              element
+                .split(':')[1]
+                .split(',')
+                .forEach((newEle) => {
+                  const result2 = uniqueImpressions.findIndex(
+                    (ele) => ele.name === newEle.trim()
                   );
-                }
-              });
+                  if (result2 === -1) {
+                    const newResult = element
+                      .split(':')[1]
+                      .split(',')
+                      .filter((item) => item !== newEle);
+                    this.findings.splice(
+                      index,
+                      1,
+                      element.split(':')[0] + ': ' + newResult.join(',')
+                    );
+                  }
+                });
+            }
           }
-        }
-      });
+        });
+      }
     });
   }
 

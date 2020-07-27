@@ -50,6 +50,7 @@ export class PatientListComponent implements OnInit {
 
   /*** class init function ***/
   ngOnInit() {
+    sessionStorage.clear();
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200 };
