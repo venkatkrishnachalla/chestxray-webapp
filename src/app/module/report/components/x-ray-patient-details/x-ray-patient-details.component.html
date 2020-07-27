@@ -94,7 +94,13 @@
       />
       <span> COMMENTS & RECOMMENDATIONS</span>
     </div>
-    <div contentEditable="true" [(ngModel)]="comments" class="comments-info">
+    <div
+      contentEditable="true"
+      name="fieldName"
+      ngDefaultControl
+      [(ngModel)]="comments"
+      class="comments-info"
+    >
       {{ comments }}
     </div>
   </div>
