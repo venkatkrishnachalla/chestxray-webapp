@@ -485,6 +485,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.dialog.closeAll();
     this.eventsSubscription.unsubscribe();
+    this.toastrService.clear();
   }
 
   /**

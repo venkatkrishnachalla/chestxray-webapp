@@ -57,7 +57,8 @@ export class SignInComponent implements OnInit {
       this.spinnerService.hide();
       this.toastrService.error(
         'Enter all the required fields'
-      );
+      );    
     }
+
   }
 }
