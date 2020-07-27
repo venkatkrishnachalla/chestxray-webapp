@@ -62,7 +62,7 @@ export class SignInComponent implements OnInit {
         );
       } else {
         this.toastrService.error('Enter all the required fields');
-      }
+      } 
     }
   }
 }
