@@ -393,9 +393,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         id: impression.index,
         name: impression.sentence,
         isMLApi: true,
-        color: colorFinding[0].color,
       };
-      this.eventEmitterService.onComponentDataShared(impressionObject);
     });
 
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
@@ -445,7 +443,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         }
       }
     });
-
     mLArray.diseases.forEach((disease: any) => {
       if (disease.ellipses) {
         disease.ellipses.forEach((ellipse: any, index) => {
@@ -455,15 +452,30 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           ellipse.index = index;
           this.mlPrediction.push(ellipse);
           if (ellipse.a !== 0 && ellipse.b !== 0) {
-            this.drawEllipse([], true, ellipse);
             this.eventEmitterService.onComponentEllipseDataShared({
               name: disease.name,
               index: ellipse.index,
             });
+            const random = Math.floor(Math.random() * 100 + 1);
+            const selectedObject = {
+              title: 'impression',
+              isMLApi: true,
+              id: random,
+              name: disease.name,
+              color: ellipse.color,
+            };
+            this.impressionArray.push(selectedObject);
+            const colorFinding = this.impressionArray.filter(
+              (book) => book.name.toLowerCase() === disease.name.toLowerCase()
+            );
+            if (colorFinding.length < 2) {
+              this.eventEmitterService.onComponentDataShared(selectedObject);
+            }
+            ellipse.idvalue = random;
+            this.drawEllipse([], true, ellipse);
           }
         });
-      }
-      if (disease.freeHandDrawing) {
+      } else if (disease.freeHandDrawing) {
         const coordinatePath = disease.coordinatevalues;
         this.canvas.add(
           new fabric.Path(coordinatePath.join(''), {

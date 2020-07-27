@@ -45,6 +45,7 @@ export class ImpressionComponent implements OnInit {
       (obj: { name: any; isMLApi: any; color: any }) => {
         this.impression.push(obj);
         this.uniqueImpressionsData();
+        this.getColorMapping(obj.name, obj.isMLApi, obj.color);
       }
     );
     this.eventEmitterService.invokeComponentEllipseData.subscribe(
