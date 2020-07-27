@@ -12,7 +12,7 @@ import { FindingsComponent } from '../x-ray/component/findings/findings.componen
 })
 export class ReportComponent implements OnInit {
   patientInfo: [];
-  showPrintForm = false;
+  showPrintForm: boolean;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
@@ -22,6 +22,7 @@ export class ReportComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.showPrintForm = false;
     this.eventEmitterService.invokeReportDataFunction.subscribe((data: any) => {
       switch (data.title) {
         case 'patientInfo':
