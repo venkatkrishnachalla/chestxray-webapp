@@ -81,6 +81,7 @@
       <ul>
         <li *ngFor="let finding of annotatedFindings" contentEditable="true">
           > {{ finding }}
+          {{ comments }}
         </li>
       </ul>
     </div>
@@ -94,15 +95,13 @@
       />
       <span> COMMENTS & RECOMMENDATIONS</span>
     </div>
-    <div
+    <textarea
       contentEditable="true"
-      name="fieldName"
+      name="comments"
       ngDefaultControl
       [(ngModel)]="comments"
       class="comments-info"
-    >
-      {{ comments }}
-    </div>
+    ></textarea>{{ comments }}
   </div>
 </div>
 
@@ -118,6 +117,8 @@
       <span class="field-title"
         >Name: <a>{{ patientInfo.name }}</a>
       </span>
+    </div>
+    <div>
       <span class="field-title" style="margin-left: 4rem;"
         >[{{ patientInfo.sex }}]</span
       >
