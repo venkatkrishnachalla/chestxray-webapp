@@ -70,7 +70,7 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
     localStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
-    sessionStorage.removeItem('patientImage');
+    sessionStorage.removeItem('PatientImage');
     sessionStorage.removeItem('isIndividualRadiologist');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);

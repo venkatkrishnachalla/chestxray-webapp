@@ -41,10 +41,12 @@ describe('CanvasImageComponent', () => {
     );
   });
 
+  /*** it should create canvas component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call onResize function ***/
   describe('#onResize', () => {
     beforeEach(() => {
       spyOn(component, 'setCanvasDimension');
@@ -57,6 +59,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call setCanvasDimension function ***/
   describe('#setCanvasDimension', () => {
     beforeEach(() => {
       component.canvas = {
@@ -75,6 +78,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call getPatientImage function ***/
   describe('#getPatientImage', () => {
     beforeEach(() => {
       component.canvas = {
@@ -108,6 +112,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call generateCanvas function ***/
   describe('#generateCanvas', () => {
     beforeEach(() => {
       component.canvas = {
@@ -130,6 +135,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call setCanvasBackground function ***/
   describe('#setCanvasBackground', () => {
     beforeEach(() => {
       component.canvas = {
@@ -152,6 +158,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call setCanvasBackground function, when height first ***/
   describe('#setCanvasBackground', () => {
     beforeEach(() => {
       component.canvas = {
@@ -174,47 +181,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  describe('#onProcessClickHandler', () => {
-    beforeEach(() => {
-      const patientMockInstanceId = [
-        {
-          accessionNumber: '',
-          id: '9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8',
-          referringPhysicianName: 'mohan',
-          seriesList: [
-            {
-              bodyPartExamined: null,
-              id: '9b247ba4-b9899974-878bb3e3-001ed405-48084c1f',
-              instanceList: [
-                {
-                  id: '42066719-369f0249-189d2017-c3bd3f57-11fc78d6',
-                  instanceNumber: 0,
-                  instanceDate: '0001-01-01T00:00:00',
-                },
-              ],
-              seriesDate: '0001-01-01T00:00:00',
-              seriesDescription: null,
-              seriesNumber: 0,
-            },
-          ],
-          studyDate: '2019-11-11T00:00:00',
-          studyDescription: null,
-        },
-      ];
-      xRayServiceSpy.getPatientInstanceId.and.returnValue(
-        of(patientMockInstanceId)
-      );
-      spyOn(component, 'getPatientImage');
-      component.getPatientInstanceId(
-        'dd019039-21ea2494-1c26a48f-2cec24e0-bb0e8cc7'
-      );
-    });
-    it('should call getPatientInstanceId function', () => {
-      expect(component.getPatientInstanceId).toBeDefined();
-      expect(component.getPatientImage).toHaveBeenCalled();
-    });
-  });
-
+  /*** it should call getPatientInstanceId function ***/
   describe('#getPatientInstanceId', () => {
     beforeEach(() => {
       const patientMockInstanceId = [
@@ -256,6 +223,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call firstComponentFunction function ***/
   describe('#firstComponentFunction', () => {
     beforeEach(() => {
       component.firstComponentFunction('test');
@@ -265,6 +233,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call deleteEllipse function ***/
   describe('#deleteEllipse', () => {
     beforeEach(() => {
       component.canvas = {
@@ -279,6 +248,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call deleteEllipse function, when no object selected ***/
   describe('#deleteEllipse', () => {
     beforeEach(() => {
       component.canvas = {
@@ -291,6 +261,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call deletePrediction function ***/
   describe('#deletePrediction', () => {
     beforeEach(() => {
       component.canvas = {
@@ -307,6 +278,8 @@ describe('CanvasImageComponent', () => {
       expect(component.deletePrediction).toBeDefined();
     });
   });
+
+  /*** it should call openPathologyModal function ***/
   describe('#openPathologyModal', () => {
     beforeEach(() => {
       component.openPathologyModal();
@@ -315,6 +288,8 @@ describe('CanvasImageComponent', () => {
       expect(component.openPathologyModal).toBeDefined();
     });
   });
+
+  /*** it should call onSelect function ***/
   describe('#onSelect', () => {
     beforeEach(() => {
       component.onSelect('', 'text');
@@ -323,6 +298,8 @@ describe('CanvasImageComponent', () => {
       expect(component.onSelect).toBeDefined();
     });
   });
+
+  /*** it should call savePrediction function ***/
   describe('#savePrediction', () => {
     beforeEach(() => {
       component.canvas = {
@@ -341,6 +318,8 @@ describe('CanvasImageComponent', () => {
       expect(component.savePrediction).toBeDefined();
     });
   });
+
+  /*** it should call closePathologyModal function ***/
   describe('#closePathologyModal', () => {
     beforeEach(() => {
       component.canvas = {
@@ -361,6 +340,8 @@ describe('CanvasImageComponent', () => {
       expect(component.closePathologyModal).toBeDefined();
     });
   });
+
+  /*** it should call freeHandDrawing function ***/
   describe('#freeHandDrawing', () => {
     beforeEach(() => {
       component.canvas = {
@@ -387,6 +368,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call freeHandDrawing function, when active is false ***/
   describe('#freeHandDrawing', () => {
     beforeEach(() => {
       component.canvas = {
@@ -413,6 +395,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call mlApiEllipseLoop function ***/
   describe('#mlApiEllipseLoop', () => {
     beforeEach(() => {
       const mLResponseNew = {
@@ -498,6 +481,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call ngOnDestroy function ***/
   describe('#ngOnDestroy', () => {
     it('it should call ngOnDestroy', () => {
       (component as any).eventsSubscription = subscriptionSpy;
@@ -506,6 +490,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call drawEllipse function ***/
   describe('#drawEllipse', () => {
     it('it should call drawEllipse', () => {
       component.canvas = {
@@ -520,6 +505,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call drawEllipse function, when icon is true ***/
   describe('#drawEllipse', () => {
     it('it should call drawEllipse, when active icon is true', () => {
       const mockdata = {
@@ -538,6 +524,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call updatePrediction function ***/
   describe('#updatePrediction', () => {
     it('it should call updatePrediction', () => {
       component.canvas = {
@@ -552,6 +539,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call save function ***/
   describe('#save', () => {
     it('it should call save', () => {
       component.canvas = {
@@ -563,6 +551,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call updateEllipse function ***/
   describe('#updateEllipse', () => {
     it('it should call updateEllipse', () => {
       component.updateEllipse();
@@ -570,6 +559,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call onSubmitPatientDetails function ***/
   describe('#onSubmitPatientDetails', () => {
     it('it should call onSubmitPatientDetails', () => {
       component.canvas = {
@@ -585,6 +575,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call getColorMapping function ***/
   describe('#getColorMapping', () => {
     it('it should call getColorMapping', () => {
       component.canvas = {

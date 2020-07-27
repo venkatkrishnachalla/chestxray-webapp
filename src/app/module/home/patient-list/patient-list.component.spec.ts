@@ -15,9 +15,7 @@ describe('PatientListComponent', () => {
   const dashboardServiceSpy = jasmine.createSpyObj('DashboardService', [
     'getPatientList',
   ]);
-  const routerSpy = jasmine.createSpyObj('Router', [
-    'navigate',
-  ]);
+  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onErrorMessage',
   ]);
@@ -44,10 +42,12 @@ describe('PatientListComponent', () => {
     );
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     const samplePatient = [
       {
@@ -75,6 +75,7 @@ describe('PatientListComponent', () => {
     });
   });
 
+  /*** it should call getPatientList function ***/
   describe('#getPatientList', () => {
     const samplePatient = [
       {
@@ -102,6 +103,7 @@ describe('PatientListComponent', () => {
     });
   });
 
+  /*** it should call onGridReady function ***/
   describe('#onGridReady', () => {
     const params = {
       type: 'gridReady',
@@ -120,6 +122,7 @@ describe('PatientListComponent', () => {
     });
   });
 
+  /*** it should call autoSizeAll function ***/
   describe('#autoSizeAll', () => {
     beforeEach(() => {
       component.gridColumnApi = {

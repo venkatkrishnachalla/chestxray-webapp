@@ -19,10 +19,12 @@ describe('XRayPatientDetailsComponent', () => {
     );
   });
 
+  /*** it should create xray patient details component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       const patientMock = {
@@ -61,6 +63,7 @@ describe('XRayPatientDetailsComponent', () => {
     });
   });
 
+  /*** it should call storeImpressions function ***/
   describe('#storeImpressions', () => {
     beforeEach(() => {});
     it('should call storeImpressions function', () => {
@@ -75,6 +78,7 @@ describe('XRayPatientDetailsComponent', () => {
     });
   });
 
+  /*** it should call storePatientDetails function ***/
   describe('#storePatientDetails', () => {
     beforeEach(() => {});
     it('should call storePatientDetails function', () => {

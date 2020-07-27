@@ -5,6 +5,20 @@ import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
+interface PatientListData {
+  age: number;
+  birthDate: string;
+  hospitalPatientId: string;
+  id: string;
+  lastUpdate: string;
+  name: string;
+  referringPhysicianName: string;
+  sex: string;
+  status: boolean;
+  studies: any[];
+}
+
+interface EnumServiceItems extends Array<PatientListData> {}
 @Component({
   selector: 'cxr-patient-list',
   templateUrl: './patient-list.component.html',
@@ -15,11 +29,11 @@ export class PatientListComponent implements OnInit {
   gridColumnApi;
   columnDefs;
   defaultColDef;
-  rowData = [];
+  rowData: PatientListData;
   readonly constants = homeConstants;
-  domLayout: any;
+  domLayout: string;
   searchValue: string;
-  errorStatus: any;
+  errorStatus: string;
   showError: boolean;
   showloader: boolean;
   showTable: boolean;
@@ -33,6 +47,8 @@ export class PatientListComponent implements OnInit {
     public router: Router,
     private eventEmitterService: EventEmitterService
   ) {}
+
+  /*** class init function ***/
   ngOnInit() {
     sessionStorage.clear();
     this.overlayNoRowsTemplate = 'No Data Available';
@@ -42,6 +58,7 @@ export class PatientListComponent implements OnInit {
     this.getPatientList();
   }
 
+  /*** onGridReady method ***/
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
@@ -51,6 +68,7 @@ export class PatientListComponent implements OnInit {
     this.autoSizeAll(false);
   }
 
+  /*** auth size all method ***/
   autoSizeAll(skipHeader) {
     const allColumnIds = [];
     this.gridColumnApi.getAllColumns().forEach((column) => {
@@ -59,20 +77,18 @@ export class PatientListComponent implements OnInit {
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
   }
 
+  /** get patient list function ***/
   getPatientList() {
     this.showloader = true;
     this.showTable = false;
     this.dashboardService.getPatientList().subscribe(
-      (patientsList: any) => {
+      (patientsList: PatientListData) => {
         this.showloader = false;
         this.showTable = true;
         this.showError = false;
-        // patientsList.forEach((record, index) => {
-        //   record.patientId = '0000000' + (index + 1) ;
-        // });
         this.rowData = patientsList;
       },
-      (errorMessage: any) => {
+      (errorMessage: string) => {
         this.showloader = false;
         this.showTable = false;
         this.eventEmitterService.onErrorMessage({
@@ -81,6 +97,8 @@ export class PatientListComponent implements OnInit {
       }
     );
   }
+
+  /** row click function ***/
   public onRowClicked(e) {
     if (e.event.target !== undefined) {
       const data = e.data;
@@ -94,10 +112,12 @@ export class PatientListComponent implements OnInit {
     }
   }
 
+  /*** onActionViewClick icon click function ***/
   public onActionViewClick(data: any) {
     alert('View action clicked');
   }
 
+  /*** onActionRedirectClick function , it will redirect to xray page ***/
   public onActionRedirectClick(data: any) {
     const patientDetail = JSON.stringify(data);
     sessionStorage.setItem('patientDetail', patientDetail);

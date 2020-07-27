@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
+import {
+  PatientDetailData,
+  ImpressionData,
+  InvokeComponentData,
+} from 'src/app/module/auth/interface.modal';
 
 @Component({
   selector: 'cxr-x-ray-patient-details',
@@ -9,11 +14,10 @@ import { XRayService } from 'src/app/service/x-ray.service';
 })
 export class XRayPatientDetailsComponent implements OnInit {
   findings = [];
-  patientInfo: any;
+  patientInfo: PatientDetailData;
   status: string;
-  annotatedImpression: string;
-  annotatedFindings: string;
-
+  annotatedImpression: ImpressionData;
+  annotatedFindings: any[];
   impressions = [];
   abnormalityColor = [];
   comments: string;
@@ -24,6 +28,7 @@ export class XRayPatientDetailsComponent implements OnInit {
     private xrayAnnotatedImpression: XRayService
   ) {}
 
+  /*** class init function ***/
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
     if (this.patientInfo === undefined) {
@@ -36,22 +41,24 @@ export class XRayPatientDetailsComponent implements OnInit {
     } else {
       this.status = 'Unreported';
     }
-    this.eventEmitterService.invokeComponentFunction.subscribe((data: any) => {
-      switch (data.title) {
-        case 'stateData':
-          this.storePatientDetails();
-          break;
-        case 'impression':
-          this.storeImpressions(data);
-          break;
-        default:
-          break;
+    this.eventEmitterService.invokeComponentFunction.subscribe(
+      (data: InvokeComponentData) => {
+        switch (data.title) {
+          case 'stateData':
+            this.storePatientDetails();
+            break;
+          case 'impression':
+            this.storeImpressions(data);
+            break;
+          default:
+            break;
+        }
       }
-    });
+    );
 
     this.xrayAnnotatedImpression
       .xrayAnnotatedImpressionsService()
-      .subscribe((impression) => {
+      .subscribe((impression: ImpressionData) => {
         this.annotatedImpression = impression;
       });
 
@@ -62,7 +69,7 @@ export class XRayPatientDetailsComponent implements OnInit {
 
     this.xrayAnnotatedImpression
       .xrayAnnotatedFindingsService()
-      .subscribe((findings) => {
+      .subscribe((findings: any[]) => {
         this.annotatedFindings = findings;
       });
     if (Object.keys(this.annotatedFindings).length === 0) {
@@ -70,12 +77,16 @@ export class XRayPatientDetailsComponent implements OnInit {
       this.annotatedFindings = findings;
     }
   }
+
+  /*** function to store impressions data ***/
   storeImpressions(impression) {
     // tslint:disable-next-line: forin
     for (const i in impression) {
       this.impressions.push(impression[i]);
     }
   }
+
+  /*** function to emit patient details ***/
   storePatientDetails() {
     this.eventEmitterService.onReportDataPatientDataShared({
       data: this.patientInfo,

@@ -31,6 +31,11 @@ import {
   RANDOM_COLOR,
 } from '../../../../constants/findingColorConstants';
 import { ToastrService } from 'ngx-toastr';
+import {
+  PatientDetailData,
+  MlApiData,
+  InvokeComponentData,
+} from 'src/app/module/auth/interface.modal';
 import { timeStamp } from 'console';
 @Component({
   selector: 'cxr-canvas-image',
@@ -46,7 +51,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
-  PatientImage: any;
+  PatientImage: string;
   canvas: any;
   canvasDynamicWidth: number;
   canvasDynamicHeight: number;
@@ -55,7 +60,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   scaleY: number;
   show = false;
   ellipse: any;
-  isDown: any;
+  isDown: boolean;
   origX: any;
   origY: any;
   enableDrawEllipseMode: boolean;
@@ -63,27 +68,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   pathologyNames: any;
   searchModel: string;
   selectedDisease: string;
-  patientImage: any;
-  instanceId: any;
+  instanceId: string;
   patientId: string;
   canvasCorrectedHeight: number;
   canvasCorrectedWidth: number;
-  left: any;
-  top: any;
-  scaleFactor: any;
   updateDisease: boolean;
   activeIcon: any;
-  patientDetail: any;
+  patientDetail: PatientDetailData;
   ellipseList: any[];
   findingsList: any[];
-  processedImage: any;
+  processedImage: string;
   showError: boolean;
   errorMessage: string;
   errorStatus: any;
   canvasScaleX: number;
   canvasScaleY: number;
   savedObjects = [];
-  mlArray: any;
+  mlArray: MlApiData;
   getObject: boolean;
   selectedObjectPrediction: any;
   addedEllipse = [];
@@ -107,6 +108,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService
   ) {}
 
+  /*** host listener when resizing window ***/
   @HostListener('window:resize', [])
   public onResize() {
     this.canvas.clear(fabric.Ellipse);
@@ -121,7 +123,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.getSessionFreeHandDrawing();
   }
 
-  /* initialization method */
+  /* class initialization method */
   ngOnInit() {
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
@@ -141,20 +143,22 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
-    this.eventEmitterService.invokeComponentFunction.subscribe((data: any) => {
-      switch (data.title) {
-        case 'Draw Ellipse':
-          this.drawEllipse(data);
-          break;
-        case 'Free Hand Drawing':
-          this.freeHandDrawing(data);
-          break;
-        case 'Delete':
-          break;
-        default:
-          break;
+    this.eventEmitterService.invokeComponentFunction.subscribe(
+      (data: InvokeComponentData) => {
+        switch (data.title) {
+          case 'Draw Ellipse':
+            this.drawEllipse(data);
+            break;
+          case 'Free Hand Drawing':
+            this.freeHandDrawing(data);
+            break;
+          case 'Delete':
+            break;
+          default:
+            break;
+        }
       }
-    });
+    );
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
       (mlResponse: any) => {
@@ -194,9 +198,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientDetail = patientDetail;
     }
-    this.PatientImage = this.patientDetail.imageSource
-      ? this.patientDetail.imageSource
-      : sessionStorage.getItem('PatientImage');
+    const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
+    this.PatientImage = patientImage ? patientImage.base64Image : null;
     const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
     this.patientId = this.patientDetail ? this.patientDetail.id : '';
 
@@ -234,6 +237,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
+  /*** action icons model display event ***/
   actionIconsModelDispaly() {
     const bodyRect = document.body.getBoundingClientRect();
     const right = bodyRect.right - this.canvas.getActiveObject().left;
@@ -251,6 +255,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
+  /*** update search model ***/
   updateSearchModel(value) {
     this.searchModel = value;
   }
@@ -260,7 +265,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @param patientId Patient ID
    * @return void
    */
-  /* retrieve patient instance id from server */
+  /*** retrieve patient instance id from server ***/
   getPatientInstanceId(id) {
     this.xRayService.getPatientInstanceId(id).subscribe(
       (patientInstanceIdResponse: any) => {
@@ -277,7 +282,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
-  /* setting dimension for canvas container */
+  /*** setting dimension for canvas container ***/
   setCanvasDimension() {
     this.canvasDynamicWidth = document.getElementById(
       'x-ray-aspect-ratio-container'
@@ -297,14 +302,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @return void
    */
 
-  /* retrieve patient image from server */
+  /*** retrieve patient image from api ***/
   getPatientImage(instanceID: string) {
     this.xRayService.getPatientImage(instanceID).subscribe(
       (PatientImageResponse: any) => {
         const imageResponse = JSON.parse(PatientImageResponse);
         this.PatientImage =
           'data:image/png;base64,' + imageResponse.base64Image;
-        sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
+        const imageInformation = {
+          base64Image: this.PatientImage,
+          filename: imageResponse.filename,
+        };
+        sessionStorage.setItem(
+          'PatientImage',
+          JSON.stringify(imageInformation)
+        );
         this.setCanvasDimension();
         this.generateCanvas();
       },
@@ -317,7 +329,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
-  /* generate a canvas using fabric.js */
+  /*** generate a canvas using fabric.js ***/
   generateCanvas() {
     fabric.Image.fromURL(this.PatientImage, (img) => {
       this.xRayImage = img;
@@ -332,11 +344,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
+  /*** function to compare image vs container aspect ratio width ***/
   getWidthFirst(imageAspectRatio, containerAspectRatio) {
     return imageAspectRatio > containerAspectRatio;
   }
 
-  /* setting BackgroundImage for canvas block */
+  /*** setting BackgroundImage for canvas block ***/
   setCanvasBackground() {
     const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
     const containerAspectRatio =
@@ -377,8 +390,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.spinnerService.hide();
   }
 
-  /* draw ellipse, when user clicks ask ai accept button */
-
+  /*** draw ellipse, when user clicks ask ai accept button ***/
   mlApiEllipseLoop(mlList: any) {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
@@ -386,7 +398,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.findingsList = [];
     mLArray.Impression.forEach((impression: any) => {
       const colorFinding = mLArray.diseases.filter(
-        (book) => book.name.toLowerCase() === impression.sentence.toLowerCase()
+        (book) => book.idx === impression.index
       );
       const impressionObject = {
         title: 'impression',
@@ -494,6 +506,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
+  /*** on destroy event subscription ***/
   ngOnDestroy() {
     this.dialog.closeAll();
     this.eventsSubscription.unsubscribe();
@@ -616,6 +629,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  /*** delete ellipse function ***/
   deleteEllipse() {
     const activeObject = this.canvas.getActiveObject();
     if (activeObject) {
@@ -782,6 +797,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.isDrawingMode = false;
     }
   }
+
+  /*** function to open pathology modal ***/
   save() {
     if (this.canvas.isDrawingMode) {
       this.dialog.open(this.pathologyModal, {
@@ -792,6 +809,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.isDrawingMode = false;
     }
   }
+
+  /*** function to open pathology modal for update ***/
   updateEllipse() {
     this.updateDisease = true;
     this.dialog.open(this.pathologyModal, {
@@ -800,6 +819,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       disableClose: true,
     });
   }
+
+  /*** onSubmitPatientDetails function to navigate to report page ***/
   onSubmitPatientDetails() {
     this.processedImage = this.canvas.toDataURL('image/png');
     sessionStorage.setItem('annotatedImage', this.processedImage);

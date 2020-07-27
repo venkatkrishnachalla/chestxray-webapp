@@ -13,10 +13,12 @@ describe('ReportComponent', () => {
     component = new ReportComponent(routerSpy, eventEmitterServiceSpy);
   });
 
+  /*** it should create report component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit Function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       const mockData = {
@@ -31,6 +33,7 @@ describe('ReportComponent', () => {
     });
   });
 
+  /*** it should call go back to xray event ***/
   describe('#goBackToXray', () => {
     beforeEach(() => {
       const imageMock = 'data64/image:abcdefh';
@@ -38,6 +41,14 @@ describe('ReportComponent', () => {
     it('should call goBackToXray function', () => {
       component.goBackToXray();
       expect(component.goBackToXray).toBeDefined();
+    });
+  });
+
+  /*** it should call enable print event ***/
+  describe('#enablePrint', () => {
+    it('should call enablePrint function', () => {
+      component.enablePrint(true);
+      expect(component.showPrintForm).toEqual(true);
     });
   });
 });

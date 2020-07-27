@@ -15,10 +15,12 @@ describe('HeaderComponent', () => {
     component = new HeaderComponent(authServiceSpy, routerSpy);
   });
 
+  /*** should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** should call ngOnInit ***/
   describe('#ngOnInit', () => {
     const mockInResponse = {
       username: 'mohan',
@@ -41,6 +43,7 @@ describe('HeaderComponent', () => {
     });
   });
 
+  /*** should call initialize ***/
   describe('#initialize', () => {
     beforeEach(() => {
       component.isAuth = true;
@@ -51,6 +54,7 @@ describe('HeaderComponent', () => {
     });
   });
 
+  /*** should call onLogout ***/
   describe('#onLogout', () => {
     beforeEach(() => {
       component.onLogout();
@@ -60,6 +64,7 @@ describe('HeaderComponent', () => {
     });
   });
 
+  /*** should call toggleSidenav ***/
   describe('#toggleSidenav', () => {
     beforeEach(() => {
       component.toggleSidenav();
@@ -69,6 +74,7 @@ describe('HeaderComponent', () => {
     });
   });
 
+  /*** should call ngOnDestroy ***/
   describe('#ngOnDestroy', () => {
     it('it should call ngOnDestroy', () => {
       (component as any).userSubscription = subscriptionSpy;

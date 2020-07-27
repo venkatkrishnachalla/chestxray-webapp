@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EventEmitterService } from '../../../../service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { pathology } from 'src/app/constants/pathologyConstants';
+import { EllipseData } from 'src/app/module/auth/interface.modal';
 
 @Component({
   selector: 'cxr-findings',
@@ -11,22 +12,24 @@ import { pathology } from 'src/app/constants/pathologyConstants';
 export class FindingsComponent implements OnInit {
   readonly constants = pathology;
   order = [];
+  findings: any[];
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedService: XRayService
   ) {}
-  findings: any[];
 
+  /*** class init function ***/
   ngOnInit(): void {
     this.findings = [];
     this.getFindings();
   }
 
+  /*** get findings event to subscribe findings from xray image ***/
   getFindings() {
     this.order = this.constants.findings;
     this.findings = [];
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
-      (objEllipse) => {
+      (objEllipse: EllipseData) => {
         this.findings.push(objEllipse);
       }
     );
@@ -81,6 +84,7 @@ export class FindingsComponent implements OnInit {
     });
   }
 
+  /*** event to pass findings to report page ***/
   getFindingsToReport() {
     const findings = JSON.stringify(this.findings);
     sessionStorage.setItem('findings', findings);

@@ -24,10 +24,12 @@ describe('LocalFilesystemComponent', () => {
     );
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit method ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       const mockInResponse = {
@@ -43,6 +45,7 @@ describe('LocalFilesystemComponent', () => {
     });
   });
 
+  /*** it should call getToday method ***/
   describe('#getToday', () => {
     beforeEach(() => {
       component.getToday();
@@ -52,6 +55,7 @@ describe('LocalFilesystemComponent', () => {
     });
   });
 
+  /*** it should call onFileChange method ***/
   describe('#onFileChange', () => {
     const file = {
       upload: {
@@ -94,6 +98,7 @@ describe('LocalFilesystemComponent', () => {
     });
   });
 
+  /*** it should call dragDropEvent method ***/
   describe('#dragDropEvent', () => {
     beforeEach(() => {
       const eventSpy = 'data:base64:,abcd';
@@ -104,6 +109,7 @@ describe('LocalFilesystemComponent', () => {
     });
   });
 
+  /*** it should call dragDropFile method ***/
   describe('#dragDropFile', () => {
     beforeEach(() => {
       const event = {
@@ -128,6 +134,7 @@ describe('LocalFilesystemComponent', () => {
     });
   });
 
+  /*** it should call onSubmit method ***/
   describe('#onSubmit', () => {
     it('should call onSubmit function', () => {
       component.uploadImageForm = formGroupSpy;
@@ -136,6 +143,7 @@ describe('LocalFilesystemComponent', () => {
     });
   });
 
+  /*** it should call ngOnDestroy method ***/
   describe('#ngOnDestroy', () => {
     it('it should call ngOnDestroy', () => {
       (component as any).userSubscription = subscriptionSpy;

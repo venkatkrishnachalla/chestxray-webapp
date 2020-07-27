@@ -5,6 +5,7 @@ import {
 } from '../../../../constants/findingColorConstants';
 import { EventEmitterService } from '../../../../service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
+import { EllipseData } from 'src/app/module/auth/interface.modal';
 
 @Component({
   selector: 'cxr-impression',
@@ -22,6 +23,7 @@ export class ImpressionComponent implements OnInit {
     private xrayAnnotatedImpressionService: XRayService
   ) {}
 
+  /*** class init function ***/
   ngOnInit(): void {
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
@@ -40,6 +42,7 @@ export class ImpressionComponent implements OnInit {
     );
   }
 
+  /*** function to get impression from xray page ***/
   getImpressions() {
     this.eventEmitterService.invokeComponentData.subscribe(
       (obj: { name: any; isMLApi: any; color: any }) => {
@@ -49,7 +52,7 @@ export class ImpressionComponent implements OnInit {
       }
     );
     this.eventEmitterService.invokeComponentEllipseData.subscribe(
-      (objEllipse: any) => {
+      (objEllipse: EllipseData) => {
         this.ellipseList.push(objEllipse);
       }
     );
@@ -57,6 +60,7 @@ export class ImpressionComponent implements OnInit {
     this.uniqueImpressions = impression;
   }
 
+  /*** function to filter unique impressions ***/
   uniqueImpressionsData() {
     this.uniqueImpressions = [];
     this.impression.filter((item) => {
@@ -79,6 +83,7 @@ export class ImpressionComponent implements OnInit {
     this.updateFindings();
   }
 
+  /*** delete impression function ***/
   deleteImpression(id: number, disease: string, objectindex: number) {
     const index = this.impression.findIndex((item) => item.id === id);
     this.impression.splice(index, 1);
@@ -88,10 +93,12 @@ export class ImpressionComponent implements OnInit {
     });
   }
 
+  /*** function to update findings ***/
   updateFindings() {
     this.eventEmitterService.onImpressionDataShared(this.impression);
   }
 
+  /*** function to update impression ***/
   updateImpression(info) {
     const index = this.impression.findIndex((item) => item.id === info.id);
     this.impression.splice(index, 1, { id: info.id, name: info.name });
@@ -102,6 +109,7 @@ export class ImpressionComponent implements OnInit {
     this.uniqueImpressionsData();
   }
 
+  /*** function to update color code to impression list ***/
   getColorMapping(diseases: string, isMLApi: string, impcolor: string) {
     this.abnormalityColor = [];
     if (isMLApi) {
@@ -113,6 +121,7 @@ export class ImpressionComponent implements OnInit {
     }
   }
 
+  /*** function to pass impressions list to report page ***/
   getImpressionsToReport() {
     const impression = JSON.stringify(this.impression);
     sessionStorage.setItem('impression', impression);

@@ -14,10 +14,12 @@ describe('AuthLayoutComponent', () => {
     component = new AuthLayoutComponent(authServiceSpy, breakpointObserverSpy);
   });
 
+  /*** expects auth component to be truthy ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** Spec for ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       spyOn(component as any, 'initialize');
@@ -30,6 +32,7 @@ describe('AuthLayoutComponent', () => {
     });
   });
 
+  /*** Spec for initialize function ***/
   describe('#initialize', () => {
     beforeEach(() => {
       authServiceSpy.user.and.returnValue({ username: 'test' });
@@ -40,6 +43,7 @@ describe('AuthLayoutComponent', () => {
     });
   });
 
+  /*** Expects logout to have been called ***/
   describe('#onLogout', () => {
     it('should call onLogout function', () => {
       component.onLogout();

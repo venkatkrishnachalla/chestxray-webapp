@@ -15,12 +15,16 @@ describe('XRayComponent', () => {
     'invokeReportFunction',
     'onReportDataShared',
     'onComponentReportButtonClick',
-    'onErrorMessage'
+    'onErrorMessage',
   ]);
   const anotatedXrayService = jasmine.createSpyObj('XRayService', ['abcd']);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
   const actionPanelSpy = jasmine.createSpyObj('ActionPanelComponent', [
     'disableAskAiButton',
+  ]);
+  const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
+    'success',
+    'error',
   ]);
 
   beforeEach(() => {
@@ -30,21 +34,24 @@ describe('XRayComponent', () => {
       routerSpy,
       eventEmitterService,
       anotatedXrayService,
-      authServiceSpy
+      authServiceSpy,
+      toastrServiceSpy
     );
   });
 
+  /*** it should create xray component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       const mockInResponse = {
         username: 'mohan',
         userroles: ['hospitalradiologist'],
       };
-      const impressionsMock = [{ name: 'abcd', id: 1}];
+      const impressionsMock = [{ name: 'abcd', id: 1 }];
       authServiceSpy.userSubject = of(mockInResponse);
       eventEmitterService.invokeReportFunction = of(impressionsMock);
       component.ngOnInit();
@@ -54,6 +61,7 @@ describe('XRayComponent', () => {
     });
   });
 
+  /*** it should call openAskAi function ***/
   describe('#openAskAI', () => {
     beforeEach(() => {
       const mLResponseNew = {
@@ -83,6 +91,7 @@ describe('XRayComponent', () => {
     });
   });
 
+  /*** it should call openAskAi function, when get ask ai returns error ***/
   describe('#openAskAI', () => {
     beforeEach(() => {
       spyOn(sessionStorage, 'getItem').and.callFake(() => {

@@ -6,6 +6,8 @@ import { ConsoleService } from 'src/app/core/service/console.service';
 import { Router } from '@angular/router';
 import { SpinnerService } from '../../shared/UI/spinner/spinner.service';
 import { ToastrService } from 'ngx-toastr';
+import { SignInResponse } from '../interface.modal';
+
 @Component({
   selector: 'cxr-sign-in',
   templateUrl: './sign-in.component.html',
@@ -25,20 +27,21 @@ export class SignInComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
+  /*** class init function ***/
   ngOnInit(): void {}
 
+  /*** on sign in function ***/
   onSignIn(form: NgForm) {
     const networkStatus = navigator.onLine;
     if (form.valid) {
       this.spinnerService.show();
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
-        (authResponse: any) => {
+        (authResponse: SignInResponse) => {
           this.spinnerService.hide();
-          this.console.log(authResponse);
           localStorage.setItem('loggedInUser', this.auth.email);
           this.router.navigate(['/home/dashboard']);
         },
-        (errorMessage: any) => {
+        (errorMessage: string) => {
           this.spinnerService.hide();
           this.errorMessage = errorMessage;
           if (networkStatus === false) {
@@ -46,19 +49,20 @@ export class SignInComponent implements OnInit {
               'Please check your network connections and try again.'
             );
           } else {
-            this.toastrService.error(
-              'Invalid Username or Password'
-            );
+            this.toastrService.error('Invalid Username or Password');
           }
           form.reset();
         }
       );
     } else {
       this.spinnerService.hide();
-      this.toastrService.error(
-        'Enter all the required fields'
-      );    
+      if (networkStatus === false) {
+        this.toastrService.error(
+          'Please check your network connections and try again.'
+        );
+      } else {
+        this.toastrService.error('Enter all the required fields');
+      } 
     }
-
   }
 }

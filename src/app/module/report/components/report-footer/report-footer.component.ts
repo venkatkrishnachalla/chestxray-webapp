@@ -8,5 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class ReportFooterComponent implements OnInit {
   constructor() {}
 
+  /*** class init function ***/
   ngOnInit(): void {}
 }

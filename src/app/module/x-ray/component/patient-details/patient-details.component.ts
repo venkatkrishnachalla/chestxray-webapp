@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PatientDetailData } from 'src/app/module/auth/interface.modal';
 
 @Component({
   selector: 'cxr-patient-details',
@@ -14,9 +15,10 @@ export class PatientDetailsComponent implements OnInit {
   Date: string;
   Time: string;
   history: string;
-  patientDetails: [];
+  patientDetails: PatientDetailData;
   constructor() {}
 
+  /*** clas init function and bind patient details ***/
   ngOnInit(): void {
     let patient = history.state.patientDetails;
     if (patient === undefined) {

@@ -13,10 +13,12 @@ describe('DashboardService', () => {
     service = new DashboardService(httpSpy, endPointSpy);
   });
 
+  /*** it should create service ***/
   it('should create', () => {
     expect(service).toBeTruthy();
   });
 
+  /*** it should call get patient list function ***/
   describe('#getPatientList', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 204 });
@@ -31,6 +33,7 @@ describe('DashboardService', () => {
     });
   });
 
+  /*** it should call get patient list function, when 404 error ***/
   describe('#getPatientList', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 404 });
@@ -45,6 +48,7 @@ describe('DashboardService', () => {
     });
   });
 
+  /*** it should call handle error block ***/
   describe('#handleError', () => {
     beforeEach(() => {
       const mock = {

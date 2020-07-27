@@ -13,6 +13,7 @@ export class ErrorMessageComponent implements OnInit {
 
   constructor(private eventEmitterService: EventEmitterService) {}
 
+  /*** init function, it will handle the error messages ***/
   ngOnInit(): void {
     this.eventEmitterService.invokeDisplayErrorMessage.subscribe(
       (errorResponse) => {

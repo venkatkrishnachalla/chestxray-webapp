@@ -21,11 +21,11 @@ export class XRayService {
 
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
-  getAskAiDetails(PatientImage, fileName) {
-    const base64Image = 'data:image/png;base64,' + PatientImage;
+  /*** getAskAiDetails rest api get call ***/
+  getAskAiDetails(PatientImage: string, fileName: string) {
     const data = {
       data: {
-        ndarray: [base64Image, fileName],
+        ndarray: [PatientImage, fileName],
       },
     };
     const saveArray = JSON.stringify(data);
@@ -41,30 +41,37 @@ export class XRayService {
     return this.http.post(this.endpoint.getAskAi(), saveArray, httpOptions);
   }
 
+  /*** handle error function ***/
   private handleError(errorResponse: HttpErrorResponse) {
     return throwError(errorResponse.error.error.message);
   }
 
+  /*** xrayAnnotatedService function ***/
   xrayAnnotatedService(event) {
     this.annotatedXraySubject.next(event);
   }
 
+  /*** getAnnotatedImageData function ***/
   getAnnotatedImageData() {
     return this.annotatedXraySubject.asObservable();
   }
 
+  /*** xrayAnnotatedImpressions function ***/
   xrayAnnotatedImpressions(event) {
     this.annotatedXrayImpressionSubject.next(event);
   }
 
+  /*** xrayAnnotatedImpressionsService function ***/
   xrayAnnotatedImpressionsService() {
     return this.annotatedXrayImpressionSubject.asObservable();
   }
 
+  /*** xrayAnnotatedFindings function ***/
   xrayAnnotatedFindings(event) {
     this.annotatedXrayFindingsSubject.next(event);
   }
 
+  /*** xrayAnnotatedFindingsService function ***/
   xrayAnnotatedFindingsService() {
     return this.annotatedXrayFindingsSubject.asObservable();
   }

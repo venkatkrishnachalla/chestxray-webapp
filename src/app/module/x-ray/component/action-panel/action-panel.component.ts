@@ -49,12 +49,14 @@ export class ActionPanelComponent implements OnInit {
 
   constructor(private eventEmitterService: EventEmitterService) {}
 
+  /*** class init function ***/
   ngOnInit(): void {
     this.actionPanel = this.constants.actionPanelTop;
     this.middlePanel = this.constants.actionPanelMiddle;
     this.brightnessPanel = this.constants.actionPanelBrightness;
   }
 
+  /*** icon click event & changing active icon ***/
   iconAction(data, index) {
     for (const key in data) {
       // tslint:disable-next-line: radix
@@ -66,10 +68,12 @@ export class ActionPanelComponent implements OnInit {
     this.eventEmitterService.onComponentButtonClick(data[index]);
   }
 
+  /*** Ask ai click event ***/
   askAI() {
     this.askAIEvent.emit(true);
   }
 
+  /*** Event to disable ask ai button ***/
   disableAskAiButton() {
     this.disableAskAI = true;
   }

@@ -28,15 +28,18 @@ export class MainLayoutComponent implements OnInit {
 
   constructor() {}
 
+  /*** class init function ***/
   ngOnInit() {
     this.sidenavButton = this.constants.sidenavContent;
     this.socialMediaImage = this.constants.socialMedia;
   }
 
+  /*** it will close sidenav ***/
   close() {
     this.sidenav.close();
   }
 
+  /*** it will open sidenav ***/
   toggleSidenavBar(valueEmitted) {
     this.sidenav.toggle();
   }

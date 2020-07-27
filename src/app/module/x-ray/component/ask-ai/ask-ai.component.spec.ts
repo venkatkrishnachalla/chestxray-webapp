@@ -11,10 +11,12 @@ describe('AskAiComponent', () => {
     component = new AskAiComponent(xrayServiceSpy);
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       const mLResponseNew = {
@@ -34,6 +36,7 @@ describe('AskAiComponent', () => {
     });
   });
 
+  /*** it should call ngOnInit function, when ml api returns error ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       xrayServiceSpy.getAskAiDetails.and.returnValue(
@@ -46,6 +49,7 @@ describe('AskAiComponent', () => {
     });
   });
 
+  /*** it should call acceptAI funcion ***/
   describe('#acceptAI', () => {
     beforeEach(() => {
       component.acceptAI();
@@ -56,6 +60,7 @@ describe('AskAiComponent', () => {
     });
   });
 
+  /*** it should call rejectAI funcion ***/
   describe('#rejectAI', () => {
     beforeEach(() => {
       component.rejectAI();

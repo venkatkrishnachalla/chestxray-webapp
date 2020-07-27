@@ -14,10 +14,11 @@ export class XRayPatientImageComponent implements OnInit {
 
   constructor(private annotatedXrayService: XRayService) {}
 
+  /*** class init function ***/
   ngOnInit(): void {
     this.annotatedXrayService
       .getAnnotatedImageData()
-      .subscribe((xrayAnnotatedImage) => {
+      .subscribe((xrayAnnotatedImage: string) => {
         this.xrayAnnotatedImage = xrayAnnotatedImage;
         if (Object.keys(this.xrayAnnotatedImage).length === 0) {
           const image = sessionStorage.getItem('annotatedImage');
@@ -26,6 +27,7 @@ export class XRayPatientImageComponent implements OnInit {
       });
   }
 
+  /*** print button click emit function ***/
   printClick() {
     this.printEvent.emit(true);
   }

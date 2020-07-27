@@ -11,10 +11,12 @@ describe('XRayPatientImageComponent', () => {
     component = new XRayPatientImageComponent(annotatedXrayServiceSpy);
   });
 
+  /*** it should create xray patient image component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       const imageMock = 'data64/image:abcdefh';
@@ -29,6 +31,14 @@ describe('XRayPatientImageComponent', () => {
     it('should call ngOnIit function, when getAnnotatedImageData returns error', () => {
       component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
+    });
+  });
+
+  /*** it should call print click event ***/
+  describe('#printClick', () => {
+    it('should call printClick function', () => {
+      component.printClick();
+      expect(component.printClick).toBeDefined();
     });
   });
 });
