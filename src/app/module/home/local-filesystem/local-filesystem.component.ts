@@ -122,11 +122,33 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     this.uploadImageForm.value.imageSource = this.imageSource;
     this.uploadImageForm.value.hospitalPatientId = '';
     this.uploadImageForm.value.isIndividualRadiologist = true;
+    this.uploadImageForm.value.status = false;
     const date = new Date(this.uploadImageForm.value.dateOfBirth);
     const timeDiff = Math.abs(Date.now() - date.getTime());
     this.uploadImageForm.value.age = Math.floor(
       timeDiff / (1000 * 3600 * 24) / 365
     );
+    const imageResponse = {
+      base64Image: this.imageSource,
+      filename: this.fileName,
+    };
+    const patientDetail = {
+      name: this.uploadImageForm.value.name,
+      address: this.uploadImageForm.value.address,
+      dateOfBirth: this.uploadImageForm.value.dateOfBirth,
+      email: this.uploadImageForm.value.email,
+      phoneNumber: this.uploadImageForm.value.phoneNumber,
+      gender: this.uploadImageForm.value.gender,
+      sex: this.uploadImageForm.value.sex,
+      lastUpdate: new Date(),
+      referringPhysicianName: this.doctorName,
+      hospitalPatientId: '',
+      isIndividualRadiologist: true,
+      status: false,
+      age: this.uploadImageForm.value.age,
+    };
+    sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
+    sessionStorage.setItem('patientDetail', JSON.stringify(patientDetail));
     this.router.navigate(['/x-ray'], {
       state: { patientDetails: this.uploadImageForm.value },
     });

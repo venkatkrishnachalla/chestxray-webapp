@@ -23,10 +23,9 @@ export class XRayService {
 
   /*** getAskAiDetails rest api get call ***/
   getAskAiDetails(PatientImage: string, fileName: string) {
-    const base64Image = 'data:image/png;base64,' + PatientImage;
     const data = {
       data: {
-        ndarray: [base64Image, fileName],
+        ndarray: [PatientImage, fileName],
       },
     };
     const saveArray = JSON.stringify(data);

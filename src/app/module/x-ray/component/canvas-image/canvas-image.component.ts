@@ -25,7 +25,11 @@ import {
   RANDOM_COLOR,
 } from '../../../../constants/findingColorConstants';
 import { ToastrService } from 'ngx-toastr';
-import { PatientDetailData, MlApiData, InvokeComponentData } from 'src/app/module/auth/interface.modal';
+import {
+  PatientDetailData,
+  MlApiData,
+  InvokeComponentData,
+} from 'src/app/module/auth/interface.modal';
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -97,20 +101,22 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
-    this.eventEmitterService.invokeComponentFunction.subscribe((data: InvokeComponentData) => {
-      switch (data.title) {
-        case 'Draw Ellipse':
-          this.drawEllipse(data);
-          break;
-        case 'Free Hand Drawing':
-          this.freeHandDrawing(data);
-          break;
-        case 'Delete':
-          break;
-        default:
-          break;
+    this.eventEmitterService.invokeComponentFunction.subscribe(
+      (data: InvokeComponentData) => {
+        switch (data.title) {
+          case 'Draw Ellipse':
+            this.drawEllipse(data);
+            break;
+          case 'Free Hand Drawing':
+            this.freeHandDrawing(data);
+            break;
+          case 'Delete':
+            break;
+          default:
+            break;
+        }
       }
-    });
+    );
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
       (mlResponse: any) => this.mlApiEllipseLoop(mlResponse, ''),
@@ -131,9 +137,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientDetail = patientDetail;
     }
-    this.PatientImage = this.patientDetail.imageSource
-      ? this.patientDetail.imageSource
-      : sessionStorage.getItem('PatientImage');
+    const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
+    this.PatientImage = patientImage ? patientImage.base64Image : null;
     const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
     this.patientId = this.patientDetail ? this.patientDetail.id : '';
 
@@ -243,7 +248,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const imageResponse = JSON.parse(PatientImageResponse);
         this.PatientImage =
           'data:image/png;base64,' + imageResponse.base64Image;
-        sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
+        const imageInformation = {
+          base64Image: this.PatientImage,
+          filename: imageResponse.filename,
+        };
+        sessionStorage.setItem(
+          'PatientImage',
+          JSON.stringify(imageInformation)
+        );
         this.setCanvasDimension();
         this.generateCanvas();
       },
@@ -318,7 +330,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.findingsList = [];
     mLArray.Impression.forEach((impression: any) => {
       const colorFinding = mLArray.diseases.filter(
-        (book) => book.name.toLowerCase() === impression.sentence.toLowerCase()
+        (book) => book.idx === impression.index
       );
       const impressionObject = {
         title: 'impression',

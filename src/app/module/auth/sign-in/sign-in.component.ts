@@ -56,7 +56,13 @@ export class SignInComponent implements OnInit {
       );
     } else {
       this.spinnerService.hide();
-      this.toastrService.error('Enter all the required fields');
+      if (networkStatus === false) {
+        this.toastrService.error(
+          'Please check your network connections and try again.'
+        );
+      } else {
+        this.toastrService.error('Enter all the required fields');
+      }
     }
   }
 }
