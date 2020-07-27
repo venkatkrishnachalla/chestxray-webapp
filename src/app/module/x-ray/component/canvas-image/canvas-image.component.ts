@@ -336,7 +336,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         id: impression.index,
         name: impression.sentence,
         isMLApi: true,
-        color: colorFinding[0].color,
+        // color: colorFinding[0].color,
       };
       //  this.eventEmitterService.onComponentDataShared(impressionObject);
     });

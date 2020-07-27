@@ -44,6 +44,7 @@ export class ImpressionComponent implements OnInit {
     this.eventEmitterService.invokeComponentData.subscribe(
       (obj: { name: any; isMLApi: any; color: any }) => {
         this.impression.push(obj);
+        // console.log("this.impression", this.impression)
         this.uniqueImpressionsData();
         this.getColorMapping(obj.name, obj.isMLApi, obj.color);
       }
@@ -58,9 +59,20 @@ export class ImpressionComponent implements OnInit {
   uniqueImpressionsData() {
     this.uniqueImpressions = [];
     this.impression.filter((item) => {
+      // console.log("item", item)
+      let color;
+      if (item.isMLApi) {
+        color = item.color;
+      } else {
+        color = DISEASE_COLOR_MAPPING[item.name.toLowerCase()] || RANDOM_COLOR;
+      }
       const i = this.uniqueImpressions.findIndex((x) => x.name === item.name);
       if (i <= -1) {
-        this.uniqueImpressions.push({ id: item.id, name: item.name });
+        this.uniqueImpressions.push({
+          id: item.id,
+          name: item.name,
+          colors: color,
+        });
       }
       return null;
     });
