@@ -657,6 +657,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   savePrediction() {
     const random = Math.floor(Math.random() * 100 + 1);
     this.canvas.getActiveObject().index = random;
+    this.selectedObjectPrediction = this.canvas.getActiveObject();
     const selectedObjectPrediction = this.canvas.getActiveObject();
     selectedObjectPrediction.id = random;
     const selectedObject = { id: random, name: this.selectedDisease };
@@ -899,7 +900,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       'ellipse',
       JSON.stringify(this.sessionSelectedEllipseObject)
     );
-    this.toastrService.success('Prediction saved successfully');
   }
 
   updateEllipseIntoSession() {
