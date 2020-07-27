@@ -45,7 +45,6 @@ export class ImpressionComponent implements OnInit {
       (obj: { name: any; isMLApi: any; color: any }) => {
         this.impression.push(obj);
         this.uniqueImpressionsData();
-        this.getColorMapping(obj.name, obj.isMLApi, obj.color);
       }
     );
     this.eventEmitterService.invokeComponentEllipseData.subscribe(
@@ -58,9 +57,19 @@ export class ImpressionComponent implements OnInit {
   uniqueImpressionsData() {
     this.uniqueImpressions = [];
     this.impression.filter((item) => {
+      let color;
+      if (item.isMLApi) {
+        color = item.color;
+      } else {
+        color = DISEASE_COLOR_MAPPING[item.name.toLowerCase()] || RANDOM_COLOR;
+      }
       const i = this.uniqueImpressions.findIndex((x) => x.name === item.name);
       if (i <= -1) {
-        this.uniqueImpressions.push({ id: item.id, name: item.name });
+        this.uniqueImpressions.push({
+          id: item.id,
+          name: item.name,
+          colors: color,
+        });
       }
       return null;
     });
@@ -68,28 +77,28 @@ export class ImpressionComponent implements OnInit {
   }
 
   deleteImpression(id: number, disease: string, objectindex: number) {
-    if (disease) {
-      const currEllipse = this.ellipseList.filter(
-        (book) => book.name === disease
-      );
-      if (currEllipse.length === 1) {
-        const impressionList = this.impression.filter(
-          (book) => book.name.toLowerCase() !== disease.toLowerCase()
-        );
-        this.impression = impressionList;
-      } else {
-        const ellipseListArray = this.ellipseList.filter(
-          (book) => book.index !== objectindex
-        );
-        this.ellipseList = ellipseListArray;
-      }
-      this.uniqueImpressionsData();
-    } else {
-      const index = this.impression.findIndex((item) => item.id === id);
-      this.impression.splice(index, 1);
-      this.uniqueImpressionsData();
-    }
-    this.abnormalityColor = [];
+    // if (disease) {
+    //   const currEllipse = this.ellipseList.filter(
+    //     (book) => book.name === disease
+    //   );
+    //   if (currEllipse.length === 1) {
+    //     const impressionList = this.impression.filter(
+    //       (book) => book.name.toLowerCase() !== disease.toLowerCase()
+    //     );
+    //     this.impression = impressionList;
+    //   } else {
+    //     const ellipseListArray = this.ellipseList.filter(
+    //       (book) => book.index !== objectindex
+    //     );
+    //     this.ellipseList = ellipseListArray;
+    //   }
+    //   this.uniqueImpressionsData();
+    // }
+    // else {
+    const index = this.impression.findIndex((item) => item.id === id);
+    this.impression.splice(index, 1);
+    this.uniqueImpressionsData();
+    // }
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
@@ -104,19 +113,21 @@ export class ImpressionComponent implements OnInit {
     this.impression.splice(index, 1, { id: info.id, name: info.name });
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
-      this.getColorMapping(obj.name, '', '');
+      this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
     this.uniqueImpressionsData();
   }
 
   getColorMapping(diseases: string, isMLApi: string, impcolor: string) {
+    this.abnormalityColor = [];
     if (isMLApi) {
       const color = impcolor;
       this.abnormalityColor.push(color);
     } else {
       const color =
         DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
-      this.abnormalityColor.push(color);
+      // this.abnormalityColor.push(color);
+      // this.abnormalityColor.push({ name: diseases, color: color });
     }
   }
 
