@@ -45,12 +45,10 @@ export class SignInComponent implements OnInit {
             this.toastrService.error(
               'Please check your network connections and try again.'
             );
-            this.toastrService.clear();
           } else {
             this.toastrService.error(
               'Invalid Username or Password'
             );
-            this.toastrService.clear();
           }
           form.reset();
         }
@@ -60,7 +58,6 @@ export class SignInComponent implements OnInit {
       this.toastrService.error(
         'Enter all the required fields'
       );    
-      this.toastrService.clear();
     }
 
   }
