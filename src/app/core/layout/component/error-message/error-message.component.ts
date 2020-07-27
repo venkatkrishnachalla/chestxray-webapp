@@ -17,7 +17,7 @@ export class ErrorMessageComponent implements OnInit {
     this.eventEmitterService.invokeDisplayErrorMessage.subscribe(
       (errorResponse) => {
         this.showError = true;
-        this.errorStatus = errorResponse.data;
+        this.errorStatus = 'Error' + ' ' + errorResponse.data.status;
         switch (errorResponse.data.status) {
           case 404:
             this.errorMessage = 'Not Found';
@@ -36,6 +36,8 @@ export class ErrorMessageComponent implements OnInit {
             break;
 
           default:
+            this.errorStatus = '';
+            this.errorMessage = 'Unknown Error Occurred';
             break;
         }
         return (this.errorMessage = errorResponse.error.error.message);

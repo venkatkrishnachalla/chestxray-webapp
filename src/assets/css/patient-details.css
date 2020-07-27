@@ -54,11 +54,11 @@ body {
   min-height: 50px;
   height: auto;
 }
- 
+
 .cxr-x-ray-patient-details {
   display: none;
 }
- 
+
 @media print {
   .pagebreak {
     page-break-after: always;
@@ -66,7 +66,7 @@ body {
 }
 
 h4 {
-	margin: 15px 0px -10px 0px;
+  margin: 15px 0px -10px 0px;
 }
 .findings-left-content-top {
   width: 45%;
@@ -84,7 +84,7 @@ h4 {
   margin-top: 5px;
   padding-bottom: 10px;
 }
- 
+
 .xray-right-content {
   width: 53%;
   height: 430px;
@@ -97,11 +97,11 @@ h4 {
 }
 
 .inside-content-align {
-	padding: 1px 3px;
+  padding: 1px 3px;
 }
 
 .footer-left-content {
-	padding: 0px 15px 0px 10px;
+  padding: 0px 15px 0px 10px;
 }
 .box-title {
   text-align: left;

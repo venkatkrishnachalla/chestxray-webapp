@@ -40,12 +40,12 @@ export const DISEASE_COLOR_MAPPING = {
   ijv: '#460075',
   'uac/uvc': '#8fbc8f',
   'dialysis catheter': '#fafad2',
-  pacemaker: '#f8f8ff',
+  pacemaker: '#ff3b30',
   'artificial valves': '#ff6347',
   icd: '#f08080',
   'cervical rib': '#B8860B',
   'azygos fissure': '#FFAB00 ',
-  'aortic arch variants': ' #FFA500', 
+  'aortic arch variants': ' #FFA500',
   thymus: '#FFD700',
   covid: '#780650',
   'bone cement': '#2e8b57',
@@ -61,7 +61,7 @@ export const DISEASE_COLOR_MAPPING = {
   implants: '#868686',
   scoliosis: '#3E3258',
   kyphosis: '#333B57',
-  fracture: '#5F6768'
+  fracture: '#5F6768',
 };
 
 export const RANDOM_COLOR =

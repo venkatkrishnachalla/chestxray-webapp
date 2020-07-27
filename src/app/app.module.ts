@@ -39,7 +39,7 @@ import { ToastrModule } from 'ngx-toastr';
     NgxPrintModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
-      timeOut: 1200
+      timeOut: 1200,
     }),
   ],
   providers: [

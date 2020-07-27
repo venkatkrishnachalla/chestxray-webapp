@@ -28,7 +28,7 @@ export const homeConstants = {
               'margin-left': '7px',
             };
           }
-        }
+        },
       },
       {
         headerName: 'Report Status',
@@ -37,19 +37,19 @@ export const homeConstants = {
         cellRenderer: (params) => {
           if (params.value === 'Drafted') {
             return (
-              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Drafted.png\'  width=\'15px\' height=\'15px\'/></span><span>' +
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>" +
               params.value +
               '</span>'
             );
           } else if (params.value === 'Unreported') {
             return (
-              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Unreported.png\' width=\'15px\' height=\'15px\'/></span><span>' +
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Unreported.png' width='15px' height='15px'/></span><span>" +
               params.value +
               '</span>'
             );
           } else if (params.value === 'Reported') {
             return (
-              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Reported.png\' width=\'15px\' height=\'15px\'/></span><span>' +
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Reported.png' width='15px' height='15px'/></span><span>" +
               params.value +
               '</span>'
             );
@@ -95,10 +95,9 @@ export const homeConstants = {
         cellStyle: (params) => {
           return { width: 'auto !important' };
         },
-        template: `
-          <mat-icon data-action-type="viewInfo" style="color: #C5C5C5; cursor: pointer; margin-top:10px; margin-right:10px" title="Patient Info" (click)="patientInfo(e)" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
-          error_outline</mat-icon>
-          <mat-icon data-action-type="redirect" style="color: #C5C5C5; cursor: pointer; margin-top:10px" title="View X-Ray" (click)="onClick()" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
+        template: `  
+          <img src="../../../../../assets/images/i.png" alt="info_icon" height="20px" width="20px" style="color: #C5C5C5; cursor: pointer; margin-top: 10px; margin-right: 10px;" title="View X-Ray" title="Patient Info" (click)="patientInfo(e)"/>
+          <mat-icon data-action-type="redirect" style="color: #a7a6a6;; cursor: pointer; margin-top: -7px;" title="View X-Ray" (click)="onClick()" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
           arrow_forward_ios</mat-icon>
         </div>`,
       },

@@ -173,11 +173,11 @@ label {
   width: 158px;
   height: 158px;
   border-top: solid 10px #7ca5ae;
-  top:10%;
+  top: 10%;
   margin-left: -5%;
-  -webkit-animation: spin .8s linear infinite;
-  animation: spin .8s linear infinite;
+  -webkit-animation: spin 0.8s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
-.loaderContainer{
+.loaderContainer {
   text-align: center !important;
 }

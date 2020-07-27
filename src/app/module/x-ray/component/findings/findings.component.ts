@@ -39,7 +39,7 @@ export class FindingsComponent implements OnInit {
         }
         return null;
       });
-      if (this.findings.length !== 0){
+      if (this.findings.length !== 0) {
         this.findings.forEach((element, index) => {
           const result = uniqueImpressions.findIndex(
             (ele) => ele.name === element.split(':')[1].trim()
