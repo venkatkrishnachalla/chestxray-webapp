@@ -393,9 +393,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         id: impression.index,
         name: impression.sentence,
         isMLApi: true,
-        // color: colorFinding[0].color,
+        color: colorFinding[0].color,
       };
-      //  this.eventEmitterService.onComponentDataShared(impressionObject);
+      this.eventEmitterService.onComponentDataShared(impressionObject);
     });
 
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
@@ -453,6 +453,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           ellipse.color = disease.color;
           ellipse.name = disease.name;
           ellipse.index = index;
+          this.mlPrediction.push(ellipse);
           if (ellipse.a !== 0 && ellipse.b !== 0) {
             this.drawEllipse([], true, ellipse);
             this.eventEmitterService.onComponentEllipseDataShared({
