@@ -25,10 +25,12 @@ body {
 
 .patient-grid-container {
   padding: 1px;
-  display: grid;
-  grid-template-columns: 35% 34% 30%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   position: relative;
   left: 2%;
+  margin-right: 30px;
 }
 
 .common-hr {
