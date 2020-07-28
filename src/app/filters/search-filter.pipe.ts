@@ -13,7 +13,7 @@ export class SearchFilterPipe implements PipeTransform {
     } else {
       return opt;
     }
-  };
+  }
   transform(list: any[], filterText: string): any {
     if (filterText) {
       filterText = filterText.toLowerCase();
