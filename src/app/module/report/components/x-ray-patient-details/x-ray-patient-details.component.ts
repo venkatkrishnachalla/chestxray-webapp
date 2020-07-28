@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
 import {
@@ -22,11 +22,18 @@ export class XRayPatientDetailsComponent implements OnInit {
   abnormalityColor = [];
   comments: string;
   clinicalHistory = '';
+  pdfComments: string;
 
   constructor(
     private eventEmitterService: EventEmitterService,
-    private xrayAnnotatedImpression: XRayService
-  ) {}
+    private xrayAnnotatedImpression: XRayService,
+    private changeDetector: ChangeDetectorRef
+  ) {
+    this.eventEmitterService.commentSubject.subscribe((data)=>{
+      this.pdfComments = data;
+       this.changeDetector.markForCheck();        
+     })
+  }
 
   /*** class init function ***/
   ngOnInit(): void {
@@ -97,5 +104,9 @@ export class XRayPatientDetailsComponent implements OnInit {
       data: this.patientInfo,
       title: 'patientInfo',
     });
+  }
+
+  commentsChange(data) {
+       this.eventEmitterService.commentSubject.next(data);      
   }
 }

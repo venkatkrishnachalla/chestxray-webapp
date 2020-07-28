@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,8 @@ export class EventEmitterService {
   invokeReportDataFunction = new EventEmitter();
   invokeDisplayErrorMessage = new EventEmitter();
   invokeFindingsDataFunction = new EventEmitter();
+  commentSubject = new BehaviorSubject('');
+
   constructor() {}
 
   /*** onComponentButtonClick event emit function ***/
