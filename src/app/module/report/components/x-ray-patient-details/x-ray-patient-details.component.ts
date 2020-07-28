@@ -29,10 +29,10 @@ export class XRayPatientDetailsComponent implements OnInit {
     private xrayAnnotatedImpression: XRayService,
     private changeDetector: ChangeDetectorRef
   ) {
-    this.eventEmitterService.commentSubject.subscribe((data)=>{
+    this.eventEmitterService.commentSubject.subscribe((data) => {
       this.pdfComments = data;
-       this.changeDetector.markForCheck();        
-     })
+      this.changeDetector.markForCheck();        
+     });
   }
 
   /*** class init function ***/
