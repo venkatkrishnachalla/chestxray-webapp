@@ -151,6 +151,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('patientDetail', JSON.stringify(patientDetail));
     sessionStorage.setItem('askAiSelection', 'false');
     sessionStorage.removeItem('x-ray_Data');
+    sessionStorage.removeItem('impression')
     this.router.navigate(['/x-ray'], {
       state: { patientDetails: this.uploadImageForm.value },
     });
