@@ -792,7 +792,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     } else {
       this.saveFreeHandDrawingIntoSession();
     }
-    this.toastrService.success('Prediction saved successfully');
+    this.toastrService.success('Annotation saved successfully');
   }
   /**
    * Delete active object
@@ -826,7 +826,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     } else {
       this.deleteFreeHandDrawingInSession();
     }
-    this.toastrService.success('Prediction deleted successfully');
+    this.toastrService.success('Annotation deleted successfully');
   }
   /**
    * Update active object
@@ -847,7 +847,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.updateFreeHandDrawingIntoSession();
     }
     this.clear();
-    this.toastrService.success('Prediction updated successfully');
+    this.selectedDisease = '';
+    this.toastrService.success('Annotation updated successfully');
   }
 
   /**
