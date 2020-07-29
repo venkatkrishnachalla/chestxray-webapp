@@ -5,16 +5,14 @@
     </span>
     <span class="Patient-content">Patient Details</span>
   </mat-card-title>
-  <p>
-    <mat-label>Name:</mat-label>{{ PatientName }}
-    <mat-label class="gender_info">[{{ PatientGender }}]</mat-label>
-    <mat-label class="gender_info">{{ PatientAge }}Yrs</mat-label>
-  </p>
+  <p><mat-label>Name:</mat-label>{{ PatientName }}</p>
+  <p><mat-label>Gender:</mat-label>{{ PatientGender }}</p>
+  <p><mat-label>Age:</mat-label>{{ PatientAge }}</p>
   <p><mat-label>Ref.Physician:</mat-label>{{ refPhysician }}</p>
   <p><mat-label>Date of creation:</mat-label>{{ Date | date: 'dd-MM-yyyy' }}</p>
   <p><mat-label>Time:</mat-label>{{ Time | date: 'HH:mm:ss' }}</p>
   <p>
     <mat-label>Clinical History:</mat-label>
-    <mat-card-content>{{ history || '-'}}</mat-card-content>
+    {{ history || '-' }}
   </p>
 </mat-card>
