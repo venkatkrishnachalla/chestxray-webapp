@@ -772,7 +772,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   savePrediction() {
     const random = Math.floor(Math.random() * 100 + 1);
-    // this.canvas.getActiveObject().index = random;
+    this.canvas.getActiveObject().index = random;
     this.selectedObjectPrediction = this.canvas.getActiveObject();
     const selectedObjectPrediction = this.canvas.getActiveObject();
     selectedObjectPrediction.id = random;
