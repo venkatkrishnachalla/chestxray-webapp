@@ -69,7 +69,15 @@ export class XRayPatientDetailsComponent implements OnInit {
         this.annotatedImpression = impression;
       });
 
-    if (Object.keys(this.annotatedImpression).length === 0) {
+    // if (Object.keys(this.annotatedImpression).length === 0) {
+    //   const impression = JSON.parse(sessionStorage.getItem('impression'));
+    //   this.annotatedImpression = impression;
+    // }
+
+    if (
+      this.annotatedImpression !== undefined &&
+      this.annotatedImpression !== null
+    ) {
       const impression = JSON.parse(sessionStorage.getItem('impression'));
       this.annotatedImpression = impression;
     }

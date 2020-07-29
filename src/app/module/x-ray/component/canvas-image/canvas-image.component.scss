@@ -142,6 +142,7 @@
         border: 1px solid #ffffff;
         border-radius: 50%;
         margin-right: 5px;
+        pointer-events: none;
       }
       .diseaseSubList {
         height: 1rem;
@@ -149,6 +150,7 @@
         background-color: #ffffff;
         border-radius: 50%;
         margin-right: 5px;
+        pointer-events: none;
       }
       .mat-list-base .mat-list-item .mat-list-item-content,
       .mat-list-base .mat-list-option .mat-list-item-content {

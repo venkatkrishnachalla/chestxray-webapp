@@ -178,7 +178,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           this.savedInfo['data'].ndarray[0].diseases.push(element);
         });
         sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
-        this.mlApiEllipseLoop(mlResponse);
+        this.mlApiEllipseLoop(mlResponse, '');
       },
       (errorMessage: any) => {
         this.showError = true;
@@ -352,7 +352,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.savedInfo = xrayData;
       }
       if (xrayData !== null && xrayData.data.ndarray[0].Impression.length > 0) {
-        this.mlApiEllipseLoop(xrayData);
+        this.mlApiEllipseLoop(xrayData, 'session');
       }
     });
   }
@@ -404,7 +404,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   /*** draw ellipse, when user clicks ask ai accept button ***/
-  mlApiEllipseLoop(mlList: any) {
+  mlApiEllipseLoop(mlList: any, check) {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
@@ -484,7 +484,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             const selectedObject = {
               title: 'impression',
               isMLApi: true,
-              id: random,
+              id: check !== 'session' ? random : ellipse.id,
               name: disease.name,
               color: ellipse.color,
             };
@@ -501,6 +501,25 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
       } else if (disease.freeHandDrawing) {
         const coordinatePath = disease.coordinatevalues;
+        this.eventEmitterService.onComponentEllipseDataShared({
+          name: disease.name,
+          index: disease.index,
+        });
+        const random = Math.floor(Math.random() * 100 + 1);
+        const selectedObject = {
+          title: 'impression',
+          isMLApi: true,
+          id: check !== 'session' ? random : disease.id,
+          name: disease.name,
+          color: disease.color,
+        };
+        this.impressionArray.push(selectedObject);
+        const colorFinding = this.impressionArray.filter(
+          (book) => book.name.toLowerCase() === disease.name.toLowerCase()
+        );
+        if (colorFinding.length < 2) {
+          this.eventEmitterService.onComponentDataShared(selectedObject);
+        }
         this.canvas.add(
           new fabric.Path(coordinatePath.join(''), {
             id: disease.index,
@@ -569,7 +588,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         fill: '',
         selectable: true,
         strokeUniform: true,
-        index: diseaseItem.index,
+        index: diseaseItem.index !== 0 ? diseaseItem.index : diseaseItem.id,
         id: diseaseItem.idvalue,
         // types: true
       });
@@ -580,6 +599,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.enableDrawEllipseMode = false;
       this.scaleSaveEllipse(ellipse);
     } else {
+      this.changeSelectableStatus(false);
       this.activeIcon = data;
       if (!this.activeIcon.active) {
         this.enableDrawEllipseMode = false;
@@ -640,6 +660,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           if (this.enableDrawEllipseMode) {
             this.openPathologyModal();
           }
+          this.changeSelectableStatus(true);
           this.canvas.defaultCursor = 'default';
         });
       }
@@ -664,6 +685,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       'ellipse',
       JSON.stringify(this.sessionSelectedEllipseObject)
     );
+  }
+
+  changeSelectableStatus(val) {
+    this.canvas.forEachObject((obj) => {
+      obj.selectable = val;
+    });
+    this.canvas.renderAll();
   }
 
   /*** delete ellipse function ***/
@@ -744,7 +772,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   savePrediction() {
     const random = Math.floor(Math.random() * 100 + 1);
-    this.canvas.getActiveObject().index = random;
+    // this.canvas.getActiveObject().index = random;
     this.selectedObjectPrediction = this.canvas.getActiveObject();
     const selectedObjectPrediction = this.canvas.getActiveObject();
     selectedObjectPrediction.id = random;
@@ -832,6 +860,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.renderAll();
       this.activeIcon.active = false;
     }
+    this.canvas.isDrawingMode = false;
+    this.enableDrawEllipseMode = false;
     this.dialog.closeAll();
   }
 
@@ -839,6 +869,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Free hand Drawing functionality
    */
   freeHandDrawing(data) {
+    this.changeSelectableStatus(false);
     this.activeIcon = data;
     if (data.active) {
       this.updateDisease = false;
@@ -867,6 +898,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       });
       this.canvas.isDrawingMode = false;
     }
+    this.changeSelectableStatus(true);
   }
 
   /*** function to open pathology modal for update ***/
@@ -891,7 +923,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   getColorMapping(diseases, check) {
     const colorName =
       DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
-    if (this.enableDrawEllipseMode) {
+    if (!this.canvas._activeObject.path) {
       const obj = {
         color: colorName,
         ellipses: [
