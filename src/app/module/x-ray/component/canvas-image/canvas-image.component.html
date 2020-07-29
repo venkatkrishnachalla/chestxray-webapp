@@ -38,9 +38,7 @@
       (ngModelChange)="updateSearchModel($event)"
     />
     <span>
-      <mat-icon class="pointer" (click)="selectedDisease = ''" matPrefix
-        >clear</mat-icon
-      >
+      <mat-icon class="pointer" (click)="clear()" matPrefix>clear</mat-icon>
     </span>
   </mat-form-field>
   <mat-dialog-content id="pathologyModel">
@@ -51,13 +49,31 @@
           let v = index
         "
       >
-        <mat-list-item class="pointer" (click)="onSelect($event, item.Names)"
-          ><span class="diseaseList"></span
+        <mat-list-item
+          class="pointer listName"
+          [ngStyle]="{
+            'background-color': selectedMainDisease == true ? '#7ca5ae' : ''
+          }"
+          (click)="onSelect($event, item.Names)"
+          ><span
+            class="diseaseList"
+            [ngClass]="{
+              'black-background': item.Names.length != 0,
+              'white-background': item.Names.length === 0
+            }"
+          ></span
           >{{ item.abnormality }}</mat-list-item
         >
-        <mat-list class="sub-list">
+        <mat-list
+          class="sub-list"
+          [ngStyle]="{
+            'background-color': selectedSubDisease == true ? '#7ca5ae' : ''
+          }"
+        >
           <div *ngFor="let subItem of item.Names">
-            <mat-list-item class="pointer" (click)="onSelect($event, '')"
+            <mat-list-item
+              class="pointer subListName"
+              (click)="onSelect($event, '')"
               ><span class="diseaseSubList"></span>{{ subItem }}</mat-list-item
             >
           </div>

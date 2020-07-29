@@ -64,11 +64,4 @@ export const DISEASE_COLOR_MAPPING = {
   fracture: '#5F6768',
 };
 
-export const RANDOM_COLOR =
-  'rgb(' +
-  Math.floor(Math.random() * 256) +
-  ',' +
-  Math.floor(Math.random() * 256) +
-  ',' +
-  Math.floor(Math.random() * 256) +
-  ')';
+export const RANDOM_COLOR = '#FFFF00';

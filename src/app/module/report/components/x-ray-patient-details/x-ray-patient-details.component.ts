@@ -31,8 +31,8 @@ export class XRayPatientDetailsComponent implements OnInit {
   ) {
     this.eventEmitterService.commentSubject.subscribe((data) => {
       this.pdfComments = data;
-      this.changeDetector.markForCheck();        
-     });
+      this.changeDetector.markForCheck();
+    });
   }
 
   /*** class init function ***/
@@ -74,7 +74,10 @@ export class XRayPatientDetailsComponent implements OnInit {
     //   this.annotatedImpression = impression;
     // }
 
-    if (this.annotatedImpression !== undefined && this.annotatedImpression !== null) {
+    if (
+      this.annotatedImpression !== undefined &&
+      this.annotatedImpression !== null
+    ) {
       const impression = JSON.parse(sessionStorage.getItem('impression'));
       this.annotatedImpression = impression;
     }
@@ -107,6 +110,6 @@ export class XRayPatientDetailsComponent implements OnInit {
   }
 
   commentsChange(data) {
-       this.eventEmitterService.commentSubject.next(data);      
+    this.eventEmitterService.commentSubject.next(data);
   }
 }

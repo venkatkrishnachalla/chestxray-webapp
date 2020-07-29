@@ -126,6 +126,16 @@
     mat-dialog-content#pathologyModel {
       min-height: 42vh;
       width: 350px;
+      .subListName:hover,
+      .listName:hover {
+        background-color: #7ca5ae;
+        opacity: 0.6;
+      }
+      .subListName:active,
+      .listName:active {
+        background-color: #7ca5ae;
+        opacity: 1;
+      }
       .diseaseList {
         height: 1rem;
         width: 1rem;
@@ -144,7 +154,7 @@
       }
       .mat-list-base .mat-list-item .mat-list-item-content,
       .mat-list-base .mat-list-option .mat-list-item-content {
-        padding: 0 10px;
+        padding: 4px 10px;
       }
     }
 
@@ -198,4 +208,14 @@
   .deleteImpression {
     margin-top: 2.5rem !important;
   }
+}
+
+.black-background {
+  background-color: #000000;
+}
+.white-background {
+  background-color: #ffffff;
+}
+.selected-disease-background-color {
+  background-color: #7ca5ae;
 }
