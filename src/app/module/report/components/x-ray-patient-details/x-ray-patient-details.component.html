@@ -81,6 +81,7 @@
       <ul>
         <li *ngFor="let finding of annotatedFindings" contentEditable="true">
           > {{ finding }}
+          {{ comments }}
         </li>
       </ul>
     </div>
@@ -101,7 +102,7 @@
       [(ngModel)]="comments"
       class="comments-info"
       (ngModelChange)="commentsChange($event)"
-    ></textarea>
+    ></textarea>{{ comments }}
   </div>
 </div>
 

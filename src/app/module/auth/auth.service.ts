@@ -72,6 +72,7 @@ export class AuthService {
     sessionStorage.removeItem('patientDetail');
     sessionStorage.removeItem('PatientImage');
     sessionStorage.removeItem('isIndividualRadiologist');
+    sessionStorage.removeItem('askAiSelection');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
