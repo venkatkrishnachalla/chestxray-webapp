@@ -9,6 +9,6 @@
   </mat-card-title>
   <mat-card-content class="findings-content" *ngFor="let finding of findings">
     <button></button>
-    <input matInput [value]="finding" style="word-break: break-all;" />
+    <textarea>{{ finding }}</textarea>
   </mat-card-content>
 </mat-card>

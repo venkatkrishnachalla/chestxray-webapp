@@ -13,6 +13,7 @@ export type SaveEllipse = {
   ry: number;
   color: string;
   angle: number;
+  types: boolean;
 };
 export class UpdateEllipse {
   id: number;
@@ -24,6 +25,7 @@ export class UpdateEllipse {
   ry: number;
   color: string;
   angle: number;
+  types: boolean;
 }
 
 export interface SaveFreeHandDrawing {
