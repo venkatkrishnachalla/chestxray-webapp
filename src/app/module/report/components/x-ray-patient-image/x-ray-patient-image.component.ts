@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { XRayService } from 'src/app/service/x-ray.service';
+import { PatientDetailData } from 'src/app/module/auth/interface.modal';
 
 @Component({
   selector: 'cxr-x-ray-patient-image',
@@ -10,12 +11,24 @@ export class XRayPatientImageComponent implements OnInit {
   patientImage: any;
   xrayAnnotatedImage: string;
   xrayAnnotatedImpression: string;
+  patientInfo: PatientDetailData;
+  pdfTitle: string;
   @Output() printEvent = new EventEmitter();
 
   constructor(private annotatedXrayService: XRayService) {}
 
   /*** class init function ***/
   ngOnInit(): void {
+    this.patientInfo = history.state.patientDetails;
+    if (this.patientInfo === undefined) {
+      const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
+      this.patientInfo = patientInfo;
+    }
+    const timestamp = Number(new Date());
+    const hospitalPatientId = this.patientInfo.hospitalPatientId
+      ? this.patientInfo.hospitalPatientId
+      : this.patientInfo.name;
+    this.pdfTitle = hospitalPatientId + '_' + timestamp;
     this.annotatedXrayService
       .getAnnotatedImageData()
       .subscribe((xrayAnnotatedImage: string) => {

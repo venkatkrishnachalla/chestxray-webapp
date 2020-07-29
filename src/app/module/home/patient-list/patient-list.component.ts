@@ -121,6 +121,7 @@ export class PatientListComponent implements OnInit {
   public onActionRedirectClick(data: any) {
     const patientDetail = JSON.stringify(data);
     sessionStorage.setItem('patientDetail', patientDetail);
+    sessionStorage.setItem('askAiSelection', 'false');
     this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
 }

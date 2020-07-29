@@ -54,6 +54,10 @@ export class ActionPanelComponent implements OnInit {
     this.actionPanel = this.constants.actionPanelTop;
     this.middlePanel = this.constants.actionPanelMiddle;
     this.brightnessPanel = this.constants.actionPanelBrightness;
+    const askAiSelection = sessionStorage.getItem('askAiSelection');
+    if (askAiSelection === 'true') {
+      this.disableAskAI = true;
+    }
   }
 
   /*** icon click event & changing active icon ***/
@@ -76,5 +80,6 @@ export class ActionPanelComponent implements OnInit {
   /*** Event to disable ask ai button ***/
   disableAskAiButton() {
     this.disableAskAI = true;
+    sessionStorage.setItem('askAiSelection', 'true');
   }
 }
