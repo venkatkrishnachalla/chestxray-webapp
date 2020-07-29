@@ -27,7 +27,6 @@ export class FindingsComponent implements OnInit {
   /*** get findings event to subscribe findings from xray image ***/
   getFindings() {
     this.order = this.constants.findings;
-    this.findings = [];
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse: EllipseData) => {
         this.findings.push(objEllipse);

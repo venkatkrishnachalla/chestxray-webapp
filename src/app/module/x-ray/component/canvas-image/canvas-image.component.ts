@@ -97,7 +97,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   sessionSelectedEllipseObject = [];
   sampleData: object;
   savedInfo: object;
-
+  selectedDiseases = false;
+  selectedMainDisease = false;
+  selectedSubDisease = false;
+  type = '';
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
@@ -121,6 +124,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.setCanvasBackground();
     this.getSessionEllipse();
     this.getSessionFreeHandDrawing();
+    // this.canvas.discardActiveObject();
   }
 
   /* class initialization method */
@@ -258,6 +262,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   /*** update search model ***/
   updateSearchModel(value) {
     this.searchModel = value;
+    this.selectedDiseases = false;
+    this.selectedMainDisease = false;
+    this.selectedSubDisease = false;
+  }
+
+  clear() {
+    this.selectedDisease = '';
+    this.selectedMainDisease = false;
+    this.selectedSubDisease = false;
   }
 
   /**
@@ -462,7 +475,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           ellipse.color = disease.color;
           ellipse.name = disease.name;
           ellipse.index = index;
-          this.mlPrediction.push(ellipse);
           if (ellipse.a !== 0 && ellipse.b !== 0) {
             this.eventEmitterService.onComponentEllipseDataShared({
               name: disease.name,
@@ -519,6 +531,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             originY: 'center',
             opacity: 0.8,
             strokeUniform: true,
+            types: true,
           })
         );
       }
@@ -577,12 +590,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         strokeUniform: true,
         index: diseaseItem.index !== 0 ? diseaseItem.index : diseaseItem.id,
         id: diseaseItem.idvalue,
+        // types: true
       });
       this.canvas.add(ellipse);
       this.canvas.renderAll();
       this.canvas.setActiveObject(ellipse);
       this.canvas.discardActiveObject();
       this.enableDrawEllipseMode = false;
+      this.scaleSaveEllipse(ellipse);
     } else {
       this.changeSelectableStatus(false);
       this.activeIcon = data;
@@ -606,6 +621,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               fill: '',
               selectable: true,
               strokeUniform: true,
+              // types: false
             });
             this.canvas.add(ellipse);
             this.canvas.renderAll();
@@ -651,9 +667,29 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
+  scaleSaveEllipse(data) {
+    const saveEllipse = {} as SaveEllipse;
+    saveEllipse.id = data.id;
+    saveEllipse.left = data.left * this.canvasScaleX;
+    saveEllipse.top = data.top * this.canvasScaleY;
+    saveEllipse.rx = data.width * data.scaleX * this.canvasScaleX;
+    saveEllipse.ry = data.height * data.scaleY * this.canvasScaleY;
+    saveEllipse.width = data.width * data.scaleX * this.canvasScaleX;
+    saveEllipse.height = data.height * data.scaleY * this.canvasScaleY;
+    saveEllipse.angle = data.angle;
+    saveEllipse.color = data.stroke;
+    // saveEllipse.types = data.types;
+    this.sessionSelectedEllipseObject.push(saveEllipse);
+    sessionStorage.removeItem('ellipse');
+    sessionStorage.setItem(
+      'ellipse',
+      JSON.stringify(this.sessionSelectedEllipseObject)
+    );
+  }
+
   changeSelectableStatus(val) {
     this.canvas.forEachObject((obj) => {
-        obj.selectable = val;
+      obj.selectable = val;
     });
     this.canvas.renderAll();
   }
@@ -690,6 +726,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Search pathology functionality
    */
   onSelect(event, item) {
+    this.selectedDiseases = true;
     if (item.length === 0) {
       this.selectedDisease = event.target.textContent.replace(
         /[^a-zA-Z ]/g,
@@ -697,6 +734,28 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       );
     } else if (item === '') {
       this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z]/g, '');
+    }
+    const abnormality = [];
+    const names = [];
+    this.pathologyNames.forEach((element) => {
+      abnormality.push(element.abnormality);
+      element.Names.forEach((value) => {
+        names.push(value);
+      });
+    });
+
+    const indexs = names.findIndex(
+      (value) => value === event.target.textContent
+    );
+    const index = abnormality.findIndex(
+      (value) => value === event.target.textContent
+    );
+    if (indexs !== -1 && index !== -1) {
+      this.selectedSubDisease = true;
+    } else if (index !== -1 && item.length === 0) {
+      this.selectedMainDisease = true;
+    } else if (indexs !== -1) {
+      this.selectedSubDisease = true;
     }
   }
 
@@ -725,7 +784,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
     this.eventEmitterService.onComponentDataShared(selectedObject);
     this.getColorMapping(this.selectedDisease, 'save');
-    this.selectedDisease = '';
+    this.clear();
     this.activeIcon.active = false;
     this.dialog.closeAll();
     if (this.selectedObjectPrediction.type === 'ellipse') {
@@ -733,7 +792,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     } else {
       this.saveFreeHandDrawingIntoSession();
     }
-    this.toastrService.success('Prediction saved successfully');
+    this.toastrService.success('Annotation saved successfully');
   }
   /**
    * Delete active object
@@ -767,7 +826,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     } else {
       this.deleteFreeHandDrawingInSession();
     }
-    this.toastrService.success('Prediction deleted successfully');
+    this.toastrService.success('Annotation deleted successfully');
   }
   /**
    * Update active object
@@ -780,22 +839,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     };
     this.eventEmitterService.onComponentButtonClick(selectedObject);
     this.getColorMapping(this.selectedDisease, 'update');
-    this.selectedDisease = '';
+    this.clear();
     this.dialog.closeAll();
     if (this.canvas.getActiveObject().type === 'ellipse') {
       this.updateEllipseIntoSession();
     } else {
       this.updateFreeHandDrawingIntoSession();
     }
+    this.clear();
     this.selectedDisease = '';
-    this.toastrService.success('Prediction updated successfully');
+    this.toastrService.success('Annotation updated successfully');
   }
 
   /**
    * Close Pathology modal functionality
    */
   closePathologyModal() {
-    this.selectedDisease = '';
+    this.clear();
     if (!this.updateDisease) {
       this.canvas.remove(this.canvas.getActiveObject());
       this.canvas.renderAll();
@@ -947,26 +1007,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   saveEllipseIntoSession() {
-    const saveEllipse = {} as SaveEllipse;
     const selectedObject = this.canvas.getActiveObject();
-    saveEllipse.id = this.selectedObjectPrediction.id;
-    saveEllipse.left = selectedObject.left * this.canvasScaleX;
-    saveEllipse.top = selectedObject.top * this.canvasScaleY;
-    saveEllipse.rx =
-      selectedObject.width * selectedObject.scaleX * this.canvasScaleX;
-    saveEllipse.ry =
-      selectedObject.height * selectedObject.scaleY * this.canvasScaleY;
-    saveEllipse.width =
-      selectedObject.width * selectedObject.scaleX * this.canvasScaleX;
-    saveEllipse.height =
-      selectedObject.height * selectedObject.scaleY * this.canvasScaleY;
-    saveEllipse.angle = selectedObject.angle;
-    saveEllipse.color = this.selectedObjectPrediction.stroke;
-    this.sessionSelectedEllipseObject.push(saveEllipse);
-    sessionStorage.setItem(
-      'ellipse',
-      JSON.stringify(this.sessionSelectedEllipseObject)
-    );
+    this.scaleSaveEllipse(selectedObject);
   }
 
   updateEllipseIntoSession() {
@@ -985,6 +1027,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     updateEllipse.angle = object.angle;
     updateEllipse.width = object.angle;
     updateEllipse.height = object.angle;
+    // updateEllipse.types = false;
     this.sessionSelectedEllipseObject.push(updateEllipse);
     sessionStorage.removeItem('ellipse');
     sessionStorage.setItem(
@@ -1078,22 +1121,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   getSessionEllipse() {
     const ellipses = JSON.parse(sessionStorage.getItem('ellipse'));
-    if (this.mlPrediction.length !== 0) {
-      this.mlPrediction.forEach((element) => {
-        const mlEllipse = new fabric.Ellipse({
-          left: element.x / this.canvasScaleX,
-          top: element.y / this.canvasScaleY,
-          rx: element.a / this.canvasScaleX / 2,
-          ry: element.b / this.canvasScaleY / 2,
-          stroke: element.color,
-          strokeWidth: 2,
-          fill: '',
-          selectable: true,
-          angle: element.r,
-        });
-        this.canvas.add(mlEllipse);
-      });
-    }
     ellipses.forEach((element) => {
       const sessionEllipse = new fabric.Ellipse({
         width: element.width / this.canvasScaleX,

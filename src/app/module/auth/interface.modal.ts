@@ -42,6 +42,7 @@ export interface PatientDetailData {
 export interface EllipseData {
   index: number;
   name: string;
+  split(arg0: string);
 }
 
 export interface MlApiData {
