@@ -570,6 +570,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         width: 0,
         height: 0,
         disease: diseaseItem.name,
+        originX: 'center',
+        originY: 'center',
         left:
           diseaseItem.type === 'ellipse'
             ? diseaseItem.x
@@ -1133,6 +1135,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         top: element.top / this.canvasScaleY,
         rx: element.rx / this.canvasScaleX / 2,
         ry: element.ry / this.canvasScaleY / 2,
+        angle: element.angle,
+        originX: 'center',
+        originY: 'center',
         stroke: element.color,
         id: element.id,
         strokeWidth: 2,
