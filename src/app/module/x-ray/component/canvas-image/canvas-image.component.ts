@@ -222,6 +222,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.on('object:selected', (evt) => {
       this.actionIconsModelDispaly();
     });
+    this.canvas.on('object:scaling', (e) => {
+      this.canvas.getActiveObject().set('strokeUniform', true);
+      this.canvas.requestRenderAll();
+    });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
@@ -1131,6 +1135,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         top: element.top / this.canvasScaleY,
         rx: element.rx / this.canvasScaleX / 2,
         ry: element.ry / this.canvasScaleY / 2,
+        angle: element.angle,
+        originX: 'center',
+        originY: 'center',
         stroke: element.color,
         id: element.id,
         strokeWidth: 2,

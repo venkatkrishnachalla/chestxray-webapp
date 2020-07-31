@@ -13,7 +13,7 @@ export class FindingsComponent implements OnInit {
   readonly constants = pathology;
   order = [];
   findings: any[];
-  manageFidings: boolean;
+  item0: any;
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedService: XRayService
@@ -21,7 +21,6 @@ export class FindingsComponent implements OnInit {
 
   /*** class init function ***/
   ngOnInit(): void {
-    this.manageFidings = false;
     this.findings = [];
     this.getFindings();
   }
@@ -29,19 +28,16 @@ export class FindingsComponent implements OnInit {
   /*** get findings event to subscribe findings from xray image ***/
   getFindings() {
     this.order = this.constants.findings;
-    this.order.forEach(info => {
-      if (info.Name !== 'ADDITIONAL'){
-        this.findings.push(info.Name + ': ' + info.Desc);
-      }
-      this.manageFidings = true;
-    });
+    this.findings = [];
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse: EllipseData) => {
-        this.manageFidings = false;
         const index = this.findings.findIndex(item => item.split(':')[0] === objEllipse.split(':')[0]);
-        this.findings.splice(index, 1, objEllipse);
-        this.manageFidings = true;
-        // this.findings.push(objEllipse);
+        if (index !== -1){
+          this.findings.splice(index, 1, objEllipse);
+        }
+        else{
+          this.findings.push(objEllipse);
+        }
       }
     );
     // this.eventEmitterService.invokeFindingsDataFunction.subscribe((data) => {
@@ -100,5 +96,20 @@ export class FindingsComponent implements OnInit {
     const findings = JSON.stringify(this.findings);
     sessionStorage.setItem('findings', findings);
     this.xrayAnnotatedService.xrayAnnotatedFindings(this.findings);
+  }
+
+  updateFindings(evt, index){
+    this.findings.splice(index, 1, evt.target.textContent);
+  }
+
+  preventBaseValue(evt){
+    if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
+      if (evt.key.charCodeAt() === 66){
+        evt.preventDefault();
+      }
+      // else if (&& evt.key.charCodeAt() !== 32 && evt.key.charCodeAt() !== 44 && evt.key.charCodeAt() !== 46 && (evt.key.charCodeAt() < 65 && evt.key.charCodeAt() > 91) && (evt.key.charCodeAt() < 97 && evt.key.charCodeAt() > 122){
+
+      // } 
+    }
   }
 }
