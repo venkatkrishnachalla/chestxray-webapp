@@ -15,7 +15,7 @@ describe('XRayPatientDetailsComponent', () => {
   beforeEach(() => {
     component = new XRayPatientDetailsComponent(
       eventEmitterServiceSpy,
-      xrayAnnotatedImpressionSpy
+      xrayAnnotatedImpressionSpy, eventEmitterServiceSpy,
     );
   });
 

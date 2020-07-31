@@ -79,7 +79,7 @@
     </div>
     <div class="findings-info">
       <ul>
-        <li *ngFor="let finding of annotatedFindings" contentEditable="true">
+        <li *ngFor="let finding of annotatedFindings; let i = index" (focusout)="updateFindings($event, i)" contentEditable="true">
           > {{ finding }}
         </li>
       </ul>
@@ -173,7 +173,7 @@
         <div class="box-title">FINDINGS</div>
         <div
           class="inside-content-align"
-          *ngFor="let finding of annotatedFindings"
+          *ngFor="let finding of pdfFindings"
         >
           > {{ finding }}
         </div>

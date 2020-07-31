@@ -17,12 +17,13 @@ export class XRayPatientDetailsComponent implements OnInit {
   patientInfo: PatientDetailData;
   status: string;
   annotatedImpression: ImpressionData;
-  annotatedFindings: any[];
+  annotatedFindings: any;
   impressions = [];
   abnormalityColor = [];
   comments: string;
   clinicalHistory = '';
   pdfComments: string;
+  pdfFindings: any;
 
   constructor(
     private eventEmitterService: EventEmitterService,
@@ -31,6 +32,10 @@ export class XRayPatientDetailsComponent implements OnInit {
   ) {
     this.eventEmitterService.commentSubject.subscribe((data) => {
       this.pdfComments = data;
+      this.changeDetector.markForCheck();
+    });
+    this.eventEmitterService.findingsSubject.subscribe((data) => {
+      this.pdfFindings = data;
       this.changeDetector.markForCheck();
     });
   }
@@ -111,5 +116,10 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   commentsChange(data) {
     this.eventEmitterService.commentSubject.next(data);
+  }
+
+  updateFindings(evt, index){
+    this.annotatedFindings.splice(index, 1, evt.target.textContent.slice(2));
+    this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
   }
 }

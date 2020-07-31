@@ -15,6 +15,7 @@ export class EventEmitterService {
   invokeDisplayErrorMessage = new EventEmitter();
   invokeFindingsDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
+  findingsSubject = new BehaviorSubject('');
 
   constructor() {}
 

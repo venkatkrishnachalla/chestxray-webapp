@@ -449,7 +449,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           // tslint:disable-next-line: max-line-length
           if (currentFinding.length !== 0) {
             finalFinding +=
-              currentFinding[0].sentence +
+              currentFinding[0].sentence[0].toUpperCase() + currentFinding[0].sentence.substr(1).toLowerCase() +
               (mLArray.Findings[info.Name].length > 1 &&
               mLArray.Findings[info.Name].length - 1 !== index
                 ? ', '

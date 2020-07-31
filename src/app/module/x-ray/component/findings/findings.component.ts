@@ -27,8 +27,11 @@ export class FindingsComponent implements OnInit {
 
   /*** get findings event to subscribe findings from xray image ***/
   getFindings() {
-    this.order = this.constants.findings;
     this.findings = [];
+    this.order = this.constants.findings;
+    this.order.forEach(data => {
+      this.findings.push(data.Name + ': -');
+    });
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse: EllipseData) => {
         const index = this.findings.findIndex(item => item.split(':')[0] === objEllipse.split(':')[0]);
@@ -107,9 +110,6 @@ export class FindingsComponent implements OnInit {
       if (evt.key.charCodeAt() === 66){
         evt.preventDefault();
       }
-      // else if (&& evt.key.charCodeAt() !== 32 && evt.key.charCodeAt() !== 44 && evt.key.charCodeAt() !== 46 && (evt.key.charCodeAt() < 65 && evt.key.charCodeAt() > 91) && (evt.key.charCodeAt() < 97 && evt.key.charCodeAt() > 122){
-
-      // } 
     }
   }
 }

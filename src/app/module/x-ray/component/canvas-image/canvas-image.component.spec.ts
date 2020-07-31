@@ -407,7 +407,7 @@ describe('CanvasImageComponent', () => {
                 ADDITIONAL: [],
                 'BONY THORAX': [],
                 'CARDIAC SILHOUETTE': [],
-                COSTOPHRENIC_ANGLES: [],
+                'COSTOPHRENIC ANGLES': [],
                 'DOMES OF DIAPHRAGM': [],
                 'HILAR/MEDIASTINAL': [],
                 'LUNG FIELDS': [0, 1],
