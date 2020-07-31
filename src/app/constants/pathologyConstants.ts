@@ -39,7 +39,7 @@ export const pathology = {
       Names: [],
     },
     {
-      abnormality: 'Collapse/Atelectais',
+      abnormality: 'Collapse/Atelectasis',
       Names: [],
     },
     {
@@ -173,7 +173,7 @@ export const pathology = {
     },
   ],
   findings: [{Name: 'LUNG FIELDS', Desc: 'Visualised lung fields are clear.'},
-              {Name: 'COSTOPHRENIC_ANGLES', Desc: 'Both costophrenic angles are clear'},
+              {Name: 'COSTOPHRENIC ANGLES', Desc: 'Both costophrenic angles are clear.'},
               {Name: 'HILAR/MEDIASTINAL', Desc: 'No hilar or mediastinal mass seen.'},
               {Name: 'CARDIAC SILHOUETTE', Desc: 'Cardiac silhouette is within normal limits.'},
               {Name: 'DOMES OF DIAPHRAGM', Desc: 'Both domes of diaphragm are normal.'},
