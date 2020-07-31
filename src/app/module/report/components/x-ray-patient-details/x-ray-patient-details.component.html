@@ -179,9 +179,22 @@
         </div>
       </div>
     </div>
-    <div class="xray-right-content" style="position: absolute;">
+    <div
+      class="xray-right-content"
+      id="xray-right-content"
+      style="position: absolute;"
+    >
       <div class="box-title">XRAY</div>
-      <cxr-x-ray-patient-image></cxr-x-ray-patient-image>
+      <div align="center">
+        <img
+          [src]="annotatedImage"
+          alt=""
+          [ngStyle]="{
+            'width.px': canvasCorrectedWidth,
+            'height.px': canvasCorrectedHeight
+          }"
+        />
+      </div>
     </div>
   </div>
   <h4>

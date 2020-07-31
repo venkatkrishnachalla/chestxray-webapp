@@ -12,7 +12,7 @@
       mat-flat-button
       (click)="printClick()"
       printSectionId="print-section"
-      printTitle="{{pdfTitle}}"
+      printTitle="{{ pdfTitle }}"
       ngxPrint
       styleSheetFile="assets/css/patient-details.css"
     >
@@ -35,9 +35,9 @@
       >
     </button>
   </section>
-  <section class="patientAnnotatedImage">
+  <div class="uploader">
     <img [src]="xrayAnnotatedImage" alt="" />
-  </section>
+  </div>
 </div>
 
 <img class="hide-xray" [src]="xrayAnnotatedImage" alt="" />
