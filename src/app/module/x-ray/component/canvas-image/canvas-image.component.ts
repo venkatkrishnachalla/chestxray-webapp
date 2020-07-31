@@ -567,8 +567,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvasScaleX = this.xRayImage.width / this.canvas.width;
       this.canvasScaleY = this.xRayImage.height / this.canvas.height;
       const ellipse = new fabric.Ellipse({
-        width: diseaseItem.a,
-        height: diseaseItem.b,
+        width: 0,
+        height: 0,
         disease: diseaseItem.name,
         originX: 'center',
         originY: 'center',
