@@ -6,6 +6,7 @@ import {
   ImpressionData,
   InvokeComponentData,
 } from 'src/app/module/auth/interface.modal';
+import { fabric } from 'fabric';
 
 @Component({
   selector: 'cxr-x-ray-patient-details',
@@ -23,6 +24,12 @@ export class XRayPatientDetailsComponent implements OnInit {
   comments: string;
   clinicalHistory = '';
   pdfComments: string;
+  annotatedImage: string;
+  canvasDynamicWidth;
+  canvasDynamicHeight;
+  canvasCorrectedWidth;
+  canvasCorrectedHeight;
+  xRayImage;
 
   constructor(
     private eventEmitterService: EventEmitterService,
@@ -38,6 +45,7 @@ export class XRayPatientDetailsComponent implements OnInit {
   /*** class init function ***/
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
+    this.annotatedImage = sessionStorage.getItem('annotatedImage');
     if (this.patientInfo === undefined) {
       const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientInfo = patientInfo;
@@ -91,6 +99,7 @@ export class XRayPatientDetailsComponent implements OnInit {
       const findings = JSON.parse(sessionStorage.getItem('findings'));
       this.annotatedFindings = findings;
     }
+    this.setCanvasDimension();
   }
 
   /*** function to store impressions data ***/
@@ -111,5 +120,44 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   commentsChange(data) {
     this.eventEmitterService.commentSubject.next(data);
+  }
+
+  /*** get the dimensions for image container ***/
+  setCanvasDimension() {
+    this.canvasDynamicWidth = 367;
+    this.canvasDynamicHeight = 367;
+    this.generateCanvas();
+  }
+
+  /*** generate a canvas using fabric.js ***/
+  generateCanvas() {
+    fabric.Image.fromURL(this.annotatedImage, (img) => {
+      this.xRayImage = img;
+      this.setCanvasBackground();
+    });
+  }
+
+  /*** function to compare image vs container aspect ratio width ***/
+  getWidthFirst(imageAspectRatio, containerAspectRatio) {
+    return imageAspectRatio > containerAspectRatio;
+  }
+
+  /*** setting BackgroundImage for canvas block ***/
+  setCanvasBackground() {
+    const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
+    const containerAspectRatio =
+      this.canvasDynamicWidth / this.canvasDynamicHeight;
+    const widthFirst = this.getWidthFirst(
+      imageAspectRatio,
+      containerAspectRatio
+    );
+
+    if (widthFirst) {
+      this.canvasCorrectedWidth = this.canvasDynamicWidth;
+      this.canvasCorrectedHeight = this.canvasCorrectedWidth / imageAspectRatio;
+    } else {
+      this.canvasCorrectedHeight = this.canvasDynamicHeight;
+      this.canvasCorrectedWidth = this.canvasCorrectedHeight * imageAspectRatio;
+    }
   }
 }

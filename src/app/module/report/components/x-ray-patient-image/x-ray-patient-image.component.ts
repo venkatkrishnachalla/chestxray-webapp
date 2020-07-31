@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { PatientDetailData } from 'src/app/module/auth/interface.modal';
-
+import { fabric } from 'fabric';
 @Component({
   selector: 'cxr-x-ray-patient-image',
   templateUrl: './x-ray-patient-image.component.html',
