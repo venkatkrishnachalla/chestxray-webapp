@@ -50,6 +50,7 @@ export class XRayPatientDetailsComponent implements OnInit {
   /*** class init function ***/
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
+    this.eventEmitterService.commentSubject.next('');
     this.annotatedImage = sessionStorage.getItem('annotatedImage');
     if (this.patientInfo === undefined) {
       const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
