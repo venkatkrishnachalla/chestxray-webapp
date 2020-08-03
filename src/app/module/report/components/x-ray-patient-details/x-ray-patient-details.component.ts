@@ -104,11 +104,13 @@ export class XRayPatientDetailsComponent implements OnInit {
         }
         this.annotatedFindings = findings;
         this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
+        
       });
     if (Object.keys(this.annotatedFindings).length === 0) {
       const findings = JSON.parse(sessionStorage.getItem('findings'));
       this.annotatedFindings = findings;
       this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
+
     }
     this.setCanvasDimension();
   }
