@@ -25,12 +25,12 @@ export class XRayPatientDetailsComponent implements OnInit {
   clinicalHistory = '';
   pdfComments: string;
   annotatedImage: string;
-  canvasDynamicWidth;
-  canvasDynamicHeight;
-  canvasCorrectedWidth;
-  canvasCorrectedHeight;
-  xRayImage;
-  pdfFindings: any;
+  canvasDynamicWidth: number;
+  canvasDynamicHeight: number;
+  canvasCorrectedWidth: number;
+  canvasCorrectedHeight: number;
+  xRayImage: any;
+  pdfFindings: string;
 
   constructor(
     private eventEmitterService: EventEmitterService,
@@ -50,6 +50,7 @@ export class XRayPatientDetailsComponent implements OnInit {
   /*** class init function ***/
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
+    this.eventEmitterService.commentSubject.next('');
     this.annotatedImage = sessionStorage.getItem('annotatedImage');
     if (this.patientInfo === undefined) {
       const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
@@ -102,10 +103,12 @@ export class XRayPatientDetailsComponent implements OnInit {
           findings.splice(findings.indexOf(' '), 1);
         }
         this.annotatedFindings = findings;
+        this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
       });
     if (Object.keys(this.annotatedFindings).length === 0) {
       const findings = JSON.parse(sessionStorage.getItem('findings'));
       this.annotatedFindings = findings;
+      this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
     }
     this.setCanvasDimension();
   }
@@ -130,7 +133,7 @@ export class XRayPatientDetailsComponent implements OnInit {
     this.eventEmitterService.commentSubject.next(data);
   }
 
-  updateFindings(evt, index){
+  updateFindings(evt, index) {
     this.annotatedFindings.splice(index, 1, evt.target.textContent.slice(2));
     this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
   }
@@ -174,4 +177,3 @@ export class XRayPatientDetailsComponent implements OnInit {
     }
   }
 }
-
