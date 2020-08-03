@@ -30,7 +30,9 @@ export class FindingsComponent implements OnInit {
     this.findings = [];
     this.order = this.constants.findings;
     this.order.forEach(data => {
-      this.findings.push(data.Name + ': -');
+      if (data.Name !== 'ADDITIONAL'){
+        this.findings.push(data.Name + ': ');
+      }
     });
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse: EllipseData) => {
