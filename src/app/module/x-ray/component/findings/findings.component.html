@@ -8,7 +8,7 @@
     />
   </mat-card-title>
   <mat-card-content class="findings-content" *ngFor="let finding of findings; let i = index">
-    <button></button>
-    <span class="textarea" role="textbox" (keydown)="preventBaseValue($event)" (focusout)="updateFindings($event, i)" contenteditable>{{ finding }}</span>
+    <button *ngIf="finding !== ' '"></button>
+    <span class="textarea" role="textbox" [ngClass]="{additionalFindings: finding === ' ' }"(keydown)="preventBaseValue($event)" (focusout)="updateFindings($event, i)" contenteditable>{{ finding }}</span>
   </mat-card-content>
 </mat-card>

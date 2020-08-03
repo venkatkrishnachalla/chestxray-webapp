@@ -30,7 +30,12 @@ export class FindingsComponent implements OnInit {
     this.findings = [];
     this.order = this.constants.findings;
     this.order.forEach(data => {
-      this.findings.push(data.Name + ': -');
+      if (data.Name !== 'ADDITIONAL'){
+        this.findings.push(data.Name + ': ');
+      }
+      else{
+        this.findings.push(' ');
+      }
     });
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse: EllipseData) => {
@@ -39,6 +44,9 @@ export class FindingsComponent implements OnInit {
           this.findings.splice(index, 1, objEllipse);
         }
         else{
+          if (this.findings[this.findings.length - 1] === ' '){
+            this.findings.splice(-1);
+          }
           this.findings.push(objEllipse);
         }
       }
@@ -102,7 +110,12 @@ export class FindingsComponent implements OnInit {
   }
 
   updateFindings(evt, index){
-    this.findings.splice(index, 1, evt.target.textContent);
+    if (evt.target.textContent === ''){
+      this.findings.splice(index, 1, ' ');
+    }
+    else{
+      this.findings.splice(index, 1, evt.target.textContent);
+    }
   }
 
   preventBaseValue(evt){
