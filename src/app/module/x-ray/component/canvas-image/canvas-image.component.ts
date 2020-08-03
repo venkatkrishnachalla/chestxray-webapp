@@ -424,6 +424,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         isMLApi: true,
       };
     });
+    if (mlList.data.ndarray[0].Impression.length === 0){
+      const impressionObject = {
+        title: 'impression',
+        id: '00',
+        name: 'No significant abnormality detected',
+        isMLApi: true,
+      };
+      this.eventEmitterService.onComponentDataShared(impressionObject);
+    }
 
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
     const findingsOrdered = [];
@@ -731,11 +740,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedDiseases = true;
     if (item.length === 0) {
       this.selectedDisease = event.target.textContent.replace(
-        /[^a-zA-Z ]/g,
+        /[^a-zA-Z/]/g,
         ''
       );
     } else if (item === '') {
-      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z]/g, '');
+      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z/]/g, '');
     }
     const abnormality = [];
     const names = [];

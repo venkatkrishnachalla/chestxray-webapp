@@ -98,6 +98,9 @@ export class XRayPatientDetailsComponent implements OnInit {
     this.xrayAnnotatedImpression
       .xrayAnnotatedFindingsService()
       .subscribe((findings: any[]) => {
+        if (findings.indexOf(' ') !== -1){
+          findings.splice(findings.indexOf(' '), 1);
+        }
         this.annotatedFindings = findings;
       });
     if (Object.keys(this.annotatedFindings).length === 0) {

@@ -85,7 +85,7 @@ export class XRayComponent implements OnInit, OnDestroy {
           this.actionPanel.disableAskAiButton();
           this.spinnerService.hide();
           if (mLArray.length === 0 || mLArray === undefined) {
-            this.toastrService.info('No ML Annotations found');
+            this.toastrService.info('No significant abnormality detected');
           } else {
             this.toastrService.success('ML Annotations updated successfully');
           }
