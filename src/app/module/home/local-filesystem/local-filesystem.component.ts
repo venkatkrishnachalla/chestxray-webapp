@@ -130,7 +130,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     );
     const imageResponse = {
       base64Image: this.imageSource,
-      filename: this.fileName,
+      filename: '',
     };
     const patientDetail = {
       name: this.uploadImageForm.value.name,
@@ -151,7 +151,8 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('patientDetail', JSON.stringify(patientDetail));
     sessionStorage.setItem('askAiSelection', 'false');
     sessionStorage.removeItem('x-ray_Data');
-    sessionStorage.removeItem('impression')
+    sessionStorage.removeItem('impression');
+    sessionStorage.removeItem('findings');
     this.router.navigate(['/x-ray'], {
       state: { patientDetails: this.uploadImageForm.value },
     });
