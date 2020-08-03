@@ -222,19 +222,85 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.on('object:selected', (evt) => {
       this.actionIconsModelDispaly();
     });
-    this.canvas.on('object:scaling', (e) => {
-      this.canvas.getActiveObject().set('strokeUniform', true);
-      this.canvas.requestRenderAll();
-    });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
     });
-    this.canvas.on('object:moving', (evt) => {
+    this.canvas.on('object:moving', (e) => {
+      const obj = e.target;
+      // if object is too big ignore
+      if (
+        obj.currentHeight > obj.canvas.height ||
+        obj.currentWidth > obj.canvas.width
+      ) {
+        return;
+      }
+      obj.setCoords();
+      // top-left  corner
+      if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
+        obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
+        obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
+      }
+      // bot-right corner
+      if (
+        obj.getBoundingRect().top + obj.getBoundingRect().height >
+          obj.canvas.height ||
+        obj.getBoundingRect().left + obj.getBoundingRect().width >
+          obj.canvas.width
+      ) {
+        obj.top = Math.min(
+          obj.top,
+          obj.canvas.height -
+            obj.getBoundingRect().height +
+            obj.top -
+            obj.getBoundingRect().top
+        );
+        obj.left = Math.min(
+          obj.left,
+          obj.canvas.width -
+            obj.getBoundingRect().width +
+            obj.left -
+            obj.getBoundingRect().left
+        );
+      }
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
+    });
+    let left1 = 0;
+    let top1 = 0;
+    let scale1x = 0;
+    let scale1y = 0;
+    let width1 = 0;
+    let height1 = 0;
+    this.canvas.on('object:scaling', (e) => {
+      const obj = e.target;
+      obj.setCoords();
+      const brNew = obj.getBoundingRect();
+
+      if (
+        brNew.width + brNew.left >= obj.canvas.width ||
+        brNew.height + brNew.top >= obj.canvas.height ||
+        brNew.left < 0 ||
+        brNew.top < 0
+      ) {
+        obj.left = left1;
+        obj.top = top1;
+        obj.scaleX = scale1x;
+        obj.scaleY = scale1y;
+        obj.width = width1;
+        obj.height = height1;
+      } else {
+        left1 = obj.left;
+        top1 = obj.top;
+        scale1x = obj.scaleX;
+        scale1y = obj.scaleY;
+        width1 = obj.width;
+        height1 = obj.height;
+      }
+      this.canvas.getActiveObject().set('strokeUniform', true);
+      this.canvas.requestRenderAll();
     });
     this.canvas.on('object:moved', (evt) => {
       this.actionIconsModelDispaly();
