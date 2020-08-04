@@ -32,11 +32,26 @@ export class ErrorMessageComponent implements OnInit {
           case 403:
             this.errorMessage = 'Forbidden';
             break;
+          case 415:
+            this.errorMessage = 'Method Not Allowed';
+            break;
+          case 415:
+            this.errorMessage = 'Unsupported Media Type';
+            break;
           case 500:
             this.errorMessage = 'Internal Server Error';
             break;
-          case 0:
-            this.errorMessage = 'Server not reachable';
+          case 501:
+            this.errorMessage = 'Not Implemented';
+            break;
+          case 502:
+            this.errorMessage = 'Bad Gateway';
+            break;
+          case 503:
+            this.errorMessage = 'Service Unavailable';
+            break;
+          case 504:
+            this.errorMessage = 'Gateway Timeout';
             break;
 
           default:
