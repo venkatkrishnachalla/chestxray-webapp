@@ -20,9 +20,6 @@ export class ErrorMessageComponent implements OnInit {
         this.showError = true;
         this.errorStatus = 'Error' + ' ' + errorResponse.data.status;
         switch (errorResponse.data.status) {
-          case 404:
-            this.errorMessage = 'Not Found';
-            break;
           case 204:
             this.errorMessage = 'No Content';
             break;
@@ -32,7 +29,10 @@ export class ErrorMessageComponent implements OnInit {
           case 403:
             this.errorMessage = 'Forbidden';
             break;
-          case 415:
+          case 404:
+            this.errorMessage = 'Not Found';
+            break;
+          case 405:
             this.errorMessage = 'Method Not Allowed';
             break;
           case 415:
