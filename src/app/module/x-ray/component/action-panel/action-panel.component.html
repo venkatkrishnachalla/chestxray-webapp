@@ -4,14 +4,14 @@
       <button mat-button (click)="askAI()" [disabled]="disableAskAI">
         Ask AI <img src="../../../assets/images/askAI.png" alt="Ask AI" />
       </button>
-      <button mat-button>
+      <button mat-button [ngClass]="'disabled'" [disabled]="disableActionItems">
         Pathology
         <img
           src="../../../assets/images/add pathology active.png"
           alt="Add Pathology"
         />
       </button>
-      <button mat-button>
+      <button mat-button [ngClass]="'disabled'" [disabled]="disableActionItems">
         Timeline<img
           src="../../../assets/images/timeline icon.png"
           alt="Timeline"
@@ -20,8 +20,13 @@
     </div>
 
     <div class="actionItem">
-      <div class="actions" *ngFor="let actions of actionPanel">
+      <div
+        class="actions"
+        *ngFor="let actions of actionPanel"
+        [ngStyle]="{ cursor: 'no-drop' }"
+      >
         <img
+          class="icon-disabled-BG"
           [src]="actions.image"
           [alt]="actions.alt"
           [title]="actions.title"
@@ -30,12 +35,22 @@
     </div>
 
     <div class="middleItems">
-      <div class="menus" *ngFor="let middle of middlePanel; let i = index">
+      <div
+        class="menus"
+        *ngFor="let middle of middlePanel; let i = index"
+        [ngStyle]="{ cursor: i === 2 || i === 3 ? 'pointer' : 'no-drop' }"
+      >
         <img
-          [ngClass]="{ 'icon-select-BG': middlePanel[i].active }"
+          [ngClass]="
+            middlePanel[i].active && (i === 2 || i === 3)
+              ? 'icon-select-BG'
+              : i === 2 || i === 3
+              ? 'icon-active-BG'
+              : 'icon-disabled-BG'
+          "
           [src]="middle.image"
           [alt]="middle.alt"
-          (click)="iconAction(middlePanel, i)"
+          (click)="i === 2 || i === 3 ? iconAction(middlePanel, i) : ''"
           [title]="middle.title"
         />
       </div>

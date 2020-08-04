@@ -46,6 +46,7 @@ export class ActionPanelComponent implements OnInit {
   middlePanel: { image: string; alt: string; title: string; active: boolean }[];
   brightnessPanel: { image: string; alt: string; title: string }[];
   disableAskAI: boolean;
+  disableActionItems: boolean = true;
 
   constructor(private eventEmitterService: EventEmitterService) {}
 
