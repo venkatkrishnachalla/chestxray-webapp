@@ -35,6 +35,9 @@ export class ErrorMessageComponent implements OnInit {
           case 500:
             this.errorMessage = 'Internal Server Error';
             break;
+          case 0:
+            this.errorMessage = 'Server not reachable';
+            break;
 
           default:
             this.errorStatus = '';
