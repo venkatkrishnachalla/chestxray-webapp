@@ -101,6 +101,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   selectedMainDisease = false;
   selectedSubDisease = false;
   type = '';
+  right;
+  top;
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
@@ -243,20 +245,26 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /*** action icons model display event ***/
   actionIconsModelDispaly() {
-    const bodyRect = document.body.getBoundingClientRect();
-    const right = bodyRect.right - this.canvas.getActiveObject().left;
-    const top = this.canvas.getActiveObject().top - bodyRect.top;
+    this.markactionModelPosition();
     if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
       this.dialog.open(this.controlsModel, {
         panelClass: 'my-class',
         hasBackdrop: false,
         // tslint:disable-next-line: max-line-length
         position:
-          this.canvas.getActiveObject().top < 60
-            ? { right: right - 390 + 'px', top: top + 130 + 'px' }
-            : { right: right - 390 + 'px', top: top + 'px' },
+          this.canvas.getActiveObject().top < 80
+            ? { right: this.right - 390 + 'px', top: this.top + 130 + 'px' }
+            : { right: this.right - 390 + 'px', top: this.top - 50 + 'px' },
       });
     }
+  }
+
+  markactionModelPosition() {
+    const bodyRect = document.body.getBoundingClientRect();
+    const right = bodyRect.right - this.canvas.getActiveObject().left;
+    const top = this.canvas.getActiveObject().top - bodyRect.top;
+    this.right = right;
+    this.top = top;
   }
 
   /*** update search model ***/

@@ -131,7 +131,7 @@ export const pathology = {
       Names: [],
     },
     {
-      abnormality: 'Pleural Effusion',
+      abnormality: 'Pleural  Effusion',
       Names: ['Pleural Effusion', 'Pleural Thickening'],
     },
     {
@@ -172,12 +172,16 @@ export const pathology = {
       Names: ['mastectomy', 'pneumonectomy', 'rib resection', 'sternotomy'],
     },
   ],
-  findings: [{Name: 'LUNG FIELDS', Desc: 'Visualised lung fields are clear.'},
-              {Name: 'COSTOPHRENIC_ANGLES', Desc: 'Both costophrenic angles are clear'},
-              {Name: 'HILAR/MEDIASTINAL', Desc: 'No hilar or mediastinal mass seen.'},
-              {Name: 'CARDIAC SILHOUETTE', Desc: 'Cardiac silhouette is within normal limits.'},
-              {Name: 'DOMES OF DIAPHRAGM', Desc: 'Both domes of diaphragm are normal.'},
-              {Name: 'BONY THORAX', Desc: 'Visualised bony thorax is normal.'},                                              
-              {Name: 'ADDITIONAL', Desc: ''},
-             ]
+  findings: [
+    { Name: 'LUNG FIELDS', Desc: 'Visualised lung fields are clear.' },
+    { Name: 'COSTOPHRENIC_ANGLES', Desc: 'Both costophrenic angles are clear' },
+    { Name: 'HILAR/MEDIASTINAL', Desc: 'No hilar or mediastinal mass seen.' },
+    {
+      Name: 'CARDIAC SILHOUETTE',
+      Desc: 'Cardiac silhouette is within normal limits.',
+    },
+    { Name: 'DOMES OF DIAPHRAGM', Desc: 'Both domes of diaphragm are normal.' },
+    { Name: 'BONY THORAX', Desc: 'Visualised bony thorax is normal.' },
+    { Name: 'ADDITIONAL', Desc: '' },
+  ],
 };
