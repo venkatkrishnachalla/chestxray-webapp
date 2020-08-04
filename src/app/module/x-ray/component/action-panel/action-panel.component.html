@@ -1,9 +1,13 @@
 <div class="x-ray-left-container">
   <div class="action-panel">
     <div class="topItem">
-      <button mat-button (click)="askAI()" [disabled]="disableAskAI">
-        Ask AI <img src="../../../assets/images/askAI.png" alt="Ask AI" />
-      </button>
+      <div
+        matTooltip="{{askAiTitle}}"
+        [matTooltipDisabled]="!disableAskAI">
+        <button mat-button (click)="askAI()" [disabled]="disableAskAI">
+          Ask AI <img src="../../../assets/images/askAI.png" alt="Ask AI" />
+        </button>
+      </div>
       <button mat-button>
         Pathology
         <img
