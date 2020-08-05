@@ -38,19 +38,23 @@
       <div
         class="menus"
         *ngFor="let middle of middlePanel; let i = index"
-        [ngStyle]="{ cursor: i === 2 || i === 3 ? 'pointer' : 'no-drop' }"
+        [ngStyle]="{
+          cursor: middle.implemented === true ? 'pointer' : 'no-drop'
+        }"
       >
         <img
           [ngClass]="
-            middlePanel[i].active && (i === 2 || i === 3)
+            middlePanel[i].active && middle.implemented === true
               ? 'icon-select-BG'
-              : i === 2 || i === 3
+              : middle.implemented === true
               ? 'icon-active-BG'
               : 'icon-disabled-BG'
           "
           [src]="middle.image"
           [alt]="middle.alt"
-          (click)="i === 2 || i === 3 ? iconAction(middlePanel, i) : ''"
+          (click)="
+            middle.implemented === true ? iconAction(middlePanel, i) : ''
+          "
           [title]="middle.title"
         />
       </div>
