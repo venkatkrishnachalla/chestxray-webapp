@@ -1,9 +1,10 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, ViewChild } from '@angular/core';
 import { homeConstants } from 'src/app/constants/homeConstants';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { Subject } from 'rxjs';
 
 interface PatientListData {
   age: number;
@@ -39,6 +40,9 @@ export class PatientListComponent implements OnInit {
   showTable: boolean;
   overlayNoRowsTemplate: string;
   errorMessage: string;
+  showPatientInfo: boolean;
+  patientInfoSubject: Subject<any> = new Subject<any>();
+  @ViewChild('toggleButton') toggleButton: ElementRef;
 
   constructor(
     private elementRef: ElementRef,
@@ -114,7 +118,8 @@ export class PatientListComponent implements OnInit {
 
   /*** onActionViewClick icon click function ***/
   public onActionViewClick(data: any) {
-    alert('View action clicked');
+    this.showPatientInfo = true;
+    this.patientInfoSubject.next(data);
   }
 
   /*** onActionRedirectClick function , it will redirect to xray page ***/
@@ -123,5 +128,9 @@ export class PatientListComponent implements OnInit {
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
     this.router.navigate(['x-ray'], { state: { patientDetails: data } });
+  }
+
+  toggleMenu() {
+    this.showPatientInfo = !this.showPatientInfo;
   }
 }

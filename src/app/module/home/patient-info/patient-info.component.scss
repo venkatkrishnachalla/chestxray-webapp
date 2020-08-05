@@ -6,8 +6,10 @@
   border-radius: 10px;
   box-shadow: 0 1px 1px rgba(255, 253, 253, 0.3),
     0 1px 25px 8px rgba(0, 0, 0, 0.22);
-  display: block;
-  margin: 5rem auto;
+  background-color: #ffffff;
+  position: absolute;
+  top: 15%;
+  left: 22%;
   .patient-card-header {
     text-align: center;
     margin: 1.5rem;
@@ -22,8 +24,18 @@
         margin: 1rem;
         span {
           font-weight: 500;
+          .status {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: none;
+            margin-bottom: 2px;
+          }
         }
       }
     }
+  }
+  @media (max-width: 768px) {
+    width: 450px;
   }
 }

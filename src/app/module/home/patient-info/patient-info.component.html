@@ -1,42 +1,51 @@
-<div class="patientInfoContainer">
+<div *ngIf="showPatientInfo" class="patientInfoContainer">
   <div class="patient-card-header">
     <h1>PATIENT DETAILS</h1>
   </div>
   <div class="patient-card-body">
     <div class="row">
-      <div class="col-md-6"><span>Patient ID:</span> {{ patientId }}</div>
-      <div class="col-md-6"><span>Status:</span> {{ status }}</div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6"><span>Name:</span> {{ name }}</div>
-      <div class="col-md-6"><span>Sex:</span> [{{ sex }}]</div>
-      <div class="col-md-6"><span>Age:</span> {{ age }}</div>
-    </div>
-
-    <div class="row">
       <div class="col-md-6">
-        <span>Date of creation:</span> {{ dateOfCreation | date: 'dd-MM-yyyy' }}
+        <span>Patient ID:</span> {{ patientDetail.hospitalPatientId }}
       </div>
       <div class="col-md-6">
-        <span>Time:</span> {{ time | date: 'HH:mm:ss' }}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <span>Ref. Physician:</span> {{ refPhysician }}
+        <span
+          >Status:
+          <i
+            class="status"
+            [ngStyle]="{
+              'background-color':
+                patientDetail.status === true ? '#00ff00' : '#ff0000'
+            }"
+          ></i
+        ></span>
+        {{ patientDetail.status === false ? 'Emergency' : 'Normal' }}
       </div>
     </div>
 
     <div class="row">
+      <div class="col-md-6"><span>Name:</span> {{ patientDetail.name }}</div>
+      <div class="col-md-6"><span>Sex:</span> {{ patientDetail.sex }}</div>
+      <div class="col-md-6"><span>Age:</span> {{ patientDetail.age }}</div>
+    </div>
+
+    <div class="row">
       <div class="col-md-6">
-        <span>Clinical History:</span>
-        {{
-          clinicalHistory ||
-            'lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. at vero eos et accusam et justo duo dolores et ea rebum. stet clita kasd gubergren, no sea takimata sanctus est lorem ipsum dolor sit amet. lorem ipsum dolor sit amet, consetetur sadipscing'
-        }}
+        <span>Date of creation:</span>
+        {{ patientDetail.lastUpdate | date: 'yyyy-MM-dd' }}
       </div>
+      <div class="col-md-6">
+        <span>Time:</span> {{ patientDetail.lastUpdate | date: 'HH:mm:ss' }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <span>Ref. Physician:</span> {{ patientDetail.referringPhysicianName }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6"><span>Clinical History:</span> {{ history }}</div>
     </div>
   </div>
 </div>

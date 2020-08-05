@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Time } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'cxr-patient-info',
@@ -7,17 +8,21 @@ import { Time } from '@angular/common';
   styleUrls: ['./patient-info.component.scss'],
 })
 export class PatientInfoComponent implements OnInit {
-  name: string = 'Pramoda';
-  age: number = 25;
-  patientId: number = 1001;
-  status: string = 'Emergency';
-  sex: string = 'Male';
-  dateOfCreation: Date = new Date();
-  time: Date = new Date();
-  refPhysician: string = 'Prajwal';
-  clinicalHistory: string;
+  @Input() patientInfo: Observable<void>;
+  infoSubscription: any;
+  patientDetail: any;
+  showPatientInfo: boolean;
+  history = '-';
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.infoSubscription = this.patientInfo.subscribe((patientInfo: any) => {
+      if (patientInfo) {
+        this.patientDetail = patientInfo;
+        this.showPatientInfo = true;
+      }
+      console.log(patientInfo);
+    });
+  }
 }
