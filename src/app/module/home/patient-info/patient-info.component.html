@@ -11,16 +11,16 @@
       <div class="col-md-6">
         <span>Patient ID:</span> {{ patientDetail.hospitalPatientId }}
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6 status-align">
         <span
           >Status:
-          <i
+          <button
             class="status"
             [ngStyle]="{
               'background-color':
-                patientDetail.status === true ? '#00ff00' : '#ff0000'
+                patientDetail.status === true ? '#26b526' : '#ff0000'
             }"
-          ></i
+          ></button
         ></span>
         {{ patientDetail.status === false ? 'Emergency' : 'Normal' }}
       </div>
