@@ -90,11 +90,7 @@ export class PatientListComponent implements OnInit {
         this.showError = false;
         this.rowData = patientsList;
         const patientRows = patientsList;
-        patientRows.sort(
-          (d1, d2) =>
-            new Date(d2.lastUpdate).getTime() -
-            new Date(d1.lastUpdate).getTime()
-        );
+        patientRows.sort((d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId);
         patientRows.forEach((value, index) => {
           value.index = index;
         });

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Subscription } from 'rxjs';
 import {
@@ -24,8 +24,6 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
   currentPatientData: PatientDetailData;
   disablePrevious: boolean;
   disableNext: boolean;
-  mySubscription: any;
-  currentRouter;
 
   constructor(public router: Router, private authService: AuthService) {}
 
