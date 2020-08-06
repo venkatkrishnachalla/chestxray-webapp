@@ -9,6 +9,7 @@ import { actionPanelConstants } from '../../../../constants/actionPanelConstants
 import { Options } from 'ng5-slider';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'cxr-action-panel',
@@ -18,6 +19,7 @@ import { Router } from '@angular/router';
 export class ActionPanelComponent implements OnInit {
   @Output() askAIEvent = new EventEmitter();
   value = 70;
+  askAiTitle = 'Already ML Annotations updated';
   options: Options = {
     floor: 0,
     ceil: 100,
@@ -52,7 +54,7 @@ export class ActionPanelComponent implements OnInit {
   }[];
   brightnessPanel: { image: string; alt: string; title: string }[];
   disableAskAI: boolean;
-  disableActionItems: boolean = true;
+  disableActionItems = true;
 
   constructor(private eventEmitterService: EventEmitterService) {}
 
