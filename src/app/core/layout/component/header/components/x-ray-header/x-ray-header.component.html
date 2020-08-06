@@ -1,7 +1,16 @@
 <div class="navigate-index">
   <section class="navigation-buttons">
-    <div class="prev-button" *ngIf="isHospitalRadiologist">
-      <button mat-button *ngIf="router.url != '/report'">
+    <div
+      class="prev-button"
+      *ngIf="router.url != '/report' && isHospitalRadiologist"
+    >
+      <button
+        mat-button
+        (click)="previousPatient()"
+        [ngClass]="{ 'disable-color': disablePrevious }"
+        [disabled]="disablePrevious"
+        title="Previous"
+      >
         <img
           class="pre-image"
           src="../../../../../../../assets/images/arrow back.png"
@@ -26,7 +35,13 @@
       class="next-button"
       *ngIf="router.url != '/report' && isHospitalRadiologist"
     >
-      <button mat-button>
+      <button
+        mat-button
+        (click)="nextPatient()"
+        [ngClass]="{ 'disable-color': disableNext }"
+        [disabled]="disableNext"
+        title="Next"
+      >
         Next&nbsp;
         <img
           class="next-image"

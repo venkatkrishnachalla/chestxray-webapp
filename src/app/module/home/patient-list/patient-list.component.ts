@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 interface PatientListData {
+  forEach: any;
+  sort: any;
   age: number;
   birthDate: string;
   hospitalPatientId: string;
@@ -77,7 +79,7 @@ export class PatientListComponent implements OnInit {
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
   }
 
-  /** get patient list function ***/
+  /*** get patient list function ***/
   getPatientList() {
     this.showloader = true;
     this.showTable = false;
@@ -87,6 +89,13 @@ export class PatientListComponent implements OnInit {
         this.showTable = true;
         this.showError = false;
         this.rowData = patientsList;
+        const patientRows = patientsList;
+        patientRows.sort((d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId);
+        patientRows.forEach((value, index) => {
+          value.index = index;
+        });
+        const sessionRows = JSON.stringify(patientRows);
+        sessionStorage.setItem('patientRows', sessionRows);
       },
       (errorMessage: string) => {
         this.showloader = false;
@@ -98,7 +107,7 @@ export class PatientListComponent implements OnInit {
     );
   }
 
-  /** row click function ***/
+  /*** row click function ***/
   public onRowClicked(e) {
     if (e.event.target !== undefined) {
       const data = e.data;
