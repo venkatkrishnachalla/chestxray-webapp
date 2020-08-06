@@ -7,7 +7,7 @@ import {
   TemplateRef,
   ViewChild,
   Output,
-  EventEmitter,
+  EventEmitter
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
@@ -424,7 +424,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         isMLApi: true,
       };
     });
-    if (mlList.data.ndarray[0].Impression.length === 0){
+    if (mlList.data.ndarray[0].Impression.length === 0) {
       const impressionObject = {
         title: 'impression',
         id: '00',
@@ -458,7 +458,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           // tslint:disable-next-line: max-line-length
           if (currentFinding.length !== 0) {
             finalFinding +=
-              currentFinding[0].sentence[0].toUpperCase() + currentFinding[0].sentence.substr(1).toLowerCase() + '. ';
+              currentFinding[0].sentence[0].toUpperCase() +
+              currentFinding[0].sentence.substr(1).toLowerCase() +
+              '. ';
           } else {
             finalFinding += '';
           }
@@ -744,7 +746,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         ''
       );
     } else if (item === '') {
-      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z/]/g, '');
+      this.selectedDisease = event.target.textContent.replace(
+        /[^a-zA-Z/]/g,
+        ''
+      );
     }
     const abnormality = [];
     const names = [];
