@@ -1,6 +1,10 @@
-<div *ngIf="showPatientInfo" class="patientInfoContainer">
+<div *ngIf="showPatientInfo" class="patientInfoContainer" [hidden]="!hideInfo">
   <div class="patient-card-header">
-    <h1>PATIENT DETAILS</h1>
+    <h1>
+      <span class="material-icons patient-info-icon">person</span> PATIENT
+      DETAILS
+    </h1>
+    <span class="cross-icon" (click)="featureHide()"> X </span>
   </div>
   <div class="patient-card-body">
     <div class="row">

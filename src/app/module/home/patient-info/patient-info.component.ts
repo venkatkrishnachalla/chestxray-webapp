@@ -13,6 +13,7 @@ export class PatientInfoComponent implements OnInit {
   patientDetail: any;
   showPatientInfo: boolean;
   history = '-';
+  hideInfo: boolean;
 
   constructor() {}
 
@@ -22,7 +23,11 @@ export class PatientInfoComponent implements OnInit {
         this.patientDetail = patientInfo;
         this.showPatientInfo = true;
       }
-      console.log(patientInfo);
+      this.hideInfo = true;
     });
+  }
+
+  featureHide(): void {
+    this.hideInfo = false;
   }
 }
