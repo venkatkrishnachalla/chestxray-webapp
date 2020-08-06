@@ -6,6 +6,8 @@ export interface SignInResponse {
 }
 
 export interface PatientListData {
+  length: number;
+  findIndex: any;
   age: number;
   birthDate: string;
   hospitalPatientId: string;
