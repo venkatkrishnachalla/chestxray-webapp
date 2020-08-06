@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { SpinnerService } from '../../shared/UI/spinner/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import { SignInResponse } from '../interface.modal';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-sign-in',
@@ -17,6 +18,7 @@ export class SignInComponent implements OnInit {
   auth: { email: string; password: string } = { email: '', password: '' };
   hide = true;
   errorMessage = '';
+  errorStatus: any;
   breakpoint: number;
   constructor(
     private alert: SnackbarService,
@@ -24,11 +26,18 @@ export class SignInComponent implements OnInit {
     private console: ConsoleService,
     private router: Router,
     private spinnerService: SpinnerService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private eventEmitterService: EventEmitterService
   ) {}
 
   /*** class init function ***/
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.eventEmitterService.invokeDisplayErrorMessage.subscribe(
+      (statusCode) => {
+        this.errorStatus = statusCode;
+      }
+    );
+  }
 
   /*** on sign in function ***/
   onSignIn(form: NgForm) {
@@ -48,6 +57,8 @@ export class SignInComponent implements OnInit {
             this.toastrService.error(
               'Please check your network connections and try again.'
             );
+          } else if (this.errorMessage === 'Server not reachable') {
+            this.toastrService.error('Server not reachable');
           } else {
             this.toastrService.error('Invalid Username or Password');
           }
@@ -62,7 +73,7 @@ export class SignInComponent implements OnInit {
         );
       } else {
         this.toastrService.error('Enter all the required fields');
-      } 
+      }
     }
   }
 }
