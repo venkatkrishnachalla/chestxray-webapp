@@ -22,7 +22,7 @@
             }"
           ></button
         ></span>
-        {{ patientDetail.status === false ? 'Emergency' : 'Normal' }}
+        {{ patientDetail.status === false ? 'Unreported' : 'Drafted' }}
       </div>
     </div>
 
@@ -35,7 +35,7 @@
     <div class="row">
       <div class="col-md-6">
         <span>Date of creation:</span>
-        {{ patientDetail.lastUpdate | date: 'yyyy-MM-dd' }}
+        {{ patientDetail.lastUpdate | date: 'dd-MM-yyyy' }}
       </div>
       <div class="col-md-6">
         <span>Time:</span> {{ patientDetail.lastUpdate | date: 'HH:mm:ss' }}
