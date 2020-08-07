@@ -9,7 +9,6 @@ import { throwError, BehaviorSubject } from 'rxjs';
 import User from './user.modal';
 import { Router } from '@angular/router';
 import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
-import { ToastrService } from 'ngx-toastr';
 export const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
 const FIREBASE_SIGN_IN_ENDPOINT =
   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
@@ -35,8 +34,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private endpoint: ApiEndPointService,
-    private router: Router,
-    private toastrService: ToastrService
+    private router: Router
   ) {
     this.userSubject = new BehaviorSubject<User>(null);
   }

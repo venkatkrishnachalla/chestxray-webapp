@@ -68,7 +68,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
     this.router
-      .navigateByUrl('/home/my-account', { skipLocationChange: true })
+      .navigateByUrl('/', { skipLocationChange: true })
       .then(() =>
         this.router.navigate(['/x-ray'], {
           state: { patientDetails: filterData },
