@@ -99,9 +99,7 @@ describe('CanvasImageComponent', () => {
         filename: 'xyzd',
       };
       const mock = JSON.stringify(PatientImageMock);
-      xRayServiceSpy.getPatientImage.and.returnValue(
-        of(mock)
-      );
+      xRayServiceSpy.getPatientImage.and.returnValue(of(mock));
       spyOn(document, 'getElementById').and.returnValue(controlCheckbox);
       spyOn(component, 'setCanvasDimension');
       spyOn(component, 'generateCanvas');

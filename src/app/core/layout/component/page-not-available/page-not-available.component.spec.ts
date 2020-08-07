@@ -8,9 +8,8 @@ describe('PageNotAvailableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageNotAvailableComponent ]
-    })
-    .compileComponents();
+      declarations: [PageNotAvailableComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

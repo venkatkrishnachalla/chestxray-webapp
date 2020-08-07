@@ -29,22 +29,22 @@ export class FindingsComponent implements OnInit {
   getFindings() {
     this.findings = [];
     this.order = this.constants.findings;
-    this.order.forEach(data => {
-      if (data.Name !== 'ADDITIONAL'){
+    this.order.forEach((data) => {
+      if (data.Name !== 'ADDITIONAL') {
         this.findings.push(data.Name + ': ');
-      }
-      else{
+      } else {
         this.findings.push(' ');
       }
     });
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse: EllipseData) => {
-        const index = this.findings.findIndex(item => item.split(':')[0] === objEllipse.split(':')[0]);
-        if (index !== -1){
+        const index = this.findings.findIndex(
+          (item) => item.split(':')[0] === objEllipse.split(':')[0]
+        );
+        if (index !== -1) {
           this.findings.splice(index, 1, objEllipse);
-        }
-        else{
-          if (this.findings[this.findings.length - 1] === ' '){
+        } else {
+          if (this.findings[this.findings.length - 1] === ' ') {
             this.findings.splice(-1);
           }
           this.findings.push(objEllipse);
@@ -109,18 +109,17 @@ export class FindingsComponent implements OnInit {
     this.xrayAnnotatedService.xrayAnnotatedFindings(this.findings);
   }
 
-  updateFindings(evt, index){
-    if (evt.target.textContent === ''){
+  updateFindings(evt, index) {
+    if (evt.target.textContent === '') {
       this.findings.splice(index, 1, ' ');
-    }
-    else{
+    } else {
       this.findings.splice(index, 1, evt.target.textContent);
     }
   }
 
-  preventBaseValue(evt){
+  preventBaseValue(evt) {
     if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
-      if (evt.key.charCodeAt() === 66){
+      if (evt.key.charCodeAt() === 66) {
         evt.preventDefault();
       }
     }
