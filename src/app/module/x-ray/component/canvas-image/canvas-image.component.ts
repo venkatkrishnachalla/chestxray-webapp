@@ -1153,6 +1153,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         angle: element.angle,
         stroke: element.color,
         id: element.id,
+        originX: 'center',
+        originY: 'center',
         strokeWidth: 2,
         fill: '',
         selectable: true,
