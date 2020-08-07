@@ -20,9 +20,6 @@ export class ErrorMessageComponent implements OnInit {
         this.showError = true;
         this.errorStatus = 'Error' + ' ' + errorResponse.data.status;
         switch (errorResponse.data.status) {
-          case 404:
-            this.errorMessage = 'Not Found';
-            break;
           case 204:
             this.errorMessage = 'No Content';
             break;
@@ -32,8 +29,29 @@ export class ErrorMessageComponent implements OnInit {
           case 403:
             this.errorMessage = 'Forbidden';
             break;
+          case 404:
+            this.errorMessage = 'Not Found';
+            break;
+          case 405:
+            this.errorMessage = 'Method Not Allowed';
+            break;
+          case 415:
+            this.errorMessage = 'Unsupported Media Type';
+            break;
           case 500:
             this.errorMessage = 'Internal Server Error';
+            break;
+          case 501:
+            this.errorMessage = 'Not Implemented';
+            break;
+          case 502:
+            this.errorMessage = 'Bad Gateway';
+            break;
+          case 503:
+            this.errorMessage = 'Service Unavailable';
+            break;
+          case 504:
+            this.errorMessage = 'Gateway Timeout';
             break;
 
           default:
