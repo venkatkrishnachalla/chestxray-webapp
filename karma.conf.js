@@ -16,17 +16,24 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, './coverage/cxr-web-app'),
-      reports: ['html', 'lcovonly', 'text-summary'],
+      dir: require('path').join(__dirname, './coverage'),
+      reports: ['html', 'lcovonly', 'cobertura'],
       fixWebpackSourcePaths: true
     },
     reporters: ['progress', 'kjhtml'],
+    coverageReporter: {
+      reporters: [{
+        type: 'cobertura',
+        subdir: '.'
+      }]
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: false,
-    restartOnFileChange: true
+    singleRun: true,
+    browserNoActivityTimeout: 100000,
+    concurrency: Infinity
   });
 };

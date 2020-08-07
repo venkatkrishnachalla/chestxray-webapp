@@ -7,10 +7,11 @@ import { throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class xrayImageService {
+export class XRayImageService {
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
-  getPatientImage(id) {
+  /*** get Patient Image rest api call ***/
+  getPatientImage(id: string) {
     const body = {
       'content-type': 'application/json',
     };
@@ -27,7 +28,8 @@ export class xrayImageService {
       );
   }
 
-  getPatientInstanceId(id) {
+  /*** get getPatientInstanceId rest api call ***/
+  getPatientInstanceId(id: string) {
     const body = {
       'content-type': 'application/json',
     };
@@ -43,7 +45,9 @@ export class xrayImageService {
         })
       );
   }
+
+  /*** handle error messages ***/
   private handleError(errorResponse: HttpErrorResponse) {
-    return throwError(errorResponse.error.error.message);
+    return throwError(errorResponse);
   }
 }

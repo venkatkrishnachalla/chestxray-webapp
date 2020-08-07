@@ -48,3 +48,9 @@
     }
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .first-slide {
+    width: 135px !important;
+  }
+}

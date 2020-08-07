@@ -1,0 +1,125 @@
+.upload-image-container {
+  height: calc(100% - 64px);
+
+  .alert-danger {
+    color: #ff0000;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #3d3f44;
+  }
+
+  .upload-image-header {
+    height: 50px;
+    background-color: #a5c3c9;
+    width: 100%;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    h1 {
+      font-weight: 500;
+      padding: 5px 0px 0px;
+      margin: 0;
+    }
+  }
+
+  .upload-image-body {
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 100%;
+    margin: 4% 8%;
+    .upload-image-personal-info {
+      width: 45%;
+      text-align: center;
+      h2 {
+        background-color: #f5efef;
+        width: 100%;
+        margin: 5px 0px;
+      }
+      form {
+        text-align: left;
+        margin: 0;
+        padding: 0;
+
+        label,
+        div {
+          margin: 0px 28px 10px;
+          font-weight: 500;
+
+          input {
+            width: 100%;
+            height: 35px;
+            text-indent: 5px;
+            border-radius: 6px;
+            border: solid 2px #adb2b7;
+            background-color: #ffffff;
+          }
+          textarea {
+            width: 100%;
+            text-indent: 5px;
+            border-radius: 6px;
+            border: solid 2px #adb2b7;
+            background-color: #ffffff;
+          }
+        }
+
+        .radio-button label {
+          margin: 0px 5px;
+        }
+      }
+    }
+    .upload-image-local-file {
+      width: 45%;
+      label,
+      div {
+        margin: 0px 15px 10px 8px;
+      }
+
+      .dropzone {
+        min-height: 194px;
+        min-width: 247px;
+        display: table;
+        border-radius: 10px;
+        background-color: #7ca5ae;
+        margin: 1rem auto;
+      }
+
+      .text-wrapper {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      .centered {
+        font-family: sans-serif;
+        font-size: 1.3em;
+        font-weight: 500;
+        text-align: center;
+      }
+
+      button {
+        display: flex;
+        justify-content: center;
+        background-color: #25b865;
+        width: 144px;
+        height: 36px;
+        color: #f8f8f8;
+        font-size: 18px;
+        font-weight: 500;
+        margin: auto;
+
+        img {
+          padding-left: 10px;
+          height: 16px;
+          width: 20px;
+        }
+      }
+      button[disabled] {
+        background-color: #89d5aa;
+      }
+    }
+  }
+}

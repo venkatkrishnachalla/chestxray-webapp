@@ -4,9 +4,9 @@
   </mat-card-title>
   <mat-card-content
     class="impression-content"
-    *ngFor="let impressions of impression; let i = index"
+    *ngFor="let impressions of uniqueImpressions; let i = index"
   >
-    <button [style.background-color]="abnormalityColor[i]"></button>
-    <input matInput [value]="impressions.name" />
+    <button [style.background-color]="impressions.colors"></button>
+    <span>{{impressions.name}}</span>
   </mat-card-content>
 </mat-card>

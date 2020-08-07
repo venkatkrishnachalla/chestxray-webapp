@@ -1,7 +1,16 @@
 <div class="navigate-index">
   <section class="navigation-buttons">
-    <div class="prev-button">
-      <button mat-button>
+    <div
+      class="prev-button"
+      *ngIf="router.url != '/report' && isHospitalRadiologist"
+    >
+      <button
+        mat-button
+        (click)="previousPatient()"
+        [ngClass]="{ 'disable-color': disablePrevious }"
+        [disabled]="disablePrevious"
+        title="Previous"
+      >
         <img
           class="pre-image"
           src="../../../../../../../assets/images/arrow back.png"
@@ -10,7 +19,7 @@
       </button>
     </div>
 
-    <div class="navigate-button">
+    <div class="navigate-button" *ngIf="isHospitalRadiologist">
       <button mat-button>
         <button
           [ngStyle]="{
@@ -18,12 +27,21 @@
           }"
           class="status"
         ></button>
-        ID: {{ patientID }}
+        Patient ID: {{ patientID }}
       </button>
     </div>
 
-    <div class="next-button">
-      <button mat-button>
+    <div
+      class="next-button"
+      *ngIf="router.url != '/report' && isHospitalRadiologist"
+    >
+      <button
+        mat-button
+        (click)="nextPatient()"
+        [ngClass]="{ 'disable-color': disableNext }"
+        [disabled]="disableNext"
+        title="Next"
+      >
         Next&nbsp;
         <img
           class="next-image"
@@ -34,7 +52,10 @@
     </div>
   </section>
 
-  <section class="search-field">
+  <section
+    class="search-field"
+    *ngIf="router.url != '/report' && isHospitalRadiologist"
+  >
     <div class="search">
       <span><i class="material-icons" matPrefix>search</i></span>
       <input type="text" />

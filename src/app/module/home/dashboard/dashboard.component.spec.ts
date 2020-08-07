@@ -1,34 +1,57 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DashboardComponent } from './dashboard.component';
+import { of } from 'rxjs';
 
-fdescribe('DashboardComponent', () => {
+describe('DashboardComponent', () => {
   let component: DashboardComponent;
-  let fixture: ComponentFixture<DashboardComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DashboardComponent],
-    }).compileComponents();
-  }));
+  const authServiceSpy = jasmine.createSpyObj('AuthService', [
+    'user',
+    'logOut',
+    'userSubject',
+  ]);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DashboardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new DashboardComponent(authServiceSpy);
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit ***/
   describe('#ngOnInit', () => {
-    beforeEach(() => {
-      component.ngOnInit();
-    });
+    const mockInResponse = {
+      username: 'mohan',
+      userroles: ['HospitalRadiologist'],
+    };
     it('should call ngOnIit function', () => {
-      const result = component.ngOnInit();
+      authServiceSpy.userSubject = of(mockInResponse);
+      component.ngOnInit();
+      expect(component.isHospitalRadiologist).toEqual(true);
+    });
+    it('should call ngOnIit function, when user is individual radiologist', () => {
+      const mockInResponseInd = {
+        username: 'mohan',
+        userroles: ['Individual'],
+      };
+      authServiceSpy.userSubject = of(mockInResponseInd);
+      component.ngOnInit();
+      expect(component.isHospitalRadiologist).toEqual(false);
+    });
+    it('should call ngOnIit function, when user is undefined', () => {
+      authServiceSpy.userSubject = of(null);
+      component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
+    });
+  });
+
+  /*** it should call ngOnDestroy ***/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any).userSubscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });

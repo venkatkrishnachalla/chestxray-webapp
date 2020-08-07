@@ -1,0 +1,43 @@
+<div class="x-ray-patient-image-container">
+  <section class="buttonGroup">
+    <button type="button" mat-flat-button>
+      SHARE
+      <mat-icon aria-hidden="false" aria-label="Example share icon"
+        >share</mat-icon
+      >
+    </button>
+
+    <button
+      type="button"
+      mat-flat-button
+      (click)="printClick()"
+      printSectionId="print-section"
+      printTitle="{{ pdfTitle }}"
+      ngxPrint
+      styleSheetFile="assets/css/patient-details.css"
+    >
+      PRINT
+      <mat-icon aria-hidden="false" aria-label="Example print icon"
+        >print</mat-icon
+      >
+    </button>
+
+    <button type="button" mat-flat-button>
+      SIGNATURE
+      <mat-icon aria-hidden="false" aria-label="Example gesture icon"
+        >gesture</mat-icon
+      >
+    </button>
+    <button type="button" mat-flat-button>
+      SUBMIT
+      <mat-icon aria-hidden="false" aria-label="Example save icon"
+        >save</mat-icon
+      >
+    </button>
+  </section>
+  <div class="uploader">
+    <img [src]="xrayAnnotatedImage" alt="" />
+  </div>
+</div>
+
+<img class="hide-xray" [src]="xrayAnnotatedImage" alt="" />

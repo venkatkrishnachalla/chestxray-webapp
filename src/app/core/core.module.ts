@@ -7,16 +7,20 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material.module';
 import { XRayHeaderComponent } from './layout/component/header/components/x-ray-header/x-ray-header.component';
+import { ErrorMessageComponent } from './layout/component/error-message/error-message.component';
+import { PageNotAvailableComponent } from './layout/component/page-not-available/page-not-available.component';
 
+const coreComponents = [
+  ErrorMessageComponent,
+  XRayHeaderComponent,
+  SideNavComponent,
+  HeaderComponent,
+  MainLayoutComponent,
+  AuthLayoutComponent,
+];
 @NgModule({
-  declarations: [
-    AuthLayoutComponent,
-    MainLayoutComponent,
-    HeaderComponent,
-    SideNavComponent,
-    XRayHeaderComponent,
-  ],
+  declarations: [...coreComponents, PageNotAvailableComponent],
   imports: [CommonModule, RouterModule, MaterialModule],
-  exports: [],
+  exports: [...coreComponents, PageNotAvailableComponent],
 })
 export class CoreModule {}

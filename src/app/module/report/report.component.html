@@ -1,0 +1,22 @@
+<div class="reportContainer">
+  <section class="back-arrow">
+    <div (click)="goBackToXray()" class="background-arrow">
+      <img src="../../../assets/images/Backward arrow@3x.png" alt="" />
+    </div>
+  </section>
+
+  <div class="hide-print-section" id="print-section">
+    <cxr-report-header></cxr-report-header>
+    <cxr-x-ray-patient-details></cxr-x-ray-patient-details>
+  </div>
+
+  <section class="x-ray-patient-image">
+    <cxr-x-ray-patient-image
+      (printEvent)="enablePrint($event)"
+    ></cxr-x-ray-patient-image>
+  </section>
+
+  <section class="x-ray-patient-details">
+    <cxr-x-ray-patient-details></cxr-x-ray-patient-details>
+  </section>
+</div>

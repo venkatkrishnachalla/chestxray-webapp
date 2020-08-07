@@ -8,7 +8,11 @@ describe('SignInComponent', () => {
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['signIn']);
   const consoleServiceSpy = jasmine.createSpyObj('ConsoleService', ['log']);
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', ['show', 'hide']);
+  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
+    'show',
+    'hide',
+  ]);
+  const toastrServiceSpy = jasmine.createSpyObj('toastrService', ['error']);
 
   beforeEach(() => {
     component = new SignInComponent(
@@ -16,14 +20,17 @@ describe('SignInComponent', () => {
       authServiceSpy,
       consoleServiceSpy,
       routerSpy,
-      spinnerServiceSpy
+      spinnerServiceSpy,
+      toastrServiceSpy
     );
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
+  /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
@@ -34,6 +41,7 @@ describe('SignInComponent', () => {
     });
   });
 
+  /*** it should call onSignIn function ***/
   describe('#onSignIn', () => {
     beforeEach(() => {
       const signInResponse = {
@@ -63,6 +71,7 @@ describe('SignInComponent', () => {
     });
   });
 
+  /*** it should call onSignIn function, when network error ***/
   describe('#onSignIn', () => {
     const testForm = {
       value: {
@@ -81,9 +90,8 @@ describe('SignInComponent', () => {
       spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(true);
       component.onSignIn(testForm);
       expect(spinnerServiceSpy.hide).toHaveBeenCalled();
-      expect(alertSpy.open).toHaveBeenCalledWith(
-        'Invalid Username or Password',
-        'ERROR'
+      expect(toastrServiceSpy.error).toHaveBeenCalledWith(
+        'Invalid Username or Password'
       );
     });
     it('should call onSignIn function, when login error, when network is false', () => {
@@ -91,10 +99,11 @@ describe('SignInComponent', () => {
       component.onSignIn(testForm);
       const message =
         'You are not connected to a network. Check your network connections and try again.';
-      expect(alertSpy.open).toHaveBeenCalledWith(message, 'ERROR');
+      expect(toastrServiceSpy.error).toHaveBeenCalled();
     });
   });
 
+  /*** it should call onSignIn function, when error ***/
   describe('#onSignIn', () => {
     beforeEach(() => {
       const testForm = {
@@ -110,9 +119,8 @@ describe('SignInComponent', () => {
     });
     it('should call onSignIn function, when form is invalid', () => {
       component.errorMessage = 'Enter all the required fields';
-      expect(alertSpy.open).toHaveBeenCalledWith(
-        component.errorMessage,
-        'ERROR'
+      expect(toastrServiceSpy.error).toHaveBeenCalledWith(
+        component.errorMessage
       );
     });
   });

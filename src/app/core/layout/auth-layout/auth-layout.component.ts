@@ -13,14 +13,17 @@ export class AuthLayoutComponent implements OnInit {
   isHandset: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.Handset);
   constructor(private authService: AuthService, private breakpointObserver: BreakpointObserver) {}
 
+  /*** init function ***/
   ngOnInit(): void {
     this.initialize();
   }
 
+  /*** initialize function to display isAuth ***/
   private initialize() {
     this.isAuth = !!this.authService.user;
   }
 
+  /*** logout function ***/
   onLogout() {
     this.authService.logOut();
   }

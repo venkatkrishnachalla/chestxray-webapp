@@ -17,13 +17,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cxr-web-app",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": ["src/favicon.ico", "src/assets", "src/web.config", "src/config.js", "src/apiconfig.js"],
             "styles": ["src/styles/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]

@@ -9,8 +9,10 @@ import { AuthService } from '../auth/auth.service';
 export class HomeComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
+  /*** class init function ***/
   ngOnInit(): void {}
 
+  /*** log out function ***/
   logOut() {
     this.authService.logOut();
   }

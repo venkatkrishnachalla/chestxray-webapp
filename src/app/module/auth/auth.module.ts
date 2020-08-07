@@ -6,6 +6,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [SignUpComponent, SignInComponent],
@@ -15,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
     RouterModule,
     MaterialModule,
     SharedModule,
+    ToastrModule
   ],
   exports: [],
 })

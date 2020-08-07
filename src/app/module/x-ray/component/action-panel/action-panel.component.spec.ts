@@ -4,16 +4,20 @@ import { ActionPanelComponent } from './action-panel.component';
 
 describe('ActionPanelComponent', () => {
   let component: ActionPanelComponent;
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'onComponentButtonClick',
+  ]);
 
   beforeEach(() => {
-    component = new ActionPanelComponent(
-    );
+    component = new ActionPanelComponent(eventEmitterServiceSpy);
   });
 
+  /*** it should create report component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should call ngOnInit ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       component.ngOnInit();
@@ -24,9 +28,9 @@ describe('ActionPanelComponent', () => {
     });
   });
 
+  /*** it should call askAI event ***/
   describe('#askAI', () => {
     beforeEach(() => {
-      // spyOn(component, 'askAIEvent').and.callThrough();
       component.askAI();
     });
     it('should call askAI function', () => {
@@ -35,4 +39,45 @@ describe('ActionPanelComponent', () => {
     });
   });
 
+  /*** it should call askAi event, when index is 0 ***/
+  describe('#askAI', () => {
+    beforeEach(() => {
+      const data = [
+        {
+          active: true,
+          key: 0,
+          index: 0,
+        },
+      ];
+      component.iconAction(data, 0);
+    });
+    it('should call icon Action function', () => {
+      expect(component.iconAction).toBeDefined();
+    });
+  });
+
+  /*** it should call askAi event, when index not equal to key ***/
+  describe('#askAI', () => {
+    beforeEach(() => {
+      const data = [
+        {
+          active: true,
+          key: 0,
+          index: 1,
+        },
+      ];
+      component.iconAction(data, 0);
+    });
+    it('should call icon Action function, when index is not equal to key', () => {
+      expect(component.iconAction).toBeDefined();
+    });
+  });
+
+  /*** it should call disableAskAiButton event ***/
+  describe('#disableAskAiButton', () => {
+    it('should call disableAskAiButton function', () => {
+      component.disableAskAiButton();
+      expect(component.disableAskAI).toEqual(true);
+    });
+  });
 });

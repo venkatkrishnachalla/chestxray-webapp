@@ -1,10 +1,8 @@
 {
-  "/api": {
-    "target": "http://localhost:3000",
+  "/api/*": {
+    "target": "//cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/",
     "secure": false,
-    "pathRewrite": {
-      "^/mock": ""
-    }
+    "changeOrigin": true
   },
   "logLevel": "debug"
 }

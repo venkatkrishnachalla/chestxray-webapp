@@ -1,6 +1,0 @@
-{
-  "port": 3000,
-  "no-cors": true,
-  "middlewares": ["api/serverMiddleware.js"],
-  "delay": 300
-}

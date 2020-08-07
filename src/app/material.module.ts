@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const materialModules = [
   MatCardModule,
@@ -34,6 +35,7 @@ const materialModules = [
   MatListModule,
   MatDialogModule,
   MatAutocompleteModule,
+  MatTooltipModule
 ];
 
 @NgModule({

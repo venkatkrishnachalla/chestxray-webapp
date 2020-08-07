@@ -9,6 +9,15 @@
 @import './utils.scss';
 @import '../../node_modules/ag-grid-community/src/styles/ag-grid.scss';
 @import '../../node_modules/ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin.scss';
+@import '../../node_modules/ngx-toastr/toastr.css';
 .ag-theme-material {
   @include ag-theme-material();
+}
+.toast-top-center {
+  top: 10%;
+  margin: 0 auto;
+}
+.disabled {
+  cursor: no-drop !important;
+  opacity: 0.5 !important;
 }

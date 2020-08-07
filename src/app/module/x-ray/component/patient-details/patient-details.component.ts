@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PatientDetailData } from 'src/app/module/auth/interface.modal';
 
 @Component({
   selector: 'cxr-patient-details',
@@ -8,22 +9,30 @@ import { Component, OnInit } from '@angular/core';
 export class PatientDetailsComponent implements OnInit {
   value: number;
   PatientName: string;
-  PatientGender = 'F';
+  PatientGender: string;
   PatientAge: string;
   refPhysician: string;
   Date: string;
   Time: string;
   history: string;
+  patientDetails: PatientDetailData;
   constructor() {}
 
+  /*** clas init function and bind patient details ***/
   ngOnInit(): void {
+    let patient = history.state.patientDetails;
+    if (patient === undefined) {
+      patient = JSON.parse(sessionStorage.getItem('patientDetail'));
+    }
     this.value = 50;
-    this.PatientName = 'Shilpa R.';
-    this.PatientAge = '45yrs';
-    this.refPhysician = 'Dr.Adam Walt';
-    this.Date = '18-05-2020';
-    this.Time = '16:15:30';
-    this.history =
-      'lorem ipsum sit amet, consetetur sadipscing, sed diam nonumy eirmod';
+    if (patient) {
+      this.PatientName = patient.name;
+      this.PatientAge = patient.age;
+      this.refPhysician = patient.referringPhysicianName;
+      this.PatientGender = patient.sex;
+      this.Date = patient.lastUpdate;
+      this.Time = patient.lastUpdate;
+    }
+    this.history = '';
   }
 }

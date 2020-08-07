@@ -2,7 +2,7 @@ import { SpinnerService } from './spinner.service';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-fdescribe('SpinnerService', () => {
+describe('SpinnerService', () => {
   let service: SpinnerService;
 
   beforeEach(() => {
@@ -27,6 +27,7 @@ fdescribe('SpinnerService', () => {
         .pipe(filter((res) => !!res))
         .subscribe((res) => expect(res).toEqual(value));
       subjectMock.next(true);
+      expect(service.show).toBeDefined();
     });
   });
 
@@ -44,6 +45,7 @@ fdescribe('SpinnerService', () => {
         .pipe(filter((res) => !!res))
         .subscribe((res) => expect(res).toEqual(value));
       subjectMock.next(false);
+      expect(service.hide).toBeDefined();
     });
   });
 });

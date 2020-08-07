@@ -1,6 +1,6 @@
 import { AuthLayoutComponent } from './auth-layout.component';
 
-fdescribe('AuthLayoutComponent', () => {
+describe('AuthLayoutComponent', () => {
   let component: AuthLayoutComponent;
   const authServiceSpy = jasmine.createSpyObj('AuthService', [
     'user',
@@ -14,10 +14,12 @@ fdescribe('AuthLayoutComponent', () => {
     component = new AuthLayoutComponent(authServiceSpy, breakpointObserverSpy);
   });
 
+  /*** expects auth component to be truthy ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** Spec for ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       spyOn(component as any, 'initialize');
@@ -30,6 +32,7 @@ fdescribe('AuthLayoutComponent', () => {
     });
   });
 
+  /*** Spec for initialize function ***/
   describe('#initialize', () => {
     beforeEach(() => {
       authServiceSpy.user.and.returnValue({ username: 'test' });
@@ -40,6 +43,7 @@ fdescribe('AuthLayoutComponent', () => {
     });
   });
 
+  /*** Expects logout to have been called ***/
   describe('#onLogout', () => {
     it('should call onLogout function', () => {
       component.onLogout();

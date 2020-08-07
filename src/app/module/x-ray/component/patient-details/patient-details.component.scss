@@ -7,49 +7,34 @@
   box-shadow: 5px 0 20px 0 #ababab;
   border-radius: 10px;
   background-color: #fff;
-  mat-card-header {
-    ::ng-deep .mat-card-header-text {
-      margin: 0 !important;
-    }
-  }
+
   .patient-info-header {
     display: flex;
     justify-content: center;
     padding-bottom: 5px;
-  }
-  .Patient-info-icon {
-    font-size: 2.5rem;
-    color: white;
-    border-radius: 2px;
-    background-color: #7ca5ae;
-  }
-  .Patient-content {
-    margin: 0;
-    height: 30%;
-    padding: 3px 0 0 5px;
-  }
-  .gender_info {
-    font-weight: normal;
-    margin: 0.5rem;
-    padding-left: 1rem;
+    .Patient-info-icon {
+      font-size: 2.5rem;
+      color: white;
+      border-radius: 2px;
+      background-color: #7ca5ae;
+    }
+    .Patient-content {
+      margin: 0;
+      font-size: 1.8rem;
+      height: 30%;
+      padding: 3px 0 0 5px;
+    }
   }
   p {
     margin: 0;
     font-size: 1.3rem;
-  }
-  mat-label {
-    font-weight: bold;
-    padding-right: 5px;
-  }
-  mat-card-content {
-    font-size: 1.3rem;
-    line-height: 1.5rem;
-  }
-
-  .Patient-content {
-    margin: 0;
-    font-size: 1.8rem;
-    height: 30%;
-    padding-left: 5px;
+    mat-label {
+      font-weight: bold;
+      padding-right: 5px;
+    }
+    mat-card-content {
+      font-size: 1.3rem;
+      line-height: 1.5rem;
+    }
   }
 }

@@ -6,27 +6,31 @@
 
   <!-- Main Content, X-Ray Aspect Ratio Part -->
   <section class="xray-panel">
-    <cxr-canvas-image [events]="eventsSubject.asObservable()"></cxr-canvas-image>
+    <cxr-canvas-image
+      *ngIf="displayCanvas"
+      [events]="eventsSubject.asObservable()"
+    ></cxr-canvas-image>
+    <cxr-error-message></cxr-error-message>
   </section>
 
   <!-- Right Side Content -->
   <section class="info-panel">
     <cxr-patient-details></cxr-patient-details>
-    <cxr-image-sliding></cxr-image-sliding>
-    <cxr-findings></cxr-findings>
     <cxr-impression></cxr-impression>
-    <button mat-flat-button type="submit">
+    <cxr-findings></cxr-findings>
+    <cxr-image-sliding></cxr-image-sliding>
+    <button mat-flat-button (click)="generateReport()" type="submit">
       <span>REPORT</span>
       <img src="../../../assets/images/report icon@2x.png" alt="report" />
     </button>
 
-    <button mat-flat-button type="submit">
+    <button mat-flat-button type="submit" *ngIf="isHospitalRadiologist">
       <span>SUBMIT</span>
       <img src="../../../assets/images/submit icon@2x.png" alt="submit" />
     </button>
   </section>
 
   <div class="askAIPopup" *ngIf="showAskAI">
-    <cxr-ask-ai (rejectAiEvent)="rejectAI($event)" (acceptAiEvent)="acceptAI($event)" [isDisableAccept]="acceptStatus"></cxr-ask-ai>
+    <cxr-ask-ai></cxr-ask-ai>
   </div>
 </div>

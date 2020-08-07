@@ -7,13 +7,8 @@
       alt="update"
     />
   </mat-card-title>
-  <!-- <mat-list>
-      <ng-container *ngFor="let item of findings">
-          <mat-list-item list-style-type="number">{{item}}</mat-list-item>
-      </ng-container>
-  </mat-list> -->
-  <mat-card-content class="findings-content" *ngFor="let finding of findings">
-    <button></button>
-    <input matInput [value]="finding" style="word-break: break-all;" />
+  <mat-card-content class="findings-content" *ngFor="let finding of findings; let i = index">
+    <button *ngIf="finding !== ' '"></button>
+    <span class="textarea" role="textbox" [ngClass]="{additionalFindings: finding === ' ' }"(keydown)="preventBaseValue($event)" (focusout)="updateFindings($event, i)" contenteditable>{{ finding }}</span>
   </mat-card-content>
 </mat-card>

@@ -4,21 +4,36 @@ import { PatientDetailsComponent } from './patient-details.component';
 
 describe('PatientDetailsComponent', () => {
   let component: PatientDetailsComponent;
-  let fixture: ComponentFixture<PatientDetailsComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [PatientDetailsComponent],
-    }).compileComponents();
-  }));
+  const mockPatientDetail = {
+    age: 32,
+    birthDate: '1988-05-06T00:00:00',
+    hospitalPatientId: '1010',
+    id: '1004',
+    lastUpdate: '2020-06-29T14:08:59',
+    name: 'Pallavi',
+    referringPhysicianName: 'mohan',
+    sex: 'F',
+    status: false,
+    studies: ['9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8'],
+  };
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PatientDetailsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new PatientDetailsComponent();
   });
 
+/*** it should create patient details component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  /*** it should call ngOnInit function */
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function', () => {
+      expect(component.PatientName).toEqual('Pallavi');
+    });
   });
 });

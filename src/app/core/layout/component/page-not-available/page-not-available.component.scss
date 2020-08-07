@@ -1,0 +1,9 @@
+.page-not-found-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+}

@@ -21,23 +21,34 @@
   .findings-content {
     margin-bottom: 1rem;
     display: flex;
+    height: auto;
     button {
       height: 15px;
-      width: 15px;
+      width: 17px;
       border-radius: 50%;
-      background-color: red;
+      background-color: #3d3d44;
       margin-right: 1rem;
       border: 0;
       margin-top: 1px;
     }
-    input {
+    .textarea {
       width: 100%;
       border: 0;
       font-size: 12px;
-      line-height: 1.25;
       color: #212221;
-      height: auto;
-      line-height: 2rem;
+      resize: none;
+      overflow: hidden;
+      min-height: 40px;
+      line-height: 20px
+    }
+    .additionalFindings{
+      border: 2px solid #B0C4FF;
+      border-radius: 3px;
+    }
+    .findings {
+      width: 190px;
+      height: 60px;
+      border: none;
     }
   }
 }

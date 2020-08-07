@@ -57,6 +57,19 @@
         background-color: #f0e5e5;
         border-radius: 4px;
       }
+      .icon-select-BG {
+        width: 30px !important;
+        height: 30px !important;
+        background-color: #dcdcdc !important;
+        border-radius: 4px !important;
+      }
+      .icon-disabled-BG {
+        cursor: no-drop;
+        opacity: 0.5;
+      }
+      .icon-active-BG {
+        cursor: pointer;
+      }
     }
 
     .sliderItems {
@@ -206,7 +219,7 @@
 
       .contrast {
         width: calc(50% - 10px);
-        margin-left: 5px;
+        margin-left: 4px;
         margin-top: 10px;
         text-align: center;
 
@@ -214,6 +227,12 @@
           height: 2rem;
           width: 2rem;
           cursor: pointer;
+        }
+
+        @media only screen and (min-width: 1440px) {
+          .contrast {
+            margin-left: 6px;
+          }
         }
       }
     }
