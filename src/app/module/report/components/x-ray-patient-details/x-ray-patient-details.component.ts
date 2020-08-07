@@ -99,18 +99,16 @@ export class XRayPatientDetailsComponent implements OnInit {
     this.xrayAnnotatedImpression
       .xrayAnnotatedFindingsService()
       .subscribe((findings: any[]) => {
-        if (findings.indexOf(' ') !== -1){
+        if (findings.indexOf(' ') !== -1) {
           findings.splice(findings.indexOf(' '), 1);
         }
         this.annotatedFindings = findings;
         this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
-        
       });
     if (Object.keys(this.annotatedFindings).length === 0) {
       const findings = JSON.parse(sessionStorage.getItem('findings'));
       this.annotatedFindings = findings;
       this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
-
     }
     this.setCanvasDimension();
   }
