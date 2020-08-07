@@ -47,13 +47,15 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     );
 
     this.patientRows = JSON.parse(sessionStorage.getItem('patientRows'));
-    const lastIndex = this.patientRows[this.patientRows.length - 1].index;
-    this.currentIndex = this.patientRows.findIndex(
-      (a) => a.hospitalPatientId === this.patientID
-    );
-    this.currentPatientData = this.patientRows[this.currentIndex];
-    this.disablePrevious = this.currentIndex === 0 ? true : false;
-    this.disableNext = this.currentIndex === lastIndex ? true : false;
+    if (this.patientRows.length > 0) {
+      const lastIndex = this.patientRows[this.patientRows.length - 1].index;
+      this.currentIndex = this.patientRows.findIndex(
+        (a) => a.hospitalPatientId === this.patientID
+      );
+      this.currentPatientData = this.patientRows[this.currentIndex];
+      this.disablePrevious = this.currentIndex === 0 ? true : false;
+      this.disableNext = this.currentIndex === lastIndex ? true : false;
+    }
   }
 
   /*** event to change xray page next patient ***/
@@ -67,13 +69,11 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('PatientImage');
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
-    this.router
-      .navigateByUrl('/', { skipLocationChange: true })
-      .then(() =>
-        this.router.navigate(['/x-ray'], {
-          state: { patientDetails: filterData },
-        })
-      );
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/x-ray'], {
+        state: { patientDetails: filterData },
+      })
+    );
     window.location.reload();
   }
 
