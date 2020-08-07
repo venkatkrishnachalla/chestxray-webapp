@@ -76,7 +76,7 @@ export class ApiEndPointService {
     return environment.PatientImage + id + '/image';
   }
 
-  public getAskAi(): string {     
-    return 'https://cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/api/v1.0/predictions'; 
+  public getAskAi(): string {
+    return 'https://cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/api/v1.0/predictions';
   }
 }
