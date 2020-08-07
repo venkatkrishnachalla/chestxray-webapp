@@ -189,7 +189,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
       }
     );
-    this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', { preserveObjectStacking: true, selection: false });
+    this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', {
+      preserveObjectStacking: true,
+      selection: false,
+    });
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
@@ -197,6 +200,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
         this.updateEllipseIntoSession();
+      }
+    });
+    this.canvas.on('object:rotating', (e) => {
+      if (!this.enableDrawEllipseMode) {
+        this.dialog.closeAll();
       }
     });
     this.patientDetail = history.state.patientDetails;
