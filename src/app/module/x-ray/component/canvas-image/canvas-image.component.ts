@@ -227,13 +227,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.dialog.closeAll();
       }
     });
-    this.canvas.on('object:rotating', (e) => {
-      const obj = e.target;
-      this.restrictionToBoundaryLimit(obj);
-      if (!this.enableDrawEllipseMode) {
-        this.dialog.closeAll();
-      }
-    });
     this.canvas.on('object:moving', (evt) => {
       const obj = evt.target;
       this.restrictionToBoundaryLimit(obj);
