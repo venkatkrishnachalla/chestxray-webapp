@@ -69,11 +69,13 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('PatientImage');
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/x-ray'], {
-        state: { patientDetails: filterData },
-      })
-    );
+    this.router
+      .navigateByUrl('/home/my-account', { skipLocationChange: true })
+      .then(() =>
+        this.router.navigate(['/x-ray'], {
+          state: { patientDetails: filterData },
+        })
+      );
     window.location.reload();
   }
 

@@ -70,7 +70,7 @@ export class AuthService {
   logOut() {
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
-    localStorage.removeItem('userAuthData');
+    sessionStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
     sessionStorage.removeItem('PatientImage');
     sessionStorage.removeItem('isIndividualRadiologist');
@@ -96,7 +96,7 @@ export class AuthService {
       _tokenExpirationDate: string;
       username: string;
       userroles: any[];
-    } = JSON.parse(localStorage.getItem('userAuthData'));
+    } = JSON.parse(sessionStorage.getItem('userAuthData'));
     if (!authData) {
       return;
     }
@@ -186,7 +186,6 @@ export class AuthService {
     this.autoSessionTimeOut(seconds);
     // Or refresh token, if you decide to keep the session active.
     // this.refreshTokenTimeOut(user.token, expiresIn * 1000);
-    localStorage.setItem('userAuthData', JSON.stringify(user));
   }
 
   private handleAuthError(errorResponse: HttpErrorResponse) {
