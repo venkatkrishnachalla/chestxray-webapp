@@ -60,9 +60,9 @@ export class ActionPanelComponent implements OnInit {
 
   /*** class init function ***/
   ngOnInit(): void {
-    this.actionPanel = this.constants.actionPanelTop;
-    this.middlePanel = this.constants.actionPanelMiddle;
-    this.brightnessPanel = this.constants.actionPanelBrightness;
+    this.actionPanel = JSON.parse(JSON.stringify(this.constants.actionPanelTop));
+    this.middlePanel = JSON.parse(JSON.stringify(this.constants.actionPanelMiddle));
+    this.brightnessPanel = JSON.parse(JSON.stringify(this.constants.actionPanelBrightness));
     const askAiSelection = sessionStorage.getItem('askAiSelection');
     if (askAiSelection === 'true') {
       this.disableAskAI = true;

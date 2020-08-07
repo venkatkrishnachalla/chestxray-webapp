@@ -189,7 +189,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
       }
     );
-    this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', { selection: false });
+    this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', { preserveObjectStacking: true, selection: false });
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
@@ -223,10 +223,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
     this.canvas.on('object:selected', (evt) => {
       this.actionIconsModelDispaly(evt);
-    });
-    this.canvas.on('object:scaling', (e) => {
-      this.canvas.getActiveObject().set('strokeUniform', true);
-      this.canvas.requestRenderAll();
+      this.canvas.sendToBack(this.canvas._activeObject);
     });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
@@ -235,13 +232,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
     this.canvas.on('object:moving', (evt) => {
       const obj = evt.target;
-      this.restrictionToBoundaryLimit(obj);
-      if (!this.enableDrawEllipseMode) {
-        this.dialog.closeAll();
-      }
-    });
-    this.canvas.on('object:rotating', (e) => {
-      const obj = e.target;
       this.restrictionToBoundaryLimit(obj);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
@@ -867,12 +857,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedDiseases = true;
     if (item.length === 0) {
       this.selectedDisease = event.target.textContent.replace(
-        /[^a-zA-Z/]/g,
+        /[^a-zA-Z/ ]/g,
         ''
       );
     } else if (item === '') {
       this.selectedDisease = event.target.textContent.replace(
-        /[^a-zA-Z/]/g,
+        /[^a-zA-Z/ ]/g,
         ''
       );
     }
@@ -934,6 +924,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.saveFreeHandDrawingIntoSession();
     }
     this.toastrService.success('Annotation saved successfully');
+    this.canvas.discardActiveObject();
+    this.canvas.renderAll();
   }
   /**
    * Delete active object
@@ -990,6 +982,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.clear();
     this.selectedDisease = '';
     this.toastrService.success('Annotation updated successfully');
+    this.canvas.discardActiveObject();
+    this.canvas.renderAll();
   }
 
   /**
@@ -1270,10 +1264,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         rx: element.rx / this.canvasScaleX / 2,
         ry: element.ry / this.canvasScaleY / 2,
         angle: element.angle,
-        originX: 'center',
-        originY: 'center',
         stroke: element.color,
         id: element.id,
+        originX: 'center',
+        originY: 'center',
         strokeWidth: 2,
         fill: '',
         selectable: true,
