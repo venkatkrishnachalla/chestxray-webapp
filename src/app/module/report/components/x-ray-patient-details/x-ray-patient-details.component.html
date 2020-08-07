@@ -79,7 +79,11 @@
     </div>
     <div class="findings-info">
       <ul>
-        <li *ngFor="let finding of annotatedFindings" contentEditable="true">
+        <li
+          *ngFor="let finding of annotatedFindings; let i = index"
+          (focusout)="updateFindings($event, i)"
+          contentEditable="true"
+        >
           > {{ finding }}
         </li>
       </ul>
@@ -171,17 +175,27 @@
       </div>
       <div class="findings-left-content-bottom">
         <div class="box-title">FINDINGS</div>
-        <div
-          class="inside-content-align"
-          *ngFor="let finding of annotatedFindings"
-        >
+        <div class="inside-content-align" *ngFor="let finding of pdfFindings">
           > {{ finding }}
         </div>
       </div>
     </div>
-    <div class="xray-right-content" style="position: absolute;">
+    <div
+      class="xray-right-content"
+      id="xray-right-content"
+      style="position: absolute;"
+    >
       <div class="box-title">XRAY</div>
-      <cxr-x-ray-patient-image></cxr-x-ray-patient-image>
+      <div align="center">
+        <img
+          [src]="annotatedImage"
+          alt=""
+          [ngStyle]="{
+            'width.px': canvasCorrectedWidth,
+            'height.px': canvasCorrectedHeight
+          }"
+        />
+      </div>
     </div>
   </div>
   <h4>

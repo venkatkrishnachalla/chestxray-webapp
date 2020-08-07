@@ -6,6 +6,7 @@ import {
   ImpressionData,
   InvokeComponentData,
 } from 'src/app/module/auth/interface.modal';
+import { fabric } from 'fabric';
 
 @Component({
   selector: 'cxr-x-ray-patient-details',
@@ -17,12 +18,19 @@ export class XRayPatientDetailsComponent implements OnInit {
   patientInfo: PatientDetailData;
   status: string;
   annotatedImpression: ImpressionData;
-  annotatedFindings: any[];
+  annotatedFindings: any;
   impressions = [];
   abnormalityColor = [];
   comments: string;
   clinicalHistory = '';
   pdfComments: string;
+  annotatedImage: string;
+  canvasDynamicWidth: number;
+  canvasDynamicHeight: number;
+  canvasCorrectedWidth: number;
+  canvasCorrectedHeight: number;
+  xRayImage: any;
+  pdfFindings: string;
 
   constructor(
     private eventEmitterService: EventEmitterService,
@@ -33,11 +41,17 @@ export class XRayPatientDetailsComponent implements OnInit {
       this.pdfComments = data;
       this.changeDetector.markForCheck();
     });
+    this.eventEmitterService.findingsSubject.subscribe((data) => {
+      this.pdfFindings = data;
+      this.changeDetector.markForCheck();
+    });
   }
 
   /*** class init function ***/
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
+    this.eventEmitterService.commentSubject.next('');
+    this.annotatedImage = sessionStorage.getItem('annotatedImage');
     if (this.patientInfo === undefined) {
       const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientInfo = patientInfo;
@@ -85,12 +99,18 @@ export class XRayPatientDetailsComponent implements OnInit {
     this.xrayAnnotatedImpression
       .xrayAnnotatedFindingsService()
       .subscribe((findings: any[]) => {
+        if (findings.indexOf(' ') !== -1) {
+          findings.splice(findings.indexOf(' '), 1);
+        }
         this.annotatedFindings = findings;
+        this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
       });
     if (Object.keys(this.annotatedFindings).length === 0) {
       const findings = JSON.parse(sessionStorage.getItem('findings'));
       this.annotatedFindings = findings;
+      this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
     }
+    this.setCanvasDimension();
   }
 
   /*** function to store impressions data ***/
@@ -111,5 +131,49 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   commentsChange(data) {
     this.eventEmitterService.commentSubject.next(data);
+  }
+
+  updateFindings(evt, index) {
+    this.annotatedFindings.splice(index, 1, evt.target.textContent.slice(2));
+    this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
+  }
+
+  /*** get the dimensions for image container ***/
+  setCanvasDimension() {
+    this.canvasDynamicWidth = 367;
+    this.canvasDynamicHeight = 367;
+    this.generateCanvas();
+  }
+
+  /*** generate a canvas using fabric.js ***/
+  generateCanvas() {
+    fabric.Image.fromURL(this.annotatedImage, (img) => {
+      this.xRayImage = img;
+      this.setCanvasBackground();
+    });
+  }
+
+  /*** function to compare image vs container aspect ratio width ***/
+  getWidthFirst(imageAspectRatio, containerAspectRatio) {
+    return imageAspectRatio > containerAspectRatio;
+  }
+
+  /*** setting BackgroundImage for canvas block ***/
+  setCanvasBackground() {
+    const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
+    const containerAspectRatio =
+      this.canvasDynamicWidth / this.canvasDynamicHeight;
+    const widthFirst = this.getWidthFirst(
+      imageAspectRatio,
+      containerAspectRatio
+    );
+
+    if (widthFirst) {
+      this.canvasCorrectedWidth = this.canvasDynamicWidth;
+      this.canvasCorrectedHeight = this.canvasCorrectedWidth / imageAspectRatio;
+    } else {
+      this.canvasCorrectedHeight = this.canvasDynamicHeight;
+      this.canvasCorrectedWidth = this.canvasCorrectedHeight * imageAspectRatio;
+    }
   }
 }

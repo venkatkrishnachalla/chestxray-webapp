@@ -89,7 +89,8 @@ h4 {
 
 .xray-right-content {
   width: 53%;
-  height: 430px;
+  max-height: 100%;
+  height: auto;
   border: 1px solid black;
   margin-left: 5px;
   float: right;

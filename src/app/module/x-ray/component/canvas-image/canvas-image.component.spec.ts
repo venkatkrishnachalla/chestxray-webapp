@@ -99,9 +99,7 @@ describe('CanvasImageComponent', () => {
         filename: 'xyzd',
       };
       const mock = JSON.stringify(PatientImageMock);
-      xRayServiceSpy.getPatientImage.and.returnValue(
-        of(mock)
-      );
+      xRayServiceSpy.getPatientImage.and.returnValue(of(mock));
       spyOn(document, 'getElementById').and.returnValue(controlCheckbox);
       spyOn(component, 'setCanvasDimension');
       spyOn(component, 'generateCanvas');
@@ -407,7 +405,7 @@ describe('CanvasImageComponent', () => {
                 ADDITIONAL: [],
                 'BONY THORAX': [],
                 'CARDIAC SILHOUETTE': [],
-                COSTOPHRENIC_ANGLES: [],
+                'COSTOPHRENIC ANGLES': [],
                 'DOMES OF DIAPHRAGM': [],
                 'HILAR/MEDIASTINAL': [],
                 'LUNG FIELDS': [0, 1],

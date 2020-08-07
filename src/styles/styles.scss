@@ -17,3 +17,7 @@
   top: 10%;
   margin: 0 auto;
 }
+.disabled {
+  cursor: no-drop !important;
+  opacity: 0.5 !important;
+}

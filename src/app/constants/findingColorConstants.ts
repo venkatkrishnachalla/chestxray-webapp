@@ -6,7 +6,7 @@ export const DISEASE_COLOR_MAPPING = {
   bronchiectasis: '#7fffd4',
   bulla: '#00ffff',
   cavity: '#9932CC',
-  'collapse/atelectais': '#a020f0',
+  'collapse/atelectasis': '#a020f0',
   'cyst with air crescent': '#b03060',
   'cyst with air fluid level': '#ff1493',
   dextrocardia: '#ff00ff',

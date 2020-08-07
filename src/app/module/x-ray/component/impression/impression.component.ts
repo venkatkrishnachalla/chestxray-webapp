@@ -46,6 +46,10 @@ export class ImpressionComponent implements OnInit {
   getImpressions() {
     this.eventEmitterService.invokeComponentData.subscribe(
       (obj: { name: any; isMLApi: any; color: any }) => {
+        const index = this.impression.findIndex((a) => a.id === '00');
+        if (index !== -1) {
+          this.impression.splice(index, 1);
+        }
         this.impression.push(obj);
         this.uniqueImpressionsData();
         this.getColorMapping(obj.name, obj.isMLApi, obj.color);

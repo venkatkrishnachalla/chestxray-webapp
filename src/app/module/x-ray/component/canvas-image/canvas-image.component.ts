@@ -224,6 +224,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.on('object:selected', (evt) => {
       this.actionIconsModelDispaly(evt);
     });
+    this.canvas.on('object:scaling', (e) => {
+      this.canvas.getActiveObject().set('strokeUniform', true);
+      this.canvas.requestRenderAll();
+    });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
@@ -548,6 +552,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         isMLApi: true,
       };
     });
+    if (mlList.data.ndarray[0].Impression.length === 0) {
+      const impressionObject = {
+        title: 'impression',
+        id: '00',
+        name: 'No significant abnormality detected',
+        isMLApi: true,
+      };
+      this.eventEmitterService.onComponentDataShared(impressionObject);
+    }
 
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
     const findingsOrdered = [];
@@ -573,11 +586,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           // tslint:disable-next-line: max-line-length
           if (currentFinding.length !== 0) {
             finalFinding +=
-              currentFinding[0].sentence +
-              (mLArray.Findings[info.Name].length > 1 &&
-              mLArray.Findings[info.Name].length - 1 !== index
-                ? ', '
-                : '.');
+              currentFinding[0].sentence[0].toUpperCase() +
+              currentFinding[0].sentence.substr(1).toLowerCase() +
+              '. ';
           } else {
             finalFinding += '';
           }
@@ -694,6 +705,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         width: 0,
         height: 0,
         disease: diseaseItem.name,
+        originX: 'center',
+        originY: 'center',
         left:
           diseaseItem.type === 'ellipse'
             ? diseaseItem.x
@@ -854,11 +867,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedDiseases = true;
     if (item.length === 0) {
       this.selectedDisease = event.target.textContent.replace(
-        /[^a-zA-Z ]/g,
+        /[^a-zA-Z/]/g,
         ''
       );
     } else if (item === '') {
-      this.selectedDisease = event.target.textContent.replace(/[^a-zA-Z]/g, '');
+      this.selectedDisease = event.target.textContent.replace(
+        /[^a-zA-Z/]/g,
+        ''
+      );
     }
     const abnormality = [];
     const names = [];
@@ -1253,6 +1269,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         top: element.top / this.canvasScaleY,
         rx: element.rx / this.canvasScaleX / 2,
         ry: element.ry / this.canvasScaleY / 2,
+        angle: element.angle,
+        originX: 'center',
+        originY: 'center',
         stroke: element.color,
         id: element.id,
         strokeWidth: 2,

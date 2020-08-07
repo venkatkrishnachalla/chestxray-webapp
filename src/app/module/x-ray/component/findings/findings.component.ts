@@ -13,7 +13,7 @@ export class FindingsComponent implements OnInit {
   readonly constants = pathology;
   order = [];
   findings: any[];
-  manageFidings: boolean;
+  item0: any;
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedService: XRayService
@@ -21,27 +21,34 @@ export class FindingsComponent implements OnInit {
 
   /*** class init function ***/
   ngOnInit(): void {
-    this.manageFidings = false;
     this.findings = [];
     this.getFindings();
   }
 
   /*** get findings event to subscribe findings from xray image ***/
   getFindings() {
+    this.findings = [];
     this.order = this.constants.findings;
-    this.order.forEach(info => {
-      if (info.Name !== 'ADDITIONAL'){
-        this.findings.push(info.Name + ': ' + info.Desc);
+    this.order.forEach((data) => {
+      if (data.Name !== 'ADDITIONAL') {
+        this.findings.push(data.Name + ': ');
+      } else {
+        this.findings.push(' ');
       }
-      this.manageFidings = true;
     });
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse: EllipseData) => {
-        this.manageFidings = false;
-        const index = this.findings.findIndex(item => item.split(':')[0] === objEllipse.split(':')[0]);
-        this.findings.splice(index, 1, objEllipse);
-        this.manageFidings = true;
-        // this.findings.push(objEllipse);
+        const index = this.findings.findIndex(
+          (item) => item.split(':')[0] === objEllipse.split(':')[0]
+        );
+        if (index !== -1) {
+          this.findings.splice(index, 1, objEllipse);
+        } else {
+          if (this.findings[this.findings.length - 1] === ' ') {
+            this.findings.splice(-1);
+          }
+          this.findings.push(objEllipse);
+        }
       }
     );
     // this.eventEmitterService.invokeFindingsDataFunction.subscribe((data) => {
@@ -100,5 +107,21 @@ export class FindingsComponent implements OnInit {
     const findings = JSON.stringify(this.findings);
     sessionStorage.setItem('findings', findings);
     this.xrayAnnotatedService.xrayAnnotatedFindings(this.findings);
+  }
+
+  updateFindings(evt, index) {
+    if (evt.target.textContent === '') {
+      this.findings.splice(index, 1, ' ');
+    } else {
+      this.findings.splice(index, 1, evt.target.textContent);
+    }
+  }
+
+  preventBaseValue(evt) {
+    if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
+      if (evt.key.charCodeAt() === 66) {
+        evt.preventDefault();
+      }
+    }
   }
 }
