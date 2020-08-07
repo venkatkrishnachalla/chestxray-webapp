@@ -6,8 +6,6 @@ export interface SignInResponse {
 }
 
 export interface PatientListData {
-  length: number;
-  findIndex: any;
   age: number;
   birthDate: string;
   hospitalPatientId: string;
@@ -18,6 +16,8 @@ export interface PatientListData {
   sex: string;
   status: boolean;
   studies: any[];
+  length?: number;
+  findIndex?: any;
 }
 
 export interface EnumServiceItems extends Array<PatientListData> {}

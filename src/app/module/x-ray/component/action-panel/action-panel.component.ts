@@ -9,6 +9,7 @@ import { actionPanelConstants } from '../../../../constants/actionPanelConstants
 import { Options } from 'ng5-slider';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'cxr-action-panel',
@@ -18,6 +19,7 @@ import { Router } from '@angular/router';
 export class ActionPanelComponent implements OnInit {
   @Output() askAIEvent = new EventEmitter();
   value = 70;
+  askAiTitle = 'Already ML Annotations updated';
   options: Options = {
     floor: 0,
     ceil: 100,
@@ -43,17 +45,24 @@ export class ActionPanelComponent implements OnInit {
 
   readonly constants = actionPanelConstants;
   actionPanel: { image: string; alt: string; title: string }[];
-  middlePanel: { image: string; alt: string; title: string; active: boolean }[];
+  middlePanel: {
+    image: string;
+    alt: string;
+    title: string;
+    active: boolean;
+    implemented: boolean;
+  }[];
   brightnessPanel: { image: string; alt: string; title: string }[];
   disableAskAI: boolean;
+  disableActionItems = true;
 
   constructor(private eventEmitterService: EventEmitterService) {}
 
   /*** class init function ***/
   ngOnInit(): void {
-    this.actionPanel = this.constants.actionPanelTop;
-    this.middlePanel = this.constants.actionPanelMiddle;
-    this.brightnessPanel = this.constants.actionPanelBrightness;
+    this.actionPanel = JSON.parse(JSON.stringify(this.constants.actionPanelTop));
+    this.middlePanel = JSON.parse(JSON.stringify(this.constants.actionPanelMiddle));
+    this.brightnessPanel = JSON.parse(JSON.stringify(this.constants.actionPanelBrightness));
     const askAiSelection = sessionStorage.getItem('askAiSelection');
     if (askAiSelection === 'true') {
       this.disableAskAI = true;
