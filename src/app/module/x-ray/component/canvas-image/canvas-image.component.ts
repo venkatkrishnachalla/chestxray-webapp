@@ -703,8 +703,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         width: 0,
         height: 0,
         disease: diseaseItem.name,
-        originX: 'center',
-        originY: 'center',
+        originX: diseaseItem.type === 'ellipse' ? 'left' : 'center',
+        originY: diseaseItem.type === 'ellipse' ? 'top' : 'center',
         left:
           diseaseItem.type === 'ellipse'
             ? diseaseItem.x
