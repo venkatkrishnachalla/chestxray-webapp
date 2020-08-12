@@ -143,4 +143,9 @@ export class PatientListComponent implements OnInit {
     sessionStorage.setItem('askAiSelection', 'false');
     this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
+
+   /*** unsubscribe userSubscription event ***/
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+  }
 }

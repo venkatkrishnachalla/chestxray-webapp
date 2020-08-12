@@ -19,6 +19,8 @@ describe('PatientListComponent', () => {
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onErrorMessage',
   ]);
+  const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,7 +38,7 @@ describe('PatientListComponent', () => {
     component = new PatientListComponent(
       elementRefSpy,
       dashboardServiceSpy,
-      httpSpy,
+      authServiceSpy,
       routerSpy,
       eventEmitterServiceSpy
     );
@@ -63,14 +65,18 @@ describe('PatientListComponent', () => {
         instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
       },
     ];
+    const mockInResponse = {
+      username: 'mohan',
+      userroles: ['hospitalradiologist'],
+    };
     beforeEach(() => {
       component.defaultColDef = { width: 200 };
       component.columnDefs = component.constants.patientDashboard.headers;
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
-      component.ngOnInit();
     });
     it('should call ngOnIit function', () => {
-      const result = component.ngOnInit();
+      authServiceSpy.userSubject = of(mockInResponse);
+      component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
     });
   });
@@ -136,6 +142,15 @@ describe('PatientListComponent', () => {
     });
     it('should call autoSizeAll function', () => {
       expect(component.autoSizeAll).toBeDefined();
+    });
+  });
+
+  /*** should call ngOnDestroy ***/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any).userSubscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });

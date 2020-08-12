@@ -24,6 +24,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
   currentPatientData: PatientDetailData;
   disablePrevious: boolean;
   disableNext: boolean;
+  component: { patientId: number; name: string; gender: string; age: number; priority: string; referenceDoctor: string; date: string; desc: string; status: string; instanceID: string; };
 
   constructor(public router: Router, private authService: AuthService) {}
 
@@ -69,11 +70,6 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('PatientImage');
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/x-ray'], {
-        state: { patientDetails: filterData },
-      })
-    );
     window.location.reload();
   }
 
@@ -87,11 +83,6 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('findings');
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/x-ray'], {
-        state: { patientDetails: filterData },
-      })
-    );
     window.location.reload();
   }
 
