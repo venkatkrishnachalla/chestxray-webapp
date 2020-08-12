@@ -13,6 +13,7 @@ describe('SignInComponent', () => {
     'hide',
   ]);
   const toastrServiceSpy = jasmine.createSpyObj('toastrService', ['error']);
+  const eventEmitterServiceSpy = jasmine.createSpyObj('eventEmitterService', ['onErrorMessage']);
 
   beforeEach(() => {
     component = new SignInComponent(
@@ -21,7 +22,8 @@ describe('SignInComponent', () => {
       consoleServiceSpy,
       routerSpy,
       spinnerServiceSpy,
-      toastrServiceSpy
+      toastrServiceSpy,
+      eventEmitterServiceSpy
     );
   });
 
