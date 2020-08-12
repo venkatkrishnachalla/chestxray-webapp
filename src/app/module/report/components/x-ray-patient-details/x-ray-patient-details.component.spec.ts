@@ -1,6 +1,7 @@
 import { XRayPatientDetailsComponent } from './x-ray-patient-details.component';
 import { of, throwError, BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { patientMock } from 'src/app/module/auth/patient-mock';
 
 describe('XRayPatientDetailsComponent', () => {
   let component: XRayPatientDetailsComponent;
@@ -37,25 +38,14 @@ describe('XRayPatientDetailsComponent', () => {
   /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
-      const patientMock = {
-        patientId: 12,
-        name: 'Krishna',
-        gender: 'M',
-        age: 56,
-        priority: 'Minor',
-        referenceDoctor: 'Corkery, Charley DDS',
-        date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-        desc: 'Testing',
-        status: false,
-        instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-      };
+      const patientMockData = patientMock[0];
       const mockData = {
         title: 'stateData',
       };
       const findingsMock = [{ name: 'Bulla', index: 0 }];
       const impressionsMock = [{ name: 'Bulla', index: 0 }];
       eventEmitterServiceSpy.commentSubject = of('abcde');
-      window.history.pushState({ patientDetails: patientMock }, '', '');
+      window.history.pushState({ patientDetails: patientMockData }, '', '');
       eventEmitterServiceSpy.invokeComponentFunction = of(mockData);
       xrayAnnotatedImpressionSpy.xrayAnnotatedImpressionsService.and.returnValue(
         of(findingsMock)

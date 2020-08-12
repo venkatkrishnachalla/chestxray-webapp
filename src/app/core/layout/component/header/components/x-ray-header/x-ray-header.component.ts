@@ -24,7 +24,18 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
   currentPatientData: PatientDetailData;
   disablePrevious: boolean;
   disableNext: boolean;
-  component: { patientId: number; name: string; gender: string; age: number; priority: string; referenceDoctor: string; date: string; desc: string; status: string; instanceID: string; };
+  component: {
+    patientId: number;
+    name: string;
+    gender: string;
+    age: number;
+    priority: string;
+    referenceDoctor: string;
+    date: string;
+    desc: string;
+    status: string;
+    instanceID: string;
+  };
 
   constructor(public router: Router, private authService: AuthService) {}
 

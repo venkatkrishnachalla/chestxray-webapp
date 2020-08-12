@@ -7,6 +7,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { AgGridModule } from '../../../../../node_modules/ag-grid-angular';
 import { of, throwError } from 'rxjs';
 import { GridApi, ColumnApi } from 'ag-grid-community';
+import { patientMock } from '../../auth/patient-mock';
 
 describe('PatientListComponent', () => {
   let component: PatientListComponent;
@@ -51,20 +52,7 @@ describe('PatientListComponent', () => {
 
   /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
-    const samplePatient = [
-      {
-        patientId: 12,
-        name: 'Krishna',
-        gender: 'M',
-        age: 56,
-        priority: 'Minor',
-        referenceDoctor: 'Corkery, Charley DDS',
-        date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-        desc: 'Testing',
-        status: 'in-process',
-        instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-      },
-    ];
+    const samplePatient = patientMock;
     const mockInResponse = {
       username: 'mohan',
       userroles: ['hospitalradiologist'],
@@ -83,20 +71,7 @@ describe('PatientListComponent', () => {
 
   /*** it should call getPatientList function ***/
   describe('#getPatientList', () => {
-    const samplePatient = [
-      {
-        patientId: 12,
-        name: 'Krishna',
-        gender: 'M',
-        age: 56,
-        priority: 'Minor',
-        referenceDoctor: 'Corkery, Charley DDS',
-        date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-        desc: 'Testing',
-        status: 'in-process',
-        instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-      },
-    ];
+    const samplePatient = patientMock;
     beforeEach(() => {
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
       component.getPatientList();

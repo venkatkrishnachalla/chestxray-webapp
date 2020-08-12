@@ -1,5 +1,6 @@
 import { XRayHeaderComponent } from './x-ray-header.component';
 import { of } from 'rxjs';
+import { patientMock } from 'src/app/module/auth/patient-mock';
 
 describe('XRayHeaderComponent', () => {
   let component: XRayHeaderComponent;
@@ -30,20 +31,6 @@ describe('XRayHeaderComponent', () => {
   /*** ngOnInit function test case ****/
   describe('#ngOnInit', () => {
     beforeEach(() => {
-      const samplePatient = [
-        {
-          patientId: 12,
-          name: 'Krishna',
-          gender: 'M',
-          age: 56,
-          priority: 'Minor',
-          referenceDoctor: 'Corkery, Charley DDS',
-          date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-          desc: 'Testing',
-          status: 'in-process',
-          instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-        },
-      ];
       const mockInResponse = {
         username: 'mohan',
         userroles: ['hospitalradiologist'],
@@ -51,7 +38,7 @@ describe('XRayHeaderComponent', () => {
       authServiceSpy.userSubject = of(mockInResponse);
       window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
-        return JSON.stringify(samplePatient);
+        return JSON.stringify(patientMock);
       });
       component.ngOnInit();
     });
@@ -63,21 +50,7 @@ describe('XRayHeaderComponent', () => {
   /*** next click functionality ****/
   describe('#nextPatient', () => {
     it('it should call nextPatient', () => {
-      const samplePatient = [
-        {
-          patientId: 12,
-          name: 'Krishna',
-          gender: 'M',
-          age: 56,
-          priority: 'Minor',
-          referenceDoctor: 'Corkery, Charley DDS',
-          date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-          desc: 'Testing',
-          status: 'in-process',
-          instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-          index: 2
-        },
-      ];
+      const samplePatient = patientMock;
       component.patientRows = samplePatient as any;
       component.currentIndex = 1;
       component.nextPatient();
@@ -88,22 +61,7 @@ describe('XRayHeaderComponent', () => {
   /*** previous click functionality ****/
   describe('#previousPatient', () => {
     it('it should call previousPatient', () => {
-      const samplePatient = [
-        {
-          patientId: 12,
-          name: 'Krishna',
-          gender: 'M',
-          age: 56,
-          priority: 'Minor',
-          referenceDoctor: 'Corkery, Charley DDS',
-          date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-          desc: 'Testing',
-          status: 'in-process',
-          instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-          index: 0
-        },
-      ];
-      component.patientRows = samplePatient as any;
+      component.patientRows = patientMock as any;
       component.currentIndex = 1;
       component.previousPatient();
       expect(component.previousPatient).toBeDefined();
