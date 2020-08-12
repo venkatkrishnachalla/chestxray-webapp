@@ -1,7 +1,7 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of } from 'rxjs';
 
-describe('CanvasImageComponent', () => {
+fdescribe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',
@@ -27,7 +27,10 @@ describe('CanvasImageComponent', () => {
     'xrayAnnotatedService',
   ]);
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
-  const toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success']);
+  const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
+    'success',
+    'clear',
+  ]);
 
   beforeEach(() => {
     component = new CanvasImageComponent(
@@ -49,13 +52,24 @@ describe('CanvasImageComponent', () => {
   /*** it should call onResize function ***/
   describe('#onResize', () => {
     beforeEach(() => {
+      component.canvas = {
+        clear: () => {},
+      };
+      component.canvasDynamicHeight = 0;
+      component.canvasDynamicWidth = 0;
+      component.canvasScaleX = 0;
+      component.canvasScaleY = 0;
       spyOn(component, 'setCanvasDimension');
       spyOn(component, 'setCanvasBackground');
+      spyOn(component, 'getSessionEllipse');
+      spyOn(component, 'getSessionFreeHandDrawing');
       component.onResize();
     });
     it('should call onResize function', () => {
       expect(component.setCanvasDimension).toHaveBeenCalled();
       expect(component.setCanvasBackground).toHaveBeenCalled();
+      expect(component.getSessionEllipse).toHaveBeenCalled();
+      expect(component.getSessionFreeHandDrawing).toHaveBeenCalled();
     });
   });
 
@@ -270,6 +284,19 @@ describe('CanvasImageComponent', () => {
           };
         },
       };
+      component.savedInfo = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              Findings: {},
+              Impression: [],
+              diseases: [],
+            },
+          ],
+        },
+        meta: {},
+      };
       component.deletePrediction();
     });
     it('should call deletePrediction function', () => {
@@ -287,12 +314,56 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  /*** it should call onSelect function ***/
+  /*** it should call onSelect function with empty item ***/
   describe('#onSelect', () => {
     beforeEach(() => {
-      component.onSelect('', 'text');
+      component.pathologyNames = [
+        {
+          abnormality: 'Anatomical variants',
+          Names: [
+            'Cervical rib',
+            'Azygos fissure',
+            'Aortic Arch variants',
+            'Thymus',
+          ],
+        },
+      ];
+      const eventSpy = {
+        target: {
+          textContent: 'abcd',
+        },
+      };
+      const itemSpy = [];
+      component.onSelect(eventSpy, itemSpy);
     });
-    it('should call onSelect function', () => {
+    it('should call onSelect function, with empty item ', () => {
+      expect(component.onSelect).toBeDefined();
+    });
+  });
+
+  /*** it should call onSelect function with empty value  ***/
+  describe('#onSelect', () => {
+    beforeEach(() => {
+      component.pathologyNames = [
+        {
+          abnormality: 'Anatomical variants',
+          Names: [
+            'Cervical rib',
+            'Azygos fissure',
+            'Aortic Arch variants',
+            'Thymus',
+          ],
+        },
+      ];
+      const eventSpy = {
+        target: {
+          textContent: 'abcd',
+        },
+      };
+      const itemSpy = '';
+      component.onSelect(eventSpy, itemSpy);
+    });
+    it('should call onSelect function, with empty value', () => {
       expect(component.onSelect).toBeDefined();
     });
   });
@@ -302,18 +373,74 @@ describe('CanvasImageComponent', () => {
     beforeEach(() => {
       component.canvas = {
         getActiveObject: () => {
-          return { id: 1, set: () => {} };
+          return {
+            id: 13,
+            set: () => {},
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['M 3654'],
+              },
+            },
+          };
         },
         renderAll: () => {},
+        discardActiveObject: () => {},
       };
       component.selectedDisease = 'Bulla';
       component.activeIcon = {
         active: true,
       };
+      spyOn(component, 'storeDataInSession');
+      spyOn(component, 'getColorMapping');
+      spyOn(component, 'clear');
       component.savePrediction();
     });
-    it('should call savePrediction function', () => {
+    it('should call savePrediction function, if selected object is not an ellipse', () => {
       expect(component.savePrediction).toBeDefined();
+      expect(component.storeDataInSession).toHaveBeenCalled();
+      expect(eventEmitterServiceSpy.onComponentDataShared).toHaveBeenCalled();
+      expect(component.getColorMapping).toHaveBeenCalled();
+      expect(component.clear).toHaveBeenCalled();
+      expect(dialogSpy.closeAll).toHaveBeenCalled();
+      expect(toastrServiceSpy.success).toHaveBeenCalled();
+    });
+  });
+
+  describe('#savePrediction', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            id: 13,
+            set: () => {},
+            type: 'ellipse',
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['M 3654'],
+              },
+            },
+          };
+        },
+        renderAll: () => {},
+        discardActiveObject: () => {},
+      };
+      component.selectedDisease = 'Bulla';
+      component.activeIcon = {
+        active: true,
+      };
+      spyOn(component, 'storeDataInSession');
+      spyOn(component, 'getColorMapping');
+      spyOn(component, 'clear');
+      component.savePrediction();
+    });
+    it('should call savePrediction function, if selected object is ellipse', () => {
+      expect(component.savePrediction).toBeDefined();
+      expect(component.storeDataInSession).toHaveBeenCalled();
+      expect(eventEmitterServiceSpy.onComponentDataShared).toHaveBeenCalled();
+      expect(component.getColorMapping).toHaveBeenCalled();
+      expect(component.clear).toHaveBeenCalled();
+      expect(dialogSpy.closeAll).toHaveBeenCalled();
+      expect(toastrServiceSpy.success).toHaveBeenCalled();
     });
   });
 
@@ -355,6 +482,8 @@ describe('CanvasImageComponent', () => {
           color: '',
         },
         observe: () => {},
+        forEachObject: () => {},
+        renderAll: () => {},
       };
       const mockData = {
         active: true,
@@ -382,6 +511,8 @@ describe('CanvasImageComponent', () => {
           color: '',
         },
         observe: () => {},
+        forEachObject: () => {},
+        renderAll: () => {},
       };
       const mockData = {
         active: false,
@@ -485,6 +616,8 @@ describe('CanvasImageComponent', () => {
       (component as any).eventsSubscription = subscriptionSpy;
       component.ngOnDestroy();
       expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
+      expect(dialogSpy.closeAll).toHaveBeenCalled();
+      expect(toastrServiceSpy.clear).toHaveBeenCalled();
     });
   });
 
@@ -497,6 +630,7 @@ describe('CanvasImageComponent', () => {
         renderAll: () => {},
         setActiveObject: () => {},
         isDrawingMode: true,
+        forEachObject: () => {},
       };
       component.drawEllipse({}, undefined, undefined);
       expect(component.drawEllipse).toBeDefined();
@@ -516,6 +650,7 @@ describe('CanvasImageComponent', () => {
         setActiveObject: () => {},
         isDrawingMode: true,
         observe: () => {},
+        forEachObject: () => {},
       };
       component.drawEllipse(mockdata, undefined, undefined);
       expect(component.drawEllipse).toBeDefined();
@@ -527,9 +662,34 @@ describe('CanvasImageComponent', () => {
     it('it should call updatePrediction', () => {
       component.canvas = {
         getActiveObject: () => {
-          return { id: 1, set: () => {} };
+          return {
+            id: 1,
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['2345'],
+              },
+            },
+            set: () => {},
+          };
+        },
+        _activeObject: {
+          path: '/x-ray',
         },
         renderAll: () => {},
+        discardActiveObject: () => {},
+      };
+      component.savedInfo = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              Findings: {},
+              Impression: [],
+              diseases: [],
+            },
+          ],
+        },
+        meta: {},
       };
       component.selectedDisease = 'Bulla';
       component.updatePrediction();
@@ -539,13 +699,33 @@ describe('CanvasImageComponent', () => {
 
   /*** it should call save function ***/
   describe('#save', () => {
-    it('it should call save', () => {
+    beforeEach(() => {
+      component.canvas = {
+        isDrawingMode: true,
+        getActiveObject: () => {},
+      };
+      spyOn(component, 'changeSelectableStatus');
+      component.save();
+    });
+    it('it should call save function, if isDrawingMode is true', () => {
+      expect(component.save).toBeDefined();
+      expect(dialogSpy.open).toHaveBeenCalled();
+      expect(component.changeSelectableStatus).toHaveBeenCalledWith(true);
+    });
+  });
+
+  /*** it should call save function ***/
+  describe('#save', () => {
+    beforeEach(() => {
       component.canvas = {
         getActiveObject: () => {},
-        isDrawingMode: true,
       };
+      spyOn(component, 'changeSelectableStatus');
       component.save();
+    });
+    it('it should call save function, if isDrawingMode is not true', () => {
       expect(component.save).toBeDefined();
+      expect(component.changeSelectableStatus).toHaveBeenCalledWith(true);
     });
   });
 
@@ -580,10 +760,388 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return { id: 1, set: () => {} };
         },
+        _activeObject: {
+          path: '/x-ray',
+        },
         renderAll: () => {},
       };
-      component.getColorMapping('Bulla', true);
+      component.savedInfo = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              Findings: {},
+              Impression: [],
+              diseases: [],
+            },
+          ],
+        },
+        meta: {},
+      };
+      component.getColorMapping('Bulla', '');
       expect(component.getColorMapping).toBeDefined();
+    });
+  });
+  /*** it should call getSessionEllipse function if ellipse is in session***/
+  describe('#getSessionEllipse', () => {
+    beforeEach(() => {
+      component.canvas = {
+        add: () => {},
+        renderAll: () => {},
+      };
+      component.getSessionEllipse();
+    });
+    it('should call setCanvasBackground function', () => {
+      expect(component.getSessionEllipse).toBeDefined();
+      expect(dialogSpy.closeAll).toHaveBeenCalled();
+    });
+  });
+
+  /*** it should call getSessionFreeHandDrawing function if freeHandDrawing is in session***/
+  describe('#getSessionFreeHandDrawing', () => {
+    beforeEach(() => {
+      component.canvas = {
+        add: () => {},
+        renderAll: () => {},
+      };
+      component.getSessionFreeHandDrawing();
+    });
+    it('should call getSessionFreeHandDrawing function', () => {
+      expect(component.getSessionFreeHandDrawing).toBeDefined();
+      expect(dialogSpy.closeAll).toHaveBeenCalled();
+    });
+  });
+
+  /*** it should call saveFreeHandDrawingIntoSession function ***/
+  describe('#saveFreeHandDrawingIntoSession', () => {
+    beforeEach(() => {
+      component.selectedObjectPrediction = {
+        canvas: {
+          freeDrawingBrush: {
+            _points: ['12345'],
+          },
+        },
+      };
+      component.saveFreeHandDrawingIntoSession();
+    });
+    it('should call saveFreeHandDrawingIntoSession function', () => {
+      expect(component.saveFreeHandDrawingIntoSession).toBeDefined();
+    });
+  });
+
+  /*** it should call deleteFreeHandDrawingInSession function ***/
+  describe('#deleteFreeHandDrawingInSession', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        renderAll: () => {},
+        remove: () => {},
+        id: 10,
+      };
+      component.deleteFreeHandDrawingInSession();
+    });
+    it('should call deleteFreeHandDrawingInSession function', () => {
+      expect(component.deleteFreeHandDrawingInSession).toBeDefined();
+    });
+  });
+
+  /*** it should call deleteEllipseInSession function ***/
+  describe('#deleteEllipseInSession', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return { id: 1, set: () => {} };
+        },
+        remove: () => {},
+        renderAll: () => {},
+      };
+      component.deleteEllipseInSession();
+    });
+    it('should call deleteEllipseInSession function', () => {
+      expect(component.deleteEllipseInSession).toBeDefined();
+    });
+  });
+
+  /*** it should call updateFreeHandDrawingIntoSession function ***/
+  describe('#updateFreeHandDrawingIntoSession', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            id: 1,
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['2345'],
+              },
+            },
+            set: () => {},
+          };
+        },
+        renderAll: () => {},
+      };
+      component.updateFreeHandDrawingIntoSession();
+    });
+    it('should call updateFreeHandDrawingIntoSession function', () => {
+      expect(component.updateFreeHandDrawingIntoSession).toBeDefined();
+    });
+  });
+
+  /*** it should call updateEllipseIntoSession function ***/
+  describe('#updateEllipseIntoSession', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return { id: 1, set: () => {} };
+        },
+        renderAll: () => {},
+      };
+      component.updateEllipseIntoSession();
+    });
+    it('should call updateEllipseIntoSession function', () => {
+      expect(component.updateEllipseIntoSession).toBeDefined();
+    });
+  });
+
+  /*** it should call saveEllipseIntoSession function ***/
+  describe('#saveEllipseIntoSession', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+      };
+      spyOn(component, 'scaleSaveEllipse');
+      component.saveEllipseIntoSession();
+    });
+    it('should call saveEllipseIntoSession function', () => {
+      expect(component.saveEllipseIntoSession).toBeDefined();
+      expect(component.scaleSaveEllipse).toHaveBeenCalled();
+      expect(dialogSpy.open).toHaveBeenCalled();
+    });
+  });
+
+  /*** it should call restrictionToBoundaryLimit function ***/
+  describe('#restrictionToBoundaryLimit', () => {
+    beforeEach(() => {
+      const objSpy = {
+        currentHeight: 600,
+        currentWidth: 600,
+        canvas: {
+          height: 500,
+          width: 500,
+        },
+        setCoords: () => {},
+        getBoundingRect: () => {
+          return {
+            top: 200,
+            left: 200,
+          };
+        },
+      };
+      component.restrictionToBoundaryLimit(objSpy);
+    });
+    it('should call restrictionToBoundaryLimit function, if current Height & Width is greater than canvas height & width', () => {
+      expect(component.restrictionToBoundaryLimit).toBeDefined();
+    });
+  });
+
+  describe('#restrictionToBoundaryLimit', () => {
+    beforeEach(() => {
+      const objSpy = {
+        currentHeight: 400,
+        currentWidth: 400,
+        canvas: {
+          height: 500,
+          width: 500,
+        },
+        setCoords: () => {},
+        getBoundingRect: () => {
+          return {
+            top: 200,
+            left: 200,
+          };
+        },
+      };
+      component.restrictionToBoundaryLimit(objSpy);
+    });
+    it('should call restrictionToBoundaryLimit function, if current Height and Width is lesser than canvas height&width', () => {
+      expect(component.restrictionToBoundaryLimit).toBeDefined();
+    });
+  });
+
+  describe('#restrictionToBoundaryLimit', () => {
+    beforeEach(() => {
+      const objSpy = {
+        currentHeight: 400,
+        currentWidth: 400,
+        canvas: {
+          height: 500,
+          width: 500,
+        },
+        setCoords: () => {},
+        getBoundingRect: () => {
+          return {
+            top: -100,
+            left: -100,
+          };
+        },
+      };
+      component.restrictionToBoundaryLimit(objSpy);
+    });
+    it('should call restrictionToBoundaryLimit function, if getBoundingRect top and getBoundingRect left is less than 0', () => {
+      expect(component.restrictionToBoundaryLimit).toBeDefined();
+    });
+  });
+  describe('#restrictionToBoundaryLimit', () => {
+    beforeEach(() => {
+      const objSpy = {
+        currentHeight: 400,
+        currentWidth: 400,
+        canvas: {
+          height: 100,
+          width: 100,
+        },
+        setCoords: () => {},
+        getBoundingRect: () => {
+          return {
+            top: 100,
+            left: 100,
+            height: 100,
+            width: 100,
+          };
+        },
+      };
+      component.restrictionToBoundaryLimit(objSpy);
+    });
+    it('should call restrictionToBoundaryLimit function', () => {
+      expect(component.restrictionToBoundaryLimit).toBeDefined();
+    });
+  });
+
+  /*** it should call actionIconsModelDispaly function ***/
+  describe('#actionIconsModelDispaly', () => {
+    beforeEach(() => {
+      component.canvas = {
+        isDrawingMode: false,
+        getActiveObject: () => {
+          return {
+            top: 60,
+          };
+        },
+      };
+      const data = {
+        target: {
+          calcCoords: () => {
+            return {
+              mr: {
+                x: 30,
+                y: 40,
+              },
+              mt: {
+                x: 30,
+                y: 40,
+              },
+            };
+          },
+        },
+      };
+      component.enableDrawEllipseMode = false;
+      component.actionIconsModelDispaly(data);
+    });
+    it('should call actionIconsModelDispaly function, with object top less than 70', () => {
+      expect(component.actionIconsModelDispaly).toBeDefined();
+      expect(dialogSpy.open).toHaveBeenCalled();
+    });
+  });
+
+  describe('#actionIconsModelDispaly', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            top: 80,
+          };
+        },
+      };
+      const data = {
+        angle: 20,
+        target: {
+          calcCoords: () => {
+            return {
+              mr: {
+                x: 30,
+                y: 40,
+              },
+              mt: {
+                x: 30,
+                y: 40,
+              },
+            };
+          },
+        },
+      };
+      component.actionIconsModelDispaly(data);
+    });
+    it('should call actionIconsModelDispaly function, when active object top greater than 80', () => {
+      expect(component.actionIconsModelDispaly).toBeDefined();
+    });
+  });
+
+  /*** it should call markactionModelPosition function ***/
+  describe('#markactionModelPosition', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            top: 80,
+          };
+        },
+      };
+      const data = {
+        target: {
+          calcCoords: () => {
+            return {
+              mr: {
+                x: 30,
+                y: 40,
+              },
+              mt: {
+                x: 30,
+                y: 40,
+              },
+            };
+          },
+        },
+      };
+      component.markactionModelPosition(data);
+    });
+    it('should call markactionModelPosition function', () => {
+      expect(component.markactionModelPosition).toBeDefined();
+    });
+  });
+
+  /*** it should call updateSearchModel function ***/
+  describe('#updateSearchModel', () => {
+    beforeEach(() => {
+      component.updateSearchModel('');
+    });
+    it('should call updateSearchModel function', () => {
+      expect(component.updateSearchModel).toBeDefined();
+    });
+  });
+
+  /*** it should call changeSelectableStatus function ***/
+  describe('#changeSelectableStatus', () => {
+    beforeEach(() => {
+      const val = true;
+      component.canvas = {
+        renderAll: () => {},
+        forEachObject: (value) => {
+          value.selectable = true;
+        },
+      };
+      component.changeSelectableStatus(val);
+    });
+    it('it should call changeSelectableStatus', () => {
+      expect(component.changeSelectableStatus).toBeDefined();
     });
   });
 });
