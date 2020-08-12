@@ -31,7 +31,7 @@ export class FindingsComponent implements OnInit {
     this.order = this.constants.findings;
     this.order.forEach((data) => {
       if (data.Name !== 'ADDITIONAL') {
-        this.findings.push(data.Name + ': ');
+        this.findings.push(data.Name + ':');
       } else {
         this.findings.push(' ');
       }
@@ -118,10 +118,31 @@ export class FindingsComponent implements OnInit {
   }
 
   preventBaseValue(evt) {
-    if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
-      if (evt.key.charCodeAt() === 66) {
-        evt.preventDefault();
+    const lengthIndex = evt.target.textContent.indexOf(':');
+    if (lengthIndex !== -1){
+      if (window.getSelection().getRangeAt(0).startOffset <= lengthIndex){
+        return false;
       }
+      else{
+        if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
+          if (evt.key.charCodeAt() === 66) {
+            evt.preventDefault();
+          }
+        }
+        else{
+          if (window.getSelection().getRangeAt(0).startOffset === lengthIndex + 1){
+            if (evt.key.charCodeAt() === 68) {
+              return true;
+            }
+            return false;
+          }
+          else{
+            if (evt.key.charCodeAt() === 46) {
+              return true;
+            }
+          }
+        }
+      } 
     }
   }
 }
