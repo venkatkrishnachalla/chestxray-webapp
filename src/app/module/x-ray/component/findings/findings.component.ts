@@ -120,10 +120,7 @@ export class FindingsComponent implements OnInit {
   preventBaseValue(evt) {
     const lengthIndex = evt.target.textContent.indexOf(':');
     if (lengthIndex !== -1){
-      if (window.getSelection().getRangeAt(0).startOffset <= lengthIndex){
-        return false;
-      }
-      else{
+      if (window.getSelection().getRangeAt(0).startOffset > lengthIndex){
         if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
           if (evt.key.charCodeAt() === 66) {
             evt.preventDefault();
@@ -136,13 +133,14 @@ export class FindingsComponent implements OnInit {
             }
             return false;
           }
-          else{
-            if (evt.key.charCodeAt() === 46) {
+          else if (evt.key.charCodeAt() === 46) {
               return true;
-            }
           }
         }
-      } 
+      }
+      else{
+        return false;
+      }
     }
   }
 }
