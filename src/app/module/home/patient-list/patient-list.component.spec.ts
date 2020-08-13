@@ -7,6 +7,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { AgGridModule } from '../../../../../node_modules/ag-grid-angular';
 import { of, throwError } from 'rxjs';
 import { GridApi, ColumnApi } from 'ag-grid-community';
+import { patientMock } from '../../auth/patient-mock';
 
 describe('PatientListComponent', () => {
   let component: PatientListComponent;
@@ -19,6 +20,8 @@ describe('PatientListComponent', () => {
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onErrorMessage',
   ]);
+  const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,7 +39,7 @@ describe('PatientListComponent', () => {
     component = new PatientListComponent(
       elementRefSpy,
       dashboardServiceSpy,
-      httpSpy,
+      authServiceSpy,
       routerSpy,
       eventEmitterServiceSpy
     );
@@ -49,48 +52,26 @@ describe('PatientListComponent', () => {
 
   /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
-    const samplePatient = [
-      {
-        patientId: 12,
-        name: 'Krishna',
-        gender: 'M',
-        age: 56,
-        priority: 'Minor',
-        referenceDoctor: 'Corkery, Charley DDS',
-        date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-        desc: 'Testing',
-        status: 'in-process',
-        instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-      },
-    ];
+    const samplePatient = patientMock;
+    const mockInResponse = {
+      username: 'mohan',
+      userroles: ['hospitalradiologist'],
+    };
     beforeEach(() => {
       component.defaultColDef = { width: 200 };
       component.columnDefs = component.constants.patientDashboard.headers;
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
-      component.ngOnInit();
     });
     it('should call ngOnIit function', () => {
-      const result = component.ngOnInit();
+      authServiceSpy.userSubject = of(mockInResponse);
+      component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
     });
   });
 
   /*** it should call getPatientList function ***/
   describe('#getPatientList', () => {
-    const samplePatient = [
-      {
-        patientId: 12,
-        name: 'Krishna',
-        gender: 'M',
-        age: 56,
-        priority: 'Minor',
-        referenceDoctor: 'Corkery, Charley DDS',
-        date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-        desc: 'Testing',
-        status: 'in-process',
-        instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-      },
-    ];
+    const samplePatient = patientMock;
     beforeEach(() => {
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
       component.getPatientList();
@@ -136,6 +117,15 @@ describe('PatientListComponent', () => {
     });
     it('should call autoSizeAll function', () => {
       expect(component.autoSizeAll).toBeDefined();
+    });
+  });
+
+  /*** should call ngOnDestroy ***/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any).userSubscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });

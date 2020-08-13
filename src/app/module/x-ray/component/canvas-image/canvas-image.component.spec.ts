@@ -582,7 +582,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
       };
-      component.getColorMapping('Bulla', true);
+      component.getColorMapping('Bulla', 'update');
       expect(component.getColorMapping).toBeDefined();
     });
   });

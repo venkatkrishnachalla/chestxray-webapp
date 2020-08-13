@@ -13,7 +13,9 @@ describe('SignInComponent', () => {
     'hide',
   ]);
   const toastrServiceSpy = jasmine.createSpyObj('toastrService', ['error']);
-  const eventEmitterServiceSpy = jasmine.createSpyObj('eventEmitterService', ['onErrorMessage']);
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'invokeDisplayErrorMessage',
+  ]);
 
   beforeEach(() => {
     component = new SignInComponent(
@@ -35,10 +37,20 @@ describe('SignInComponent', () => {
   /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: 404,
+        },
+        error: {
+          error: {
+            message: 'Not Found',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
       component.ngOnInit();
     });
     it('should call ngOnIit function', () => {
-      const result = component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
     });
   });
