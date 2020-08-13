@@ -1,7 +1,7 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of } from 'rxjs';
 
-fdescribe('CanvasImageComponent', () => {
+describe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',
@@ -286,12 +286,12 @@ fdescribe('CanvasImageComponent', () => {
       };
       component.savedInfo = {
         data: {
-          names: [],
+          names: ['adcd'],
           ndarray: [
             {
               Findings: {},
-              Impression: [],
-              diseases: [],
+              Impression: ['abcd'],
+              diseases: ['abcd'],
             },
           ],
         },
@@ -406,6 +406,7 @@ fdescribe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call savePrediction function ***/
   describe('#savePrediction', () => {
     beforeEach(() => {
       component.canvas = {
@@ -778,10 +779,11 @@ fdescribe('CanvasImageComponent', () => {
         },
         meta: {},
       };
-      component.getColorMapping('Bulla', '');
+      component.getColorMapping('Bulla', 'update');
       expect(component.getColorMapping).toBeDefined();
     });
   });
+
   /*** it should call getSessionEllipse function if ellipse is in session***/
   describe('#getSessionEllipse', () => {
     beforeEach(() => {
@@ -918,7 +920,7 @@ fdescribe('CanvasImageComponent', () => {
     });
   });
 
-  /*** it should call restrictionToBoundaryLimit function ***/
+  /*** should call restrictionToBoundaryLimit function, if current Height & Width is greater than canvas height & width ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
       const objSpy = {
@@ -943,6 +945,7 @@ fdescribe('CanvasImageComponent', () => {
     });
   });
 
+  /*** should call restrictionToBoundaryLimit function, if current Height and Width is lesser than canvas height&width ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
       const objSpy = {
@@ -967,6 +970,7 @@ fdescribe('CanvasImageComponent', () => {
     });
   });
 
+    /*** should call restrictionToBoundaryLimit function, if getBoundingRect top and getBoundingRect left is less than 0 ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
       const objSpy = {
@@ -990,6 +994,8 @@ fdescribe('CanvasImageComponent', () => {
       expect(component.restrictionToBoundaryLimit).toBeDefined();
     });
   });
+
+    /*** it should call restrictionToBoundaryLimit function ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
       const objSpy = {
@@ -1016,7 +1022,7 @@ fdescribe('CanvasImageComponent', () => {
     });
   });
 
-  /*** it should call actionIconsModelDispaly function ***/
+  /*** should call actionIconsModelDispaly function, with object top less than 70 ***/
   describe('#actionIconsModelDispaly', () => {
     beforeEach(() => {
       component.canvas = {
@@ -1052,6 +1058,7 @@ fdescribe('CanvasImageComponent', () => {
     });
   });
 
+  /*** should call actionIconsModelDispaly function, when active object top greater than 80 ***/
   describe('#actionIconsModelDispaly', () => {
     beforeEach(() => {
       component.canvas = {
