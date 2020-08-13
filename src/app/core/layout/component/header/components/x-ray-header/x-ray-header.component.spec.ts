@@ -1,5 +1,6 @@
 import { XRayHeaderComponent } from './x-ray-header.component';
 import { of } from 'rxjs';
+import { patientMock } from 'src/app/module/auth/patient-mock';
 
 describe('XRayHeaderComponent', () => {
   let component: XRayHeaderComponent;
@@ -22,7 +23,7 @@ describe('XRayHeaderComponent', () => {
     component = new XRayHeaderComponent(routerSpy, authServiceSpy);
   });
 
-  /** expects xray header component to be truthy ***/
+  /*** expects xray header component to be truthy ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -36,10 +37,34 @@ describe('XRayHeaderComponent', () => {
       };
       authServiceSpy.userSubject = of(mockInResponse);
       window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(patientMock);
+      });
       component.ngOnInit();
     });
     it('should call ngOnInit function', () => {
       expect(component.patientID).toEqual('1010');
+    });
+  });
+
+  /*** next click functionality ****/
+  describe('#nextPatient', () => {
+    it('it should call nextPatient', () => {
+      const samplePatient = patientMock;
+      component.patientRows = samplePatient as any;
+      component.currentIndex = 1;
+      component.nextPatient();
+      expect(component.nextPatient).toBeDefined();
+    });
+  });
+
+  /*** previous click functionality ****/
+  describe('#previousPatient', () => {
+    it('it should call previousPatient', () => {
+      component.patientRows = patientMock as any;
+      component.currentIndex = 1;
+      component.previousPatient();
+      expect(component.previousPatient).toBeDefined();
     });
   });
 

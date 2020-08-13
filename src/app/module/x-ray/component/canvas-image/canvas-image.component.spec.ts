@@ -1,7 +1,7 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of } from 'rxjs';
 
-describe('CanvasImageComponent', () => {
+fdescribe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',
@@ -808,7 +808,7 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getSessionFreeHandDrawing function', () => {
       expect(component.getSessionFreeHandDrawing).toBeDefined();
-      // expect(dialogSpy.closeAll).toHaveBeenCalled();
+      expect(dialogSpy.closeAll).toHaveBeenCalled();
     });
   });
 
@@ -914,7 +914,7 @@ describe('CanvasImageComponent', () => {
     it('should call saveEllipseIntoSession function', () => {
       expect(component.saveEllipseIntoSession).toBeDefined();
       expect(component.scaleSaveEllipse).toHaveBeenCalled();
-      // expect(dialogSpy.open).toHaveBeenCalled();
+      expect(dialogSpy.open).toHaveBeenCalled();
     });
   });
 
