@@ -1263,62 +1263,66 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   getSessionEllipse() {
     const ellipses = JSON.parse(sessionStorage.getItem('ellipse'));
-    ellipses.forEach((element) => {
-      const sessionEllipse = new fabric.Ellipse({
-        width: element.width / this.canvasScaleX,
-        height: element.height / this.canvasScaleY,
-        left: element.left / this.canvasScaleX,
-        top: element.top / this.canvasScaleY,
-        rx: element.rx / this.canvasScaleX / 2,
-        ry: element.ry / this.canvasScaleY / 2,
-        angle: element.angle,
-        stroke: element.color,
-        id: element.id,
-        originX: 'center',
-        originY: 'center',
-        strokeWidth: 2,
-        fill: '',
-        selectable: true,
+    if (ellipses) {
+      ellipses.forEach((element) => {
+        const sessionEllipse = new fabric.Ellipse({
+          width: element.width / this.canvasScaleX,
+          height: element.height / this.canvasScaleY,
+          left: element.left / this.canvasScaleX,
+          top: element.top / this.canvasScaleY,
+          rx: element.rx / this.canvasScaleX / 2,
+          ry: element.ry / this.canvasScaleY / 2,
+          angle: element.angle,
+          stroke: element.color,
+          id: element.id,
+          originX: 'center',
+          originY: 'center',
+          strokeWidth: 2,
+          fill: '',
+          selectable: true,
+        });
+        this.dialog.closeAll();
+        this.canvas.add(sessionEllipse);
       });
-      this.dialog.closeAll();
-      this.canvas.add(sessionEllipse);
-    });
-    this.canvas.renderAll();
+      this.canvas.renderAll();
+    }
   }
 
   getSessionFreeHandDrawing() {
     const path = JSON.parse(sessionStorage.getItem('freeHandDrawing'));
-    path.forEach((element) => {
-      const coordinatePath = element.coordinateValue.split(' ');
-      for (let i = 0; i < coordinatePath.length; i++) {
-        if (i % 2 === 0) {
-          let xPosition: any = coordinatePath[i];
-          xPosition = xPosition / this.canvasScaleX;
-          this.coordinateList.push(xPosition);
-        } else {
-          let yPosition: any = coordinatePath[i];
-          yPosition = yPosition / this.canvasScaleY;
-          this.coordinateList.push(yPosition);
+    if (path.length !== 0) {
+      path.forEach((element) => {
+        const coordinatePath = element.coordinateValue.split(' ');
+        for (let i = 0; i < coordinatePath.length; i++) {
+          if (i % 2 === 0) {
+            let xPosition: any = coordinatePath[i];
+            xPosition = xPosition / this.canvasScaleX;
+            this.coordinateList.push(xPosition);
+          } else {
+            let yPosition: any = coordinatePath[i];
+            yPosition = yPosition / this.canvasScaleY;
+            this.coordinateList.push(yPosition);
+          }
         }
-      }
-      const appendCharacter = 'M' + ' ';
-      this.coordinateList.unshift(appendCharacter);
-      this.canvas.add(
-        new fabric.Path(this.coordinateList.join(' '), {
-          // @ts-ignore
-          stroke: element.color,
-          strokeWidth: 2,
-          fill: '',
-          originX: 'center',
-          originY: 'center',
-          opacity: 0.8,
-          id: element.id,
-        })
-      );
+        const appendCharacter = 'M' + ' ';
+        this.coordinateList.unshift(appendCharacter);
+        this.canvas.add(
+          new fabric.Path(this.coordinateList.join(' '), {
+            // @ts-ignore
+            stroke: element.color,
+            strokeWidth: 2,
+            fill: '',
+            originX: 'center',
+            originY: 'center',
+            opacity: 0.8,
+            id: element.id,
+          })
+        );
+        this.dialog.closeAll();
+        this.coordinateList = [];
+      });
+      this.canvas.renderAll();
       this.dialog.closeAll();
-      this.coordinateList = [];
-    });
-    this.canvas.renderAll();
-    this.dialog.closeAll();
+    }
   }
 }
