@@ -35,7 +35,7 @@ const materialModules = [
   MatListModule,
   MatDialogModule,
   MatAutocompleteModule,
-  MatTooltipModule
+  MatTooltipModule,
 ];
 
 @NgModule({

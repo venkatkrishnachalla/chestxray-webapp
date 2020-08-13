@@ -9,7 +9,6 @@ import { throwError, BehaviorSubject } from 'rxjs';
 import User from './user.modal';
 import { Router } from '@angular/router';
 import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
-import { ToastrService } from 'ngx-toastr';
 export const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
 const FIREBASE_SIGN_IN_ENDPOINT =
   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
@@ -35,8 +34,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private endpoint: ApiEndPointService,
-    private router: Router,
-    private toastrService: ToastrService
+    private router: Router
   ) {
     this.userSubject = new BehaviorSubject<User>(null);
   }
@@ -70,7 +68,7 @@ export class AuthService {
   logOut() {
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
-    localStorage.removeItem('userAuthData');
+    sessionStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
     sessionStorage.removeItem('PatientImage');
     sessionStorage.removeItem('isIndividualRadiologist');
@@ -96,7 +94,7 @@ export class AuthService {
       _tokenExpirationDate: string;
       username: string;
       userroles: any[];
-    } = JSON.parse(localStorage.getItem('userAuthData'));
+    } = JSON.parse(sessionStorage.getItem('userAuthData'));
     if (!authData) {
       return;
     }
@@ -186,7 +184,6 @@ export class AuthService {
     this.autoSessionTimeOut(seconds);
     // Or refresh token, if you decide to keep the session active.
     // this.refreshTokenTimeOut(user.token, expiresIn * 1000);
-    localStorage.setItem('userAuthData', JSON.stringify(user));
   }
 
   private handleAuthError(errorResponse: HttpErrorResponse) {

@@ -29,22 +29,22 @@ export class FindingsComponent implements OnInit {
   getFindings() {
     this.findings = [];
     this.order = this.constants.findings;
-    this.order.forEach(data => {
-      if (data.Name !== 'ADDITIONAL'){
-        this.findings.push(data.Name + ': ');
-      }
-      else{
+    this.order.forEach((data) => {
+      if (data.Name !== 'ADDITIONAL') {
+        this.findings.push(data.Name + ':');
+      } else {
         this.findings.push(' ');
       }
     });
     this.eventEmitterService.invokeComponentFindingsData.subscribe(
       (objEllipse: EllipseData) => {
-        const index = this.findings.findIndex(item => item.split(':')[0] === objEllipse.split(':')[0]);
-        if (index !== -1){
+        const index = this.findings.findIndex(
+          (item) => item.split(':')[0] === objEllipse.split(':')[0]
+        );
+        if (index !== -1) {
           this.findings.splice(index, 1, objEllipse);
-        }
-        else{
-          if (this.findings[this.findings.length - 1] === ' '){
+        } else {
+          if (this.findings[this.findings.length - 1] === ' ') {
             this.findings.splice(-1);
           }
           this.findings.push(objEllipse);
@@ -109,19 +109,37 @@ export class FindingsComponent implements OnInit {
     this.xrayAnnotatedService.xrayAnnotatedFindings(this.findings);
   }
 
-  updateFindings(evt, index){
-    if (evt.target.textContent === ''){
+  updateFindings(evt, index) {
+    if (evt.target.textContent === '') {
       this.findings.splice(index, 1, ' ');
-    }
-    else{
+    } else {
       this.findings.splice(index, 1, evt.target.textContent);
     }
   }
 
-  preventBaseValue(evt){
-    if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
-      if (evt.key.charCodeAt() === 66){
-        evt.preventDefault();
+  preventBaseValue(evt) {
+    const lengthIndex = evt.target.textContent.indexOf(':');
+    if (lengthIndex !== -1){
+      if (window.getSelection().getRangeAt(0).startOffset > lengthIndex){
+        if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
+          if (evt.key.charCodeAt() === 66) {
+            evt.preventDefault();
+          }
+        }
+        else{
+          if (window.getSelection().getRangeAt(0).startOffset === lengthIndex + 1){
+            if (evt.key.charCodeAt() === 68) {
+              return true;
+            }
+            return false;
+          }
+          else if (evt.key.charCodeAt() === 46) {
+              return true;
+          }
+        }
+      }
+      else{
+        return false;
       }
     }
   }

@@ -7,7 +7,7 @@ import {
   TemplateRef,
   ViewChild,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
@@ -101,6 +101,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   selectedMainDisease = false;
   selectedSubDisease = false;
   type = '';
+  left;
+  top;
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
@@ -124,7 +126,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.setCanvasBackground();
     this.getSessionEllipse();
     this.getSessionFreeHandDrawing();
-    // this.canvas.discardActiveObject();
   }
 
   /* class initialization method */
@@ -188,13 +189,22 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
       }
     );
-    this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', { selection: false });
+    this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', {
+      preserveObjectStacking: true,
+      selection: false,
+    });
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
     this.canvas.on('object:modified', (options) => {
+      this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
         this.updateEllipseIntoSession();
+      }
+    });
+    this.canvas.on('object:rotating', (e) => {
+      if (!this.enableDrawEllipseMode) {
+        this.dialog.closeAll();
       }
     });
     this.patientDetail = history.state.patientDetails;
@@ -220,11 +230,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
 
     this.canvas.on('object:selected', (evt) => {
-      this.actionIconsModelDispaly();
-    });
-    this.canvas.on('object:scaling', (e) => {
-      this.canvas.getActiveObject().set('strokeUniform', true);
-      this.canvas.requestRenderAll();
+      this.actionIconsModelDispaly(evt);
+      this.canvas.sendToBack(this.canvas._activeObject);
     });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
@@ -232,34 +239,153 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     this.canvas.on('object:moving', (evt) => {
+      const obj = evt.target;
+      this.restrictionToBoundaryLimit(obj);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
     });
+    let left1 = 0;
+    let top1 = 0;
+    let scale1x = 0;
+    let scale1y = 0;
+    let width1 = 0;
+    let height1 = 0;
+    this.canvas.on('object:scaling', (e) => {
+      const obj = e.target;
+      obj.setCoords();
+      const brNew = obj.getBoundingRect();
+
+      if (
+        brNew.width + brNew.left >= obj.canvas.width ||
+        brNew.height + brNew.top >= obj.canvas.height ||
+        brNew.left < 0 ||
+        brNew.top < 0
+      ) {
+        obj.left = left1;
+        obj.top = top1;
+        obj.scaleX = scale1x;
+        obj.scaleY = scale1y;
+        obj.width = width1;
+        obj.height = height1;
+      } else {
+        left1 = obj.left;
+        top1 = obj.top;
+        scale1x = obj.scaleX;
+        scale1y = obj.scaleY;
+        width1 = obj.width;
+        height1 = obj.height;
+      }
+      if (!this.enableDrawEllipseMode) {
+        this.dialog.closeAll();
+      }
+      this.canvas.getActiveObject().set('strokeUniform', true);
+      this.canvas.requestRenderAll();
+    });
     this.canvas.on('object:moved', (evt) => {
-      this.actionIconsModelDispaly();
+      this.actionIconsModelDispaly(evt);
     });
     this.canvas.on('selection:updated', (evt) => {
       this.dialog.closeAll();
-      this.actionIconsModelDispaly();
+      this.actionIconsModelDispaly(evt);
     });
   }
 
+  restrictionToBoundaryLimit(obj) {
+    if (
+      obj.currentHeight > obj.canvas.height ||
+      obj.currentWidth > obj.canvas.width
+    ) {
+      return;
+    }
+    obj.setCoords();
+    // top-left  corner
+    if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
+      obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
+      obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
+    }
+    // bot-right corner
+    if (
+      obj.getBoundingRect().top + obj.getBoundingRect().height >
+        obj.canvas.height ||
+      obj.getBoundingRect().left + obj.getBoundingRect().width >
+        obj.canvas.width
+    ) {
+      obj.top = Math.min(
+        obj.top,
+        obj.canvas.height -
+          obj.getBoundingRect().height +
+          obj.top -
+          obj.getBoundingRect().top
+      );
+      obj.left = Math.min(
+        obj.left,
+        obj.canvas.width -
+          obj.getBoundingRect().width +
+          obj.left -
+          obj.getBoundingRect().left
+      );
+    }
+  }
+
   /*** action icons model display event ***/
-  actionIconsModelDispaly() {
-    const bodyRect = document.body.getBoundingClientRect();
-    const right = bodyRect.right - this.canvas.getActiveObject().left;
-    const top = this.canvas.getActiveObject().top - bodyRect.top;
+  actionIconsModelDispaly(data) {
+    this.markactionModelPosition(data);
     if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
       this.dialog.open(this.controlsModel, {
         panelClass: 'my-class',
         hasBackdrop: false,
         // tslint:disable-next-line: max-line-length
-        position:
-          this.canvas.getActiveObject().top < 60
-            ? { right: right - 390 + 'px', top: top + 130 + 'px' }
-            : { right: right - 390 + 'px', top: top + 'px' },
+        position: { left: this.left + 'px', top: this.top + 'px' },
       });
+    }
+  }
+
+  markactionModelPosition(data) {
+    this.left = 0;
+    this.top = 0;
+    const obj = data.target;
+    const coords = obj.calcCoords();
+    const mrx = coords.mr.x;
+    const mry = coords.mr.y;
+    const mtx = coords.mt.x;
+    const mty = coords.mt.y;
+
+    if (this.canvas.getActiveObject().top < 70) {
+      this.left = mrx + 320;
+      this.top = mry + 35;
+    } else {
+      if (obj.angle > 5 && obj.angle <= 40) {
+        this.left = mtx + 350;
+        this.top = mty;
+      } else if (obj.angle > 40 && obj.angle <= 90) {
+        this.left = mtx + 350;
+        this.top = mty + 30;
+      } else if (obj.angle > 90 && obj.angle <= 130) {
+        this.left = mtx + 350;
+        this.top = mty + 20;
+      } else if (obj.angle > 130 && obj.angle <= 150) {
+        this.left = mtx + 350;
+        this.top = mty + 50;
+      } else if (obj.angle > 150 && obj.angle <= 180) {
+        this.left = mtx + 350;
+        this.top = mty + 80;
+      } else if (obj.angle > 180 && obj.angle <= 270) {
+        this.left = mtx + 100;
+        this.top = mty + 80;
+      } else if (obj.angle > 270 && obj.angle <= 300) {
+        this.left = mtx + 130;
+        this.top = mty - 30;
+      } else if (obj.angle > 300 && obj.angle <= 340) {
+        this.left = mtx + 150;
+        this.top = mty - 40;
+      } else if (obj.angle > 340 && obj.angle <= 359) {
+        this.left = mtx + 320;
+        this.top = mty - 20;
+      } else {
+        this.left = mtx + 320;
+        this.top = mty;
+      }
     }
   }
 
@@ -577,8 +703,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         width: 0,
         height: 0,
         disease: diseaseItem.name,
-        originX: 'center',
-        originY: 'center',
+        originX: diseaseItem.type === 'ellipse' ? 'left' : 'center',
+        originY: diseaseItem.type === 'ellipse' ? 'top' : 'center',
         left:
           diseaseItem.type === 'ellipse'
             ? diseaseItem.x
@@ -603,7 +729,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         strokeUniform: true,
         index: diseaseItem.index !== 0 ? diseaseItem.index : diseaseItem.id,
         id: diseaseItem.idvalue,
-        // types: true
       });
       this.canvas.add(ellipse);
       this.canvas.renderAll();
@@ -634,7 +759,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               fill: '',
               selectable: true,
               strokeUniform: true,
-              // types: false
             });
             this.canvas.add(ellipse);
             this.canvas.renderAll();
@@ -691,7 +815,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     saveEllipse.height = data.height * data.scaleY * this.canvasScaleY;
     saveEllipse.angle = data.angle;
     saveEllipse.color = data.stroke;
-    // saveEllipse.types = data.types;
     this.sessionSelectedEllipseObject.push(saveEllipse);
     sessionStorage.removeItem('ellipse');
     sessionStorage.setItem(
@@ -742,12 +865,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedDiseases = true;
     if (item.length === 0) {
       this.selectedDisease = event.target.textContent.replace(
-        /[^a-zA-Z/]/g,
+        /[^a-zA-Z/ ]/g,
         ''
       );
     } else if (item === '') {
       this.selectedDisease = event.target.textContent.replace(
-        /[^a-zA-Z/]/g,
+        /[^a-zA-Z/ ]/g,
         ''
       );
     }
@@ -809,6 +932,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.saveFreeHandDrawingIntoSession();
     }
     this.toastrService.success('Annotation saved successfully');
+    this.canvas.discardActiveObject();
+    this.canvas.renderAll();
   }
   /**
    * Delete active object
@@ -865,6 +990,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.clear();
     this.selectedDisease = '';
     this.toastrService.success('Annotation updated successfully');
+    this.canvas.discardActiveObject();
+    this.canvas.renderAll();
   }
 
   /**
@@ -1043,7 +1170,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     updateEllipse.angle = object.angle;
     updateEllipse.width = object.angle;
     updateEllipse.height = object.angle;
-    // updateEllipse.types = false;
     this.sessionSelectedEllipseObject.push(updateEllipse);
     sessionStorage.removeItem('ellipse');
     sessionStorage.setItem(
@@ -1137,62 +1263,66 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   getSessionEllipse() {
     const ellipses = JSON.parse(sessionStorage.getItem('ellipse'));
-    ellipses.forEach((element) => {
-      const sessionEllipse = new fabric.Ellipse({
-        width: element.width / this.canvasScaleX,
-        height: element.height / this.canvasScaleY,
-        left: element.left / this.canvasScaleX,
-        top: element.top / this.canvasScaleY,
-        rx: element.rx / this.canvasScaleX / 2,
-        ry: element.ry / this.canvasScaleY / 2,
-        angle: element.angle,
-        originX: 'center',
-        originY: 'center',
-        stroke: element.color,
-        id: element.id,
-        strokeWidth: 2,
-        fill: '',
-        selectable: true,
+    if (ellipses) {
+      ellipses.forEach((element) => {
+        const sessionEllipse = new fabric.Ellipse({
+          width: element.width / this.canvasScaleX,
+          height: element.height / this.canvasScaleY,
+          left: element.left / this.canvasScaleX,
+          top: element.top / this.canvasScaleY,
+          rx: element.rx / this.canvasScaleX / 2,
+          ry: element.ry / this.canvasScaleY / 2,
+          angle: element.angle,
+          stroke: element.color,
+          id: element.id,
+          originX: 'center',
+          originY: 'center',
+          strokeWidth: 2,
+          fill: '',
+          selectable: true,
+        });
+        this.dialog.closeAll();
+        this.canvas.add(sessionEllipse);
       });
-      this.dialog.closeAll();
-      this.canvas.add(sessionEllipse);
-    });
-    this.canvas.renderAll();
+      this.canvas.renderAll();
+    }
   }
 
   getSessionFreeHandDrawing() {
     const path = JSON.parse(sessionStorage.getItem('freeHandDrawing'));
-    path.forEach((element) => {
-      const coordinatePath = element.coordinateValue.split(' ');
-      for (let i = 0; i < coordinatePath.length; i++) {
-        if (i % 2 === 0) {
-          let xPosition: any = coordinatePath[i];
-          xPosition = xPosition / this.canvasScaleX;
-          this.coordinateList.push(xPosition);
-        } else {
-          let yPosition: any = coordinatePath[i];
-          yPosition = yPosition / this.canvasScaleY;
-          this.coordinateList.push(yPosition);
+    if (path.length !== 0) {
+      path.forEach((element) => {
+        const coordinatePath = element.coordinateValue.split(' ');
+        for (let i = 0; i < coordinatePath.length; i++) {
+          if (i % 2 === 0) {
+            let xPosition: any = coordinatePath[i];
+            xPosition = xPosition / this.canvasScaleX;
+            this.coordinateList.push(xPosition);
+          } else {
+            let yPosition: any = coordinatePath[i];
+            yPosition = yPosition / this.canvasScaleY;
+            this.coordinateList.push(yPosition);
+          }
         }
-      }
-      const appendCharacter = 'M' + ' ';
-      this.coordinateList.unshift(appendCharacter);
-      this.canvas.add(
-        new fabric.Path(this.coordinateList.join(' '), {
-          // @ts-ignore
-          stroke: element.color,
-          strokeWidth: 2,
-          fill: '',
-          originX: 'center',
-          originY: 'center',
-          opacity: 0.8,
-          id: element.id,
-        })
-      );
+        const appendCharacter = 'M' + ' ';
+        this.coordinateList.unshift(appendCharacter);
+        this.canvas.add(
+          new fabric.Path(this.coordinateList.join(' '), {
+            // @ts-ignore
+            stroke: element.color,
+            strokeWidth: 2,
+            fill: '',
+            originX: 'center',
+            originY: 'center',
+            opacity: 0.8,
+            id: element.id,
+          })
+        );
+        this.dialog.closeAll();
+        this.coordinateList = [];
+      });
+      this.canvas.renderAll();
       this.dialog.closeAll();
-      this.coordinateList = [];
-    });
-    this.canvas.renderAll();
-    this.dialog.closeAll();
+    }
   }
 }

@@ -59,7 +59,8 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         if (user) {
-          this.doctorName = user.username;
+          sessionStorage.setItem('userAuthData', JSON.stringify(user));
+          this.doctorName = 'Dr ' + user.username;
         }
       }
     );
@@ -147,6 +148,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       status: false,
       age: this.uploadImageForm.value.age,
     };
+    sessionStorage.setItem('patientRows', JSON.stringify([]));
     sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
     sessionStorage.setItem('patientDetail', JSON.stringify(patientDetail));
     sessionStorage.setItem('askAiSelection', 'false');

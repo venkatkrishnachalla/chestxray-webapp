@@ -4,10 +4,10 @@ import { DashboardService } from 'src/app/service/dashboard.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import User from '../../auth/user.modal';
+import { Subscription } from 'rxjs';
 
 interface PatientListData {
-  forEach: any;
-  sort: any;
   age: number;
   birthDate: string;
   hospitalPatientId: string;
@@ -18,6 +18,8 @@ interface PatientListData {
   sex: string;
   status: boolean;
   studies: any[];
+  forEach?: any;
+  sort?: any;
 }
 
 interface EnumServiceItems extends Array<PatientListData> {}
@@ -41,6 +43,7 @@ export class PatientListComponent implements OnInit {
   showTable: boolean;
   overlayNoRowsTemplate: string;
   errorMessage: string;
+  private userSubscription: Subscription;
 
   constructor(
     private elementRef: ElementRef,
@@ -58,6 +61,11 @@ export class PatientListComponent implements OnInit {
     this.defaultColDef = { width: 200 };
     this.columnDefs = this.constants.patientDashboard.headers;
     this.getPatientList();
+    this.userSubscription = this.authService.userSubject.subscribe(
+      (user: User) => {
+        sessionStorage.setItem('userAuthData', JSON.stringify(user));
+      }
+    );
   }
 
   /*** onGridReady method ***/
@@ -90,7 +98,9 @@ export class PatientListComponent implements OnInit {
         this.showError = false;
         this.rowData = patientsList;
         const patientRows = patientsList;
-        patientRows.sort((d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId);
+        patientRows.sort(
+          (d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId
+        );
         patientRows.forEach((value, index) => {
           value.index = index;
         });
@@ -132,5 +142,10 @@ export class PatientListComponent implements OnInit {
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
     this.router.navigate(['x-ray'], { state: { patientDetails: data } });
+  }
+
+   /*** unsubscribe userSubscription event ***/
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 }
