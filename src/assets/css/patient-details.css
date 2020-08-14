@@ -37,12 +37,7 @@ body {
   margin-left: 4rem;
 }
 
-.clinical-history-text {
-  position: relative;
-  left: 2%;
-}
-
-.comment-and-recommendation-text {
+.clinical-comments-align {
   position: relative;
   left: 2%;
 }
