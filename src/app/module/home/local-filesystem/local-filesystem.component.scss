@@ -70,6 +70,10 @@
         .radio-button label {
           margin: 0px 5px;
         }
+
+        .validation-messages {
+          margin: 0;
+        }
       }
     }
     .upload-image-local-file {
@@ -77,6 +81,10 @@
       label,
       div {
         margin: 0px 15px 10px 8px;
+      }
+
+      .text-center {
+        text-align: center;
       }
 
       .dropzone {
