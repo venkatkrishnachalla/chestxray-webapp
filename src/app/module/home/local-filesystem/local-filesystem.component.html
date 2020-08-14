@@ -24,21 +24,26 @@
             (uploadImageForm.controls['name'].dirty ||
               uploadImageForm.controls['name'].touched)
           "
-          class="alert-danger"
+          class="alert-danger validation-messages"
         >
-          <div
-            style="margin: 0;"
-            *ngIf="uploadImageForm.controls['name'].errors.required"
-          >
+          <div *ngIf="uploadImageForm.controls['name'].errors.required">
             Name is required.
           </div>
         </div>
 
-        <div *ngIf="uploadImageForm.controls['name'].errors && uploadImageForm.controls['name'].touched && !uploadImageForm.controls['name'].errors.required">
+        <div
+          *ngIf="
+            uploadImageForm.controls['name'].errors &&
+            uploadImageForm.controls['name'].touched &&
+            !uploadImageForm.controls['name'].errors.required
+          "
+        >
           <div
-            class="alert-danger"
-            style="margin: 0;"
-            *ngIf="uploadImageForm.controls['name'].errors && uploadImageForm.controls['name'].touched"
+            class="alert-danger validation-messages"
+            *ngIf="
+              uploadImageForm.controls['name'].errors &&
+              uploadImageForm.controls['name'].touched
+            "
           >
             Name is not a valid format.
           </div>
@@ -80,12 +85,9 @@
             (uploadImageForm.controls['gender'].dirty ||
               uploadImageForm.controls['gender'].touched)
           "
-          class="alert-danger"
+          class="alert-danger validation-messages"
         >
-          <div
-            style="margin: 0;"
-            *ngIf="uploadImageForm.controls['gender'].errors.required"
-          >
+          <div *ngIf="uploadImageForm.controls['gender'].errors.required">
             Gender is required.
           </div>
         </div>
@@ -108,18 +110,15 @@
             (uploadImageForm.controls['dateOfBirth'].dirty ||
               uploadImageForm.controls['dateOfBirth'].touched)
           "
-          class="alert-danger"
+          class="alert-danger validation-messages"
         >
-          <div
-            style="margin: 0;"
-            *ngIf="uploadImageForm.controls['dateOfBirth'].errors.required"
-          >
+          <div *ngIf="uploadImageForm.controls['dateOfBirth'].errors.required">
             Date of birth is required.
           </div>
         </div>
         <br />
 
-        <h3>2.Contact Information</h3>
+        <h3>2.Contact Information *</h3>
         <label for="">Email:</label>
         <div>
           <input
@@ -132,8 +131,7 @@
         </div>
         <div *ngIf="uploadImageForm.controls['email'].errors">
           <div
-            class="alert-danger"
-            style="margin: 0;"
+            class="alert-danger validation-messages"
             *ngIf="uploadImageForm.controls['email'].errors"
           >
             Email is not a valid format.
@@ -152,8 +150,7 @@
         </div>
         <div *ngIf="uploadImageForm.controls['phoneNumber'].errors">
           <div
-            class="alert-danger"
-            style="margin: 0;"
+            class="alert-danger validation-messages"
             *ngIf="uploadImageForm.controls['phoneNumber'].errors"
           >
             Mobile number is not a valid format.
@@ -181,7 +178,7 @@
           (dragImageSrc)="dragDropEvent($event)"
           (dragImageFile)="dragDropFile($event)"
         ></cxr-drag-drop>
-        <div style="text-align: center;">
+        <div class="text-center">
           <pre>(or)</pre>
         </div>
 
