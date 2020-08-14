@@ -88,7 +88,7 @@ export class AuthService {
 
   autoLoginOnRefresh() {
     const authDataSession = JSON.parse(sessionStorage.getItem('userAuthData'));
-    const tokenNew = window.atob(authDataSession._token);
+    const tokenNew = authDataSession ? window.atob(authDataSession._token) : '';
     authDataSession._token = tokenNew;
     const authData: {
       email: string;
