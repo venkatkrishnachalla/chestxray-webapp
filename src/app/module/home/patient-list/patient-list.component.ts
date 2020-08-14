@@ -63,7 +63,10 @@ export class PatientListComponent implements OnInit {
     this.getPatientList();
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
-        sessionStorage.setItem('userAuthData', JSON.stringify(user));
+        const UserInfo = JSON.parse(JSON.stringify(user));
+        const tokenNew = window.btoa(UserInfo._token);
+        UserInfo._token = tokenNew;
+        sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
       }
     );
   }

@@ -59,7 +59,10 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         if (user) {
-          sessionStorage.setItem('userAuthData', JSON.stringify(user));
+          const UserInfo = JSON.parse(JSON.stringify(user));
+          const tokenNew = window.btoa(UserInfo._token);
+          UserInfo._token = tokenNew;
+          sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
           this.doctorName = 'Dr ' + user.username;
         }
       }
