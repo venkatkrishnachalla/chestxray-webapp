@@ -13,6 +13,7 @@ export class FindingsComponent implements OnInit {
   readonly constants = pathology;
   order = [];
   findings: any[];
+  findingsText: string = 'Findings';
   item0: any;
   constructor(
     private eventEmitterService: EventEmitterService,
@@ -119,26 +120,26 @@ export class FindingsComponent implements OnInit {
 
   preventBaseValue(evt) {
     const lengthIndex = evt.target.textContent.indexOf(':');
-    if (lengthIndex !== -1){
-      if (window.getSelection().getRangeAt(0).startOffset > lengthIndex){
+    if (lengthIndex !== -1) {
+      if (window.getSelection().getRangeAt(0).startOffset > lengthIndex) {
         if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
           if (evt.key.charCodeAt() === 66) {
             evt.preventDefault();
           }
-        }
-        else{
-          if (window.getSelection().getRangeAt(0).startOffset === lengthIndex + 1){
+        } else {
+          if (
+            window.getSelection().getRangeAt(0).startOffset ===
+            lengthIndex + 1
+          ) {
             if (evt.key.charCodeAt() === 68) {
               return true;
             }
             return false;
-          }
-          else if (evt.key.charCodeAt() === 46) {
-              return true;
+          } else if (evt.key.charCodeAt() === 46) {
+            return true;
           }
         }
-      }
-      else{
+      } else {
         return false;
       }
     }
