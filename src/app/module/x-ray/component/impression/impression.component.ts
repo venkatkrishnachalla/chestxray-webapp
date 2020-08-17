@@ -18,6 +18,7 @@ export class ImpressionComponent implements OnInit {
   ellipseList = [];
   impressionList = [];
   uniqueImpressions = [];
+  impressionsText: string = 'Impressions';
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedImpressionService: XRayService

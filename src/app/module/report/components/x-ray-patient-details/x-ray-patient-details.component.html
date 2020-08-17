@@ -5,7 +5,7 @@
         src="../../../../../assets/images/user_icon@3x.png"
         alt="profile-icon"
       />
-      <span> PATIENT DETAILS</span>
+      <span> {{ reportPageText.patientDetails | uppercase }}</span>
     </div>
     <div class="patient-info">
       <div class="patient-status">
@@ -44,7 +44,7 @@
         src="../../../../../assets/images/clinical_history@3x.png"
         alt="clinical-history-icon"
       />
-      <span> CLINICAL HISTORY</span>
+      <span> {{ reportPageText.clinicalHistory | uppercase }}</span>
     </div>
     <div class="clinical-info"></div>
   </div>
@@ -55,7 +55,7 @@
         src="../../../../../assets/images/impression_icon@3x.png"
         alt="finding-icon"
       />
-      <span> IMPRESSION</span>
+      <span> {{ reportPageText.impressions | uppercase }}</span>
     </div>
     <div class="impression-info">
       <ul>
@@ -75,7 +75,7 @@
         src="../../../../../assets/images/findings_icon@3x.png"
         alt="finding-icon"
       />
-      <span> FINDINGS</span>
+      <span> {{ reportPageText.findings | uppercase }}</span>
     </div>
     <div class="findings-info">
       <ul>
@@ -96,7 +96,7 @@
         src="../../../../../assets/images/comment_icon@3x.png"
         alt="comments-icon"
       />
-      <span> COMMENTS & RECOMMENDATIONS</span>
+      <span> {{ reportPageText.commentsAndRecommendations | uppercase }}</span>
     </div>
     <textarea
       contentEditable="true"
@@ -155,7 +155,11 @@
     </div>
   </div>
   <hr class="common-hr" />
-  <h4><span class="clinical-comments-align"> CLINICAL HISTORY</span></h4>
+  <h4>
+    <span class="clinical-comments-align">
+      {{ reportPageText.clinicalHistory | uppercase }}</span
+    >
+  </h4>
   <p class="history">
     {{ clinicalHistory }}
   </p>
@@ -163,7 +167,9 @@
   <div style="position: relative;">
     <div class="image-container">
       <div class="findings-left-content-top">
-        <div class="box-title">IMPRESSIONS</div>
+        <div class="box-title">
+          {{ reportPageText.impressions | uppercase }}
+        </div>
         <div
           class="inside-content-align"
           *ngFor="let impression of annotatedImpression"
@@ -172,7 +178,7 @@
         </div>
       </div>
       <div class="findings-left-content-bottom">
-        <div class="box-title">FINDINGS</div>
+        <div class="box-title">{{ reportPageText.findings | uppercase }}</div>
         <div class="inside-content-align" *ngFor="let finding of pdfFindings">
           > {{ finding }}
         </div>
@@ -197,7 +203,9 @@
     </div>
   </div>
   <h4>
-    <span class="clinical-comments-align">COMMENTS & RECOMMENDATIONS</span>
+    <span class="clinical-comments-align">{{
+      reportPageText.commentsAndRecommendations | uppercase
+    }}</span>
   </h4>
 
   <p class="history">

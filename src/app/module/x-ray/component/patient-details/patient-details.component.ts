@@ -16,6 +16,7 @@ export class PatientDetailsComponent implements OnInit {
   Time: string;
   history: string;
   patientDetails: PatientDetailData;
+  PatientDetailsText: string = 'patient details';
   constructor() {}
 
   /*** clas init function and bind patient details ***/
