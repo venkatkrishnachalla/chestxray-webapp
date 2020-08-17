@@ -67,15 +67,25 @@ describe('XRayComponent', () => {
       const mLResponseNew = {
         data: {
           names: [],
-          ndarray: [{
-            findings: {
-              ADDITIONA: []
+          ndarray: [
+            {
+              findings: {
+                ADDITIONA: [],
+              },
+              Impression: [
+                {
+                  index: 0,
+                  sentence: 'Consolidation seen in left upper and mid zone',
+                },
+              ],
+              diseases: [
+                {
+                  color: 'rgb(82,128,138)',
+                  confidence: 0.9339834332466126,
+                },
+              ],
             },
-            Impression: [{
-              index: 0,
-              sentence: 'Consolidation seen in left upper and mid zone'
-            }]
-          }],
+          ],
         },
       };
       spyOn(sessionStorage, 'getItem').and.callFake(() => {

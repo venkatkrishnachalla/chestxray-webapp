@@ -23,13 +23,12 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
   constructor(private eventEmitterService: EventEmitterService) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
-        console.log('patient details', patientId);
         this.getPatientDetails();
       }
     );
   }
 
-  /*** clas init function and bind patient details ***/
+  /*** class init function and bind patient details ***/
   ngOnInit(): void {
     this.getPatientDetails();
   }

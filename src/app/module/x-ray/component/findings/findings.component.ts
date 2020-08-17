@@ -22,7 +22,6 @@ export class FindingsComponent implements OnInit, OnDestroy {
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
-        console.log('patientId---findings', patientId);
         this.findings = [];
         this.getFindings();
       }

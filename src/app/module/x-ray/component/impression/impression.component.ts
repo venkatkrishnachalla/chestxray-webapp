@@ -26,7 +26,6 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
-        console.log('patientId--impression', patientId);
         this.impression = [];
         this.uniqueImpressions = [];
       }

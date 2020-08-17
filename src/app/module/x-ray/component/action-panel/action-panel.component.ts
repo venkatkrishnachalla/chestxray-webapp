@@ -61,7 +61,6 @@ export class ActionPanelComponent implements OnInit {
   constructor(private eventEmitterService: EventEmitterService) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
-        console.log('actionpanal', patientId);
         this.disableAskAI = false;
       }
     );

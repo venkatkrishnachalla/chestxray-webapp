@@ -1,5 +1,6 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of } from 'rxjs';
+import { canvasMock, patientMockInstanceId } from 'src/app/module/auth/patient-mock';
 
 describe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
@@ -13,6 +14,7 @@ describe('CanvasImageComponent', () => {
     'onComponentDataShared',
     'onComponentEllipseDataShared',
     'onComponentFindingsDataShared',
+    'invokePrevNextButtonDataFunction',
   ]);
   const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
   const xRayServiceSpy = jasmine.createSpyObj('XRayImageService', [
@@ -33,6 +35,7 @@ describe('CanvasImageComponent', () => {
   ]);
 
   beforeEach(() => {
+    eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(undefined);
     component = new CanvasImageComponent(
       spinnerServiceSpy,
       eventEmitterServiceSpy,
@@ -73,11 +76,43 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call prevNextPatientChange function ***/
+  describe('#prevNextPatientChange', () => {
+    beforeEach(() => {
+      spyOn(component, 'getPatientInstanceId');
+      const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
+      const patientMockInstanceMock = patientMockInstanceId;
+      eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(
+        patientIdMock
+      );
+      xRayServiceSpy.getPatientInstanceId.and.returnValue(
+        of(patientMockInstanceMock)
+      );
+      component.canvas = {
+        clear: () => {},
+      };
+      component.prevNextPatientChange('4df09ebb-adb7-4d81-a7e0-7d108ceb8f08');
+    });
+    it('should call prevNextPatientChange function', () => {
+      expect(component.prevNextPatientChange).toBeDefined();
+      expect(component.getPatientInstanceId).toHaveBeenCalled();
+    });
+  });
+
   /*** it should call setCanvasDimension function ***/
   describe('#setCanvasDimension', () => {
     beforeEach(() => {
       component.canvas = {
         setDimensions: () => {},
+        setWidth: () => {},
+        setHeight: () => {},
+        renderAll: () => {
+          return {
+            bind: () => {},
+          };
+        },
+        setBackgroundImage: () => {},
+        clear: () => {},
       };
       const controlCheckbox = ({
         clientWidth: '146',
@@ -132,6 +167,7 @@ describe('CanvasImageComponent', () => {
         setHeight: () => {},
         setBackgroundImage: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       component.canvasDynamicWidth = 893;
       component.canvasDynamicHeight = 549;
@@ -155,6 +191,7 @@ describe('CanvasImageComponent', () => {
         setHeight: () => {},
         setBackgroundImage: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       component.canvasDynamicWidth = 893;
       component.canvasDynamicHeight = 549;
@@ -196,33 +233,9 @@ describe('CanvasImageComponent', () => {
   /*** it should call getPatientInstanceId function ***/
   describe('#getPatientInstanceId', () => {
     beforeEach(() => {
-      const patientMockInstanceId = [
-        {
-          accessionNumber: '',
-          id: '9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8',
-          referringPhysicianName: 'mohan',
-          seriesList: [
-            {
-              bodyPartExamined: null,
-              id: '9b247ba4-b9899974-878bb3e3-001ed405-48084c1f',
-              instanceList: [
-                {
-                  id: '42066719-369f0249-189d2017-c3bd3f57-11fc78d6',
-                  instanceNumber: 0,
-                  instanceDate: '0001-01-01T00:00:00',
-                },
-              ],
-              seriesDate: '0001-01-01T00:00:00',
-              seriesDescription: null,
-              seriesNumber: 0,
-            },
-          ],
-          studyDate: '2019-11-11T00:00:00',
-          studyDescription: null,
-        },
-      ];
+      const patientMockInstanceMock = patientMockInstanceId;
       xRayServiceSpy.getPatientInstanceId.and.returnValue(
-        of(patientMockInstanceId)
+        of(patientMockInstanceMock)
       );
       spyOn(component, 'getPatientImage');
       component.getPatientInstanceId(
@@ -252,6 +265,7 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return { id: 5 };
         },
+        clear: () => {},
       };
       component.deleteEllipse();
     });
@@ -265,6 +279,7 @@ describe('CanvasImageComponent', () => {
     beforeEach(() => {
       component.canvas = {
         getActiveObject: () => {},
+        clear: () => {},
       };
       component.deleteEllipse();
     });
@@ -317,6 +332,15 @@ describe('CanvasImageComponent', () => {
   /*** it should call onSelect function with empty item ***/
   describe('#onSelect', () => {
     beforeEach(() => {
+      component.canvas = {
+        remove: () => {},
+        getActiveObject: () => {
+          return {
+            id: 1,
+          };
+        },
+        clear: () => {},
+      };
       component.pathologyNames = [
         {
           abnormality: 'Anatomical variants',
@@ -385,6 +409,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        clear: () => {},
       };
       component.selectedDisease = 'Bulla';
       component.activeIcon = {
@@ -424,6 +449,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        clear: () => {},
       };
       component.selectedDisease = 'Bulla';
       component.activeIcon = {
@@ -456,6 +482,7 @@ describe('CanvasImageComponent', () => {
           };
         },
         renderAll: () => {},
+        clear: () => {},
       };
       component.activeIcon = {
         active: true,
@@ -485,6 +512,7 @@ describe('CanvasImageComponent', () => {
         observe: () => {},
         forEachObject: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       const mockData = {
         active: true,
@@ -514,6 +542,7 @@ describe('CanvasImageComponent', () => {
         observe: () => {},
         forEachObject: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       const mockData = {
         active: false,
@@ -528,6 +557,16 @@ describe('CanvasImageComponent', () => {
   /*** it should call mlApiEllipseLoop function ***/
   describe('#mlApiEllipseLoop', () => {
     beforeEach(() => {
+      component.canvas = {
+        remove: () => {},
+        getActiveObject: () => {
+          return {
+            id: 1,
+          };
+        },
+        renderAll: () => {},
+        clear: () => {},
+      };
       const mLResponseNew = {
         data: {
           names: [],
@@ -632,6 +671,7 @@ describe('CanvasImageComponent', () => {
         setActiveObject: () => {},
         isDrawingMode: true,
         forEachObject: () => {},
+        clear: () => {},
       };
       component.drawEllipse({}, undefined, undefined);
       expect(component.drawEllipse).toBeDefined();
@@ -652,6 +692,7 @@ describe('CanvasImageComponent', () => {
         isDrawingMode: true,
         observe: () => {},
         forEachObject: () => {},
+        clear: () => {},
       };
       component.drawEllipse(mockdata, undefined, undefined);
       expect(component.drawEllipse).toBeDefined();
@@ -704,6 +745,7 @@ describe('CanvasImageComponent', () => {
       component.canvas = {
         isDrawingMode: true,
         getActiveObject: () => {},
+        clear: () => {},
       };
       spyOn(component, 'changeSelectableStatus');
       component.save();
@@ -720,6 +762,7 @@ describe('CanvasImageComponent', () => {
     beforeEach(() => {
       component.canvas = {
         getActiveObject: () => {},
+        clear: () => {},
       };
       spyOn(component, 'changeSelectableStatus');
       component.save();
@@ -765,6 +808,7 @@ describe('CanvasImageComponent', () => {
           path: '/x-ray',
         },
         renderAll: () => {},
+        clear: () => {},
       };
       component.savedInfo = {
         data: {
@@ -790,12 +834,13 @@ describe('CanvasImageComponent', () => {
       component.canvas = {
         add: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       component.getSessionEllipse();
     });
-    it('should call setCanvasBackground function', () => {
-      expect(component.getSessionEllipse).toBeDefined();
+    it('should call getSessionEllipse function', () => {
       expect(dialogSpy.closeAll).toHaveBeenCalled();
+      expect(component.getSessionEllipse).toBeDefined();
     });
   });
 
@@ -880,6 +925,7 @@ describe('CanvasImageComponent', () => {
           };
         },
         renderAll: () => {},
+        clear: () => {},
       };
       component.updateFreeHandDrawingIntoSession();
     });
@@ -909,6 +955,7 @@ describe('CanvasImageComponent', () => {
     beforeEach(() => {
       component.canvas = {
         getActiveObject: () => {},
+        clear: () => {},
       };
       spyOn(component, 'scaleSaveEllipse');
       component.saveEllipseIntoSession();
@@ -916,13 +963,16 @@ describe('CanvasImageComponent', () => {
     it('should call saveEllipseIntoSession function', () => {
       expect(component.saveEllipseIntoSession).toBeDefined();
       expect(component.scaleSaveEllipse).toHaveBeenCalled();
-      expect(dialogSpy.open).toHaveBeenCalled();
     });
   });
 
   /*** should call restrictionToBoundaryLimit function, if current Height & Width is greater than canvas height & width ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        clear: () => {},
+      };
       const objSpy = {
         currentHeight: 600,
         currentWidth: 600,
@@ -948,6 +998,10 @@ describe('CanvasImageComponent', () => {
   /*** should call restrictionToBoundaryLimit function, if current Height and Width is lesser than canvas height&width ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        clear: () => {},
+      };
       const objSpy = {
         currentHeight: 400,
         currentWidth: 400,
@@ -970,9 +1024,13 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-    /*** should call restrictionToBoundaryLimit function, if getBoundingRect top and getBoundingRect left is less than 0 ***/
+  /*** should call restrictionToBoundaryLimit function, if getBoundingRect top and getBoundingRect left is less than 0 ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        clear: () => {},
+      };
       const objSpy = {
         currentHeight: 400,
         currentWidth: 400,
@@ -995,9 +1053,13 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-    /*** it should call restrictionToBoundaryLimit function ***/
+  /*** it should call restrictionToBoundaryLimit function ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        clear: () => {},
+      };
       const objSpy = {
         currentHeight: 400,
         currentWidth: 400,
@@ -1032,6 +1094,7 @@ describe('CanvasImageComponent', () => {
             top: 60,
           };
         },
+        clear: () => {},
       };
       const data = {
         target: {
@@ -1101,6 +1164,7 @@ describe('CanvasImageComponent', () => {
             top: 80,
           };
         },
+        clear: () => {},
       };
       const data = {
         target: {
@@ -1144,6 +1208,7 @@ describe('CanvasImageComponent', () => {
         forEachObject: (value) => {
           value.selectable = true;
         },
+        clear: () => {},
       };
       component.changeSelectableStatus(val);
     });

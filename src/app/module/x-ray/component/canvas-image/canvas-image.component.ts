@@ -116,29 +116,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
-        console.log('patientId', patientId);
-        this.canvas.clear();
-        this.spinnerService.show();
-        sessionStorage.removeItem('ellipse');
-        sessionStorage.removeItem('freeHandDrawing');
-        this.savedInfo = {
-          data: {
-            names: [],
-            ndarray: [
-              {
-                Findings: {},
-                Impression: [],
-                diseases: [],
-              },
-            ],
-          },
-          meta: {},
-        };
-        const patientDetail = JSON.parse(
-          sessionStorage.getItem('patientDetail')
-        );
-        this.patientDetail = patientDetail;
-        this.getPatientInstanceId(patientId);
+        if (patientId) {        
+          this.prevNextPatientChange(patientId);
+        }
       }
     );
   }
@@ -319,6 +299,30 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.dialog.closeAll();
       this.actionIconsModelDispaly(evt);
     });
+  }
+
+  prevNextPatientChange(patientId) {
+    this.canvas.clear();
+    this.spinnerService.show();
+    sessionStorage.removeItem('ellipse');
+    sessionStorage.removeItem('freeHandDrawing');
+    this.impressionArray = [];
+    this.savedInfo = {
+      data: {
+        names: [],
+        ndarray: [
+          {
+            Findings: {},
+            Impression: [],
+            diseases: [],
+          },
+        ],
+      },
+      meta: {},
+    };
+    const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
+    this.patientDetail = patientDetail;
+    this.getPatientInstanceId(patientId);
   }
 
   restrictionToBoundaryLimit(obj) {
