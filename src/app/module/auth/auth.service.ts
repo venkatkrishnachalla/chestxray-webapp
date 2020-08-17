@@ -87,6 +87,9 @@ export class AuthService {
   }
 
   autoLoginOnRefresh() {
+    const authDataSession = JSON.parse(sessionStorage.getItem('userAuthData'));
+    const tokenNew = authDataSession ? window.atob(authDataSession._token) : '';
+    authDataSession._token = tokenNew;
     const authData: {
       email: string;
       id: string;
@@ -94,7 +97,7 @@ export class AuthService {
       _tokenExpirationDate: string;
       username: string;
       userroles: any[];
-    } = JSON.parse(sessionStorage.getItem('userAuthData'));
+    } = authDataSession;
     if (!authData) {
       return;
     }
