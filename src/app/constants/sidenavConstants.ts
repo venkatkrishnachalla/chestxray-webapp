@@ -26,22 +26,4 @@ export const sideNavConstants = {
       routerLink: '/home/settings',
     },
   ],
-  socialMedia: [
-    {
-      image: '../../../../assets/images/instagram.png',
-      alt: 'instagram',
-    },
-    {
-      image: '../../../../assets/images/twitter.png',
-      alt: 'twitter',
-    },
-    {
-      image: '../../../../assets/images/facebook.png',
-      alt: 'facebook',
-    },
-    {
-      image: '../../../../assets/images/web.png',
-      alt: 'web',
-    },
-  ],
 };

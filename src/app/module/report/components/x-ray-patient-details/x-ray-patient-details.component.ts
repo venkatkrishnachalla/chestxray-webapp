@@ -7,6 +7,7 @@ import {
   InvokeComponentData,
 } from 'src/app/module/auth/interface.modal';
 import { fabric } from 'fabric';
+import { staticContentHTML } from 'src/app/constants/staticContentHTML';
 
 @Component({
   selector: 'cxr-x-ray-patient-details',
@@ -31,6 +32,14 @@ export class XRayPatientDetailsComponent implements OnInit {
   canvasCorrectedHeight: number;
   xRayImage: any;
   pdfFindings: string;
+  readonly constants = staticContentHTML;
+  reportPageText: {
+    patientDetails: string;
+    clinicalHistory: string;
+    impressions: string;
+    findings: string;
+    commentsAndRecommendations: string;
+  };
 
   constructor(
     private eventEmitterService: EventEmitterService,
@@ -49,6 +58,7 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   /*** class init function ***/
   ngOnInit(): void {
+    this.reportPageText = this.constants.reportPage;
     this.patientInfo = history.state.patientDetails;
     this.eventEmitterService.commentSubject.next('');
     this.annotatedImage = sessionStorage.getItem('annotatedImage');
