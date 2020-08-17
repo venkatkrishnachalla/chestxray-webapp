@@ -148,7 +148,6 @@ export class PatientListComponent implements OnInit {
   }
 
    /*** unsubscribe userSubscription event ***/
-  // tslint:disable-next-line: use-lifecycle-interface
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
