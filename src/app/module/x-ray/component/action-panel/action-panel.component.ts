@@ -10,6 +10,7 @@ import { Options } from 'ng5-slider';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cxr-action-panel',
@@ -55,8 +56,16 @@ export class ActionPanelComponent implements OnInit {
   brightnessPanel: { image: string; alt: string; title: string }[];
   disableAskAI: boolean;
   disableActionItems = true;
+  _subscription: Subscription;
 
-  constructor(private eventEmitterService: EventEmitterService) {}
+  constructor(private eventEmitterService: EventEmitterService) {
+    this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
+      (patientId: string) => {
+        console.log('actionpanal', patientId);
+        this.disableAskAI = false;
+      }
+    );
+  }
 
   /*** class init function ***/
   ngOnInit(): void {
@@ -90,5 +99,10 @@ export class ActionPanelComponent implements OnInit {
   disableAskAiButton() {
     this.disableAskAI = true;
     sessionStorage.setItem('askAiSelection', 'true');
+  }
+
+  /*** on destroy event subscription ***/
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }

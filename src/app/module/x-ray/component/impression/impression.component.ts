@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   DISEASE_COLOR_MAPPING,
   RANDOM_COLOR,
@@ -6,22 +6,32 @@ import {
 import { EventEmitterService } from '../../../../service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { EllipseData } from 'src/app/module/auth/interface.modal';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cxr-impression',
   templateUrl: './impression.component.html',
   styleUrls: ['./impression.component.scss'],
 })
-export class ImpressionComponent implements OnInit {
+export class ImpressionComponent implements OnInit, OnDestroy {
   impression = [];
   abnormalityColor = [];
   ellipseList = [];
   impressionList = [];
   uniqueImpressions = [];
+  _subscription: Subscription;
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedImpressionService: XRayService
-  ) {}
+  ) {
+    this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
+      (patientId: string) => {
+        console.log('patientId--impression', patientId);
+        this.impression = [];
+        this.uniqueImpressions = [];
+      }
+    );
+  }
 
   /*** class init function ***/
   ngOnInit(): void {
@@ -132,5 +142,10 @@ export class ImpressionComponent implements OnInit {
     this.xrayAnnotatedImpressionService.xrayAnnotatedImpressions(
       this.uniqueImpressions
     );
+  }
+
+  /*** on destroy event subscription ***/
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }

@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PatientDetailData } from 'src/app/module/auth/interface.modal';
+import { Subscription } from 'rxjs';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-patient-details',
   templateUrl: './patient-details.component.html',
   styleUrls: ['./patient-details.component.scss'],
 })
-export class PatientDetailsComponent implements OnInit {
+export class PatientDetailsComponent implements OnInit, OnDestroy {
   value: number;
   PatientName: string;
   PatientGender: string;
@@ -16,10 +18,24 @@ export class PatientDetailsComponent implements OnInit {
   Time: string;
   history: string;
   patientDetails: PatientDetailData;
-  constructor() {}
+  _subscription: Subscription;
+
+  constructor(private eventEmitterService: EventEmitterService) {
+    this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
+      (patientId: string) => {
+        console.log('patient details', patientId);
+        this.getPatientDetails();
+      }
+    );
+  }
 
   /*** clas init function and bind patient details ***/
   ngOnInit(): void {
+    this.getPatientDetails();
+  }
+
+  /*** get patient detail function ****/
+  getPatientDetails() {
     let patient = history.state.patientDetails;
     if (patient === undefined) {
       patient = JSON.parse(sessionStorage.getItem('patientDetail'));
@@ -34,5 +50,10 @@ export class PatientDetailsComponent implements OnInit {
       this.Time = patient.lastUpdate;
     }
     this.history = '';
+  }
+
+  /*** on destroy event subscription ***/
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }

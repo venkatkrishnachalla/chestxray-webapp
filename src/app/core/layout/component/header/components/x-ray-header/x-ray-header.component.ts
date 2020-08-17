@@ -7,6 +7,7 @@ import {
   PatientListData,
 } from 'src/app/module/auth/interface.modal';
 import User from 'src/app/module/auth/user.modal';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-x-ray-header',
@@ -37,7 +38,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     instanceID: string;
   };
 
-  constructor(public router: Router, private authService: AuthService) {}
+  constructor(public router: Router, private authService: AuthService, private eventEmitterService: EventEmitterService) {}
 
   /*** init function ***/
   ngOnInit(): void {
@@ -57,7 +58,11 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.prevNextFunction();
+  }
 
+  /*** prev and next data filter function ***/
+  prevNextFunction() {
     this.patientRows = JSON.parse(sessionStorage.getItem('patientRows'));
     if (this.patientRows.length > 0) {
       const lastIndex = this.patientRows[this.patientRows.length - 1].index;
@@ -81,7 +86,10 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('PatientImage');
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
-    window.location.reload();
+    this.patientID = filterData.hospitalPatientId;
+    history.pushState(filterData, 'patientDetails', 'x-ray');
+    this.eventEmitterService.onPrevNextButtonClick(filterData.id);
+    this.prevNextFunction();
   }
 
   /*** event to change xray page previous patient ***/
@@ -94,7 +102,10 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('findings');
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
-    window.location.reload();
+    this.patientID = filterData.hospitalPatientId;
+    history.pushState(filterData, 'patientDetails', 'x-ray');
+    this.eventEmitterService.onPrevNextButtonClick(filterData.id);
+    this.prevNextFunction();
   }
 
   /*** unsubscribe userSubscription event ***/

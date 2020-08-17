@@ -103,6 +103,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   type = '';
   left;
   top;
+  _subscription: Subscription;
+
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
@@ -111,7 +113,35 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private annotatedXrayService: XRayService,
     private router: Router,
     private toastrService: ToastrService
-  ) {}
+  ) {
+    this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
+      (patientId: string) => {
+        console.log('patientId', patientId);
+        this.canvas.clear();
+        this.spinnerService.show();
+        sessionStorage.removeItem('ellipse');
+        sessionStorage.removeItem('freeHandDrawing');
+        this.savedInfo = {
+          data: {
+            names: [],
+            ndarray: [
+              {
+                Findings: {},
+                Impression: [],
+                diseases: [],
+              },
+            ],
+          },
+          meta: {},
+        };
+        const patientDetail = JSON.parse(
+          sessionStorage.getItem('patientDetail')
+        );
+        this.patientDetail = patientDetail;
+        this.getPatientInstanceId(patientId);
+      }
+    );
+  }
 
   /*** host listener when resizing window ***/
   @HostListener('window:resize', [])
@@ -437,6 +467,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       width: this.canvasDynamicWidth,
       height: this.canvasDynamicHeight,
     });
+    this.generateCanvas();
   }
 
   /**
@@ -461,7 +492,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           JSON.stringify(imageInformation)
         );
         this.setCanvasDimension();
-        this.generateCanvas();
       },
       (errorMessage: any) => {
         this.spinnerService.hide();
@@ -679,6 +709,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.dialog.closeAll();
     this.eventsSubscription.unsubscribe();
+    this._subscription.unsubscribe();
     this.toastrService.clear();
   }
 

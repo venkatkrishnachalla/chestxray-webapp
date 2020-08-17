@@ -1,23 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventEmitterService } from '../../../../service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { pathology } from 'src/app/constants/pathologyConstants';
 import { EllipseData } from 'src/app/module/auth/interface.modal';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cxr-findings',
   templateUrl: './findings.component.html',
   styleUrls: ['./findings.component.scss'],
 })
-export class FindingsComponent implements OnInit {
+export class FindingsComponent implements OnInit, OnDestroy {
   readonly constants = pathology;
   order = [];
   findings: any[];
   item0: any;
+  _subscription: Subscription;
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedService: XRayService
-  ) {}
+  ) {
+    this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
+      (patientId: string) => {
+        console.log('patientId---findings', patientId);
+        this.findings = [];
+        this.getFindings();
+      }
+    );
+  }
 
   /*** class init function ***/
   ngOnInit(): void {
@@ -119,28 +129,33 @@ export class FindingsComponent implements OnInit {
 
   preventBaseValue(evt) {
     const lengthIndex = evt.target.textContent.indexOf(':');
-    if (lengthIndex !== -1){
-      if (window.getSelection().getRangeAt(0).startOffset > lengthIndex){
+    if (lengthIndex !== -1) {
+      if (window.getSelection().getRangeAt(0).startOffset > lengthIndex) {
         if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
           if (evt.key.charCodeAt() === 66) {
             evt.preventDefault();
           }
-        }
-        else{
-          if (window.getSelection().getRangeAt(0).startOffset === lengthIndex + 1){
+        } else {
+          if (
+            window.getSelection().getRangeAt(0).startOffset ===
+            lengthIndex + 1
+          ) {
             if (evt.key.charCodeAt() === 68) {
               return true;
             }
             return false;
-          }
-          else if (evt.key.charCodeAt() === 46) {
-              return true;
+          } else if (evt.key.charCodeAt() === 46) {
+            return true;
           }
         }
-      }
-      else{
+      } else {
         return false;
       }
     }
+  }
+
+  /*** on destroy event subscription ***/
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }
