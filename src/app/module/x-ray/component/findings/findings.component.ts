@@ -14,6 +14,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
   readonly constants = pathology;
   order = [];
   findings: any[];
+  findingsText: string = 'Findings';
   item0: any;
   _subscription: Subscription;
   constructor(

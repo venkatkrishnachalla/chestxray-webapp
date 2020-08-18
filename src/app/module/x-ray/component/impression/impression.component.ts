@@ -20,6 +20,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   impressionList = [];
   uniqueImpressions = [];
   _subscription: Subscription;
+  impressionsText: string = 'Impressions';
+  
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedImpressionService: XRayService

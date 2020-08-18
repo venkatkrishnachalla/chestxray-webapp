@@ -369,8 +369,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.dialog.open(this.controlsModel, {
         panelClass: 'my-class',
         hasBackdrop: false,
-        // tslint:disable-next-line: max-line-length
-        position: { left: this.left + 'px', top: this.top + 'px' },
+        position: { left: this.left + 'px', top : this.top  + 'px' }
       });
     }
   }
@@ -379,46 +378,47 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.left = 0;
     this.top = 0;
     const obj = data.target;
-    const coords = obj.calcCoords();
-    const mrx = coords.mr.x;
-    const mry = coords.mr.y;
-    const mtx = coords.mt.x;
-    const mty = coords.mt.y;
+    const  objCenterX = this.canvas.getActiveObject().getCenterPoint().x;
+    const  objCenterY = this.canvas.getActiveObject().oCoords.tr.y;
 
-    if (this.canvas.getActiveObject().top < 70) {
-      this.left = mrx + 320;
-      this.top = mry + 35;
+    if (this.canvas.getActiveObject().top < 60 && this.canvas.getActiveObject().left > 200) {
+      this.left = objCenterX - 100;
+      this.top = objCenterY + 65;
+    }
+    else if (this.canvas.getActiveObject().top < 60 && this.canvas.getActiveObject().left < 200) {
+      this.left = objCenterX + 350;
+      this.top = objCenterY + 65;
     } else {
       if (obj.angle > 5 && obj.angle <= 40) {
-        this.left = mtx + 350;
-        this.top = mty;
+        this.left = objCenterX + 270;
+        this.top = objCenterY;
       } else if (obj.angle > 40 && obj.angle <= 90) {
-        this.left = mtx + 350;
-        this.top = mty + 30;
+        this.left = objCenterX + 270;
+        this.top = objCenterY;
       } else if (obj.angle > 90 && obj.angle <= 130) {
-        this.left = mtx + 350;
-        this.top = mty + 20;
+        this.left = objCenterX + 270;
+        this.top = objCenterY + 30;
       } else if (obj.angle > 130 && obj.angle <= 150) {
-        this.left = mtx + 350;
-        this.top = mty + 50;
+        this.left = objCenterX + 200;
+        this.top = objCenterY + 70;
       } else if (obj.angle > 150 && obj.angle <= 180) {
-        this.left = mtx + 350;
-        this.top = mty + 80;
+        this.left = objCenterX + 150;
+        this.top = objCenterY + 105;
       } else if (obj.angle > 180 && obj.angle <= 270) {
-        this.left = mtx + 100;
-        this.top = mty + 80;
+        this.left = objCenterX + 20;
+        this.top = objCenterY + 80;
       } else if (obj.angle > 270 && obj.angle <= 300) {
-        this.left = mtx + 130;
-        this.top = mty - 30;
+        this.left = objCenterX + 70;
+        this.top = objCenterY + 50;
       } else if (obj.angle > 300 && obj.angle <= 340) {
-        this.left = mtx + 150;
-        this.top = mty - 40;
+        this.left = objCenterX + 150;
+        this.top = objCenterY + 20;
       } else if (obj.angle > 340 && obj.angle <= 359) {
-        this.left = mtx + 320;
-        this.top = mty - 20;
+        this.left = objCenterX + 240;
+        this.top = objCenterY + 10;
       } else {
-        this.left = mtx + 320;
-        this.top = mty;
+        this.left = objCenterX + 230;
+        this.top = objCenterY;
       }
     }
   }

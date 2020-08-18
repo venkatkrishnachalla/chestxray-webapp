@@ -34,7 +34,7 @@ body {
 }
 
 .patient-info-sex {
-  margin-left: 4rem;
+  margin-left: 1rem;
 }
 
 .clinical-comments-align {
@@ -134,4 +134,7 @@ h4 {
 .hide-xray {
   width: 100%;
   height: 400px;
+}
+.pdf-padding-r-70{
+  padding-right: 70px;
 }

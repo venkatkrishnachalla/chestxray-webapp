@@ -19,6 +19,7 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
   history: string;
   patientDetails: PatientDetailData;
   _subscription: Subscription;
+  PatientDetailsText: string = 'patient details';
 
   constructor(private eventEmitterService: EventEmitterService) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
