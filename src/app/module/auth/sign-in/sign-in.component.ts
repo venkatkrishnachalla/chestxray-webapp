@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { SnackbarService } from 'src/app/core/service/snackbar.service';
 import { AuthService } from '../auth.service';
@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SignInResponse } from '../interface.modal';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
+import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'cxr-sign-in',
@@ -25,6 +26,8 @@ export class SignInComponent implements OnInit {
   signInText: { loginTitle: string; forgotPasswordText: string };
   copyRightText: { copyRightDisplayText: string };
   socialMediaIcons: { image: string; alt: string; title: string }[];
+  @ViewChild('usernameRef', {static: true}) usernameElementRef: ElementRef;
+
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,
@@ -33,10 +36,15 @@ export class SignInComponent implements OnInit {
     private spinnerService: SpinnerService,
     private toastrService: ToastrService,
     private eventEmitterService: EventEmitterService
-  ) {}
+  ) {
+    if(sessionStorage.getItem('userAuthData')) {
+      this.router.navigate(['home/dashboard']);
+    }
+  }
 
   /*** class init function ***/
   ngOnInit(): void {
+    this.usernameElementRef.nativeElement.focus();
     this.signInText = this.constants.loginPage;
     this.copyRightText = this.constants.copyRight;
     this.socialMediaIcons = this.constants.socialMedia;
@@ -83,4 +91,5 @@ export class SignInComponent implements OnInit {
       }
     }
   }
+
 }

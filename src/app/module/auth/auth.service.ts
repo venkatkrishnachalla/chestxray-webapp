@@ -77,6 +77,7 @@ export class AuthService {
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
     sessionStorage.removeItem('patientRows');
+    sessionStorage.clear();
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
