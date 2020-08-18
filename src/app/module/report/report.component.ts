@@ -5,6 +5,7 @@ import { PatientDetailData, InvokeReportData } from '../auth/interface.modal';
 import { CanvasImageComponent } from '../x-ray/component/canvas-image/canvas-image.component';
 import { ImpressionComponent } from '../x-ray/component/impression/impression.component';
 import { FindingsComponent } from '../x-ray/component/findings/findings.component';
+import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 
 @Component({
   selector: 'cxr-report',
@@ -19,21 +20,28 @@ export class ReportComponent implements OnInit {
   @ViewChild(FindingsComponent) findings: FindingsComponent;
   constructor(
     private router: Router,
-    private eventEmitterService: EventEmitterService
+    private eventEmitterService: EventEmitterService,
+    private spinnerService: SpinnerService
   ) {}
 
   /*** class init function ***/
   ngOnInit(): void {
+    this.spinnerService.show();
     this.showPrintForm = false;
-    this.eventEmitterService.invokeReportDataFunction.subscribe((data: InvokeReportData) => {
-      switch (data.title) {
-        case 'patientInfo':
-          this.patientInfo = data.data;
-          break;
-        default:
-          break;
+    this.eventEmitterService.invokeReportDataFunction.subscribe(
+      (data: InvokeReportData) => {
+        switch (data.title) {
+          case 'patientInfo':
+            this.patientInfo = data.data;
+            break;
+          default:
+            break;
+        }
       }
-    });
+    );
+    setTimeout(() => {
+      this.spinnerService.hide();
+    }, 2500);
   }
 
   /*** event to go back to xray page ***/

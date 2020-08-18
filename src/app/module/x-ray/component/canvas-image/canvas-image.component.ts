@@ -1099,6 +1099,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       state: { patientDetails: this.patientDetail },
     });
   }
+
+  /*** mapping color to annotations ***/
   getColorMapping(diseases, check) {
     const colorName =
       DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
