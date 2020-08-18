@@ -14,6 +14,7 @@ export class EventEmitterService {
   invokeReportDataFunction = new EventEmitter();
   invokeDisplayErrorMessage = new EventEmitter();
   invokeFindingsDataFunction = new EventEmitter();
+  invokePrevNextButtonDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
 
@@ -62,5 +63,10 @@ export class EventEmitterService {
   /*** onImpressionDataShared event emit function ***/
   onImpressionDataShared(data) {
     this.invokeFindingsDataFunction.emit(data);
+  }
+
+  /*** event to capture prev and next button click event emit function ***/
+  onPrevNextButtonClick(data) {
+    this.invokePrevNextButtonDataFunction.emit(data);
   }
 }

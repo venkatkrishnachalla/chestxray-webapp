@@ -69,6 +69,17 @@ describe('AuthService', () => {
 
   describe('#autoLoginOnRefresh', () => {
     it('should call autoLoginOnRefresh function', () => {
+      const authMock = {
+        email: 'abc@123',
+        id: 1010,
+        _token: 'etuaWqerll',
+        _tokenExpirationDate: '2020-08-17T10:11:36.000Z',
+        username: 'Ashwini',
+        userroles: ['HospitalRadiologist']
+      }
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(authMock);
+      });
       authService.autoLoginOnRefresh();
       expect(authService.autoLoginOnRefresh).toBeDefined();
     });

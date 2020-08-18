@@ -1,24 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventEmitterService } from '../../../../service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { pathology } from 'src/app/constants/pathologyConstants';
 import { EllipseData } from 'src/app/module/auth/interface.modal';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cxr-findings',
   templateUrl: './findings.component.html',
   styleUrls: ['./findings.component.scss'],
 })
-export class FindingsComponent implements OnInit {
+export class FindingsComponent implements OnInit, OnDestroy {
   readonly constants = pathology;
   order = [];
   findings: any[];
   findingsText: string = 'Findings';
   item0: any;
+  _subscription: Subscription;
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedService: XRayService
-  ) {}
+  ) {
+    this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
+      (patientId: string) => {
+        this.findings = [];
+        this.getFindings();
+      }
+    );
+  }
 
   /*** class init function ***/
   ngOnInit(): void {
@@ -143,5 +152,10 @@ export class FindingsComponent implements OnInit {
         return false;
       }
     }
+  }
+
+  /*** on destroy event subscription ***/
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }
