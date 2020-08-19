@@ -48,6 +48,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
+
   @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
@@ -103,6 +104,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   type = '';
   left;
   top;
+  objectAngle: number;
+  lockRotation: boolean;
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
@@ -193,21 +196,25 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       preserveObjectStacking: true,
       selection: false,
     });
+    this.canvas.hoverCursor = 'pointer';
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
     this.canvas.on('object:modified', (options) => {
+      this.restrictObjectOnRotate(options);
       this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
         this.updateEllipseIntoSession();
       }
+      this.displayMessage(options);
     });
     this.canvas.on('object:rotating', (e) => {
+      this.restrictObjectOnRotate(e);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
     });
-    this.patientDetail = history.state.patientDetails;
+    this.patientDetail = history.state.patientDetails;  
     if (this.patientDetail === undefined) {
       const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientDetail = patientDetail;
@@ -232,6 +239,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.on('object:selected', (evt) => {
       this.actionIconsModelDispaly(evt);
       this.canvas.sendToBack(this.canvas._activeObject);
+      this.displayMessage(evt);
     });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
@@ -239,7 +247,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     this.canvas.on('object:moving', (evt) => {
+      document.getElementById('target').style.display = 'none';
       const obj = evt.target;
+      this.objectAngle = obj.angle;
+      this.restrictObjectOnRotate(evt);
       this.restrictionToBoundaryLimit(obj);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
@@ -285,10 +296,108 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.on('object:moved', (evt) => {
       this.actionIconsModelDispaly(evt);
     });
+    this.canvas.on('mouse:over', (e) =>{
+      this.displayMessage(e);
+      this.onHoveringAnnotation(e);
+    });
+    this.canvas.on('mouse:out', (e) => {
+      this.onHoveringOutAnnotation(e);
+    });
     this.canvas.on('selection:updated', (evt) => {
       this.dialog.closeAll();
       this.actionIconsModelDispaly(evt);
     });
+
+  }
+
+  onHoveringAnnotation(obj) {
+    if(this.lockRotation === true) {
+        const object = obj.target;
+        const coords = object.calcCoords();
+        document.getElementById('target').style.display = 'block';
+        if(object.getBoundingRect().top <= 70) {
+          let mbx = coords.mb.x;
+          let mby = coords.mb.y;
+          document.getElementById('target').style.top = mby + 100 + 'px';
+          document.getElementById('target').style.left = mbx + 150 + 'px';
+        }
+        else {
+          let mtx = coords.mt.x;
+          let mty = coords.mt.y;
+          document.getElementById('target').style.top = mty - 40 + 'px';
+          document.getElementById('target').style.left = mtx + 150 + 'px';
+        }
+    }
+    this.canvas.renderAll();
+  }
+
+  onHoveringOutAnnotation(obj) {
+    if(obj.target === null) {
+      return true;
+    }
+    else if (obj.target.lockRotation) {
+      document.getElementById('target').style.display = 'none';
+    }
+    else {
+      return true;
+    }
+  }
+
+  restrictObjectOnRotate(obj) {
+    const object = obj.target;
+    const coords = object.calcCoords();
+    const blx = coords.bl.x;
+    const bly = coords.bl.y;
+    const brx = coords.br.x;
+    const bry = coords.br.y;
+    const tlx = coords.tl.x;
+    const tly = coords.tl.y;
+    const txr = coords.tr.x;
+    const tyr = coords.tr.y;
+    if(blx >= object.canvas.width || brx >= object.canvas.width || tlx >= object.canvas.width || txr >= object.canvas.width){
+      this.canvas.getActiveObject().set({
+        lockRotation: true,
+      });
+      this.canvas.renderAll();
+    }
+    else if( blx <= 0 || brx <= 0 || tlx <= 0 || txr <= 0) {
+      this.canvas.getActiveObject().set({
+        lockRotation: true,
+      });
+      this.canvas.renderAll();
+    }
+    else if(bly >= object.canvas.height || bry >= object.canvas.height || tly >= object.canvas.height || tyr >= object.canvas.height) {
+      this.canvas.getActiveObject().set({
+        lockRotation: true,
+      });
+      this.canvas.renderAll();
+    }
+    else if( bly <= 0 || bry <= 0 || tly <= 0 || tyr <= 0) {
+      this.canvas.getActiveObject().set({
+        lockRotation: true,
+      });
+      this.canvas.renderAll();
+    }
+    else {
+      this.canvas.getActiveObject().set({
+        lockRotation: false,
+      });
+      this.lockRotation = false;
+      this.canvas.renderAll();
+    }
+  }
+
+  displayMessage(obj){
+    if(obj.target === null) {
+      return true;
+    }
+    else if(obj.target.lockRotation) {
+      this.lockRotation = true;
+      this.onHoveringAnnotation(obj);
+    }
+    else{
+      this.lockRotation = false;
+    }
   }
 
   restrictionToBoundaryLimit(obj) {
@@ -296,7 +405,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       obj.currentHeight > obj.canvas.height ||
       obj.currentWidth > obj.canvas.width
     ) {
-      return;
+      return
     }
     obj.setCoords();
     // top-left  corner
@@ -331,14 +440,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   /*** action icons model display event ***/
   actionIconsModelDispaly(data) {
     this.markactionModelPosition(data);
-    if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
-      this.dialog.open(this.controlsModel, {
-        panelClass: 'my-class',
-        hasBackdrop: false,
-        // tslint:disable-next-line: max-line-length
-        position: { left: this.left + 'px', top: this.top + 'px' },
-      });
-    }
+      if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
+        this.dialog.open(this.controlsModel, {
+          panelClass: 'my-class',
+          hasBackdrop: false,
+          // tslint:disable-next-line: max-line-length
+          position: { left: this.left + 'px', top: this.top + 'px' },
+        });
+      }   
   }
 
   markactionModelPosition(data) {
