@@ -1,7 +1,7 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of } from 'rxjs';
 
-describe('CanvasImageComponent', () => {
+fdescribe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',
@@ -120,6 +120,7 @@ describe('CanvasImageComponent', () => {
       component.getPatientImage('12662');
     });
     it('should call getPatientImage function', () => {
+      spinnerServiceSpy.hide();
       expect(component.getPatientImage).toBeDefined();
     });
   });
@@ -341,7 +342,8 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  /*** it should call onSelect function with empty value  ***/
+  
+  /*** it should call onSelect function with empty item ***/
   describe('#onSelect', () => {
     beforeEach(() => {
       component.pathologyNames = [
@@ -360,10 +362,37 @@ describe('CanvasImageComponent', () => {
           textContent: 'abcd',
         },
       };
-      const itemSpy = '';
+      const itemSpy = 'aaa';
       component.onSelect(eventSpy, itemSpy);
     });
-    it('should call onSelect function, with empty value', () => {
+    it('should call onSelect function, with empty item ', () => {
+      expect(component.onSelect).toBeDefined();
+    });
+  });
+
+  /*** it should call onSelect function with item length === 0 value  ***/
+  describe('#onSelect', () => {
+    beforeEach(() => {
+      component.pathologyNames = [
+        {
+          abnormality: 'Anatomical variants',
+          Names: [
+            'Cervical rib',
+            'Azygos fissure',
+            'Aortic Arch variants',
+            'Thymus',
+          ],
+        },
+      ];
+      const eventSpy = {
+        target: {
+          textContent: 'abcd',
+        },
+      };
+      const itemSpy = [];
+      component.onSelect(eventSpy, itemSpy);
+    });
+    it('should call onSelect function, with  item length === 0  value', () => {
       expect(component.onSelect).toBeDefined();
     });
   });
@@ -1151,4 +1180,264 @@ describe('CanvasImageComponent', () => {
       expect(component.changeSelectableStatus).toBeDefined();
     });
   });
+
+    /*** it should call onHoveringAnnotation function, if lockRotation is false***/
+    describe('#onHoveringAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = false;
+        const objSpy = {};
+        component.canvas = {
+          renderAll: () => {},
+        };
+        component.onHoveringAnnotation(objSpy);
+      });
+      it('should call onHoveringAnnotation function, if lockRotation is false', () => {
+        expect(component.onHoveringAnnotation).toBeDefined();
+      });
+    });
+
+    /*** it should call onHoveringAnnotation function, if objSpy is equal to null ***/
+    describe('#onHoveringAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: null,
+        };
+        component.onHoveringAnnotation(objSpy);
+      });
+      it('should call onHoveringAnnotation function,  if objSpy is equal to null', () => {
+        expect(component.onHoveringAnnotation).toBeDefined();
+      });
+    });
+
+    /*** it should call onHoveringAnnotation function, if objSpy not equal to null ***/
+    describe('#onHoveringAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: {
+            textContent: 'abcd',
+            getBoundingRect: () => {
+              return {
+                top: 60
+              }
+            },
+            calcCoords: () => {
+              return {
+                mb: {
+                  x: 123,
+                  y: 123
+                }
+              }
+            },
+          },
+        };
+        component.canvas = {
+          renderAll: () => {},
+        };
+        const targetRotation = ({
+          style: {
+            display: 'block'
+          },
+        } as unknown) as HTMLElement;
+        spyOn(document, 'getElementById').and.returnValue(targetRotation);
+        component.onHoveringAnnotation(objSpy);
+      });
+      it('should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top less than 70', () => {
+        expect(component.onHoveringAnnotation).toBeDefined();
+      });
+    });
+
+     /*** it should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top greater than 70 ***/
+     describe('#onHoveringAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: {
+            calcCoords: () => {
+              return {
+                mb: {
+                  x: 123,
+                  y: 123
+                },
+                mt: {
+                  x: 123,
+                  y: 123
+                }
+              }
+            },
+            getBoundingRect: () => {
+              return {
+                top: 80
+              }
+            },
+          },
+        };
+        component.canvas = {
+          renderAll: () => {},
+        };
+        const targetRotation = ({
+          style: {
+            display: 'block'
+          },
+        } as unknown) as HTMLElement;
+        spyOn(document, 'getElementById').and.returnValue(targetRotation);
+        component.onHoveringAnnotation(objSpy);
+      });
+      it('should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top greater than 70 ', () => {
+        expect(component.onHoveringAnnotation).toBeDefined();
+      });
+    });
+
+     /*** it should call onHoveringOutAnnotation function, object.target is equal to null***/
+     describe('#onHoveringOutAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: null
+        };
+        component.onHoveringOutAnnotation(objSpy);
+      });
+      it('should call onHoveringOutAnnotation function, object.target is equal to null', () => {
+        expect(component.onHoveringOutAnnotation).toBeDefined();
+      });
+    });
+
+     /*** it should call onHoveringOutAnnotation function, object.target is not equal to null***/
+     describe('#onHoveringOutAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: {
+            lockRotation: true
+          }
+        };
+        const targetRotation = ({
+          style: {
+            display: 'none'
+          },
+        } as unknown) as HTMLElement;
+        spyOn(document, 'getElementById').and.returnValue(targetRotation);
+        component.onHoveringOutAnnotation(objSpy);
+      });
+      it('should call onHoveringOutAnnotation function, object.target is not equal to null', () => {
+        expect(component.onHoveringOutAnnotation).toBeDefined();
+      });
+    });
+
+     /*** it should call onHoveringOutAnnotation function, with else statement***/
+     describe('#onHoveringOutAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = false;
+        const objSpy = {
+          target: {
+            lockRotation: false
+          }
+        };
+        component.onHoveringOutAnnotation(objSpy);
+      });
+      it('should call onHoveringOutAnnotation function,  with else statement', () => {
+        expect(component.onHoveringOutAnnotation).toBeDefined();
+      });
+    });  
+    
+ 
+     /*** it should call displayMessage function***/
+     describe('#displayMessage', () => {
+      beforeEach(() => {
+        component.lockRotation = false;
+        const objSpy = {
+          target: {
+            lockRotation: false
+          }
+        };
+        component.displayMessage(objSpy);
+      });
+      it('should call displayMessage function', () => {
+        expect(component.displayMessage).toBeDefined();
+      });
+    });   
+    
+      /*** it should call displayMessage function, if object is null***/
+      describe('#displayMessage', () => {
+        beforeEach(() => {
+          component.lockRotation = false;
+          const objSpy = {
+            target: null
+          };
+          component.displayMessage(objSpy);
+        });
+        it('should call displayMessage function, if object is null', () => {
+          expect(component.displayMessage).toBeDefined();
+        });
+      });   
+      
+      /*** it should call displayMessage function, for else statement***/
+      describe('#displayMessage', () => {
+        beforeEach(() => {
+          const objSpy = {
+            target: {
+              lockRotation: true
+            }
+          };
+          spyOn(component, 'onHoveringAnnotation');
+          component.displayMessage(objSpy);
+        });
+        it('should call displayMessage function', () => {
+          expect(component.displayMessage).toBeDefined();
+          expect(component.lockRotation).toBeTruthy;
+          expect(component.onHoveringAnnotation).toHaveBeenCalled();
+        });
+      }); 
+      
+      /*** it should call restrictObjectOnRotate function***/
+      describe('#restrictObjectOnRotate', () => {
+        beforeEach(() => {
+          const objSpy = {
+            target: {
+              calcCoords: () => {
+                return {
+                  bl: {
+                    x: 123,
+                    y: 123
+                  },
+                  br: {
+                    x: 123,
+                    y: 123
+                  },
+                  tl: {
+                    x: 123,
+                    y: 123
+                  },
+                  tr: {
+                    x: 123,
+                    y: 123
+                  },
+                }
+              },
+              canvas: {
+                width: 500
+              },
+              lockRotation: true
+            }
+          };
+          component.canvas = {
+            renderAll: () => {},
+            getActiveObject: () => {
+              return {
+                set: () => {
+                  return{
+                    lockRotation: true
+                  }
+                }
+              }
+            },
+          };
+          spyOn(component, 'onHoveringAnnotation');
+          component.restrictObjectOnRotate(objSpy);
+        });
+        it('should call displayMessage function', () => {
+          expect(component.restrictObjectOnRotate).toBeDefined();
+        });
+      });            
 });

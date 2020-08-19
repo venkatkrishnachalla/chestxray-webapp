@@ -313,22 +313,27 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   onHoveringAnnotation(obj) {
     if(this.lockRotation === true) {
         const object = obj.target;
-        const coords = object.calcCoords();
-        document.getElementById('target').style.display = 'block';
-        if(object.getBoundingRect().top <= 70) {
-          let mbx = coords.mb.x;
-          let mby = coords.mb.y;
-          document.getElementById('target').style.top = mby + 100 + 'px';
-          document.getElementById('target').style.left = mbx + 150 + 'px';
+        if(object != null) {
+          let coords = object.calcCoords();
+          document.getElementById('target').style.display = 'block';
+          if(object.getBoundingRect().top <= 70) {
+            let mbx = coords.mb.x;
+            let mby = coords.mb.y;
+            document.getElementById('target').style.top = mby + 100 + 'px';
+            document.getElementById('target').style.left = mbx + 150 + 'px';
+          }
+          else {
+            let mtx = coords.mt.x;
+            let mty = coords.mt.y;
+            document.getElementById('target').style.top = mty - 40 + 'px';
+            document.getElementById('target').style.left = mtx + 150 + 'px';
+          }
         }
         else {
-          let mtx = coords.mt.x;
-          let mty = coords.mt.y;
-          document.getElementById('target').style.top = mty - 40 + 'px';
-          document.getElementById('target').style.left = mtx + 150 + 'px';
+          return true;
         }
+        this.canvas.renderAll();
     }
-    this.canvas.renderAll();
   }
 
   onHoveringOutAnnotation(obj) {
@@ -971,6 +976,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Search pathology functionality
    */
   onSelect(event, item) {
+    console.log("event", event)
+    console.log("item", item)
     this.selectedDiseases = true;
     if (item.length === 0) {
       this.selectedDisease = event.target.textContent.replace(
