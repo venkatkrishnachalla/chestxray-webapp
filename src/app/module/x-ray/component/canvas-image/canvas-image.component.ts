@@ -320,7 +320,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   }
 
-  onHoveringAnnotation(obj) {
+  /*** display message on hovering the object if object angle point is disabled ***/
+  onHoveringAnnotation(obj: any) {
     if(this.lockRotation === true) {
         const object = obj.target;
         if(object != null) {
@@ -346,7 +347,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-  onHoveringOutAnnotation(obj) {
+  /*** hide message on hovering out of the object if object angle point is disabled ***/
+  onHoveringOutAnnotation(obj: any) {
     if(obj.target === null) {
       return true;
     }
@@ -358,7 +360,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-  restrictObjectOnRotate(obj) {
+    /*** restricting object if the object is going out of the x-ray image on rotating***/
+  restrictObjectOnRotate(obj: any) {
     const object = obj.target;
     const coords = object.calcCoords();
     const blx = coords.bl.x;
@@ -402,7 +405,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-  displayMessage(obj){
+  /*** displaying message if object rotation point is disabled ***/
+  displayMessage(obj: any){
     if(obj.target === null) {
       return true;
     }
@@ -439,20 +443,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.getPatientInstanceId(patientId);
   }
 
-  restrictionToBoundaryLimit(obj) {
+  restrictionToBoundaryLimit(obj: any) {
     if (
       obj.currentHeight > obj.canvas.height ||
       obj.currentWidth > obj.canvas.width
     ) {
-      return
+      return;
     }
     obj.setCoords();
-    // top-left  corner
     if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
       obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
       obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
     }
-    // bot-right corner
     if (
       obj.getBoundingRect().top + obj.getBoundingRect().height >
         obj.canvas.height ||
@@ -545,6 +547,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedSubDisease = false;
   }
 
+  /*** clear background color of the disease on clicking***/
   clear() {
     this.selectedDisease = '';
     this.selectedMainDisease = false;
@@ -1011,8 +1014,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * Search pathology functionality
    */
   onSelect(event, item) {
-    console.log("event", event)
-    console.log("item", item)
     this.selectedDiseases = true;
     if (item.length === 0) {
       this.selectedDisease = event.target.textContent.replace(
