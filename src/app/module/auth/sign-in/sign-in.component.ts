@@ -8,6 +8,7 @@ import { SpinnerService } from '../../shared/UI/spinner/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import { SignInResponse } from '../interface.modal';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { staticContentHTML } from 'src/app/constants/staticContentHTML';
 
 @Component({
   selector: 'cxr-sign-in',
@@ -20,6 +21,10 @@ export class SignInComponent implements OnInit {
   errorMessage = '';
   errorStatus: any;
   breakpoint: number;
+  readonly constants = staticContentHTML;
+  signInText: { loginTitle: string; forgotPasswordText: string };
+  copyRightText: { copyRightDisplayText: string };
+  socialMediaIcons: { image: string; alt: string; title: string }[];
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,
@@ -32,6 +37,9 @@ export class SignInComponent implements OnInit {
 
   /*** class init function ***/
   ngOnInit(): void {
+    this.signInText = this.constants.loginPage;
+    this.copyRightText = this.constants.copyRight;
+    this.socialMediaIcons = this.constants.socialMedia;
     this.eventEmitterService.invokeDisplayErrorMessage.subscribe(
       (statusCode) => {
         this.errorStatus = statusCode;
