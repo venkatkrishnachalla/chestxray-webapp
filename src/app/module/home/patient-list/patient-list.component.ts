@@ -58,7 +58,7 @@ export class PatientListComponent implements OnInit {
     sessionStorage.removeItem('x-ray_Data');
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
-    this.defaultColDef = { width: 200 };
+    this.defaultColDef = { width: 200, lockPosition: true };
     this.columnDefs = this.constants.patientDashboard.headers;
     this.getPatientList();
     this.userSubscription = this.authService.userSubject.subscribe(

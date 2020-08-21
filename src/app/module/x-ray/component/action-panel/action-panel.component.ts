@@ -25,6 +25,7 @@ export class ActionPanelComponent implements OnInit {
     floor: 0,
     ceil: 100,
     vertical: true,
+    disabled: true,
     showSelectionBar: true,
     selectionBarGradient: {
       from: '#285c68',
@@ -37,6 +38,7 @@ export class ActionPanelComponent implements OnInit {
     floor: 0,
     ceil: 100,
     vertical: true,
+    disabled: true,
     showSelectionBar: true,
     selectionBarGradient: {
       from: '#285c68',
