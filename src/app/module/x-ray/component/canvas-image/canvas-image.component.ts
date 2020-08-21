@@ -162,9 +162,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       (data: InvokeComponentData) => {
         switch (data.title) {
           case 'Draw Ellipse':
+            this.canvas.discardActiveObject();
+            this.canvas.renderAll();
             this.drawEllipse(data);
             break;
           case 'Free Hand Drawing':
+            this.canvas.discardActiveObject();
+            this.canvas.renderAll();
             this.freeHandDrawing(data);
             break;
           case 'Delete':
