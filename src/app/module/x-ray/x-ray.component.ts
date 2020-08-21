@@ -40,6 +40,7 @@ export class XRayComponent implements OnInit, OnDestroy {
   displayCanvas = true;
   displayErrorBlock = false;
   isHospitalRadiologist: boolean;
+  disableReportBtn = false;
   userSubscription: Subscription;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
@@ -120,10 +121,11 @@ export class XRayComponent implements OnInit, OnDestroy {
   /*** report button click event ***/
 
   generateReport() {
-    this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
+    this.disableReportBtn = true;
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
+    this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
   }
 
   /*** unsubscribe userSubscription event ***/
