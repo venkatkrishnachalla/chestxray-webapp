@@ -1448,7 +1448,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   getSessionFreeHandDrawing() {
     const path = JSON.parse(sessionStorage.getItem('freeHandDrawing'));
-    if (path.length !== 0) {
+    if (path && path.length !== 0) {
       path.forEach((element) => {
         const coordinatePath = element.coordinateValue.split(' ');
         for (let i = 0; i < coordinatePath.length; i++) {
