@@ -55,7 +55,7 @@ export class PatientListComponent implements OnInit {
 
   /*** class init function ***/
   ngOnInit() {
-    sessionStorage.clear();
+    sessionStorage.removeItem('x-ray_Data');
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200 };
