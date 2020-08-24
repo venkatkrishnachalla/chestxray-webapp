@@ -19,4 +19,5 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [CommonModule, MaterialModule, NgxPrintModule, FormsModule],
 })
+// ReportModule class implementation  
 export class ReportModule {}

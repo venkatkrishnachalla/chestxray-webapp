@@ -7,13 +7,15 @@ describe('ApiEndPointService', () => {
     apiEndPointService = new ApiEndPointService();
   });
 
+/*** it should create service ***/
   it('should create', () => {
     expect(apiEndPointService).toBeTruthy();
   });
 
+  /*** it should getUrl function ***/
   describe('#getUrl', () => {
     beforeEach(() => {});
-    it('should call getUrl function', () => {
+    it('should call getUrl function', () => { 
       (apiEndPointService as any).getUrl('abcd', ['a', 'b', 'c']);
       expect((apiEndPointService as any).getUrl).toBeDefined();
     });
@@ -23,6 +25,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
+    /*** it should getHttpQueryParams function ***/
   describe('#getHttpQueryParams', () => {
     beforeEach(() => {
       (apiEndPointService as any).getHttpQueryParams('abcd');
@@ -32,6 +35,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
+      /*** it should getSingInURL function ***/
   describe('#getSingInURL', () => {
     it('should call getSingInURL function', () => {
       apiEndPointService.getSingInURL();
@@ -42,6 +46,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
+      /*** it should getRefreshToken function ***/
   describe('#getRefreshToken', () => {
     beforeEach(() => {
       apiEndPointService.getRefreshToken();
@@ -51,6 +56,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
+        /*** it should getPatientInstanceId function ***/
   describe('#getPatientInstanceId', () => {
     beforeEach(() => {
       apiEndPointService.getPatientInstanceId(
@@ -62,6 +68,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
+/*** it should getPatientImage function ***/
   describe('#getPatientImage', () => {
     beforeEach(() => {
       apiEndPointService.getPatientImage(
@@ -72,7 +79,7 @@ describe('ApiEndPointService', () => {
       expect(apiEndPointService.getPatientImage).toBeDefined();
     });
   });
-
+/*** it should getPatientList function ***/
   describe('#getPatientList', () => {
     beforeEach(() => {
       apiEndPointService.getPatientList();
@@ -82,6 +89,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
+  /*** it should getAskAi function ***/
   describe('#getAskAi', () => {
     beforeEach(() => {
       apiEndPointService.getAskAi();

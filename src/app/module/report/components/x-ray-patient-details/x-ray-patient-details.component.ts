@@ -14,6 +14,7 @@ import { staticContentHTML } from 'src/app/constants/staticContentHTML';
   templateUrl: './x-ray-patient-details.component.html',
   styleUrls: ['./x-ray-patient-details.component.scss'],
 })
+// XRayPatientDetailsComponent class implementation  
 export class XRayPatientDetailsComponent implements OnInit {
   findings = [];
   patientInfo: PatientDetailData;
@@ -41,6 +42,9 @@ export class XRayPatientDetailsComponent implements OnInit {
     commentsAndRecommendations: string;
   };
 
+/*  
+* constructor for XRayPatientDetailsComponent class  
+*/ 
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedImpression: XRayService,
@@ -56,7 +60,12 @@ export class XRayPatientDetailsComponent implements OnInit {
     });
   }
 
-  /*** class init function ***/
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/  
   ngOnInit(): void {
     this.reportPageText = this.constants.reportPage;
     this.patientInfo = history.state.patientDetails;
@@ -123,7 +132,12 @@ export class XRayPatientDetailsComponent implements OnInit {
     this.setCanvasDimension();
   }
 
-  /*** function to store impressions data ***/
+  /**  
+* This is a function to store impressions data .  
+* @param {string} value - A string param  
+* @example  
+* storeImpressions(impression);
+*/  
   storeImpressions(impression) {
     // tslint:disable-next-line: forin
     for (const i in impression) {
@@ -131,7 +145,12 @@ export class XRayPatientDetailsComponent implements OnInit {
     }
   }
 
-  /*** function to emit patient details ***/
+/**  
+* This is a  function to emit patient details .  
+* @param {void} empty - A empty param  
+* @example  
+* storePatientDetails();
+*/ 
   storePatientDetails() {
     this.eventEmitterService.onReportDataPatientDataShared({
       data: this.patientInfo,
@@ -139,23 +158,46 @@ export class XRayPatientDetailsComponent implements OnInit {
     });
   }
 
+  /**  
+* This is a commentsChange function.  
+* @param {any} data - A array param  
+* @example  
+* commentsChange(data);
+*/ 
   commentsChange(data) {
     this.eventEmitterService.commentSubject.next(data);
   }
 
+  /**  
+* This is a updateFindings function.  
+* @param {string} value - A string param  
+* @param {string} value - A string param  
+* @example  
+* updateFindings(evt, index);
+*/ 
   updateFindings(evt, index) {
     this.annotatedFindings.splice(index, 1, evt.target.textContent.slice(2));
     this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
   }
 
-  /*** get the dimensions for image container ***/
+    /**  
+* This is to get the dimensions for image container.  
+* @param {void} empty - A empty param   
+* @example  
+* setCanvasDimension();
+*/ 
   setCanvasDimension() {
     this.canvasDynamicWidth = 367;
     this.canvasDynamicHeight = 367;
     this.generateCanvas();
   }
 
-  /*** generate a canvas using fabric.js ***/
+/**  
+* This is to generate a canvas using fabric.js .  
+* @param {void} empty - A empty param   
+* @example  
+* generateCanvas();
+*/ 
   generateCanvas() {
     fabric.Image.fromURL(this.annotatedImage, (img) => {
       this.xRayImage = img;
@@ -163,12 +205,23 @@ export class XRayPatientDetailsComponent implements OnInit {
     });
   }
 
-  /*** function to compare image vs container aspect ratio width ***/
+  /**  
+* function to compare image vs container aspect ratio width .  
+* @param {string} value - A string param  
+* @param {string} value - A string param   
+* @example  
+* getWidthFirst(imageAspectRatio, containerAspectRatio);
+*/ 
   getWidthFirst(imageAspectRatio, containerAspectRatio) {
     return imageAspectRatio > containerAspectRatio;
   }
 
-  /*** setting BackgroundImage for canvas block ***/
+  /**  
+* This is to setting BackgroundImage for canvas block .  
+* @param {void} empty - A empty param   
+* @example  
+* setCanvasBackground();
+*/ 
   setCanvasBackground() {
     const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
     const containerAspectRatio =

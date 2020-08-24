@@ -9,6 +9,7 @@ import { staticContentHTML } from 'src/app/constants/staticContentHTML';
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
 })
+// MainLayoutComponent class implementation  
 export class MainLayoutComponent implements OnInit {
   currentApplicationVersion = environment.appVersion;
   sideNavToggle: boolean;
@@ -35,10 +36,17 @@ export class MainLayoutComponent implements OnInit {
     copyRightDisplayText: string;
   };
   bottomContent: string[];
-
+      /*  
+    * constructor for MainLayoutComponent class  
+    */  
   constructor() {}
 
-  /*** class init function ***/
+       /**  
+ * This is a init function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnInit();
+ */  
   ngOnInit() {
     this.sidenavButton = this.constants.sidenavContent;
     this.sidenavLabels = this.staticContents.dashboardPage;
@@ -46,12 +54,22 @@ export class MainLayoutComponent implements OnInit {
     this.copyRightText = this.staticContents.copyRight;
   }
 
-  /*** it will close sidenav ***/
+       /**  
+ * This is a close function, it will close sidenav.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * close();
+ */  
   close() {
     this.sidenav.close();
   }
 
-  /*** it will open sidenav ***/
+         /**  
+ * This is a open function, it will open sidenav.  
+ * @param {string} value - A string param  
+ * @example  
+ * toggleSidenavBar(valueEmitted);
+ */ 
   toggleSidenavBar(valueEmitted) {
     this.sidenav.toggle();
   }

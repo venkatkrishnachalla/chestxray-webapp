@@ -20,6 +20,7 @@ describe('SearchFilterPipe', () => {
   //   const result = pipe.transform(list, input);
   //   expect(result[0].abnormality).toBe('Bulla');
   // });
+  /*** should filter based on remove input search ***/
   it('should filter based on remove input search', () => {
     const input = '';
     const list = [

@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './findings.component.html',
   styleUrls: ['./findings.component.scss'],
 })
+// FindingsComponent class implementation  
 export class FindingsComponent implements OnInit, OnDestroy {
   readonly constants = pathology;
   order = [];
@@ -17,6 +18,10 @@ export class FindingsComponent implements OnInit, OnDestroy {
   findingsText: string = 'Findings';
   item0: any;
   _subscription: Subscription;
+  
+/*  
+* constructor for FindingsComponent class  
+*/ 
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedService: XRayService
@@ -29,13 +34,24 @@ export class FindingsComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** class init function ***/
+
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/ 
   ngOnInit(): void {
     this.findings = [];
     this.getFindings();
   }
-
-  /*** get findings event to subscribe findings from xray image ***/
+  
+/**  
+* get findings event to subscribe findings from xray image  
+* @param {void} empty - A empty param  
+* @example  
+* getFindings();
+*/ 
   getFindings() {
     this.findings = [];
     this.order = this.constants.findings;
@@ -112,13 +128,25 @@ export class FindingsComponent implements OnInit, OnDestroy {
     // });
   }
 
-  /*** event to pass findings to report page ***/
+/**  
+* event to pass findings to report page 
+* @param {void} empty - A empty param  
+* @example  
+* getFindingsToReport();
+*/ 
   getFindingsToReport() {
     const findings = JSON.stringify(this.findings);
     sessionStorage.setItem('findings', findings);
     this.xrayAnnotatedService.xrayAnnotatedFindings(this.findings);
   }
 
+  /**  
+* This is a updateFindings function
+* @param {string} value - A string param  
+* @param {string} value - A string param  
+* @example  
+*   updateFindings(evt, index);
+*/ 
   updateFindings(evt, index) {
     if (evt.target.textContent === '') {
       this.findings.splice(index, 1, ' ');
@@ -127,6 +155,12 @@ export class FindingsComponent implements OnInit, OnDestroy {
     }
   }
 
+/**  
+* This is a preventBaseValue function
+* @param {string} value - A string param  
+* @example  
+*   preventBaseValue(evt);
+*/ 
   preventBaseValue(evt) {
     const lengthIndex = evt.target.textContent.indexOf(':');
     if (lengthIndex !== -1) {
@@ -154,7 +188,12 @@ export class FindingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*** on destroy event subscription ***/
+  /**  
+* on destroy event subscription 
+* @param {void} empty - A empty param  
+* @example  
+*   ngOnDestroy();
+*/ 
   ngOnDestroy() {
     this._subscription.unsubscribe();
   }

@@ -20,4 +20,5 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   exports: [],
 })
+// AuthModule class implementation  
 export class AuthModule {}

@@ -16,6 +16,7 @@ import { EventEmitter } from 'protractor';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
+// SignInComponent class implementation  
 export class SignInComponent implements OnInit {
   auth: { email: string; password: string } = { email: '', password: '' };
   hide = true;
@@ -28,6 +29,9 @@ export class SignInComponent implements OnInit {
   socialMediaIcons: { image: string; alt: string; title: string }[];
   @ViewChild('usernameRef', {static: true}) usernameElementRef: ElementRef;
 
+    /*  
+    * constructor for SignInComponent class  
+    */  
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,
@@ -42,7 +46,12 @@ export class SignInComponent implements OnInit {
     }
   }
 
-  /*** class init function ***/
+ /**  
+ * This is a init function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnInit();
+ */  
   ngOnInit(): void {
     this.usernameElementRef.nativeElement.focus();
     this.signInText = this.constants.loginPage;
@@ -55,7 +64,12 @@ export class SignInComponent implements OnInit {
     );
   }
 
-  /*** on sign in function ***/
+  /**  
+ * This is on sign in function.  
+ * @param {NgForm} data - A array param  
+ * @example  
+ * onSignIn(form);
+ */  
   onSignIn(form: NgForm) {
     const networkStatus = navigator.onLine;
     if (form.valid) {

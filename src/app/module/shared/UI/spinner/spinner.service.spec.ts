@@ -9,10 +9,12 @@ describe('SpinnerService', () => {
     service = new SpinnerService();
   });
 
+  /*** it should create service ***/
   it('should create', () => {
     expect(service).toBeTruthy();
   });
-
+  
+  /*** it should show function ***/
   describe('#show', () => {
     beforeEach(() => {
       service.show();
@@ -31,6 +33,7 @@ describe('SpinnerService', () => {
     });
   });
 
+/*** it should hide function ***/
   describe('#hide', () => {
     beforeEach(() => {
       service.hide();

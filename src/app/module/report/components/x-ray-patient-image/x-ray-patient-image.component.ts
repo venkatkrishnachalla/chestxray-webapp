@@ -7,6 +7,7 @@ import { fabric } from 'fabric';
   templateUrl: './x-ray-patient-image.component.html',
   styleUrls: ['./x-ray-patient-image.component.scss'],
 })
+// XRayPatientImageComponent class implementation
 export class XRayPatientImageComponent implements OnInit {
   patientImage: any;
   xrayAnnotatedImage: string;
@@ -15,9 +16,17 @@ export class XRayPatientImageComponent implements OnInit {
   pdfTitle: string;
   @Output() printEvent = new EventEmitter();
 
+  /*  
+* constructor for XRayPatientImageComponent class  
+*/ 
   constructor(private annotatedXrayService: XRayService) {}
 
-  /*** class init function ***/
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/ 
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
     if (this.patientInfo === undefined) {
@@ -40,7 +49,12 @@ export class XRayPatientImageComponent implements OnInit {
       });
   }
 
-  /*** print button click emit function ***/
+  /**  
+* This is a print button click emit function.  
+* @param {void} empty - A empty param  
+* @example  
+* printClick();
+*/ 
   printClick() {
     this.printEvent.emit(true);
   }

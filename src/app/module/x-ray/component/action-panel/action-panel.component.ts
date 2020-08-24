@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './action-panel.component.html',
   styleUrls: ['./action-panel.component.scss'],
 })
+// ActionPanelComponent class implementation  
 export class ActionPanelComponent implements OnInit {
   @Output() askAIEvent = new EventEmitter();
   value = 70;
@@ -60,6 +61,9 @@ export class ActionPanelComponent implements OnInit {
   disableActionItems = true;
   _subscription: Subscription;
 
+  /*  
+* constructor for ActionPanelComponent class  
+*/  
   constructor(private eventEmitterService: EventEmitterService) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -68,7 +72,12 @@ export class ActionPanelComponent implements OnInit {
     );
   }
 
-  /*** class init function ***/
+ /**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/  
   ngOnInit(): void {
     this.actionPanel = JSON.parse(JSON.stringify(this.constants.actionPanelTop));
     this.middlePanel = JSON.parse(JSON.stringify(this.constants.actionPanelMiddle));
@@ -80,6 +89,13 @@ export class ActionPanelComponent implements OnInit {
   }
 
   /*** icon click event & changing active icon ***/
+   /**  
+ * This is a icon click event & changing active icon function.  
+ * @param {any} data - A array param  
+ * @param {number} index - A number param  
+ * @example  
+ * iconAction([ellipse, freeHandDrawing] , 1);
+ */  
   iconAction(data, index) {
     for (const key in data) {
       // tslint:disable-next-line: radix
@@ -91,18 +107,33 @@ export class ActionPanelComponent implements OnInit {
     this.eventEmitterService.onComponentButtonClick(data[index]);
   }
 
-  /*** Ask ai click event ***/
+/**  
+* This is a Ask ai click event .  
+* @param {void} empty - A empty param  
+* @example  
+* askAI();
+*/  
   askAI() {
     this.askAIEvent.emit(true);
   }
 
-  /*** Event to disable ask ai button ***/
+  /**  
+* This is a event to disable ask ai button  .  
+* @param {void} empty - A empty param  
+* @example  
+* disableAskAiButton();
+*/  
   disableAskAiButton() {
     this.disableAskAI = true;
     sessionStorage.setItem('askAiSelection', 'true');
   }
 
-  /*** on destroy event subscription ***/
+/**  
+* This is on destroy event subscription.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnDestroy();
+*/  
   ngOnDestroy() {
     this._subscription.unsubscribe();
   }

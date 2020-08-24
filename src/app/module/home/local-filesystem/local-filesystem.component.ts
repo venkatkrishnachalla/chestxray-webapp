@@ -11,6 +11,7 @@ import User from '../../auth/user.modal';
   templateUrl: './local-filesystem.component.html',
   styleUrls: ['./local-filesystem.component.scss'],
 })
+// LocalFilesystemComponent class implementation  
 export class LocalFilesystemComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   uploadImageForm: FormGroup;
@@ -22,13 +23,21 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   @ViewChild(DragDropComponent) dragAndDrop: DragDropComponent;
 
+/*  
+* constructor for LocalFilesystemComponent class  
+*/ 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService
   ) {}
 
-  /*** class init function ***/
+    /**  
+ * This is a init function, retrieve current user details.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnInit();
+ */  
   ngOnInit(): void {
     this.uploadImageForm = this.formBuilder.group({
       name: [
@@ -69,16 +78,32 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     );
   }
 
+    /**  
+ * This is a f function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * f();
+ */  
   get f() {
     return this.uploadImageForm.controls;
   }
 
-  /*** get today date to disable future dates in date picker ***/
+/**  
+ * This is a get today date to disable future dates in date picker.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * getToday();
+ */ 
   getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
 
-  /*** on image file changing event ***/
+  /**  
+ * This is on image file changing event.  
+ * @param {string} value - A string param  
+ * @example  
+ * onFileChange(event);
+ */ 
   onFileChange(event) {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name.toString();
@@ -100,12 +125,22 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*** capture drag and drop of image ***/
+    /**  
+ * This is on capture drag and drop of image.  
+ * @param {string} value - A string param  
+ * @example  
+ * dragDropEvent(event);
+ */ 
   dragDropEvent(event) {
     this.imageSource = event;
   }
 
-  /*** capture drag and drop of image file event ***/
+  /**  
+ * This is on capture drag and drop of image file event.  
+ * @param {string} value - A string param  
+ * @example  
+ * dragDropFile(event);
+ */ 
   dragDropFile(event) {
     this.fileName = event.name.toString();
     this.uploadImageForm.patchValue({
@@ -114,7 +149,12 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*** new patient form submit ***/
+    /**  
+ * This is on new patient form submit.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * onSubmit();
+ */ 
   onSubmit() {
     this.submitted = true;
     if (this.uploadImageForm.invalid) {
@@ -163,7 +203,12 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*** unsubscribe user subscription after moving out from this component ***/
+      /**  
+ * This is on unsubscribe user subscription after moving out from this component 
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnDestroy();
+ */ 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }

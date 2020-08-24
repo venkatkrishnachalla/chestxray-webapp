@@ -5,9 +5,18 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './report-footer.component.html',
   styleUrls: ['./report-footer.component.scss'],
 })
+// ReportFooterComponent class implementation  
 export class ReportFooterComponent implements OnInit {
+  /*  
+* constructor for ReportFooterComponent class  
+*/
   constructor() {}
 
-  /*** class init function ***/
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/  
   ngOnInit(): void {}
 }
