@@ -8,5 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class ReportHeaderComponent implements OnInit {
   constructor() {}
   cxrPrintHeaderName: string = 'CXR Radiological Report';
+  /*** class init function ***/
   ngOnInit(): void {}
 }

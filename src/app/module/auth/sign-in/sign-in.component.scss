@@ -4,7 +4,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: calc(100% - 64px); // 64px is the height of app bar
+  height: calc(100% - 64px); // 64px is the height of appbar/navbar
 
   @media (max-width: 900px) {
     height: calc(100% - 128px);
@@ -26,7 +26,7 @@
       align-items: center;
       justify-content: center;
 
-      // Hide on devices lower than tablet portrait
+      // Hide the image on devices lower than tablet portrait
       @media (max-width: 900px) {
         display: none;
       }
@@ -36,6 +36,7 @@
       }
     }
 
+    // Login form design alignments to support all the devices with responsive
     .right-form-container {
       width: 50%;
       display: flex;
@@ -84,6 +85,7 @@
       }
     }
   }
+  // Footer text and social media images alignment
   .footer {
     width: 100%;
     padding: 1rem 3rem;

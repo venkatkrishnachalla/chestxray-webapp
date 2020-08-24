@@ -65,6 +65,8 @@ export class AuthService {
       );
   }
 
+  /** On logout navigating back to login screen and 
+  removing all the sensitive information stored in Browser session storage **/ 
   logOut() {
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
@@ -87,6 +89,7 @@ export class AuthService {
     }
   }
 
+  
   autoLoginOnRefresh() {
     const authDataSession = JSON.parse(sessionStorage.getItem('userAuthData'));
     if (authDataSession){
@@ -147,7 +150,6 @@ export class AuthService {
       );
   }
 
-  //
   autoSessionTimeOut(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logOut();

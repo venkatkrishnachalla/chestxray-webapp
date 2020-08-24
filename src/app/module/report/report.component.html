@@ -1,3 +1,4 @@
+<!-- Report screen complete page -->
 <div class="reportContainer">
   <section class="back-arrow">
     <div (click)="goBackToXray()" class="background-arrow">
@@ -10,12 +11,14 @@
     <cxr-x-ray-patient-details></cxr-x-ray-patient-details>
   </div>
 
+  <!-- Left side image and button group code written in cxr-x-ray-patient-image selector -->
   <section class="x-ray-patient-image">
     <cxr-x-ray-patient-image
       (printEvent)="enablePrint($event)"
     ></cxr-x-ray-patient-image>
   </section>
 
+  <!-- Right side Patient details code written in cxr-x-ray-patient-details selector -->
   <section class="x-ray-patient-details">
     <cxr-x-ray-patient-details></cxr-x-ray-patient-details>
   </section>

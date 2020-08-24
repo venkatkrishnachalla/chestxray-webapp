@@ -1,3 +1,4 @@
+// Report page screen full container
 .reportContainer {
   height: calc(100% - 64px);
   background-color: #212221;
@@ -29,11 +30,13 @@
     display: none;
   }
 
+  // Patient image alignment
   .x-ray-patient-image {
     flex-basis: 50%;
     margin: 30px 20px 0px 70px;
   }
 
+  // Patient details alignment
   .x-ray-patient-details {
     flex-basis: 50%;
     margin: 30px 20px 10px 0px;

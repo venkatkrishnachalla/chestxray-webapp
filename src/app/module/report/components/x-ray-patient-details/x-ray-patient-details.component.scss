@@ -1,3 +1,4 @@
+// Report screen design allignments
 .cxr-x-ray-patient-details {
   width: 100%;
 
@@ -128,6 +129,8 @@
   }
 }
 
+/* Print as pdf, content written in html it will be none initially.
+After clicking print button function will change from display: none to display: block */
 .print-patient-details {
   display: none;
 }

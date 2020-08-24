@@ -1,8 +1,10 @@
+// Report screen left side button and image container
 .x-ray-patient-image-container {
   margin-top: 10px;
   width: 95%;
   overflow-y: auto;
 
+  // Button groups allignment
   .buttonGroup {
     background-color: #ebeded;
     display: flex;

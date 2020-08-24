@@ -17,6 +17,8 @@ import { EventEmitter } from 'protractor';
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent implements OnInit {
+
+  // Declared all the local and global variables
   auth: { email: string; password: string } = { email: '', password: '' };
   hide = true;
   errorMessage = '';
@@ -28,6 +30,7 @@ export class SignInComponent implements OnInit {
   socialMediaIcons: { image: string; alt: string; title: string }[];
   @ViewChild('usernameRef', {static: true}) usernameElementRef: ElementRef;
 
+  // Injecting dependencies to fetch the services of HTTP methods
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,
@@ -55,7 +58,8 @@ export class SignInComponent implements OnInit {
     );
   }
 
-  /*** on sign in function ***/
+  /*** on sign in function to login to the application and also 
+  handling error based on server response ***/
   onSignIn(form: NgForm) {
     const networkStatus = navigator.onLine;
     if (form.valid) {
