@@ -47,7 +47,13 @@ export class ActionPanelComponent implements OnInit {
   };
 
   readonly constants = actionPanelConstants;
-  actionPanel: { image: string; alt: string; title: string }[];
+  actionPanel: { 
+    image: string; 
+    alt: string; 
+    title: string; 
+    active: boolean;
+    implemented: boolean;
+  }[];
   middlePanel: {
     image: string;
     alt: string;

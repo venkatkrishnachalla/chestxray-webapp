@@ -24,11 +24,17 @@
     <div class="actionItem">
       <div
         class="actions"
-        *ngFor="let actions of actionPanel"
-        [ngStyle]="{ cursor: 'no-drop' }"
+        *ngFor="let actions of actionPanel; let i = index"
+        [ngStyle]="{ cursor: actions.implemented === true ? 'pointer' : 'no-drop' }"
       >
         <img
-          class="icon-disabled-BG"
+          [ngClass]="
+            actionPanel[i].active && actions.implemented === true
+            ? 'icon-select-BG'
+            : actions.implemented === true
+            ? 'icon-active-BG'
+            : 'icon-disabled-BG'
+          "
           [src]="actions.image"
           [alt]="actions.alt"
           [title]="actions.title"
