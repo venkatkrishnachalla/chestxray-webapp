@@ -10,4 +10,5 @@ const sharedComponents = [SpinnerComponent];
   exports: [...sharedComponents],
   imports: [CommonModule, MaterialModule],
 })
+// SharedModule class implementation  
 export class SharedModule {}

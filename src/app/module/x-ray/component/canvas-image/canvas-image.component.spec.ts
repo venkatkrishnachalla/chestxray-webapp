@@ -1,5 +1,6 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of } from 'rxjs';
+import { canvasMock, patientMockInstanceId } from 'src/app/module/auth/patient-mock';
 
 describe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
@@ -13,6 +14,7 @@ describe('CanvasImageComponent', () => {
     'onComponentDataShared',
     'onComponentEllipseDataShared',
     'onComponentFindingsDataShared',
+    'invokePrevNextButtonDataFunction',
   ]);
   const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
   const xRayServiceSpy = jasmine.createSpyObj('XRayImageService', [
@@ -33,6 +35,7 @@ describe('CanvasImageComponent', () => {
   ]);
 
   beforeEach(() => {
+    eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(undefined);
     component = new CanvasImageComponent(
       spinnerServiceSpy,
       eventEmitterServiceSpy,
@@ -73,11 +76,43 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call prevNextPatientChange function ***/
+  describe('#prevNextPatientChange', () => {
+    beforeEach(() => {
+      spyOn(component, 'getPatientInstanceId');
+      const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
+      const patientMockInstanceMock = patientMockInstanceId;
+      eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(
+        patientIdMock
+      );
+      xRayServiceSpy.getPatientInstanceId.and.returnValue(
+        of(patientMockInstanceMock)
+      );
+      component.canvas = {
+        clear: () => {},
+      };
+      component.prevNextPatientChange('4df09ebb-adb7-4d81-a7e0-7d108ceb8f08');
+    });
+    it('should call prevNextPatientChange function', () => {
+      expect(component.prevNextPatientChange).toBeDefined();
+      expect(component.getPatientInstanceId).toHaveBeenCalled();
+    });
+  });
+
   /*** it should call setCanvasDimension function ***/
   describe('#setCanvasDimension', () => {
     beforeEach(() => {
       component.canvas = {
         setDimensions: () => {},
+        setWidth: () => {},
+        setHeight: () => {},
+        renderAll: () => {
+          return {
+            bind: () => {},
+          };
+        },
+        setBackgroundImage: () => {},
+        clear: () => {},
       };
       const controlCheckbox = ({
         clientWidth: '146',
@@ -120,6 +155,7 @@ describe('CanvasImageComponent', () => {
       component.getPatientImage('12662');
     });
     it('should call getPatientImage function', () => {
+      spinnerServiceSpy.hide();
       expect(component.getPatientImage).toBeDefined();
     });
   });
@@ -132,6 +168,7 @@ describe('CanvasImageComponent', () => {
         setHeight: () => {},
         setBackgroundImage: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       component.canvasDynamicWidth = 893;
       component.canvasDynamicHeight = 549;
@@ -155,6 +192,7 @@ describe('CanvasImageComponent', () => {
         setHeight: () => {},
         setBackgroundImage: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       component.canvasDynamicWidth = 893;
       component.canvasDynamicHeight = 549;
@@ -196,33 +234,9 @@ describe('CanvasImageComponent', () => {
   /*** it should call getPatientInstanceId function ***/
   describe('#getPatientInstanceId', () => {
     beforeEach(() => {
-      const patientMockInstanceId = [
-        {
-          accessionNumber: '',
-          id: '9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8',
-          referringPhysicianName: 'mohan',
-          seriesList: [
-            {
-              bodyPartExamined: null,
-              id: '9b247ba4-b9899974-878bb3e3-001ed405-48084c1f',
-              instanceList: [
-                {
-                  id: '42066719-369f0249-189d2017-c3bd3f57-11fc78d6',
-                  instanceNumber: 0,
-                  instanceDate: '0001-01-01T00:00:00',
-                },
-              ],
-              seriesDate: '0001-01-01T00:00:00',
-              seriesDescription: null,
-              seriesNumber: 0,
-            },
-          ],
-          studyDate: '2019-11-11T00:00:00',
-          studyDescription: null,
-        },
-      ];
+      const patientMockInstanceMock = patientMockInstanceId;
       xRayServiceSpy.getPatientInstanceId.and.returnValue(
-        of(patientMockInstanceId)
+        of(patientMockInstanceMock)
       );
       spyOn(component, 'getPatientImage');
       component.getPatientInstanceId(
@@ -252,6 +266,7 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return { id: 5 };
         },
+        clear: () => {},
       };
       component.deleteEllipse();
     });
@@ -265,6 +280,7 @@ describe('CanvasImageComponent', () => {
     beforeEach(() => {
       component.canvas = {
         getActiveObject: () => {},
+        clear: () => {},
       };
       component.deleteEllipse();
     });
@@ -317,6 +333,15 @@ describe('CanvasImageComponent', () => {
   /*** it should call onSelect function with empty item ***/
   describe('#onSelect', () => {
     beforeEach(() => {
+      component.canvas = {
+        remove: () => {},
+        getActiveObject: () => {
+          return {
+            id: 1,
+          };
+        },
+        clear: () => {},
+      };
       component.pathologyNames = [
         {
           abnormality: 'Anatomical variants',
@@ -341,7 +366,8 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  /*** it should call onSelect function with empty value  ***/
+  
+  /*** it should call onSelect function with empty item ***/
   describe('#onSelect', () => {
     beforeEach(() => {
       component.pathologyNames = [
@@ -360,10 +386,37 @@ describe('CanvasImageComponent', () => {
           textContent: 'abcd',
         },
       };
-      const itemSpy = '';
+      const itemSpy = 'aaa';
       component.onSelect(eventSpy, itemSpy);
     });
-    it('should call onSelect function, with empty value', () => {
+    it('should call onSelect function, with empty item ', () => {
+      expect(component.onSelect).toBeDefined();
+    });
+  });
+
+  /*** it should call onSelect function with item length === 0 value  ***/
+  describe('#onSelect', () => {
+    beforeEach(() => {
+      component.pathologyNames = [
+        {
+          abnormality: 'Anatomical variants',
+          Names: [
+            'Cervical rib',
+            'Azygos fissure',
+            'Aortic Arch variants',
+            'Thymus',
+          ],
+        },
+      ];
+      const eventSpy = {
+        target: {
+          textContent: 'abcd',
+        },
+      };
+      const itemSpy = [];
+      component.onSelect(eventSpy, itemSpy);
+    });
+    it('should call onSelect function, with  item length === 0  value', () => {
       expect(component.onSelect).toBeDefined();
     });
   });
@@ -385,6 +438,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        clear: () => {},
       };
       component.selectedDisease = 'Bulla';
       component.activeIcon = {
@@ -424,6 +478,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        clear: () => {},
       };
       component.selectedDisease = 'Bulla';
       component.activeIcon = {
@@ -456,6 +511,7 @@ describe('CanvasImageComponent', () => {
           };
         },
         renderAll: () => {},
+        clear: () => {},
       };
       component.activeIcon = {
         active: true,
@@ -485,6 +541,7 @@ describe('CanvasImageComponent', () => {
         observe: () => {},
         forEachObject: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       const mockData = {
         active: true,
@@ -514,6 +571,7 @@ describe('CanvasImageComponent', () => {
         observe: () => {},
         forEachObject: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       const mockData = {
         active: false,
@@ -528,6 +586,16 @@ describe('CanvasImageComponent', () => {
   /*** it should call mlApiEllipseLoop function ***/
   describe('#mlApiEllipseLoop', () => {
     beforeEach(() => {
+      component.canvas = {
+        remove: () => {},
+        getActiveObject: () => {
+          return {
+            id: 1,
+          };
+        },
+        renderAll: () => {},
+        clear: () => {},
+      };
       const mLResponseNew = {
         data: {
           names: [],
@@ -632,6 +700,7 @@ describe('CanvasImageComponent', () => {
         setActiveObject: () => {},
         isDrawingMode: true,
         forEachObject: () => {},
+        clear: () => {},
       };
       component.drawEllipse({}, undefined, undefined);
       expect(component.drawEllipse).toBeDefined();
@@ -652,6 +721,7 @@ describe('CanvasImageComponent', () => {
         isDrawingMode: true,
         observe: () => {},
         forEachObject: () => {},
+        clear: () => {},
       };
       component.drawEllipse(mockdata, undefined, undefined);
       expect(component.drawEllipse).toBeDefined();
@@ -704,6 +774,7 @@ describe('CanvasImageComponent', () => {
       component.canvas = {
         isDrawingMode: true,
         getActiveObject: () => {},
+        clear: () => {},
       };
       spyOn(component, 'changeSelectableStatus');
       component.save();
@@ -720,6 +791,7 @@ describe('CanvasImageComponent', () => {
     beforeEach(() => {
       component.canvas = {
         getActiveObject: () => {},
+        clear: () => {},
       };
       spyOn(component, 'changeSelectableStatus');
       component.save();
@@ -765,6 +837,7 @@ describe('CanvasImageComponent', () => {
           path: '/x-ray',
         },
         renderAll: () => {},
+        clear: () => {},
       };
       component.savedInfo = {
         data: {
@@ -790,12 +863,13 @@ describe('CanvasImageComponent', () => {
       component.canvas = {
         add: () => {},
         renderAll: () => {},
+        clear: () => {},
       };
       component.getSessionEllipse();
     });
-    it('should call setCanvasBackground function', () => {
-      expect(component.getSessionEllipse).toBeDefined();
+    it('should call getSessionEllipse function', () => {
       expect(dialogSpy.closeAll).toHaveBeenCalled();
+      expect(component.getSessionEllipse).toBeDefined();
     });
   });
 
@@ -880,6 +954,7 @@ describe('CanvasImageComponent', () => {
           };
         },
         renderAll: () => {},
+        clear: () => {},
       };
       component.updateFreeHandDrawingIntoSession();
     });
@@ -909,6 +984,7 @@ describe('CanvasImageComponent', () => {
     beforeEach(() => {
       component.canvas = {
         getActiveObject: () => {},
+        clear: () => {},
       };
       spyOn(component, 'scaleSaveEllipse');
       component.saveEllipseIntoSession();
@@ -916,13 +992,16 @@ describe('CanvasImageComponent', () => {
     it('should call saveEllipseIntoSession function', () => {
       expect(component.saveEllipseIntoSession).toBeDefined();
       expect(component.scaleSaveEllipse).toHaveBeenCalled();
-      expect(dialogSpy.open).toHaveBeenCalled();
     });
   });
 
   /*** should call restrictionToBoundaryLimit function, if current Height & Width is greater than canvas height & width ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        clear: () => {},
+      };
       const objSpy = {
         currentHeight: 600,
         currentWidth: 600,
@@ -948,6 +1027,10 @@ describe('CanvasImageComponent', () => {
   /*** should call restrictionToBoundaryLimit function, if current Height and Width is lesser than canvas height&width ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        clear: () => {},
+      };
       const objSpy = {
         currentHeight: 400,
         currentWidth: 400,
@@ -970,9 +1053,13 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-    /*** should call restrictionToBoundaryLimit function, if getBoundingRect top and getBoundingRect left is less than 0 ***/
+  /*** should call restrictionToBoundaryLimit function, if getBoundingRect top and getBoundingRect left is less than 0 ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        clear: () => {},
+      };
       const objSpy = {
         currentHeight: 400,
         currentWidth: 400,
@@ -995,9 +1082,13 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-    /*** it should call restrictionToBoundaryLimit function ***/
+  /*** it should call restrictionToBoundaryLimit function ***/
   describe('#restrictionToBoundaryLimit', () => {
     beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        clear: () => {},
+      };
       const objSpy = {
         currentHeight: 400,
         currentWidth: 400,
@@ -1032,6 +1123,7 @@ describe('CanvasImageComponent', () => {
             top: 60,
           };
         },
+        clear: () => {},
       };
       const data = {
         target: {
@@ -1101,6 +1193,7 @@ describe('CanvasImageComponent', () => {
             top: 80,
           };
         },
+        clear: () => {},
       };
       const data = {
         target: {
@@ -1144,6 +1237,7 @@ describe('CanvasImageComponent', () => {
         forEachObject: (value) => {
           value.selectable = true;
         },
+        clear: () => {},
       };
       component.changeSelectableStatus(val);
     });
@@ -1151,4 +1245,264 @@ describe('CanvasImageComponent', () => {
       expect(component.changeSelectableStatus).toBeDefined();
     });
   });
+
+    /*** it should call onHoveringAnnotation function, if lockRotation is false***/
+    describe('#onHoveringAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = false;
+        const objSpy = {};
+        component.canvas = {
+          renderAll: () => {},
+        };
+        component.onHoveringAnnotation(objSpy);
+      });
+      it('should call onHoveringAnnotation function, if lockRotation is false', () => {
+        expect(component.onHoveringAnnotation).toBeDefined();
+      });
+    });
+
+    /*** it should call onHoveringAnnotation function, if objSpy is equal to null ***/
+    describe('#onHoveringAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: null,
+        };
+        component.onHoveringAnnotation(objSpy);
+      });
+      it('should call onHoveringAnnotation function,  if objSpy is equal to null', () => {
+        expect(component.onHoveringAnnotation).toBeDefined();
+      });
+    });
+
+    /*** it should call onHoveringAnnotation function, if objSpy not equal to null ***/
+    describe('#onHoveringAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: {
+            textContent: 'abcd',
+            getBoundingRect: () => {
+              return {
+                top: 60
+              }
+            },
+            calcCoords: () => {
+              return {
+                mb: {
+                  x: 123,
+                  y: 123
+                }
+              }
+            },
+          },
+        };
+        component.canvas = {
+          renderAll: () => {},
+        };
+        const targetRotation = ({
+          style: {
+            display: 'block'
+          },
+        } as unknown) as HTMLElement;
+        spyOn(document, 'getElementById').and.returnValue(targetRotation);
+        component.onHoveringAnnotation(objSpy);
+      });
+      it('should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top less than 70', () => {
+        expect(component.onHoveringAnnotation).toBeDefined();
+      });
+    });
+
+     /*** it should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top greater than 70 ***/
+     describe('#onHoveringAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: {
+            calcCoords: () => {
+              return {
+                mb: {
+                  x: 123,
+                  y: 123
+                },
+                mt: {
+                  x: 123,
+                  y: 123
+                }
+              }
+            },
+            getBoundingRect: () => {
+              return {
+                top: 80
+              }
+            },
+          },
+        };
+        component.canvas = {
+          renderAll: () => {},
+        };
+        const targetRotation = ({
+          style: {
+            display: 'block'
+          },
+        } as unknown) as HTMLElement;
+        spyOn(document, 'getElementById').and.returnValue(targetRotation);
+        component.onHoveringAnnotation(objSpy);
+      });
+      it('should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top greater than 70 ', () => {
+        expect(component.onHoveringAnnotation).toBeDefined();
+      });
+    });
+
+     /*** it should call onHoveringOutAnnotation function, object.target is equal to null***/
+     describe('#onHoveringOutAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: null
+        };
+        component.onHoveringOutAnnotation(objSpy);
+      });
+      it('should call onHoveringOutAnnotation function, object.target is equal to null', () => {
+        expect(component.onHoveringOutAnnotation).toBeDefined();
+      });
+    });
+
+     /*** it should call onHoveringOutAnnotation function, object.target is not equal to null***/
+     describe('#onHoveringOutAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = true;
+        const objSpy = {
+          target: {
+            lockRotation: true
+          }
+        };
+        const targetRotation = ({
+          style: {
+            display: 'none'
+          },
+        } as unknown) as HTMLElement;
+        spyOn(document, 'getElementById').and.returnValue(targetRotation);
+        component.onHoveringOutAnnotation(objSpy);
+      });
+      it('should call onHoveringOutAnnotation function, object.target is not equal to null', () => {
+        expect(component.onHoveringOutAnnotation).toBeDefined();
+      });
+    });
+
+     /*** it should call onHoveringOutAnnotation function, with else statement***/
+     describe('#onHoveringOutAnnotation', () => {
+      beforeEach(() => {
+        component.lockRotation = false;
+        const objSpy = {
+          target: {
+            lockRotation: false
+          }
+        };
+        component.onHoveringOutAnnotation(objSpy);
+      });
+      it('should call onHoveringOutAnnotation function,  with else statement', () => {
+        expect(component.onHoveringOutAnnotation).toBeDefined();
+      });
+    });  
+    
+ 
+     /*** it should call displayMessage function***/
+     describe('#displayMessage', () => {
+      beforeEach(() => {
+        component.lockRotation = false;
+        const objSpy = {
+          target: {
+            lockRotation: false
+          }
+        };
+        component.displayMessage(objSpy);
+      });
+      it('should call displayMessage function', () => {
+        expect(component.displayMessage).toBeDefined();
+      });
+    });   
+    
+      /*** it should call displayMessage function, if object is null***/
+      describe('#displayMessage', () => {
+        beforeEach(() => {
+          component.lockRotation = false;
+          const objSpy = {
+            target: null
+          };
+          component.displayMessage(objSpy);
+        });
+        it('should call displayMessage function, if object is null', () => {
+          expect(component.displayMessage).toBeDefined();
+        });
+      });   
+      
+      /*** it should call displayMessage function, for else statement***/
+      describe('#displayMessage', () => {
+        beforeEach(() => {
+          const objSpy = {
+            target: {
+              lockRotation: true
+            }
+          };
+          spyOn(component, 'onHoveringAnnotation');
+          component.displayMessage(objSpy);
+        });
+        it('should call displayMessage function', () => {
+          expect(component.displayMessage).toBeDefined();
+          expect(component.lockRotation).toBeTruthy;
+          expect(component.onHoveringAnnotation).toHaveBeenCalled();
+        });
+      }); 
+      
+      /*** it should call restrictObjectOnRotate function***/
+      describe('#restrictObjectOnRotate', () => {
+        beforeEach(() => {
+          const objSpy = {
+            target: {
+              calcCoords: () => {
+                return {
+                  bl: {
+                    x: 123,
+                    y: 123
+                  },
+                  br: {
+                    x: 123,
+                    y: 123
+                  },
+                  tl: {
+                    x: 123,
+                    y: 123
+                  },
+                  tr: {
+                    x: 123,
+                    y: 123
+                  },
+                }
+              },
+              canvas: {
+                width: 500
+              },
+              lockRotation: true
+            }
+          };
+          component.canvas = {
+            renderAll: () => {},
+            getActiveObject: () => {
+              return {
+                set: () => {
+                  return{
+                    lockRotation: true
+                  }
+                }
+              }
+            },
+          };
+          spyOn(component, 'onHoveringAnnotation');
+          component.restrictObjectOnRotate(objSpy);
+        });
+        it('should call displayMessage function', () => {
+          expect(component.restrictObjectOnRotate).toBeDefined();
+        });
+      });            
 });

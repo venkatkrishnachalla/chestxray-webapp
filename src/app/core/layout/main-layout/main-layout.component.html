@@ -2,11 +2,7 @@
 <!-- <cxr-side-nav *ngIf="!sideNavToggle"></cxr-side-nav> -->
 <!-- *ngIf="sideNavToggle" -->
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav opened
-    mode="side"
-    class="sidenav"
-    #sidenavbar
-  >
+  <mat-sidenav opened mode="side" class="sidenav" #sidenavbar>
     <div class="sidenav-content">
       <button
         mat-button
@@ -24,21 +20,24 @@
       <p>
         <span
           class="social-media"
-          *ngFor="let socialMediaImages of socialMediaImage"
+          *ngFor="let socialMediaImage of socialMediaImages"
           ><img
-            [src]="socialMediaImages.image"
-            [alt]="socialMediaImages.alt"
+            [src]="socialMediaImage.image"
+            [alt]="socialMediaImage.alt"
             width="15px"
             height="15px"
+            [title]="socialMediaImage.title"
           />
         </span>
       </p>
-      <button mat-button>ABOUT</button>
-      <button mat-button>HELP</button>
-      <button mat-button>TERMS</button>
-      <button mat-button>GUIDELINES</button>
-      <div class="bottom-content">Powered by LTTS</div>
-      <div class="version-number">V{{currentApplicationVersion}}</div>
+      <button
+        mat-button
+        *ngFor="let labels of sidenavLabels"
+      >
+        {{ labels.name | uppercase }}
+      </button>
+      <div class="bottom-content">{{ copyRightText.copyRightDisplayText }}</div>
+      <div class="version-number">V{{ currentApplicationVersion }}</div>
     </mat-card>
   </mat-sidenav>
 

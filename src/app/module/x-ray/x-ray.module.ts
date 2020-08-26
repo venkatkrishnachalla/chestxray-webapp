@@ -37,4 +37,5 @@ import { CoreModule } from 'src/app/core/core.module';
   ],
   exports: [SearchFilterPipe],
 })
+// XRayModule class implementation 
 export class XRayModule {}

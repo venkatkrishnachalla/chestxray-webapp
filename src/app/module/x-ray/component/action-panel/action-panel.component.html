@@ -65,10 +65,10 @@
     <!-- Bottom slider -->
     <div class="sliderItems">
       <div class="slider">
-        <ng5-slider [(value)]="value" [options]="options"></ng5-slider>
+        <ng5-slider [(value)]="value" [options]="options" [ngClass]="'disabled'"></ng5-slider>
       </div>
-      <div class="slider">
-        <ng5-slider [(value)]="values" [options]="option"></ng5-slider>
+      <div class="slider">  
+        <ng5-slider [(value)]="values" [options]="option" [ngClass]="'disabled'"></ng5-slider>
       </div>
     </div>
 
@@ -78,6 +78,7 @@
           [src]="brightness.image"
           [alt]="brightness.alt"
           [title]="brightness.title"
+          [ngClass]="'disabled'"
         />
       </div>
     </div>

@@ -3,16 +3,15 @@
     <span class="material-icons Patient-info-icon">
       person
     </span>
-    <span class="Patient-content">Patient Details</span>
+    <span class="Patient-content">{{ PatientDetailsText | uppercase }}</span>
   </mat-card-title>
-  <p><mat-label>Name:</mat-label>{{ PatientName }}</p>
-  <p><mat-label>Gender:</mat-label>{{ PatientGender }}</p>
-  <p><mat-label>Age:</mat-label>{{ PatientAge }}</p>
-  <p><mat-label>Ref.Physician:</mat-label>{{ refPhysician }}</p>
-  <p><mat-label>Date of creation:</mat-label>{{ Date | date: 'dd-MM-yyyy' }}</p>
-  <p><mat-label>Time:</mat-label>{{ Time | date: 'HH:mm:ss' }}</p>
-  <p>
-    <mat-label>Clinical History:</mat-label>
-    {{ history || '-' }}
-  </p>
+  <table mat-table class="mat-elevation-z0"> 
+    <tr><td><mat-label>Name</mat-label></td><td>{{ PatientName }}</td></tr>
+    <tr><td><mat-label>Gender</mat-label></td><td>{{ PatientGender }}</td></tr>
+    <tr><td><mat-label>Age</mat-label></td><td>{{ PatientAge }}</td></tr>
+    <tr><td><mat-label>Ref.Physician</mat-label></td><td>{{ refPhysician }}</td></tr>
+    <tr><td><mat-label>Date Of Creation</mat-label></td><td>{{ Date | date: 'dd-MM-yyyy' }}</td></tr>
+    <tr><td><mat-label>Time</mat-label></td><td>{{ Time | date: 'HH:mm:ss' }}</td></tr>
+    <tr><td><mat-label>Clinical History</mat-label></td><td>{{ history || '-' }}</td></tr>
+  </table>
 </mat-card>

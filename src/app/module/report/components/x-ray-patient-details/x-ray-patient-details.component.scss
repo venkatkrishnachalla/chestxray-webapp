@@ -49,46 +49,22 @@
           }
         }
       }
-
-      .patient-name {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        span {
-          font-weight: 500;
-          margin: 3px;
-
-          a {
-            font-weight: 400;
+      .mat-elevation-z0 {
+        tr {
+          td:first-child,  td:nth-child(3) {
+            width: 30% !important;
           }
-        }
-
-        span:nth-child(2) {
-          font-weight: 500;
-          margin: 3px -3px 3px 3px;
-          a {
-            font-weight: 400;
+          td:nth-child(2), td:nth-child(4)  {
+            width: 28% !important;
           }
-
-          @media (max-width: 1020px) {
-            padding-right: 0px;
-          }
-        }
-
-        span:nth-child(3) {
-          font-weight: 500;
-          margin: 3px;
-          a {
-            font-weight: 400;
-          }
-
-          @media (max-width: 1020px) {
-            padding-right: 0px;
+          td:nth-child(3) mat-label::after {
+            content: ":" !important;
+            position: absolute;
+            right: 10px;
           }
         }
       }
     }
-
     .clinical-info {
       min-height: 74px;
       max-height: auto;

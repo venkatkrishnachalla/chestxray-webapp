@@ -1,14 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ActionPanelComponent } from './action-panel.component';
+import { of } from 'rxjs';
 
 describe('ActionPanelComponent', () => {
   let component: ActionPanelComponent;
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onComponentButtonClick',
+    'invokePrevNextButtonDataFunction',
   ]);
 
   beforeEach(() => {
+    const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
+    eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(patientIdMock);
     component = new ActionPanelComponent(eventEmitterServiceSpy);
   });
 

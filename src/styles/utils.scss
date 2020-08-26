@@ -181,3 +181,29 @@ label {
 .loaderContainer {
   text-align: center !important;
 }
+.mat-elevation-z0 {
+  margin: 0;
+  font-size: 1.3rem;
+  tr {
+    td:first-child {
+      width: 58%;
+    }
+    mat-label {
+    font-weight: bold;
+    padding-right: 5px;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    padding-right: 15px;
+    }
+    td:first-child mat-label::after {
+      content: ":" !important;
+      position: absolute;
+      right: 10px;
+    }
+    mat-card-content {
+      font-size: 1.3rem;
+      line-height: 1.5rem;
+    }
+  }
+}

@@ -10,12 +10,14 @@ import { Options } from 'ng5-slider';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cxr-action-panel',
   templateUrl: './action-panel.component.html',
   styleUrls: ['./action-panel.component.scss'],
 })
+// ActionPanelComponent class implementation  
 export class ActionPanelComponent implements OnInit {
   @Output() askAIEvent = new EventEmitter();
   value = 70;
@@ -24,6 +26,7 @@ export class ActionPanelComponent implements OnInit {
     floor: 0,
     ceil: 100,
     vertical: true,
+    disabled: true,
     showSelectionBar: true,
     selectionBarGradient: {
       from: '#285c68',
@@ -36,6 +39,7 @@ export class ActionPanelComponent implements OnInit {
     floor: 0,
     ceil: 100,
     vertical: true,
+    disabled: true,
     showSelectionBar: true,
     selectionBarGradient: {
       from: '#285c68',
@@ -55,10 +59,25 @@ export class ActionPanelComponent implements OnInit {
   brightnessPanel: { image: string; alt: string; title: string }[];
   disableAskAI: boolean;
   disableActionItems = true;
+  _subscription: Subscription;
 
-  constructor(private eventEmitterService: EventEmitterService) {}
+  /*  
+* constructor for ActionPanelComponent class  
+*/  
+  constructor(private eventEmitterService: EventEmitterService) {
+    this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
+      (patientId: string) => {
+        this.disableAskAI = false;
+      }
+    );
+  }
 
-  /*** class init function ***/
+ /**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/  
   ngOnInit(): void {
     this.actionPanel = JSON.parse(JSON.stringify(this.constants.actionPanelTop));
     this.middlePanel = JSON.parse(JSON.stringify(this.constants.actionPanelMiddle));
@@ -70,6 +89,13 @@ export class ActionPanelComponent implements OnInit {
   }
 
   /*** icon click event & changing active icon ***/
+   /**  
+ * This is a icon click event & changing active icon function.  
+ * @param {any} data - A array param  
+ * @param {number} index - A number param  
+ * @example  
+ * iconAction([ellipse, freeHandDrawing] , 1);
+ */  
   iconAction(data, index) {
     for (const key in data) {
       // tslint:disable-next-line: radix
@@ -81,14 +107,34 @@ export class ActionPanelComponent implements OnInit {
     this.eventEmitterService.onComponentButtonClick(data[index]);
   }
 
-  /*** Ask ai click event ***/
+/**  
+* This is a Ask ai click event .  
+* @param {void} empty - A empty param  
+* @example  
+* askAI();
+*/  
   askAI() {
     this.askAIEvent.emit(true);
   }
 
-  /*** Event to disable ask ai button ***/
+  /**  
+* This is a event to disable ask ai button  .  
+* @param {void} empty - A empty param  
+* @example  
+* disableAskAiButton();
+*/  
   disableAskAiButton() {
     this.disableAskAI = true;
     sessionStorage.setItem('askAiSelection', 'true');
+  }
+
+/**  
+* This is on destroy event subscription.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnDestroy();
+*/  
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }

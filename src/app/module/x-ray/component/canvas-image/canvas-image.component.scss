@@ -11,7 +11,6 @@
   color: #039be5;
   padding: 0px !important;
 }
-
 .saveDisease {
   background-color: #28a745 !important;
   border-color: #28a745 !important;
@@ -219,3 +218,17 @@
 .selected-disease-background-color {
   background-color: #7ca5ae;
 }
+
+#target {
+  display: none;
+  height: 40px;
+  width: auto;
+  background-color: #3d3f44;
+  color: #ffffff;
+  font-size: 1.3rem;
+  position: absolute;
+  padding: 1rem;
+  border-radius: 5px;
+  z-index: 9999;
+}
+

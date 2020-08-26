@@ -7,12 +7,14 @@ import {
   PatientListData,
 } from 'src/app/module/auth/interface.modal';
 import User from 'src/app/module/auth/user.modal';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-x-ray-header',
   templateUrl: './x-ray-header.component.html',
   styleUrls: ['./x-ray-header.component.scss'],
 })
+// XRayHeaderComponent class implementation  
 export class XRayHeaderComponent implements OnInit, OnDestroy {
   patientID: string;
   isProcessed: boolean;
@@ -37,9 +39,18 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     instanceID: string;
   };
 
-  constructor(public router: Router, private authService: AuthService) {}
+    /*  
+    * constructor for XRayHeaderComponent class  
+    */  
+  constructor(public router: Router, private authService: AuthService, private eventEmitterService: EventEmitterService) {}
 
   /*** init function ***/
+   /**  
+ * This is a init function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnInit();
+ */  
   ngOnInit(): void {
     let patientDetail = history.state.patientDetails;
     if (patientDetail === undefined) {
@@ -57,7 +68,16 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.prevNextFunction();
+  }
 
+   /**  
+ * This is a prev and next data filter function.  
+ * @param {} - A null param  
+ * @example  
+ * prevNextFunction();
+ */  
+  prevNextFunction() {
     this.patientRows = JSON.parse(sessionStorage.getItem('patientRows'));
     if (this.patientRows.length > 0) {
       const lastIndex = this.patientRows[this.patientRows.length - 1].index;
@@ -70,7 +90,12 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*** event to change xray page next patient ***/
+     /**  
+ * This is a event to change xray page next patient function.  
+ * @param {} - A null param  
+ * @example  
+ * nextPatient();
+ */  
   nextPatient() {
     const currIndex = this.currentIndex + 1;
     const filterData = this.patientRows[currIndex];
@@ -81,10 +106,18 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('PatientImage');
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
-    window.location.reload();
+    this.patientID = filterData.hospitalPatientId;
+    history.pushState(filterData, 'patientDetails', 'x-ray');
+    this.eventEmitterService.onPrevNextButtonClick(filterData.id);
+    this.prevNextFunction();
   }
-
-  /*** event to change xray page previous patient ***/
+  
+     /**  
+ * This is a event to change xray page previous patient function.  
+ * @param {} - A null param  
+ * @example  
+ * previousPatient();
+ */  
   previousPatient() {
     const currIndex = this.currentIndex - 1;
     const filterData = this.patientRows[currIndex];
@@ -94,10 +127,18 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('findings');
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
-    window.location.reload();
+    this.patientID = filterData.hospitalPatientId;
+    history.pushState(filterData, 'patientDetails', 'x-ray');
+    this.eventEmitterService.onPrevNextButtonClick(filterData.id);
+    this.prevNextFunction();
   }
 
-  /*** unsubscribe userSubscription event ***/
+  /**  
+ * This is a unsubscribe userSubscription event function.  
+ * @param {} - A null param  
+ * @example  
+ * ngOnDestroy();
+ */ 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }

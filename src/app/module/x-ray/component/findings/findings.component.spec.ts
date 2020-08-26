@@ -6,12 +6,17 @@ describe('FindingsComponent', () => {
   const eventEmitterServiceSpy = jasmine.createSpyObj('XRayService', [
     'invokeComponentFindingsData',
     'invokeFindingsDataFunction',
+    'invokePrevNextButtonDataFunction',
   ]);
   const xrayAnnotatedImpressionSpy = jasmine.createSpyObj('XRayService', [
     'xrayAnnotatedFindings',
   ]);
 
   beforeEach(() => {
+    const mockData = 'LUNG FIELDS: Visualised lung fields are clear.';
+    const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
+    eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(patientIdMock);
+    eventEmitterServiceSpy.invokeComponentFindingsData = of(mockData);
     component = new FindingsComponent(
       eventEmitterServiceSpy,
       xrayAnnotatedImpressionSpy
@@ -25,6 +30,20 @@ describe('FindingsComponent', () => {
 
   /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const mockData = 'LUNG FIELDS: Visualised lung fields are clear.';
+      const findingsmock = [
+        {
+          color: 'rgb(230,25,75)',
+          id: 0,
+          isMLApi: true,
+          name: 'bronchitis',
+          title: 'impression',
+        },
+      ];
+      eventEmitterServiceSpy.invokeComponentFindingsData = of(mockData);
+      eventEmitterServiceSpy.invokeFindingsDataFunction = of(findingsmock);
+    });
     it('should call ngOnIit function', () => {
       spyOn(component, 'getFindings');
       component.ngOnInit();
@@ -33,9 +52,9 @@ describe('FindingsComponent', () => {
   });
 
   /*** it should call getFindings function ***/
-  xdescribe('#getFindings', () => {
+  describe('#getFindings', () => {
     beforeEach(() => {
-      const mockData = { name: 'Bulla', index: 0 };
+      const mockData = 'LUNG FIELDS: Visualised lung fields are clear.';
       const findingsmock = [
         {
           color: 'rgb(230,25,75)',

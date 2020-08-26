@@ -1,31 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventEmitterService } from '../../../../service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { pathology } from 'src/app/constants/pathologyConstants';
 import { EllipseData } from 'src/app/module/auth/interface.modal';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cxr-findings',
   templateUrl: './findings.component.html',
   styleUrls: ['./findings.component.scss'],
 })
-export class FindingsComponent implements OnInit {
+// FindingsComponent class implementation  
+export class FindingsComponent implements OnInit, OnDestroy {
   readonly constants = pathology;
   order = [];
   findings: any[];
+  findingsText: string = 'Findings';
   item0: any;
+  _subscription: Subscription;
+  
+/*  
+* constructor for FindingsComponent class  
+*/ 
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedService: XRayService
-  ) {}
+  ) {
+    this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
+      (patientId: string) => {
+        this.findings = [];
+        this.getFindings();
+      }
+    );
+  }
 
-  /*** class init function ***/
+
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/ 
   ngOnInit(): void {
     this.findings = [];
     this.getFindings();
   }
-
-  /*** get findings event to subscribe findings from xray image ***/
+  
+/**  
+* get findings event to subscribe findings from xray image  
+* @param {void} empty - A empty param  
+* @example  
+* getFindings();
+*/ 
   getFindings() {
     this.findings = [];
     this.order = this.constants.findings;
@@ -102,13 +128,25 @@ export class FindingsComponent implements OnInit {
     // });
   }
 
-  /*** event to pass findings to report page ***/
+/**  
+* event to pass findings to report page 
+* @param {void} empty - A empty param  
+* @example  
+* getFindingsToReport();
+*/ 
   getFindingsToReport() {
     const findings = JSON.stringify(this.findings);
     sessionStorage.setItem('findings', findings);
     this.xrayAnnotatedService.xrayAnnotatedFindings(this.findings);
   }
 
+  /**  
+* This is a updateFindings function
+* @param {string} value - A string param  
+* @param {string} value - A string param  
+* @example  
+*   updateFindings(evt, index);
+*/ 
   updateFindings(evt, index) {
     if (evt.target.textContent === '') {
       this.findings.splice(index, 1, ' ');
@@ -117,30 +155,46 @@ export class FindingsComponent implements OnInit {
     }
   }
 
+/**  
+* This is a preventBaseValue function
+* @param {string} value - A string param  
+* @example  
+*   preventBaseValue(evt);
+*/ 
   preventBaseValue(evt) {
     const lengthIndex = evt.target.textContent.indexOf(':');
-    if (lengthIndex !== -1){
-      if (window.getSelection().getRangeAt(0).startOffset > lengthIndex){
+    if (lengthIndex !== -1) {
+      if (window.getSelection().getRangeAt(0).startOffset > lengthIndex) {
         if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
           if (evt.key.charCodeAt() === 66) {
             evt.preventDefault();
           }
-        }
-        else{
-          if (window.getSelection().getRangeAt(0).startOffset === lengthIndex + 1){
+        } else {
+          if (
+            window.getSelection().getRangeAt(0).startOffset ===
+            lengthIndex + 1
+          ) {
             if (evt.key.charCodeAt() === 68) {
               return true;
             }
             return false;
-          }
-          else if (evt.key.charCodeAt() === 46) {
-              return true;
+          } else if (evt.key.charCodeAt() === 46) {
+            return true;
           }
         }
-      }
-      else{
+      } else {
         return false;
       }
     }
+  }
+
+  /**  
+* on destroy event subscription 
+* @param {void} empty - A empty param  
+* @example  
+*   ngOnDestroy();
+*/ 
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 }
