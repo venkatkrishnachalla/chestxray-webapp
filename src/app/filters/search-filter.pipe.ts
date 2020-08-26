@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'searchFilter',
 })
+// SearchFilterPipe class implementation
 export class SearchFilterPipe implements PipeTransform {
   _filter = (name: string, opt: string[], value: string): string[] => {
     const filterValue = value.toLowerCase();
@@ -12,7 +13,7 @@ export class SearchFilterPipe implements PipeTransform {
       );
     } else {
       return opt;
-    }
+    } 
   };
   transform(list: any[], filterText: string): any {
     if (filterText) {

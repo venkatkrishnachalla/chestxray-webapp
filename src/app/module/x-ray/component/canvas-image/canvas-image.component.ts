@@ -42,13 +42,13 @@ import { timeStamp } from 'console';
   templateUrl: './canvas-image.component.html',
   styleUrls: ['./canvas-image.component.scss'],
 })
+// CanvasImageComponent class implementation 
 export class CanvasImageComponent implements OnInit, OnDestroy {
   private eventsSubscription: Subscription;
   @Input() events: Observable<void>;
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
-
   @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
@@ -104,10 +104,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   type = '';
   left;
   top;
-  objectAngle: number;
-  lockRotation: boolean;
   _subscription: Subscription;
 
+/*  
+* constructor for CanvasImageComponent class  
+*/ 
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
@@ -126,7 +127,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** host listener when resizing window ***/
+/**  
+* This is a host listener when resizing window.  
+* @param {string} value - A string param  
+* @param {any} array - A array param  
+* @example  
+* HostListener('window:resize', []);
+*/  
   @HostListener('window:resize', [])
   public onResize() {
     this.canvas.clear(fabric.Ellipse);
@@ -141,7 +148,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.getSessionFreeHandDrawing();
   }
 
-  /* class initialization method */
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/  
   ngOnInit() {
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
@@ -165,13 +177,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       (data: InvokeComponentData) => {
         switch (data.title) {
           case 'Draw Ellipse':
-            this.canvas.discardActiveObject();
-            this.canvas.renderAll();
             this.drawEllipse(data);
             break;
           case 'Free Hand Drawing':
-            this.canvas.discardActiveObject();
-            this.canvas.renderAll();
             this.freeHandDrawing(data);
             break;
           case 'Delete':
@@ -210,25 +218,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       preserveObjectStacking: true,
       selection: false,
     });
-    this.canvas.hoverCursor = 'pointer';
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
     this.canvas.on('object:modified', (options) => {
-      this.restrictObjectOnRotate(options);
       this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
         this.updateEllipseIntoSession();
       }
-      this.displayMessage(options);
     });
     this.canvas.on('object:rotating', (e) => {
-      this.restrictObjectOnRotate(e);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
     });
-    this.patientDetail = history.state.patientDetails;  
+    this.patientDetail = history.state.patientDetails;
     if (this.patientDetail === undefined) {
       const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientDetail = patientDetail;
@@ -253,7 +257,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.on('object:selected', (evt) => {
       this.actionIconsModelDispaly(evt);
       this.canvas.sendToBack(this.canvas._activeObject);
-      this.displayMessage(evt);
     });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
@@ -261,10 +264,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     this.canvas.on('object:moving', (evt) => {
-      document.getElementById('target').style.display = 'none';
       const obj = evt.target;
-      this.objectAngle = obj.angle;
-      this.restrictObjectOnRotate(evt);
       this.restrictionToBoundaryLimit(obj);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
@@ -310,117 +310,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.on('object:moved', (evt) => {
       this.actionIconsModelDispaly(evt);
     });
-    this.canvas.on('mouse:over', (e) =>{
-      this.displayMessage(e);
-      this.onHoveringAnnotation(e);
-    });
-    this.canvas.on('mouse:out', (e) => {
-      this.onHoveringOutAnnotation(e);
-    });
     this.canvas.on('selection:updated', (evt) => {
       this.dialog.closeAll();
       this.actionIconsModelDispaly(evt);
     });
-
-  }
-
-  /*** display message on hovering the object if object angle point is disabled ***/
-  onHoveringAnnotation(obj: any) {
-    if(this.lockRotation === true) {
-        const object = obj.target;
-        if(object != null) {
-          let coords = object.calcCoords();
-          document.getElementById('target').style.display = 'block';
-          if(object.getBoundingRect().top <= 70) {
-            let mbx = coords.mb.x;
-            let mby = coords.mb.y;
-            document.getElementById('target').style.top = mby + 100 + 'px';
-            document.getElementById('target').style.left = mbx + 150 + 'px';
-          }
-          else {
-            let mtx = coords.mt.x;
-            let mty = coords.mt.y;
-            document.getElementById('target').style.top = mty - 40 + 'px';
-            document.getElementById('target').style.left = mtx + 150 + 'px';
-          }
-        }
-        else {
-          return true;
-        }
-        this.canvas.renderAll();
-    }
-  }
-
-  /*** hide message on hovering out of the object if object angle point is disabled ***/
-  onHoveringOutAnnotation(obj: any) {
-    if(obj.target === null) {
-      return true;
-    }
-    else if (obj.target.lockRotation) {
-      document.getElementById('target').style.display = 'none';
-    }
-    else {
-      return true;
-    }
-  }
-
-    /*** restricting object if the object is going out of the x-ray image on rotating***/
-  restrictObjectOnRotate(obj: any) {
-    const object = obj.target;
-    const coords = object.calcCoords();
-    const blx = coords.bl.x;
-    const bly = coords.bl.y;
-    const brx = coords.br.x;
-    const bry = coords.br.y;
-    const tlx = coords.tl.x;
-    const tly = coords.tl.y;
-    const txr = coords.tr.x;
-    const tyr = coords.tr.y;
-    if(blx >= object.canvas.width || brx >= object.canvas.width || tlx >= object.canvas.width || txr >= object.canvas.width){
-      this.canvas.getActiveObject().set({
-        lockRotation: true,
-      });
-      this.canvas.renderAll();
-    }
-    else if( blx <= 0 || brx <= 0 || tlx <= 0 || txr <= 0) {
-      this.canvas.getActiveObject().set({
-        lockRotation: true,
-      });
-      this.canvas.renderAll();
-    }
-    else if(bly >= object.canvas.height || bry >= object.canvas.height || tly >= object.canvas.height || tyr >= object.canvas.height) {
-      this.canvas.getActiveObject().set({
-        lockRotation: true,
-      });
-      this.canvas.renderAll();
-    }
-    else if( bly <= 0 || bry <= 0 || tly <= 0 || tyr <= 0) {
-      this.canvas.getActiveObject().set({
-        lockRotation: true,
-      });
-      this.canvas.renderAll();
-    }
-    else {
-      this.canvas.getActiveObject().set({
-        lockRotation: false,
-      });
-      this.lockRotation = false;
-      this.canvas.renderAll();
-    }
-  }
-
-  /*** displaying message if object rotation point is disabled ***/
-  displayMessage(obj: any){
-    if(obj.target === null) {
-      return true;
-    }
-    else if(obj.target.lockRotation) {
-      this.lockRotation = true;
-      this.onHoveringAnnotation(obj);
-    }
-    else{
-      this.lockRotation = false;
-    }
   }
 
   prevNextPatientChange(patientId) {
@@ -447,7 +340,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.getPatientInstanceId(patientId);
   }
 
-  restrictionToBoundaryLimit(obj: any) {
+  /**  
+* This is a restrictionToBoundaryLimit function.  
+* @param {any} data - A array param  
+* @example  
+* restrictionToBoundaryLimit(obj);
+*/  
+  restrictionToBoundaryLimit(obj) {
     if (
       obj.currentHeight > obj.canvas.height ||
       obj.currentWidth > obj.canvas.width
@@ -455,10 +354,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       return;
     }
     obj.setCoords();
+    // top-left  corner
     if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
       obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
       obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
     }
+    // bot-right corner
     if (
       obj.getBoundingRect().top + obj.getBoundingRect().height >
         obj.canvas.height ||
@@ -482,7 +383,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*** action icons model display event ***/
+    /**  
+* This is a action icons model display event.  
+* @param {any} data - A array param  
+* @example  
+* actionIconsModelDispaly(data);
+*/  
   actionIconsModelDispaly(data) {
     this.markactionModelPosition(data);
     if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
@@ -494,6 +400,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
+/**  
+* This is a markactionModelPosition function.  
+* @param {any} data - A array param  
+* @example  
+* markactionModelPosition(data);
+*/  
   markactionModelPosition(data) {
     this.left = 0;
     this.top = 0;
@@ -543,7 +455,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*** update search model ***/
+/**  
+* This is a update search model function.  
+* @param {string} value - A string param  
+* @example  
+* updateSearchModel(value);
+*/
   updateSearchModel(value) {
     this.searchModel = value;
     this.selectedDiseases = false;
@@ -551,19 +468,24 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedSubDisease = false;
   }
 
-  /*** clear background color of the disease on clicking***/
+/**  
+* This is a clear function.  
+* @param {void} empty - A empty param  
+* @example  
+* clear();
+*/
   clear() {
     this.selectedDisease = '';
     this.selectedMainDisease = false;
     this.selectedSubDisease = false;
   }
 
-  /**
-   * Get Patient Instance ID
-   * @param patientId Patient ID
-   * @return void
-   */
-  /*** retrieve patient instance id from server ***/
+/**  
+* This is a  retrieve patient instance id from server  function.  
+* @param {string} value - A string param  
+* @example  
+* getPatientInstanceId(id);
+*/
   getPatientInstanceId(id) {
     this.xRayService.getPatientInstanceId(id).subscribe(
       (patientInstanceIdResponse: any) => {
@@ -580,7 +502,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** setting dimension for canvas container ***/
+/**  
+* This is setting dimension for canvas container function.  
+* @param {void} empty - A empty param  
+* @example  
+* setCanvasDimension();
+*/
   setCanvasDimension() {
     this.canvasDynamicWidth = document.getElementById(
       'x-ray-aspect-ratio-container'
@@ -595,13 +522,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.generateCanvas();
   }
 
-  /**
-   * Get Patient Image
-   * @param instanceID Patient ID
-   * @return void
-   */
-
-  /*** retrieve patient image from api ***/
+ 
+/**  
+* retrieve patient image from api function.  
+* @param {string} vale - A string param  
+* @example  
+* getPatientImage(instanceID);
+*/
   getPatientImage(instanceID: string) {
     this.xRayService.getPatientImage(instanceID).subscribe(
       (PatientImageResponse: any) => {
@@ -627,7 +554,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** generate a canvas using fabric.js ***/
+/**  
+* generate a canvas using fabric.js function.  
+* @param {void} empty - A empty param  
+* @example  
+* generateCanvas();
+*/
   generateCanvas() {
     fabric.Image.fromURL(this.PatientImage, (img) => {
       this.xRayImage = img;
@@ -642,12 +574,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*** function to compare image vs container aspect ratio width ***/
+/**  
+* function to compare image vs container aspect ratio width 
+* @param {string} value - A string param 
+* @param {string} value - A string param 
+* @example  
+* getWidthFirst(imageAspectRatio, containerAspectRatio);
+*/
   getWidthFirst(imageAspectRatio, containerAspectRatio) {
     return imageAspectRatio > containerAspectRatio;
   }
 
-  /*** setting BackgroundImage for canvas block ***/
+/**  
+* setting BackgroundImage for canvas block
+* @param {void} empty - A empty param   
+* @example  
+* setCanvasBackground();
+*/
   setCanvasBackground() {
     const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
     const containerAspectRatio =
@@ -688,7 +631,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.spinnerService.hide();
   }
 
-  /*** draw ellipse, when user clicks ask ai accept button ***/
+/**  
+*  draw ellipse, when user clicks ask ai accept button
+* @param {any} data - A array param 
+* @param {string} value - A string param 
+* @example  
+* mlApiEllipseLoop(mlList, check);
+*/
   mlApiEllipseLoop(mlList: any, check) {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
@@ -830,7 +779,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*** on destroy event subscription ***/
+/**  
+* on destroy event subscription
+* @param {void} empty - A empty param 
+* @example  
+* ngOnDestroy();
+*/
   ngOnDestroy() {
     this.dialog.closeAll();
     this.eventsSubscription.unsubscribe();
@@ -838,16 +792,24 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.toastrService.clear();
   }
 
-  /**
-   * Register click function from another component
-   */
+/**  
+* Register click function from another component
+* @param {string} value - A string param 
+* @example  
+* firstComponentFunction(title);
+*/
   firstComponentFunction(title) {
     this.eventEmitterService.onComponentButtonClick(title);
   }
 
-  /**
-   * Draw Ellipse Functionality
-   */
+/**  
+* Draw Ellipse Functionality
+* @param {string} value - A string param 
+* @param {string} value - A string param 
+* @param {string} value - A string param 
+* @example  
+*  drawEllipse(data, isMlAi?, diseaseItem?);
+*/
   drawEllipse(data, isMlAi?, diseaseItem?) {
     this.updateDisease = false;
     this.canvas.isDrawingMode = false;
@@ -960,6 +922,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
+  
+/**  
+*  This is scaleSaveEllipse function
+* @param {string} value - A string param 
+* @example  
+*  scaleSaveEllipse(data);
+*/
   scaleSaveEllipse(data) {
     const saveEllipse = {} as SaveEllipse;
     saveEllipse.id = data.id;
@@ -979,6 +948,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
+/**  
+*  This is  changeSelectableStatus function
+* @param {string} value - A string param 
+* @example  
+*  changeSelectableStatus(val);
+*/
   changeSelectableStatus(val) {
     this.canvas.forEachObject((obj) => {
       obj.selectable = val;
@@ -986,7 +961,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.renderAll();
   }
 
-  /*** delete ellipse function ***/
+/**  
+* delete ellipse function
+* @param {void} empty - A empty param 
+* @example  
+* deleteEllipse();
+*/
   deleteEllipse() {
     const activeObject = this.canvas.getActiveObject();
     if (activeObject) {
@@ -1000,9 +980,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Open pathology model
-   */
+/**  
+* Open pathology model
+* @param {void} empty - A empty param 
+* @example  
+* openPathologyModal();
+*/
   openPathologyModal() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.restoreFocus = false;
@@ -1014,9 +997,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       disableClose: true,
     });
   }
-  /**
-   * Search pathology functionality
-   */
+
+/**  
+* Search pathology functionality
+* @param {string} value - A string param  
+* @param {string} value - A string param  
+* @example  
+* onSelect(event, item);
+*/
   onSelect(event, item) {
     this.selectedDiseases = true;
     if (item.length === 0) {
@@ -1054,6 +1042,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
+/**  
+* This is storeDataInSession function
+* @param {string} value - A string param  
+* @param {string} value - A string param  
+* @example  
+* storeDataInSession(newdata, check);
+*/
   storeDataInSession(newdata, check) {
     if (check === 'impression') {
       // tslint:disable-next-line: no-string-literal
@@ -1062,9 +1057,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
   }
 
-  /**
-   * Emitting selected disease to Impression component
-   */
+/**  
+* Emitting selected disease to Impression component
+* @param {void} empty - A empty param  
+* @example  
+* savePrediction();
+*/
   savePrediction() {
     const random = Math.floor(Math.random() * 100 + 1);
     this.canvas.getActiveObject().index = random;
@@ -1091,9 +1089,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.discardActiveObject();
     this.canvas.renderAll();
   }
-  /**
-   * Delete active object
-   */
+ 
+/**  
+* Delete active object
+* @param {void} empty - A empty param  
+* @example  
+* deletePrediction();
+*/
   deletePrediction() {
     sessionStorage.removeItem('x-ray_Data');
     // tslint:disable-next-line: no-string-literal
@@ -1125,9 +1127,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
     this.toastrService.success('Annotation deleted successfully');
   }
-  /**
-   * Update active object
-   */
+
+/**  
+* Update active object
+* @param {void} empty - A empty param  
+* @example  
+* updatePrediction();
+*/
   updatePrediction() {
     const selectedObject = {
       id: this.canvas.getActiveObject().id,
@@ -1149,10 +1155,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.discardActiveObject();
     this.canvas.renderAll();
   }
-
-  /**
-   * Close Pathology modal functionality
-   */
+  
+/**  
+* Close Pathology modal functionality
+* @param {void} empty - A empty param  
+* @example  
+* closePathologyModal();
+*/
   closePathologyModal() {
     this.clear();
     if (!this.updateDisease) {
@@ -1165,9 +1174,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.dialog.closeAll();
   }
 
-  /**
-   * Free hand Drawing functionality
-   */
+/**  
+* Free hand Drawing functionality
+* @param {string} value - A string param   
+* @example  
+*  freeHandDrawing(data) ;
+*/
   freeHandDrawing(data) {
     this.changeSelectableStatus(false);
     this.activeIcon = data;
@@ -1188,7 +1200,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*** function to open pathology modal ***/
+/**  
+* function to open pathology modal
+* @param {void} empty - A empty param   
+* @example  
+*  save() ;
+*/
   save() {
     if (this.canvas.isDrawingMode) {
       this.dialog.open(this.pathologyModal, {
@@ -1201,7 +1218,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.changeSelectableStatus(true);
   }
 
-  /*** function to open pathology modal for update ***/
+/**  
+* function to open pathology modal for update
+* @param {void} empty - A empty param   
+* @example  
+*  updateEllipse() ;
+*/
   updateEllipse() {
     this.updateDisease = true;
     this.dialog.open(this.pathologyModal, {
@@ -1211,7 +1233,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*** onSubmitPatientDetails function to navigate to report page ***/
+/**  
+* onSubmitPatientDetails function to navigate to report page
+* @param {void} empty - A empty param   
+* @example  
+*  onSubmitPatientDetails() ;
+*/
   onSubmitPatientDetails() {
     this.processedImage = this.canvas.toDataURL('image/png');
     sessionStorage.setItem('annotatedImage', this.processedImage);
@@ -1221,7 +1248,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*** mapping color to annotations ***/
+  /**  
+*  This is getColorMapping function
+* @param {string} value - A string param  
+* @param {string} value - A string param     
+* @example  
+* getColorMapping(diseases, check);
+*/
   getColorMapping(diseases, check) {
     const colorName =
       DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
@@ -1307,11 +1340,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.renderAll();
   }
 
+    /**  
+* This is saveEllipseIntoSession function
+* @param {void} empty - A empty param     
+* @example  
+* saveEllipseIntoSession();
+*/
   saveEllipseIntoSession() {
     const selectedObject = this.canvas.getActiveObject();
     this.scaleSaveEllipse(selectedObject);
   }
 
+      /**  
+* This is updateEllipseIntoSession function
+* @param {void} empty - A empty param     
+* @example  
+* updateEllipseIntoSession();
+*/
   updateEllipseIntoSession() {
     const object = this.canvas.getActiveObject();
     const index = this.sessionSelectedEllipseObject.findIndex(
@@ -1336,6 +1381,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
+        /**  
+* This is updateFreeHandDrawingIntoSession function
+* @param {void} empty - A empty param     
+* @example  
+* updateFreeHandDrawingIntoSession();
+*/
   updateFreeHandDrawingIntoSession() {
     this.selectedPathArray = [];
     const object = this.canvas.getActiveObject();
@@ -1366,6 +1417,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
+  
+        /**  
+* This is deleteEllipseInSession function
+* @param {void} empty - A empty param     
+* @example  
+* deleteEllipseInSession();
+*/
   deleteEllipseInSession() {
     const object = this.canvas.getActiveObject();
     const index = this.sessionSelectedEllipseObject.findIndex(
@@ -1380,6 +1438,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.remove(this.canvas.getActiveObject());
   }
 
+          /**  
+* This is deleteFreeHandDrawingInSession function
+* @param {void} empty - A empty param     
+* @example  
+* deleteFreeHandDrawingInSession();
+*/
   deleteFreeHandDrawingInSession() {
     const object = this.canvas.getActiveObject();
     const index = this.sessionSelectedFreeDrawObject.findIndex(
@@ -1394,6 +1458,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.remove(this.canvas.getActiveObject());
   }
 
+            /**  
+* This is saveFreeHandDrawingIntoSession function
+* @param {void} empty - A empty param     
+* @example  
+* saveFreeHandDrawingIntoSession();
+*/
   saveFreeHandDrawingIntoSession() {
     this.selectedPathArray = [];
     const saveFreeHandDrawing = {} as SaveFreeHandDrawing;
@@ -1419,6 +1489,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
+              /**  
+* This is getSessionEllipse function
+* @param {void} empty - A empty param     
+* @example  
+* getSessionEllipse();
+*/
   getSessionEllipse() {
     const ellipses = JSON.parse(sessionStorage.getItem('ellipse'));
     if (ellipses) {
@@ -1446,9 +1522,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
+  
+              /**  
+* This is getSessionFreeHandDrawing function
+* @param {void} empty - A empty param     
+* @example  
+* getSessionFreeHandDrawing();
+*/
   getSessionFreeHandDrawing() {
     const path = JSON.parse(sessionStorage.getItem('freeHandDrawing'));
-    if (path && path.length !== 0) {
+    if (path.length !== 0) {
       path.forEach((element) => {
         const coordinatePath = element.coordinateValue.split(' ');
         for (let i = 0; i < coordinatePath.length; i++) {

@@ -23,4 +23,5 @@ const coreComponents = [
   imports: [CommonModule, RouterModule, MaterialModule],
   exports: [...coreComponents, PageNotAvailableComponent],
 })
+// CoreModule class implementation  
 export class CoreModule {}

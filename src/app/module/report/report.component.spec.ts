@@ -8,9 +8,10 @@ describe('ReportComponent', () => {
     'invokeReportDataFunction',
     'onComponentButtonClick',
   ]);
+  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', ['show', 'hide']);
 
   beforeEach(() => {
-    component = new ReportComponent(routerSpy, eventEmitterServiceSpy);
+    component = new ReportComponent(routerSpy, eventEmitterServiceSpy, spinnerServiceSpy);
   });
 
   /*** it should create report component ***/

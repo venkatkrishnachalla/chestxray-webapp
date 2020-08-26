@@ -36,4 +36,5 @@ import { CoreModule } from 'src/app/core/core.module';
     AgGridModule.withComponents([]),
   ],
 })
+// HomeModule class implementation
 export class HomeModule {}

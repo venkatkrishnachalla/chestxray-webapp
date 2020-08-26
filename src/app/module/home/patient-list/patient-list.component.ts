@@ -28,6 +28,7 @@ interface EnumServiceItems extends Array<PatientListData> {}
   templateUrl: './patient-list.component.html',
   styleUrls: ['./patient-list.component.scss'],
 })
+// PatientListComponent class implementation  
 export class PatientListComponent implements OnInit {
   gridApi;
   gridColumnApi;
@@ -45,6 +46,9 @@ export class PatientListComponent implements OnInit {
   errorMessage: string;
   private userSubscription: Subscription;
 
+/*  
+* constructor for PatientListComponent class  
+*/ 
   constructor(
     private elementRef: ElementRef,
     private dashboardService: DashboardService,
@@ -53,7 +57,12 @@ export class PatientListComponent implements OnInit {
     private eventEmitterService: EventEmitterService
   ) {}
 
-  /*** class init function ***/
+      /**  
+ * This is a init function, retrieve current user details.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnInit();
+ */  
   ngOnInit() {
     sessionStorage.removeItem('x-ray_Data');
     this.overlayNoRowsTemplate = 'No Data Available';
@@ -71,7 +80,12 @@ export class PatientListComponent implements OnInit {
     );
   }
 
-  /*** onGridReady method ***/
+    /**  
+ * This is on ionGridReady method.  
+ * @param {string} value - A string param  
+ * @example  
+ * onGridReady(params);
+ */ 
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
@@ -81,7 +95,12 @@ export class PatientListComponent implements OnInit {
     this.autoSizeAll(false);
   }
 
-  /*** auth size all method ***/
+/**  
+ * This is on auth size all method.  
+ * @param {string} value - A string param  
+ * @example  
+ * autoSizeAll(skipHeader);
+ */
   autoSizeAll(skipHeader) {
     const allColumnIds = [];
     this.gridColumnApi.getAllColumns().forEach((column) => {
@@ -89,8 +108,13 @@ export class PatientListComponent implements OnInit {
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
   }
-
-  /*** get patient list function ***/
+  
+/**  
+ * This is on get patient list function .  
+ * @param {void} empty - A empty param  
+ * @example  
+ * getPatientList();
+ */
   getPatientList() {
     this.showloader = true;
     this.showTable = false;
@@ -120,7 +144,12 @@ export class PatientListComponent implements OnInit {
     );
   }
 
-  /*** row click function ***/
+  /**  
+ * This is on row click function.  
+ * @param {string} value - A string param  
+ * @example  
+ * onRowClicked(e);
+ */
   public onRowClicked(e) {
     if (e.event.target !== undefined) {
       const data = e.data;
@@ -134,12 +163,22 @@ export class PatientListComponent implements OnInit {
     }
   }
 
-  /*** onActionViewClick icon click function ***/
+    /**  
+ * This is on onActionViewClick icon click function 
+ * @param {any} data - A any param  
+ * @example  
+ * onActionViewClick(data);
+ */
   public onActionViewClick(data: any) {
     alert('View action clicked');
   }
 
-  /*** onActionRedirectClick function , it will redirect to xray page ***/
+ /**  
+ * This is on onActionRedirectClick function , it will redirect to xray page 
+ * @param {any} data - A any param  
+ * @example  
+ * onActionRedirectClick(data);
+ */
   public onActionRedirectClick(data: any) {
     const patientDetail = JSON.stringify(data);
     sessionStorage.setItem('patientDetail', patientDetail);
@@ -147,7 +186,12 @@ export class PatientListComponent implements OnInit {
     this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
 
-   /*** unsubscribe userSubscription event ***/
+    /**  
+ * This is on  unsubscribe userSubscription event
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnDestroy();
+ */
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }

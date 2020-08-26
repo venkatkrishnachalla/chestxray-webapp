@@ -8,22 +8,41 @@ import { Observable } from 'rxjs';
   templateUrl: './auth-layout.component.html',
   styleUrls: ['./auth-layout.component.scss'],
 })
+// AuthLayoutComponent class implementation  
 export class AuthLayoutComponent implements OnInit {
   isAuth = false;
   isHandset: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.Handset);
+      /*  
+    * Constrcutor for AuthLayoutComponent class  
+    */  
   constructor(private authService: AuthService, private breakpointObserver: BreakpointObserver) {}
 
-  /*** init function ***/
+   /**  
+ * This is a init function.  
+ * @param {void}  - A empty param  
+ * @example  
+ * ngOnInit();
+ */  
   ngOnInit(): void {
     this.initialize();
   }
 
-  /*** initialize function to display isAuth ***/
+     /**  
+ * This is a initialize function.  
+ * @param {void}  - A empty param  
+ * @example  
+ * initialize();
+ */  
   private initialize() {
     this.isAuth = !!this.authService.user;
   }
 
-  /*** logout function ***/
+     /**  
+ * This is a logout function.  
+ * @param {void}  - A empty param  
+ * @example  
+ * onLogout();
+ */    
   onLogout() {
     this.authService.logOut();
   }

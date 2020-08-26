@@ -26,11 +26,15 @@ interface AuthResponseData {
 @Injectable({
   providedIn: 'root',
 })
+// AuthService class implementation  
 export class AuthService {
   public userSubject: BehaviorSubject<User>;
   private tokenExpirationTimer: any;
   private refreshTokenTimer: any;
 
+    /*  
+    * constructor for AuthService class  
+    */  
   constructor(
     private http: HttpClient,
     private endpoint: ApiEndPointService,
@@ -43,6 +47,13 @@ export class AuthService {
     return this.userSubject.value;
   }
 
+   /**  
+ * This is a signIn click function.  
+ * @param {string} value - A string param  
+ * @param {string} value - A string param  
+ * @example  
+ * signIn(email, password);
+ */ 
   signIn(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(this.endpoint.getSingInURL(), {
@@ -64,7 +75,13 @@ export class AuthService {
         })
       );
   }
-
+  
+ /**  
+ * This is a logOut function.  
+ * @param {} empty - A empty param  
+ * @example  
+ * logOut();
+ */  
   logOut() {
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
@@ -87,6 +104,12 @@ export class AuthService {
     }
   }
 
+ /**  
+ * This is a autoLoginOnRefresh function.  
+ * @param {} empty - A empty param  
+ * @example  
+ * autoLoginOnRefresh();
+ */ 
   autoLoginOnRefresh() {
     const authDataSession = JSON.parse(sessionStorage.getItem('userAuthData'));
     if (authDataSession){
@@ -122,7 +145,13 @@ export class AuthService {
       // this.refreshTokenTimeOut(curUser.token, new Date(authData._tokenExpirationDate).getTime() - new Date().getTime());
     }
   }
-
+  
+ /**  
+ * This is a refreshToken function.  
+ * @param {string} value - A string param  
+ * @example  
+ * refreshToken(token);
+ */ 
   private refreshToken(token: string) {
     return this.http
       .post<{ idToken: string; refreshToken: string; expiresIn }>(
@@ -147,23 +176,42 @@ export class AuthService {
       );
   }
 
-  //
+ /**  
+ * This is a autoSessionTimeOut function.  
+ * @param {number} index - A number param  
+ * @example  
+ * autoSessionTimeOut(expirationDuration);
+ */ 
   autoSessionTimeOut(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logOut();
     }, expirationDuration);
   }
 
-  /**
-   * Refresh token a minute before it expires
-   * @param expirationDuration - expiration time in ms.
-   */
+   /**  
+ * This is a Refresh token a minute before it expires.
+ * @param {string} value - A string param  
+ * @param {number} index - A number param  
+ * @example  
+ * refreshTokenTimeOut(token, expirationDuration);
+ */ 
   refreshTokenTimeOut(token, expirationDuration: number) {
     this.refreshTokenTimer = setTimeout(() => {
       this.refreshToken(token);
     }, expirationDuration - 60 * 1000);
   }
 
+     /**  
+ * This is a handleAuthentication function.
+ * @param {string} value - A string param  
+ * @param {string} value - A string param  
+ * @param {string} value - A string param  
+ * @param {any} data - A array param  
+ * @param {string} value - A string param  
+ * @param {any} data - A array param  
+ * @example  
+ * handleAuthentication(email, userID, token, expiresIn, username, userroles);
+ */ 
   private handleAuthentication(
     email: string,
     userID: string,
@@ -192,6 +240,12 @@ export class AuthService {
     // this.refreshTokenTimeOut(user.token, expiresIn * 1000);
   }
 
+/**  
+ * This is a handleAuthError function.
+ * @param {errorResponse} HttpErrorResponse - A response param  
+ * @example  
+ * handleAuthError(errorResponse);
+ */ 
   private handleAuthError(errorResponse: HttpErrorResponse) {
     let errorMessage = 'Unknown error occurred';
     if (errorResponse.status === 0) {

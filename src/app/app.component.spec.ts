@@ -14,10 +14,12 @@ describe('AppComponent', () => {
     component = new AppComponent(authServiceSpy, spinnerServiceSpy);
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  /*** it should ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
       spyOn(component, 'loginOnBrowserRefresh');
@@ -32,6 +34,7 @@ describe('AppComponent', () => {
     });
   });
 
+    /*** it should loginOnBrowserRefresh function ***/
   describe('#loginOnBrowserRefresh', () => {
     beforeEach(() => {
       component.loginOnBrowserRefresh();

@@ -14,11 +14,12 @@ describe('AuthService', () => {
   beforeEach(() => {
     authService = new AuthService(mockHttpClient, endpointSpy, routerSpy);
   });
-
+  /*** it should create service ***/
   it('should create', () => {
     expect(authService).toBeTruthy();
   });
 
+    /*** it should call signIn function ***/
   describe('#signIn', () => {
     let responsePromise;
     beforeEach(() => {
@@ -38,6 +39,7 @@ describe('AuthService', () => {
     });
   });
 
+      /*** it should call signIn function ***/
   describe('#signIn', () => {
     beforeEach(() => {
       endpointSpy.getSingInURL.and.returnValue('http://localhost:4200/auth');
@@ -54,6 +56,7 @@ describe('AuthService', () => {
     });
   });
 
+        /*** it should call logOut function ***/
   describe('#logOut', () => {
     it('should call logout function, when tokenExpirationTimer is exist', () => {
       (authService as any).tokenExpirationTimer = '3000';
@@ -67,6 +70,7 @@ describe('AuthService', () => {
     });
   });
 
+        /*** it should call autoLoginOnRefresh function ***/
   describe('#autoLoginOnRefresh', () => {
     it('should call autoLoginOnRefresh function', () => {
       const authMock = {
@@ -85,6 +89,7 @@ describe('AuthService', () => {
     });
   });
 
+        /*** it should call refreshToken function ***/
   describe('#refreshToken', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 204 });
@@ -97,6 +102,7 @@ describe('AuthService', () => {
     });
   });
 
+ /*** it should call autoSessionTimeOut function ***/ 
   describe('#autoSessionTimeOut', () => {
     beforeEach(() => {
       authService.autoSessionTimeOut(4563);
@@ -106,6 +112,7 @@ describe('AuthService', () => {
     });
   });
 
+ /*** it should call refreshTokenTimeOut function ***/ 
   describe('#refreshTokenTimeOut', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 204 });
@@ -119,6 +126,7 @@ describe('AuthService', () => {
     });
   });
 
+/*** it should call handleAuthentication function ***/
   describe('#handleAuthentication', () => {
     beforeEach(() => {
       (authService as any).handleAuthentication(
@@ -133,6 +141,7 @@ describe('AuthService', () => {
     });
   });
 
+  /*** it should call handleAuthError function ***/
   describe('#handleAuthError', () => {
     it('should call handleAuthError function, when unknown error occured', () => {
       const result = (authService as any).handleAuthError({
