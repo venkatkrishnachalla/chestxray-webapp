@@ -1,0 +1,10 @@
+<div matTooltip="{{ askAiTitle }}" [matTooltipDisabled]="!disableAskAI">
+  <button
+    mat-button
+    (click)="askAI()"
+    [disabled]="disableAskAI"
+    [ngClass]="{ 'disable-color': disableAskAI }"
+  >
+    Ask AI <img src="../../../assets/images/askAI.png" alt="Ask AI" />
+  </button>
+</div>

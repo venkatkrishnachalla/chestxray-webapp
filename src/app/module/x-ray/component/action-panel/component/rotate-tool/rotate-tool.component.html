@@ -1,0 +1,14 @@
+<div class="actionRotateItem">
+  <div
+    class="actions"
+    *ngFor="let actions of actionPanelRotate"
+    [ngStyle]="{ cursor: 'no-drop' }"
+  >
+    <img
+      class="icon-disabled-BG"
+      [src]="actions.image"
+      [alt]="actions.alt"
+      [title]="actions.title"
+    />
+  </div>
+</div>

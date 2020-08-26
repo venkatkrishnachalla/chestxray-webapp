@@ -1,0 +1,6 @@
+projectKey=chestxray-webapp-dev
+serverUrl=http://localhost:9000
+serverVersion=8.4.1.35646
+dashboardUrl=http://localhost:9000/dashboard?id=chestxray-webapp-dev
+ceTaskId=AXQKvnagp6CAuQB9wS5z
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXQKvnagp6CAuQB9wS5z

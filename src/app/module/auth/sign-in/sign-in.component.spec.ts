@@ -117,6 +117,29 @@ describe('SignInComponent', () => {
     });
   });
 
+  /*** it should call onSignIn function, when server not reachable error ***/
+  describe('#onSignIn', () => {
+    const testForm = {
+      value: {
+        email: 'test',
+        password: 'test@123',
+      },
+      valid: true,
+      resetForm: () => null,
+      reset: () => null,
+    } as NgForm;
+    beforeEach(() => {
+      const signInErrorResponse = { status: 404 };
+      authServiceSpy.signIn.and.returnValue(throwError(signInErrorResponse));
+      component.errorMessage = 'Server not reachable';
+    });
+    it('should call onSignIn function, when login error, when server not rechable is false', () => {
+      spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(false);
+      component.onSignIn(testForm);
+      expect(toastrServiceSpy.error).toHaveBeenCalled();
+    });
+  });
+
   /*** it should call onSignIn function, when error ***/
   describe('#onSignIn', () => {
     beforeEach(() => {
