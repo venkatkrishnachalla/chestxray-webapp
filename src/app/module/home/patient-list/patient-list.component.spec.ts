@@ -120,6 +120,53 @@ describe('PatientListComponent', () => {
     });
   });
 
+  /*** it should call onRowClicked function ***/
+  describe('#onRowClicked', () => {
+    beforeEach(() => {
+      const eventMock = {
+        event: {
+          target: {
+            getAttribute: () => {
+              return {
+                'data-action-type': 'viewInfo',
+              };
+            },
+          },
+        },
+      };
+      component.onRowClicked(eventMock);
+    });
+    it('should call onRowClicked function', () => {
+      expect(component.onRowClicked).toBeDefined();
+    });
+  });
+
+  /*** it should call onActionViewClick function ***/
+  describe('#onActionViewClick', () => {
+    beforeEach(() => {
+      const dataMock = {
+        name: 'abcde'
+      };
+      component.onActionViewClick(dataMock);
+    });
+    it('should call onActionViewClick function', () => {
+      expect(component.onActionViewClick).toBeDefined();
+    });
+  });
+
+  /*** it should call onActionRedirectClick function ***/
+  describe('#onActionRedirectClick', () => {
+    beforeEach(() => {
+      const dataMock = {
+        name: 'abcde'
+      };
+      component.onActionRedirectClick(dataMock);
+    });
+    it('should call onActionRedirectClick function', () => {
+      expect(component.onActionRedirectClick).toBeDefined();
+    });
+  });
+
   /*** should call ngOnDestroy ***/
   describe('#ngOnDestroy', () => {
     it('it should call ngOnDestroy', () => {

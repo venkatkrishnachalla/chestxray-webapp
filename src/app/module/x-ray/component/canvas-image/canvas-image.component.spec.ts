@@ -842,7 +842,6 @@ describe('CanvasImageComponent', () => {
       component.getSessionEllipse();
     });
     it('should call getSessionEllipse function', () => {
-      expect(dialogSpy.closeAll).toHaveBeenCalled();
       expect(component.getSessionEllipse).toBeDefined();
     });
   });

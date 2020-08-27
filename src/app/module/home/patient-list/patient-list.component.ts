@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { homeConstants } from 'src/app/constants/homeConstants';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
@@ -28,7 +28,7 @@ interface EnumServiceItems extends Array<PatientListData> {}
   templateUrl: './patient-list.component.html',
   styleUrls: ['./patient-list.component.scss'],
 })
-export class PatientListComponent implements OnInit {
+export class PatientListComponent implements OnInit, OnDestroy {
   gridApi;
   gridColumnApi;
   columnDefs;
@@ -147,7 +147,7 @@ export class PatientListComponent implements OnInit {
     this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
 
-   /*** unsubscribe userSubscription event ***/
+  /*** unsubscribe userSubscription event ***/
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
