@@ -11,11 +11,12 @@ describe('SidenavService', () => {
   beforeEach(() => {
     service = new SidenavService();
   });
-
+/*** it should create service ***/
   it('should create', () => {
     expect(service).toBeTruthy();
   });
 
+    /*** it should setSidenav function ***/
   describe('#setSidenav', () => {
     beforeEach(() => {
       service.setSidenav(matSidenavSpy);
@@ -26,6 +27,7 @@ describe('SidenavService', () => {
     });
   });
 
+      /*** it should open function ***/
   describe('#open', () => {
     beforeEach(() => {
       service.sidenav = matSidenavSpy;
@@ -37,6 +39,7 @@ describe('SidenavService', () => {
     });
   });
 
+   /*** it should close function ***/
   describe('#close', () => {
     beforeEach(() => {
       service.sidenav = matSidenavSpy;
@@ -48,6 +51,7 @@ describe('SidenavService', () => {
     });
   });
 
+  /*** it should toggle function ***/
   describe('#toggle', () => {
     beforeEach(() => {
       service.sidenav = matSidenavSpy;

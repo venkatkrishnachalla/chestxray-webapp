@@ -17,6 +17,7 @@ export class BrightnessContrastToolComponent implements OnInit {
     ceil: 100,
     vertical: true,
     showSelectionBar: true,
+    disabled: true,
     selectionBarGradient: {
       from: '#285c68',
       to: '#285c68',
@@ -29,6 +30,7 @@ export class BrightnessContrastToolComponent implements OnInit {
     ceil: 100,
     vertical: true,
     showSelectionBar: true,
+    disabled: true,
     selectionBarGradient: {
       from: '#285c68',
       to: '#285c68',

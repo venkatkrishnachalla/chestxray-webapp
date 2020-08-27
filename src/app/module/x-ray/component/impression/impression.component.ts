@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './impression.component.html',
   styleUrls: ['./impression.component.scss'],
 })
+// ImpressionComponent class implementation  
 export class ImpressionComponent implements OnInit, OnDestroy {
   impression = [];
   abnormalityColor = [];
@@ -22,6 +23,9 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   _subscription: Subscription;
   impressionsText: string = 'Impressions';
   
+  /*  
+* constructor for ImpressionComponent class  
+*/
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedImpressionService: XRayService
@@ -34,7 +38,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** class init function ***/
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/ 
   ngOnInit(): void {
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
@@ -53,7 +62,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** function to get impression from xray page ***/
+/**  
+* function to get impression from xray page
+* @param {void} empty - A empty param  
+* @example  
+* getImpressions();
+*/ 
   getImpressions() {
     this.eventEmitterService.invokeComponentData.subscribe(
       (obj: { name: any; isMLApi: any; color: any }) => {
@@ -75,7 +89,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     this.uniqueImpressions = impression;
   }
 
-  /*** function to filter unique impressions ***/
+/**  
+* function to filter unique impressions
+* @param {void} empty - A empty param  
+* @example  
+* uniqueImpressionsData();
+*/ 
   uniqueImpressionsData() {
     this.uniqueImpressions = [];
     this.impression.filter((item) => {
@@ -98,7 +117,14 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     this.updateFindings();
   }
 
-  /*** delete impression function ***/
+/**  
+* delete impression function
+* @param {string} value - A string param  
+* @param {string} value - A string param  
+* @param {number} index - A number param  
+* @example  
+* deleteImpression(id, disease, objectindex);
+*/ 
   deleteImpression(id: number, disease: string, objectindex: number) {
     const index = this.impression.findIndex((item) => item.id === id);
     this.impression.splice(index, 1);
@@ -108,12 +134,22 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*** function to update findings ***/
+/**  
+* function to update findings
+* @param {void} empty - A empty param  
+* @example  
+* updateFindings();
+*/ 
   updateFindings() {
     this.eventEmitterService.onImpressionDataShared(this.impression);
   }
 
-  /*** function to update impression ***/
+/**  
+* function to update impression
+* @param {string} value - A string param  
+* @example  
+* updateImpression(info);
+*/ 
   updateImpression(info) {
     const index = this.impression.findIndex((item) => item.id === info.id);
     this.impression.splice(index, 1, { id: info.id, name: info.name });
@@ -124,7 +160,14 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     this.uniqueImpressionsData();
   }
 
-  /*** function to update color code to impression list ***/
+/**  
+* function to update color code to impression list
+* @param {string} value - A string param  
+* @param {string} value - A string param  
+* @param {string} value - A string param  
+* @example  
+* getColorMapping(diseases, isMLApi, impcolor);
+*/
   getColorMapping(diseases: string, isMLApi: string, impcolor: string) {
     this.abnormalityColor = [];
     if (isMLApi) {
@@ -136,7 +179,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*** function to pass impressions list to report page ***/
+/**  
+* unction to pass impressions list to report page
+* @param {void} empty - A empty param 
+* @example  
+* getImpressionsToReport();
+*/
   getImpressionsToReport() {
     const impression = JSON.stringify(this.impression);
     sessionStorage.setItem('impression', impression);
@@ -146,6 +194,13 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   }
 
   /*** on destroy event subscription ***/
+  
+/**  
+* on destroy event subscription 
+* @param {void} empty - A empty param 
+* @example  
+* ngOnDestroy();
+*/
   ngOnDestroy() {
     this._subscription.unsubscribe();
   }

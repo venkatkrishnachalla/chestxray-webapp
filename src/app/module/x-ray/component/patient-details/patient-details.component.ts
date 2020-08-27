@@ -8,6 +8,7 @@ import { EventEmitterService } from 'src/app/service/event-emitter.service';
   templateUrl: './patient-details.component.html',
   styleUrls: ['./patient-details.component.scss'],
 })
+// PatientDetailsComponent class implementation  
 export class PatientDetailsComponent implements OnInit, OnDestroy {
   value: number;
   PatientName: string;
@@ -20,7 +21,9 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
   patientDetails: PatientDetailData;
   _subscription: Subscription;
   PatientDetailsText: string = 'patient details';
-
+  /*  
+* constructor for PatientDetailsComponent class  
+*/ 
   constructor(private eventEmitterService: EventEmitterService) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -29,12 +32,23 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** class init function and bind patient details ***/
+
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/  
   ngOnInit(): void {
     this.getPatientDetails();
   }
-
-  /*** get patient detail function ****/
+  
+/**  
+* get patient detail function
+* @param {void} empty - A empty param  
+* @example  
+* getPatientDetails();
+*/  
   getPatientDetails() {
     let patient = history.state.patientDetails;
     if (patient === undefined) {
@@ -52,7 +66,12 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
     this.history = '';
   }
 
-  /*** on destroy event subscription ***/
+/**  
+* on destroy event subscription 
+* @param {void} empty - A empty param  
+* @example  
+* ngOnDestroy();
+*/  
   ngOnDestroy() {
     this._subscription.unsubscribe();
   }

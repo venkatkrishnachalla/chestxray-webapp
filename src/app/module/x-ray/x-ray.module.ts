@@ -65,4 +65,5 @@ import { FlipToolComponent } from './component/action-panel/component/flip-tool/
   ],
   exports: [SearchFilterPipe],
 })
+// XRayModule class implementation 
 export class XRayModule {}

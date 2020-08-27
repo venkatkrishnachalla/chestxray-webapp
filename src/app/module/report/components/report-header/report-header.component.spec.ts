@@ -18,6 +18,7 @@ describe('ReportHeaderComponent', () => {
     fixture.detectChanges();
   });
 
+    /*** should create report header component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });

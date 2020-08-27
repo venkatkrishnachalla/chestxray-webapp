@@ -44,4 +44,5 @@ const materialModules = [
   providers: [],
   bootstrap: [],
 })
+// MaterialModule class implementation  
 export class MaterialModule {}

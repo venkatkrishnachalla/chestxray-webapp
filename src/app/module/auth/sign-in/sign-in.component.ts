@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { SnackbarService } from 'src/app/core/service/snackbar.service';
 import { AuthService } from '../auth.service';
@@ -9,12 +9,14 @@ import { ToastrService } from 'ngx-toastr';
 import { SignInResponse } from '../interface.modal';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
+import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'cxr-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
+// SignInComponent class implementation  
 export class SignInComponent implements OnInit {
   auth: { email: string; password: string } = { email: '', password: '' };
   hide = true;
@@ -25,6 +27,11 @@ export class SignInComponent implements OnInit {
   signInText: { loginTitle: string; forgotPasswordText: string };
   copyRightText: { copyRightDisplayText: string };
   socialMediaIcons: { image: string; alt: string; title: string }[];
+  @ViewChild('usernameRef', {static: true}) usernameElementRef: ElementRef;
+
+    /*  
+    * constructor for SignInComponent class  
+    */  
   constructor(
     private alert: SnackbarService,
     private authService: AuthService,
@@ -33,10 +40,20 @@ export class SignInComponent implements OnInit {
     private spinnerService: SpinnerService,
     private toastrService: ToastrService,
     private eventEmitterService: EventEmitterService
-  ) {}
+  ) {
+    if(sessionStorage.getItem('userAuthData')) {
+      this.router.navigate(['home/dashboard']);
+    }
+  }
 
-  /*** class init function ***/
+ /**  
+ * This is a init function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnInit();
+ */  
   ngOnInit(): void {
+    this.usernameElementRef.nativeElement.focus();
     this.signInText = this.constants.loginPage;
     this.copyRightText = this.constants.copyRight;
     this.socialMediaIcons = this.constants.socialMedia;
@@ -47,7 +64,12 @@ export class SignInComponent implements OnInit {
     );
   }
 
-  /*** on sign in function ***/
+  /**  
+ * This is on sign in function.  
+ * @param {NgForm} data - A array param  
+ * @example  
+ * onSignIn(form);
+ */  
   onSignIn(form: NgForm) {
     const networkStatus = navigator.onLine;
     if (form.valid) {
@@ -83,4 +105,5 @@ export class SignInComponent implements OnInit {
       }
     }
   }
+
 }

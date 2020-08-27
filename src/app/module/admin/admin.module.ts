@@ -4,4 +4,5 @@ import { CommonModule } from '@angular/common';
   declarations: [],
   imports: [CommonModule],
 })
+// AdminModule class implementation  
 export class AdminModule {}
