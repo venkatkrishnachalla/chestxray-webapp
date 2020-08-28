@@ -1504,5 +1504,24 @@ describe('CanvasImageComponent', () => {
         it('should call displayMessage function', () => {
           expect(component.restrictObjectOnRotate).toBeDefined();
         });
-      });            
+      });
+      
+      /*** it should hide/show Annotation on clicking of eye icon on x-ray image ***/
+      describe('#ellipseLists', () => {
+        beforeEach(() => {
+          component.canvas = {
+            clear: () => {},
+            getObjects: () => {
+              return [{
+                visible: true,
+                id: 1
+              }]
+            }
+          };
+          component.ellipseLists(true);
+        });
+        it('should hide/show annotations based on clickin of eye icon on x-ray image', () => {
+          expect(component.ellipseLists).toBeDefined();
+        });
+      });  
 });

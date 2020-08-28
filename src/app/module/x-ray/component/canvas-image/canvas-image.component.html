@@ -7,6 +7,18 @@
   [style.width.%]="100"
   [style.height.%]="100"
 >
+  <div class="content">
+    <span class="material-icons content-visibility content-show" 
+    *ngIf="!isChangeable" 
+    (click)="ellipseLists(true)">
+    visibility_off
+    </span>
+    <span class="material-icons content-visibility content-hide" 
+    *ngIf="isChangeable" 
+    (click)="ellipseLists(false)">
+    visibility
+    </span>
+    </div>
   <div
     class="xRay-image-canvas-container d-flex justify-content-center"
     id="canvas-wrapper"
