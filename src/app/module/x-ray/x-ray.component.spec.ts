@@ -16,6 +16,7 @@ describe('XRayComponent', () => {
     'onReportDataShared',
     'onComponentReportButtonClick',
     'onErrorMessage',
+    'onAskAiButtonClick'
   ]);
   const anotatedXrayService = jasmine.createSpyObj('XRayService', ['abcd']);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
@@ -102,6 +103,7 @@ describe('XRayComponent', () => {
       component.openAskAI(event);
     });
     it('should call openAskAI function, when returns success', () => {
+      expect(eventEmitterService.onAskAiButtonClick).toHaveBeenCalledWith('success');
       expect(spinnerServiceSpy.show).toHaveBeenCalled();
       XRayServiceSpy.getAskAiDetails(
         'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD'

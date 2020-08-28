@@ -1,0 +1,14 @@
+<div class="actionZoomInOutItem">
+  <div
+    class="actions"
+    *ngFor="let actions of actionPanelZoom"
+    [ngStyle]="{ cursor: 'no-drop' }"
+  >
+    <img
+      class="icon-disabled-BG"
+      [src]="actions.image"
+      [alt]="actions.alt"
+      [title]="actions.title"
+    />
+  </div>
+</div>

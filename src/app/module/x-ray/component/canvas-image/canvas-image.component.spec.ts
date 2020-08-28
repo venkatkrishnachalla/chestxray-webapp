@@ -1,6 +1,9 @@
 import { CanvasImageComponent } from './canvas-image.component';
 import { of } from 'rxjs';
-import { canvasMock, patientMockInstanceId } from 'src/app/module/auth/patient-mock';
+import {
+  canvasMock,
+  patientMockInstanceId,
+} from 'src/app/module/auth/patient-mock';
 
 describe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
@@ -868,18 +871,34 @@ describe('CanvasImageComponent', () => {
       component.getSessionEllipse();
     });
     it('should call getSessionEllipse function', () => {
-      expect(dialogSpy.closeAll).toHaveBeenCalled();
       expect(component.getSessionEllipse).toBeDefined();
     });
   });
 
-  /*** it should call getSessionFreeHandDrawing function if freeHandDrawing is in session***/
+  /*** it should call getSessionFreeHandDrawing function if freeHandDrawing is in session ***/
   describe('#getSessionFreeHandDrawing', () => {
     beforeEach(() => {
+      const itemMock = [
+        {
+          id: 23,
+          coordinateValue: '45 67',
+          color: 'red',
+        },
+      ];
       component.canvas = {
         add: () => {},
         renderAll: () => {},
+        getActiveObject: () => {
+          return {
+            getCenterPoint: () => {
+              return { x: 3.45 };
+            },
+          };
+        },
       };
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(itemMock);
+      });
       component.getSessionFreeHandDrawing();
     });
     it('should call getSessionFreeHandDrawing function', () => {
@@ -1121,6 +1140,12 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return {
             top: 60,
+            oCoords: {
+              tr: { y: 2.23 }
+            },
+            getCenterPoint: () => {
+              return { x: 3.45 };
+            },
           };
         },
         clear: () => {},
@@ -1157,6 +1182,12 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return {
             top: 80,
+            oCoords: {
+              tr: { y: 2.23 }
+            },
+            getCenterPoint: () => {
+              return { x: 3.45 };
+            },
           };
         },
       };
@@ -1191,6 +1222,12 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return {
             top: 80,
+            oCoords: {
+              tr: { y: 2.23 }
+            },
+            getCenterPoint: () => {
+              return { x: 3.45 };
+            },
           };
         },
         clear: () => {},

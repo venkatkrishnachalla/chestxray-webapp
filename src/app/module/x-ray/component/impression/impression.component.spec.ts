@@ -1,7 +1,7 @@
 import { ImpressionComponent } from './impression.component';
 import { of, throwError } from 'rxjs';
 
-xdescribe('ImpressionComponent', () => {
+describe('ImpressionComponent', () => {
   let component: ImpressionComponent;
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'invokeComponentFunction',
@@ -15,6 +15,8 @@ xdescribe('ImpressionComponent', () => {
   );
 
   beforeEach(() => {
+    const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
+    eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(patientIdMock);
     component = new ImpressionComponent(
       eventEmitterServiceSpy,
       xrayAnnotatedImpressionServiceSpy
@@ -141,7 +143,7 @@ xdescribe('ImpressionComponent', () => {
     /*** it should call getColorMapping function ***/
   describe('#getColorMapping', () => {
     beforeEach(() => {
-      component.getColorMapping('abcde', 'false', 'red');
+      component.getColorMapping('BULLA', 'false', 'red');
     });
     it('should call getColorMapping', () => {
       expect(component.getColorMapping).toBeDefined();

@@ -75,12 +75,4 @@ describe('ActionPanelComponent', () => {
       expect(component.iconAction).toBeDefined();
     });
   });
-
-  /*** it should call disableAskAiButton event ***/
-  describe('#disableAskAiButton', () => {
-    it('should call disableAskAiButton function', () => {
-      component.disableAskAiButton();
-      expect(component.disableAskAI).toEqual(true);
-    });
-  });
 });

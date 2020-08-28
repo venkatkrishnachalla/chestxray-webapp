@@ -1,0 +1,25 @@
+<div class="undoRedoItems">
+  <div
+    class="menus"
+    *ngFor="let undoredo of undoRedoPanel; let i = index"
+    [ngStyle]="{
+      cursor: undoredo.implemented === true ? 'pointer' : 'no-drop'
+    }"
+  >
+    <img
+      [ngClass]="
+        undoRedoPanel[i].active && undoredo.implemented === true
+          ? 'icon-select-BG'
+          : undoredo.implemented === true
+          ? 'icon-active-BG'
+          : 'icon-disabled-BG'
+      "
+      [src]="undoredo.image"
+      [alt]="undoredo.alt"
+      (click)="
+        undoredo.implemented === true ? iconAction(undoRedoPanel, i) : ''
+      "
+      [title]="undoredo.title"
+    />
+  </div>
+</div>

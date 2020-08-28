@@ -15,6 +15,7 @@ export class EventEmitterService {
   invokeDisplayErrorMessage = new EventEmitter();
   invokeFindingsDataFunction = new EventEmitter();
   invokePrevNextButtonDataFunction = new EventEmitter();
+  invokeAskAiButtonDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
 
@@ -68,5 +69,10 @@ export class EventEmitterService {
   /*** event to capture prev and next button click event emit function ***/
   onPrevNextButtonClick(data) {
     this.invokePrevNextButtonDataFunction.emit(data);
+  }
+
+  /*** event to capture ask ai success state ***/
+  onAskAiButtonClick(data) {
+    this.invokeAskAiButtonDataFunction.emit(data);
   }
 }
