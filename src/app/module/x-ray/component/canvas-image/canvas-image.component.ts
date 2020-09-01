@@ -106,6 +106,28 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   top;
   _subscription: Subscription;
 
+  // zoomInByMouse = false;	
+  // zoomOutByMouse = false;	
+  // PanModeByMouse = false;	
+  // zoomMax = 23;   //TBD	
+  // SCALE_FACTOR = 1.3;
+  // mouseDown;	
+  zoomInEnable = false	
+  	
+  zoomLevel = 0;	
+  zoomLevelMin = 0;	
+  zoomLevelMax = 5;	
+  	
+  shiftKeyDown = false;	
+  mouseDownPoint = null;	
+  Direction = {	
+    LEFT: 0,	
+    UP: 1,	
+    RIGHT: 2,	
+    DOWN: 3	
+  };
+  resize = false;
+
 /*  
 * constructor for CanvasImageComponent class  
 */ 
@@ -136,6 +158,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 */  
   @HostListener('window:resize', [])
   public onResize() {
+    this.resize = true;
     this.canvas.clear(fabric.Ellipse);
     this.canvas.clear(fabric.Path);
     this.canvasDynamicHeight = 0;
@@ -182,6 +205,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           case 'Free Hand Drawing':
             this.freeHandDrawing(data);
             break;
+          case 'Zoom In':
+            this.zoomInClicked(data);
+            break;
+          case 'Zoom Out':
+            this.zoomOutClicked(data);
+            break;
           case 'Delete':
             break;
           default:
@@ -221,6 +250,51 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
+    //double click event for reset zoom of image
+    this.canvas.on('mouse:dblclick', (options) => {	
+      if(this.zoomInEnable === true) {	
+          this.canvas.setZoom(1);    
+          this.keepPositionInBounds(this.canvas);	      
+        }
+    });	
+    // Zoom-In Zoom-Out in part starts	    	
+    this.canvas.on('mouse:down', (options) => {	
+      if(this.zoomInEnable === true) {	
+        var pointer = this.canvas.getPointer(options.e, true);	
+        this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);	
+      }	
+    });	
+    this.canvas.on('mouse:up', (options) => {	
+      if(this.zoomInEnable === true) {	
+        this.mouseDownPoint = null;	
+      }	
+    });	
+    this.canvas.on('mouse:move', (options) => {	
+      if(this.zoomInEnable === true) {	
+        if (this.shiftKeyDown && this.mouseDownPoint) {	
+          var pointer = this.canvas.getPointer(options.e, true);	
+          var mouseMovePoint = new fabric.Point(pointer.x, pointer.y);	
+          this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));	
+          this.mouseDownPoint = mouseMovePoint;	
+          this.keepPositionInBounds(this.canvas);	
+        }	
+      }	
+    });	
+    this.canvas.on('mouse:wheel', (options) => {	
+      if(this.zoomInEnable === true) {	
+        // var delta = options.originalEvent.wheelDelta;	
+        var delta = options.e.deltaY;	
+        if (delta != 0) {	
+          var pointer = this.canvas.getPointer(options.e, true);	
+          var point = new fabric.Point(pointer.x, pointer.y);	
+          if (delta > 0) {	
+            this.zoomOut(point);	
+          } else if (delta < 0) {	
+            this.zoomIn(point);	
+          }	
+        }	
+      }	
+    });	
     this.canvas.on('object:modified', (options) => {
       this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
@@ -317,6 +391,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   prevNextPatientChange(patientId) {
+    this.zoomInEnable = false;
+    this.canvas.setZoom(1);    
+    this.keepPositionInBounds(this.canvas);	
     this.canvas.clear();
     this.spinnerService.show();
     sessionStorage.removeItem('ellipse');
@@ -569,7 +646,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.savedInfo = xrayData;
       }
       if (xrayData !== null && xrayData.data.ndarray[0].Impression.length > 0) {
-        this.mlApiEllipseLoop(xrayData, 'session');
+        if(this.resize === false) {
+          this.mlApiEllipseLoop(xrayData, 'session');
+        }
       }
     });
   }
@@ -811,6 +890,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 *  drawEllipse(data, isMlAi?, diseaseItem?);
 */
   drawEllipse(data, isMlAi?, diseaseItem?) {
+    console.log("called")
     this.updateDisease = false;
     this.canvas.isDrawingMode = false;
     this.enableDrawEllipseMode = true;
@@ -1248,7 +1328,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**  
+/**  
 *  This is getColorMapping function
 * @param {string} value - A string param  
 * @param {string} value - A string param     
@@ -1340,7 +1420,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.renderAll();
   }
 
-    /**  
+/**  
 * This is saveEllipseIntoSession function
 * @param {void} empty - A empty param     
 * @example  
@@ -1351,7 +1431,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.scaleSaveEllipse(selectedObject);
   }
 
-      /**  
+/**  
 * This is updateEllipseIntoSession function
 * @param {void} empty - A empty param     
 * @example  
@@ -1381,7 +1461,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
-        /**  
+/**  
 * This is updateFreeHandDrawingIntoSession function
 * @param {void} empty - A empty param     
 * @example  
@@ -1418,7 +1498,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   
-        /**  
+/**  
 * This is deleteEllipseInSession function
 * @param {void} empty - A empty param     
 * @example  
@@ -1438,7 +1518,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.remove(this.canvas.getActiveObject());
   }
 
-          /**  
+/**  
 * This is deleteFreeHandDrawingInSession function
 * @param {void} empty - A empty param     
 * @example  
@@ -1458,7 +1538,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.remove(this.canvas.getActiveObject());
   }
 
-            /**  
+/**  
 * This is saveFreeHandDrawingIntoSession function
 * @param {void} empty - A empty param     
 * @example  
@@ -1489,7 +1569,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     );
   }
 
-              /**  
+/**  
 * This is getSessionEllipse function
 * @param {void} empty - A empty param     
 * @example  
@@ -1509,8 +1589,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           angle: element.angle,
           stroke: element.color,
           id: element.id,
-          originX: 'center',
-          originY: 'center',
+          originX: 'left',
+          originY: 'top',
           strokeWidth: 2,
           fill: '',
           selectable: true,
@@ -1523,7 +1603,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   
-              /**  
+/**  
 * This is getSessionFreeHandDrawing function
 * @param {void} empty - A empty param     
 * @example  
@@ -1531,6 +1611,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 */
   getSessionFreeHandDrawing() {
     const path = JSON.parse(sessionStorage.getItem('freeHandDrawing'));
+    if(path === null){
+      return;
+    }
     if (path.length !== 0) {
       path.forEach((element) => {
         const coordinatePath = element.coordinateValue.split(' ');
@@ -1565,5 +1648,99 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.renderAll();
       this.dialog.closeAll();
     }
+  }
+
+/**  
+* This is ZoomIn function
+* @param {any} data - A array param     
+* @example  
+* zoomInClicked(data);
+*/
+  zoomInClicked(data: any) {	
+    if(data.active === true) {
+      this.zoomInEnable = true;
+    }
+    else {
+      this.zoomInEnable = false;
+    }
+  }	
+
+/**  
+* This is ZoomOut function
+* @param {any} data - A array param     
+* @example  
+* zoomOutClicked(data);
+*/
+  zoomOutClicked(data: any) {	
+    if(data.active === true) {
+      this.zoomInEnable = true;
+    }
+    else {
+      this.zoomInEnable = false;
+    }
+  }	
+  
+/**  
+* This is ZoomIn function
+* @param {number} index - A number param     
+* @example  
+* zoomIn(123);
+*/
+  zoomIn(point: number) {	
+    if (this.zoomLevel < this.zoomLevelMax) {	
+      this.zoomLevel++;	
+      this.canvas.zoomToPoint(point, Math.pow(1.3, this.zoomLevel));	
+      this.keepPositionInBounds(this.canvas);	
+    }	
+}
+
+
+/**  
+* This is ZoomOut function
+* @param {number} index - A number param     
+* @example  
+* zoomOut(123);
+*/	
+  zoomOut(point: number) {	
+    if (this.zoomLevel > this.zoomLevelMin) {	
+      this.zoomLevel--;	
+      this.canvas.zoomToPoint(point, Math.pow(1.3, this.zoomLevel));	
+      this.keepPositionInBounds(this.canvas);	
+    }	
+  }	
+
+/**  
+* This is keepPositionInBounds function
+* @param {any} data - A array param     
+* @example  
+* keepPositionInBounds(e);
+*/	
+  keepPositionInBounds(e: any) {	
+    var zoom = this.canvas.getZoom();	
+    var xMin = (2 - zoom) * this.canvas.getWidth() / 2;	
+    var xMax = zoom * this.canvas.getWidth() / 2;	
+    var yMin = (2 - zoom) * this.canvas.getHeight() / 2;	
+    var yMax = zoom * this.canvas.getHeight() / 2;	  	
+    var point = new fabric.Point(this.canvas.getWidth() / 2, this.canvas.getHeight() / 2);	
+    var center = fabric.util.transformPoint(point, this.canvas.viewportTransform);  	
+    var clampedCenterX = this.clamp(center.x, xMin, xMax);	
+    var clampedCenterY = this.clamp(center.y, yMin, yMax);	  	
+    var diffX = clampedCenterX - center.x;	
+    var diffY = clampedCenterY - center.y;	  	
+    if (diffX != 0 || diffY != 0) {	
+      this.canvas.relativePan(new fabric.Point(diffX, diffY));	
+    }	
+  }	
+
+/**  
+* This is clamp function
+* @param {number} index - A number param   
+* @param {number} index - A number param     
+* @param {number} index - A number param     
+* @example  
+* clamp(123, 23, 13);
+*/
+  clamp(value: number, min: number, max: number) {	
+    return Math.max(min, Math.min(value, max));	
   }
 }
