@@ -105,19 +105,19 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   left;
   top;
   _subscription: Subscription;
-  zoomInEnable = false	  	
-  zoomLevel = 0;	
-  zoomLevelMin = 0;	
-  zoomLevelMax = 5;	  	
-  shiftKeyDown = false;	
-  mouseDownPoint = null;	
+  zoomInEnable: boolean;	  	
+  zoomLevel: number;	
+  zoomLevelMin: number;	
+  zoomLevelMax: number;	  	
+  shiftKeyDown: boolean;	
+  mouseDownPoint: null;	
+  resize: boolean;
   Direction = {	
     LEFT: 0,	
     UP: 1,	
     RIGHT: 2,	
     DOWN: 3	
   };
-  resize = false;
 
 /*  
 * constructor for CanvasImageComponent class  
@@ -169,6 +169,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 * ngOnInit();
 */  
   ngOnInit() {
+    this.zoomLevel = 0;	
+    this.zoomLevelMin = 0;
+    this.zoomLevelMax = 5;	
+    this.zoomInEnable = false;
+    this.shiftKeyDown = false;
+    this.resize = false;
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
     this.savedInfo = {
@@ -197,10 +203,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.freeHandDrawing(data);
             break;
           case 'Zoom In':
-            this.zoomInClicked(data);
+            this.zoomClicked(data);
             break;
           case 'Zoom Out':
-            this.zoomOutClicked(data);
+            this.zoomClicked(data);
             break;
           case 'Delete':
             break;
@@ -251,7 +257,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     // Zoom-In Zoom-Out in part starts	    	
     this.canvas.on('mouse:down', (options) => {	
       if(this.zoomInEnable === true) {	
-        var pointer = this.canvas.getPointer(options.e, true);	
+        const pointer = this.canvas.getPointer(options.e, true);	
         this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);	
       }	
     });	
@@ -263,8 +269,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.canvas.on('mouse:move', (options) => {	
       if(this.zoomInEnable === true) {	
         if (this.shiftKeyDown && this.mouseDownPoint) {	
-          var pointer = this.canvas.getPointer(options.e, true);	
-          var mouseMovePoint = new fabric.Point(pointer.x, pointer.y);	
+          const pointer = this.canvas.getPointer(options.e, true);	
+          const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);	
           this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));	
           this.mouseDownPoint = mouseMovePoint;	
           this.keepPositionInBounds(this.canvas);	
@@ -273,10 +279,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });	
     this.canvas.on('mouse:wheel', (options) => {	
       if(this.zoomInEnable === true) {	
-        var delta = options.e.deltaY;	
+        const delta = options.e.deltaY;	
         if (delta != 0) {	
-          var pointer = this.canvas.getPointer(options.e, true);	
-          var point = new fabric.Point(pointer.x, pointer.y);	
+          const pointer = this.canvas.getPointer(options.e, true);	
+          const point = new fabric.Point(pointer.x, pointer.y);	
           if (delta > 0) {	
             this.zoomOut(point);	
           } else if (delta < 0) {	
@@ -380,6 +386,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
   }
 
+    /**  
+* This is a prevNextPatientChange function.  
+* @param {string} value - A string param  
+* @example  
+* prevNextPatientChange(patientId);
+*/  
   prevNextPatientChange(patientId) {
     this.zoomInEnable = false;
     this.canvas.setZoom(1);    
@@ -1600,7 +1612,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 */
   getSessionFreeHandDrawing() {
     const path = JSON.parse(sessionStorage.getItem('freeHandDrawing'));
-    if(path === null){
+    if (path === null){
       return;
     }
     if (path.length !== 0) {
@@ -1640,28 +1652,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
 /**  
-* This is ZoomIn function
+* This is Zoom function
 * @param {any} data - A array param     
 * @example  
-* zoomInClicked(data);
+* zoomClicked(data);
 */
-  zoomInClicked(data: any) {	
-    if(data.active === true) {
-      this.zoomInEnable = true;
-    }
-    else {
-      this.zoomInEnable = false;
-    }
-  }	
-
-/**  
-* This is ZoomOut function
-* @param {any} data - A array param     
-* @example  
-* zoomOutClicked(data);
-*/
-  zoomOutClicked(data: any) {	
-    if(data.active === true) {
+  zoomClicked(data: any) {	
+    if (data.active === true) {
       this.zoomInEnable = true;
     }
     else {
@@ -1678,8 +1675,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   zoomIn(point: number) {	
     if (this.zoomLevel < this.zoomLevelMax) {	
       this.zoomLevel++;	
-      this.canvas.zoomToPoint(point, Math.pow(1.3, this.zoomLevel));	
-      this.keepPositionInBounds(this.canvas);	
+      this.zoomScale(point);
     }	
 }
 
@@ -1693,10 +1689,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   zoomOut(point: number) {	
     if (this.zoomLevel > this.zoomLevelMin) {	
       this.zoomLevel--;	
-      this.canvas.zoomToPoint(point, Math.pow(1.3, this.zoomLevel));	
-      this.keepPositionInBounds(this.canvas);	
+      this.zoomScale(point);
     }	
   }	
+
+  /**  
+* This is ZoomScale function
+* @param {number} index - A number param     
+* @example  
+* zoomScale(123);
+*/	
+  zoomScale(point: number) {
+    this.canvas.zoomToPoint(point, Math.pow(1.3, this.zoomLevel));	
+    this.keepPositionInBounds(this.canvas);	
+  }
 
 /**  
 * This is keepPositionInBounds function
@@ -1705,18 +1711,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 * keepPositionInBounds(e);
 */	
   keepPositionInBounds(e: any) {	
-    var zoom = this.canvas.getZoom();	
-    var xMin = (2 - zoom) * this.canvas.getWidth() / 2;	
-    var xMax = zoom * this.canvas.getWidth() / 2;	
-    var yMin = (2 - zoom) * this.canvas.getHeight() / 2;	
-    var yMax = zoom * this.canvas.getHeight() / 2;	  	
-    var point = new fabric.Point(this.canvas.getWidth() / 2, this.canvas.getHeight() / 2);	
-    var center = fabric.util.transformPoint(point, this.canvas.viewportTransform);  	
-    var clampedCenterX = this.clamp(center.x, xMin, xMax);	
-    var clampedCenterY = this.clamp(center.y, yMin, yMax);	  	
-    var diffX = clampedCenterX - center.x;	
-    var diffY = clampedCenterY - center.y;	  	
-    if (diffX != 0 || diffY != 0) {	
+    const zoom = this.canvas.getZoom();	
+    const xMin = (2 - zoom) * this.canvas.getWidth() / 2;	
+    const xMax = zoom * this.canvas.getWidth() / 2;	
+    const yMin = (2 - zoom) * this.canvas.getHeight() / 2;	
+    const yMax = zoom * this.canvas.getHeight() / 2;	  	
+    const point = new fabric.Point(this.canvas.getWidth() / 2, this.canvas.getHeight() / 2);	
+    const center = fabric.util.transformPoint(point, this.canvas.viewportTransform);  	
+    const clampedCenterX = this.clamp(center.x, xMin, xMax);	
+    const clampedCenterY = this.clamp(center.y, yMin, yMax);	  	
+    const diffX = clampedCenterX - center.x;	
+    const diffY = clampedCenterY - center.y;	  	
+    if (diffX !== 0 || diffY !== 0) {	
       this.canvas.relativePan(new fabric.Point(diffX, diffY));	
     }	
   }	
