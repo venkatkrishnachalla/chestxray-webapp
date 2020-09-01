@@ -249,25 +249,25 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.borderColor = 'white';
     //double click event for reset zoom of image
     this.canvas.on('mouse:dblclick', (options) => {	
-      if(this.zoomInEnable === true) {	
+      if (this.zoomInEnable === true) {	
           this.canvas.setZoom(1);    
           this.keepPositionInBounds(this.canvas);	      
         }
     });	
     // Zoom-In Zoom-Out in part starts	    	
     this.canvas.on('mouse:down', (options) => {	
-      if(this.zoomInEnable === true) {	
+      if (this.zoomInEnable === true) {	
         const pointer = this.canvas.getPointer(options.e, true);	
         this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);	
       }	
     });	
     this.canvas.on('mouse:up', (options) => {	
-      if(this.zoomInEnable === true) {	
+      if (this.zoomInEnable === true) {	
         this.mouseDownPoint = null;	
       }	
     });	
     this.canvas.on('mouse:move', (options) => {	
-      if(this.zoomInEnable === true) {	
+      if (this.zoomInEnable === true) {	
         if (this.shiftKeyDown && this.mouseDownPoint) {	
           const pointer = this.canvas.getPointer(options.e, true);	
           const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);	
@@ -278,9 +278,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }	
     });	
     this.canvas.on('mouse:wheel', (options) => {	
-      if(this.zoomInEnable === true) {	
+      if (this.zoomInEnable === true) {	
         const delta = options.e.deltaY;	
-        if (delta != 0) {	
+        if (delta !== 0) {	
           const pointer = this.canvas.getPointer(options.e, true);	
           const point = new fabric.Point(pointer.x, pointer.y);	
           if (delta > 0) {	
@@ -648,7 +648,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.savedInfo = xrayData;
       }
       if (xrayData !== null && xrayData.data.ndarray[0].Impression.length > 0) {
-        if(this.resize === false) {
+        if (this.resize === false) {
           this.mlApiEllipseLoop(xrayData, 'session');
         }
       }
