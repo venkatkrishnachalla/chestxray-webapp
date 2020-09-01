@@ -105,19 +105,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   left;
   top;
   _subscription: Subscription;
-
-  // zoomInByMouse = false;	
-  // zoomOutByMouse = false;	
-  // PanModeByMouse = false;	
-  // zoomMax = 23;   //TBD	
-  // SCALE_FACTOR = 1.3;
-  // mouseDown;	
-  zoomInEnable = false	
-  	
+  zoomInEnable = false	  	
   zoomLevel = 0;	
   zoomLevelMin = 0;	
-  zoomLevelMax = 5;	
-  	
+  zoomLevelMax = 5;	  	
   shiftKeyDown = false;	
   mouseDownPoint = null;	
   Direction = {	
@@ -282,7 +273,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });	
     this.canvas.on('mouse:wheel', (options) => {	
       if(this.zoomInEnable === true) {	
-        // var delta = options.originalEvent.wheelDelta;	
         var delta = options.e.deltaY;	
         if (delta != 0) {	
           var pointer = this.canvas.getPointer(options.e, true);	
@@ -890,7 +880,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 *  drawEllipse(data, isMlAi?, diseaseItem?);
 */
   drawEllipse(data, isMlAi?, diseaseItem?) {
-    console.log("called")
     this.updateDisease = false;
     this.canvas.isDrawingMode = false;
     this.enableDrawEllipseMode = true;
