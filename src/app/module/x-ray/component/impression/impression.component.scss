@@ -34,5 +34,12 @@
       height: auto;
       line-height: 2rem;
     }
+    .impressionCheckbox{
+      text-align: right;
+      position: relative;
+      top: 5px;
+      left: 20px;
+      width: -webkit-fill-available;
+    }
   }
 }
