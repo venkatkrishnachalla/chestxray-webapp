@@ -106,6 +106,19 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   top;
   _subscription: Subscription;
   isChangeable: boolean = true;
+  zoomInEnable: boolean;	
+  zoomLevel: number;	
+  zoomLevelMin: number;	
+  zoomLevelMax: number;	
+  shiftKeyDown: boolean;	
+  mouseDownPoint: null;	
+  resize: boolean;	
+  Direction = {	
+    LEFT: 0,	
+    UP: 1,	
+    RIGHT: 2,	
+    DOWN: 3,	
+  };
 
 /*  
 * constructor for CanvasImageComponent class  
@@ -137,6 +150,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 */  
   @HostListener('window:resize', [])
   public onResize() {
+    this.resize = true;
     this.canvas.clear(fabric.Ellipse);
     this.canvas.clear(fabric.Path);
     this.canvasDynamicHeight = 0;
@@ -156,6 +170,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 * ngOnInit();
 */  
   ngOnInit() {
+    this.zoomLevel = 0;	
+    this.zoomLevelMin = 0;	
+    this.zoomLevelMax = 5;	
+    this.shiftKeyDown = false;	
+    this.resize = false;
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
     this.savedInfo = {
@@ -222,6 +241,40 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
+    //double click event for reset zoom of image	
+    this.canvas.on('mouse:dblclick', (options) => {	
+      this.canvas.setZoom(1);	
+      this.keepPositionInBounds(this.canvas);	
+    });	
+    // Zoom-In Zoom-Out in part starts	
+    this.canvas.on('mouse:down', (options) => {	
+      const pointer = this.canvas.getPointer(options.e, true);	
+      this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);	
+    });	
+    this.canvas.on('mouse:up', (options) => {	
+      this.mouseDownPoint = null;	
+    });	
+    this.canvas.on('mouse:move', (options) => {	
+      if (this.shiftKeyDown && this.mouseDownPoint) {	
+        const pointer = this.canvas.getPointer(options.e, true);	
+        const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);	
+        this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));	
+        this.mouseDownPoint = mouseMovePoint;	
+        this.keepPositionInBounds(this.canvas);	
+      }	
+    });	
+    this.canvas.on('mouse:wheel', (options) => {	
+      const delta = options.e.deltaY;	
+      if (delta !== 0) {	
+        const pointer = this.canvas.getPointer(options.e, true);	
+        const point = new fabric.Point(pointer.x, pointer.y);	
+        if (delta > 0) {	
+          this.zoomOut(point);	
+        } else if (delta < 0) {	
+          this.zoomIn(point);	
+        }	
+      }	
+    });
     this.canvas.on('object:modified', (options) => {
       this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
@@ -318,6 +371,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   prevNextPatientChange(patientId) {
+    this.canvas.setZoom(1);	
+    this.keepPositionInBounds(this.canvas);
     this.canvas.clear();
     this.spinnerService.show();
     sessionStorage.removeItem('ellipse');
@@ -1533,6 +1588,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 */
   getSessionFreeHandDrawing() {
     const path = JSON.parse(sessionStorage.getItem('freeHandDrawing'));
+    if (path === null) {	
+      return;	
+    }
     if (path.length !== 0) {
       path.forEach((element) => {
         const coordinatePath = element.coordinateValue.split(' ');
@@ -1568,6 +1626,79 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.dialog.closeAll();
     }
   }
+ /**	
+   * This is ZoomIn function	
+   * @param {number} index - A number param	
+   * @example	
+   * zoomIn(123);	
+   */	
+  zoomIn(point: number) {	
+    if (this.zoomLevel < this.zoomLevelMax) {	
+      this.zoomLevel++;	
+      this.zoomScale(point);	
+    }	
+  }	
+  /**	
+   * This is ZoomOut function	
+   * @param {number} index - A number param	
+   * @example	
+   * zoomOut(123);	
+   */	
+  zoomOut(point: number) {	
+    if (this.zoomLevel > this.zoomLevelMin) {	
+      this.zoomLevel--;	
+      this.zoomScale(point);	
+    }	
+  }	
+  /**	
+   * This is ZoomScale function	
+   * @param {number} index - A number param	
+   * @example	
+   * zoomScale(123);	
+   */	
+  zoomScale(point: number) {	
+    this.canvas.zoomToPoint(point, Math.pow(1.3, this.zoomLevel));	
+    this.keepPositionInBounds(this.canvas);	
+  }	
+  /**	
+   * This is keepPositionInBounds function	
+   * @param {any} data - A array param	
+   * @example	
+   * keepPositionInBounds(e);	
+   */	
+  keepPositionInBounds(e: any) {	
+    const zoom = this.canvas.getZoom();	
+    const xMin = ((2 - zoom) * this.canvas.getWidth()) / 2;	
+    const xMax = (zoom * this.canvas.getWidth()) / 2;	
+    const yMin = ((2 - zoom) * this.canvas.getHeight()) / 2;	
+    const yMax = (zoom * this.canvas.getHeight()) / 2;	
+    const point = new fabric.Point(	
+      this.canvas.getWidth() / 2,	
+      this.canvas.getHeight() / 2	
+    );	
+    const center = fabric.util.transformPoint(	
+      point,	
+      this.canvas.viewportTransform	
+    );	
+    const clampedCenterX = this.clamp(center.x, xMin, xMax);	
+    const clampedCenterY = this.clamp(center.y, yMin, yMax);	
+    const diffX = clampedCenterX - center.x;	
+    const diffY = clampedCenterY - center.y;	
+    if (diffX !== 0 || diffY !== 0) {	
+      this.canvas.relativePan(new fabric.Point(diffX, diffY));	
+    }	
+  }	
+  /**	
+   * This is clamp function	
+   * @param {number} index - A number param	
+   * @param {number} index - A number param	
+   * @param {number} index - A number param	
+   * @example	
+   * clamp(123, 23, 13);	
+   */	
+  clamp(value: number, min: number, max: number) {	
+    return Math.max(min, Math.min(value, max));	
+  }	
 
   /**
    * Hide/Show list of drawn ellipseList
