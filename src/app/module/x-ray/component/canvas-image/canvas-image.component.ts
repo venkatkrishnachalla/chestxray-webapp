@@ -122,6 +122,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   /*
    * constructor for CanvasImageComponent class
    */
+  isChangeable: boolean = true;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -1313,6 +1314,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  onSubmitPatientDetails() ;
    */
   onSubmitPatientDetails() {
+    this.ellipseLists(true);
     this.processedImage = this.canvas.toDataURL('image/png');
     sessionStorage.setItem('annotatedImage', this.processedImage);
     this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
@@ -1721,4 +1723,26 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   clamp(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max));
   }
+  /**
+   * Hide/Show list of drawn ellipseList
+   * * @param {any} data - A array param     
+   * @example  
+   * ellipseLists();
+   */
+  ellipseLists(event: any){
+  let objects = this.canvas.getObjects();
+  if(event === true){
+    objects.forEach(object=>{
+    this.isChangeable = true;
+    this.canvas.setVisible = object.visible= event
+    this.canvas.renderAll();
+  })
+  }else{
+    objects.forEach(object=>{
+    this.isChangeable = false;
+    this.canvas.setVisible = object.visible= event
+    this.canvas.renderAll();
+      })
+    } 
+  };
 }
