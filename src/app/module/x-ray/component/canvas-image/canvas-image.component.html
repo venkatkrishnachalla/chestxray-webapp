@@ -19,6 +19,12 @@
     visibility
     </span>
     </div>
+
+  <div class="contents" *ngIf="displayScaleFactorBlock">
+    <span class="scale-factor">
+      {{ displayScaleFactor + 'x'  }}
+    </span>
+  </div>
   <div
     class="xRay-image-canvas-container d-flex justify-content-center"
     id="canvas-wrapper"
