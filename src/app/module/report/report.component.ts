@@ -17,6 +17,7 @@ import { ImpressionComponent } from '../x-ray/component/impression/impression.co
 import { FindingsComponent } from '../x-ray/component/findings/findings.component';
 import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
+import { fabric } from 'fabric';
 import { ToastrService } from 'ngx-toastr';
 declare var jsPDF: any;
 @Component({
@@ -44,6 +45,11 @@ export class ReportComponent implements OnInit {
   pdfFindings: string;
   pdfComments: string;
   cxrPrintHeaderName = 'CXR Radiological Report';
+  canvasDynamicWidth: number;
+  canvasDynamicHeight: number;
+  canvasCorrectedWidth: number;
+  canvasCorrectedHeight: number;
+  xRayImage: any;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
@@ -139,6 +145,70 @@ export class ReportComponent implements OnInit {
 
   enablePrint(event) {
     this.showPrintForm = event;
+  }
+
+  /**
+   * This is to get the dimensions for image container.
+   * @param {void} empty - A empty param
+   * @example
+   * setCanvasDimension();
+   */
+
+  setCanvasDimension() {
+    this.canvasDynamicWidth = 367;
+    this.canvasDynamicHeight = 367;
+    this.generateCanvas();
+  }
+
+  /**
+   * This is to generate a canvas using fabric.js .
+   * @param {void} empty - A empty param
+   * @example
+   * generateCanvas();
+   */
+
+  generateCanvas() {
+    fabric.Image.fromURL(this.annotatedImage, (img) => {
+      this.xRayImage = img;
+      this.setCanvasBackground();
+    });
+  }
+
+  /**
+   * function to compare image vs container aspect ratio width .
+   * @param {string} value - A string param
+   * @param {string} value - A string param
+   * @example
+   * getWidthFirst(imageAspectRatio, containerAspectRatio);
+   */
+
+  getWidthFirst(imageAspectRatio, containerAspectRatio) {
+    return imageAspectRatio > containerAspectRatio;
+  }
+
+  /**
+   * This is to setting BackgroundImage for canvas block .
+   * @param {void} empty - A empty param
+   * @example
+   * setCanvasBackground();
+   */
+
+  setCanvasBackground() {
+    const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
+    const containerAspectRatio =
+      this.canvasDynamicWidth / this.canvasDynamicHeight;
+    const widthFirst = this.getWidthFirst(
+      imageAspectRatio,
+      containerAspectRatio
+    );
+
+    if (widthFirst) {
+      this.canvasCorrectedWidth = this.canvasDynamicWidth;
+      this.canvasCorrectedHeight = this.canvasCorrectedWidth / imageAspectRatio;
+    } else {
+      this.canvasCorrectedHeight = this.canvasDynamicHeight;
+      this.canvasCorrectedWidth = this.canvasCorrectedHeight * imageAspectRatio;
+    }
   }
 
   makePdf(event) {
