@@ -54,6 +54,144 @@
   font-family: 'Times New Roman', Times, serif;
 }
 
+@media (max-width: 768px) {
+  .content {
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.25rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 860px) {
+  .content {
+    margin: 0rem 1rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.35rem;
+  }
+}
+
+@media (min-width: 861px) and (max-width: 950px) {
+  .content {
+    margin: 0rem 4rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.35rem;
+  }
+}
+
+@media (min-width: 951px) and (max-width: 1050px) {
+  .content {
+    margin: 0rem 6rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.6rem;
+  }
+}
+
+@media (min-width: 1051px) and (max-width: 1150px) {
+  .content {
+    margin: 0rem 12rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.75rem;
+  }
+}
+
+@media (min-width: 1151px) and (max-width: 1250px) {
+  .content {
+    margin: 0rem 20rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.75rem;
+  }
+}
+
+@media (min-width: 1251px) and (max-width: 1350px) {
+  .content {
+    margin: 0rem 25rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.75rem;
+  }
+}
+
+@media (min-width: 1351px) and (max-width: 1440px) {
+  .content {
+    margin: 0rem 30rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.75rem;
+  }
+}
+
+@media (min-width: 1441px) and (max-width: 1550px) {
+  .content {
+    margin: 0rem 35rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.75rem;
+  }
+}
+
+@media (min-width: 1551px) and (max-width: 1999px) {
+  .content {
+    margin: 0rem 40rem;
+    background-color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .common-hr {
+    border: 1px solid black;
+    width: 96.4%;
+    text-align: center;
+    margin-left: 1.75rem;
+  }
+}
 // .cxr-x-ray-patient-details {
 //   display: none;
 // }
@@ -93,12 +231,13 @@
   font-weight: 600;
 }
 
-.common-hr {
-  border: 1px solid black;
-  width: 96.4%;
-  text-align: center;
-  margin-left: 1rem;
-}
+// .common-hr {
+//   border: 1px solid black;
+//   width: 96.4%;
+//   text-align: center;
+//   margin-left: 1.25rem;
+// }
+
 .details-heading {
   display: none;
 }
@@ -197,7 +336,3 @@ h4 {
 .pdf-padding-r-50{
   padding-right: 50px;
 }
-
-
-
-
