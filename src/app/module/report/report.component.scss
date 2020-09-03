@@ -51,12 +51,7 @@
 
 .content {
   background-color: #ffffff;
-}
-
-.grid-container {
-  padding: 1px;
-  display: grid;
-  grid-template-columns: 20% 50% 30%;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 // .cxr-x-ray-patient-details {
@@ -71,16 +66,19 @@
   position: relative;
   left: 2%;
   display: block;
+  color: #000000;
 }
 
 .patient-grid-container {
   padding: 1px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
   position: relative;
   left: 2%;
-  margin-right: 30px;
+  color: #000000;
+}
+
+.patient-details-alignment {
+  table-layout: auto;
+  width: 100%;
 }
 
 .patient-info-sex {
@@ -90,12 +88,16 @@
 .clinical-comments-align {
   position: relative;
   left: 2%;
+  color: #000000;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
 }
 
 .common-hr {
   border: 1px solid black;
   width: 96.4%;
   text-align: center;
+  margin-left: 1rem;
 }
 .details-heading {
   display: none;
@@ -107,13 +109,14 @@
   font: italic small-caps bold;
 }
 .history {
-  width: 95.3%;
+  width: 96.5%;
   left: 2%;
   position: relative;
   padding: 5px;
   border: 1px solid black;
   min-height: 50px;
   height: auto;
+  color: #000000;
 }
 
 // .cxr-x-ray-patient-details {
@@ -127,7 +130,7 @@
 }
 
 h4 {
-  margin: 15px 0px -10px 0px;
+  margin: 16px 0px 0px;
 }
 .findings-left-content-top {
   width: 45%;
@@ -163,7 +166,8 @@ h4 {
 }
 
 .footer-left-content {
-  padding: 0px 15px 0px 10px;
+  padding: 0px 15px 0px 15px;
+  color: #000000;
 }
 
 .signature-right-side {
@@ -172,6 +176,10 @@ h4 {
 .cxr-radiological-header {
   text-align: center;
   margin-top: 1rem;
+  font-size: 2rem;
+  font-family: auto;
+  font-weight: 600;
+  color: #000000;
 }
 
 .box-title {
@@ -180,6 +188,7 @@ h4 {
   font-weight: 600;
   padding: 3px;
   font-size: 16px;
+  color: #000000;
 }
 .hide-xray {
   width: 100%;

@@ -35,14 +35,12 @@
       <!-- Print option -->
       <div class="cxr-x-ray-patient-details">
         <div class="patient-grid-container">
-          <table mat-table class="mat-elevation-z0">
+          <table mat-table class="patient-details-alignment">
             <tr>
               <td><b>Patient ID</b></td>
-              <td class="pdf-padding-r-70">
-                : {{ patientInfo.hospitalPatientId }}
-              </td>
+              <td>: {{ patientInfo.hospitalPatientId }}</td>
               <td><b>Name</b></td>
-              <td class="pdf-padding-r-70">: {{ patientInfo.name }}</td>
+              <td>: {{ patientInfo.name }}</td>
               <td><b>Gender</b></td>
               <td>: {{ patientInfo.sex }}</td>
             </tr>
@@ -108,7 +106,7 @@
                 [src]="annotatedImage"
                 alt=""
                 [ngStyle]="{
-                  'width.px': 400,
+                  'width.px': 367,
                   'height.px': 367
                 }"
               />
@@ -124,10 +122,13 @@
         <p class="history">
           {{ pdfComments }}
         </p>
-
-        <div>
-          <cxr-report-footer></cxr-report-footer>
-        </div>
+          <div class="footer-left-content">
+            <label>Dr. Name </label><br />
+            <label>M.B.B.S </label><br />
+            <label>XYZ Radiology Centre </label><br />
+            <label>Radiologist</label>
+            <label class="signature-right-side">SIGNATURE </label>
+          </div>
       </div>
     </div>
   </div>
