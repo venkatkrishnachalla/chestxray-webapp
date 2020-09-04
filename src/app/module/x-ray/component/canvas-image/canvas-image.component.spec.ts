@@ -60,7 +60,15 @@ describe('CanvasImageComponent', () => {
     beforeEach(() => {
       component.canvas = {
         clear: () => {},
+        setZoom: () => {},
+        getZoom: () => {},
+        getWidth: () => {},
+        getHeight: () => {},
       };
+      component.xRayImage = {
+        width: 123,
+        height: 123
+      }
       component.canvasDynamicHeight = 0;
       component.canvasDynamicWidth = 0;
       component.canvasScaleX = 0;
@@ -69,6 +77,8 @@ describe('CanvasImageComponent', () => {
       spyOn(component, 'setCanvasBackground');
       spyOn(component, 'getSessionEllipse');
       spyOn(component, 'getSessionFreeHandDrawing');
+      spyOn(component, 'resetZoom');
+      spyOn(component, 'keepPositionInBounds');
       component.onResize();
     });
     it('should call onResize function', () => {
@@ -76,6 +86,8 @@ describe('CanvasImageComponent', () => {
       expect(component.setCanvasBackground).toHaveBeenCalled();
       expect(component.getSessionEllipse).toHaveBeenCalled();
       expect(component.getSessionFreeHandDrawing).toHaveBeenCalled();
+      expect(component.resetZoom).toHaveBeenCalled();
+      expect(component.keepPositionInBounds).toHaveBeenCalled();
     });
   });
 
@@ -93,6 +105,16 @@ describe('CanvasImageComponent', () => {
       );
       component.canvas = {
         clear: () => {},
+        setZoom: () => {},
+        getZoom: () => {},
+        getWidth: () => {},
+        getHeight: () => {},
+        viewportTransform: 123,
+        relativePan: () => {},
+      };
+      component.xRayImage = {
+        width: 2000,
+        height: 1650,
       };
       component.prevNextPatientChange('4df09ebb-adb7-4d81-a7e0-7d108ceb8f08');
     });
@@ -116,6 +138,7 @@ describe('CanvasImageComponent', () => {
         },
         setBackgroundImage: () => {},
         clear: () => {},
+        setZoom: () => {},
       };
       const controlCheckbox = ({
         clientWidth: '146',
@@ -172,6 +195,7 @@ describe('CanvasImageComponent', () => {
         setBackgroundImage: () => {},
         renderAll: () => {},
         clear: () => {},
+        setZoom: () => {},
       };
       component.canvasDynamicWidth = 893;
       component.canvasDynamicHeight = 549;
@@ -771,6 +795,52 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+    /*** it should call updatePrediction function for ellipse***/
+  describe('#updatePrediction', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            id: 1,
+            type: 'ellipse',
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['2345'],
+              },
+            },
+            set: () => {},
+          };
+        },
+        _activeObject: {
+          path: '/x-ray',
+        },
+        renderAll: () => {},
+        discardActiveObject: () => {},
+      };
+      component.savedInfo = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              Findings: {},
+              Impression: [],
+              diseases: [],
+            },
+          ],
+        },
+        meta: {},
+      };
+      component.selectedDisease = 'Bulla';
+      spyOn(component, 'updateEllipseIntoSession')
+      component.updatePrediction();
+    });
+    it('it should call updatePrediction  for ellipse', () => {
+        expect(component.updatePrediction).toBeDefined();
+        expect(component.updateEllipseIntoSession).toHaveBeenCalled();
+      });
+    });
+  
+
   /*** it should call save function ***/
   describe('#save', () => {
     beforeEach(() => {
@@ -815,17 +885,24 @@ describe('CanvasImageComponent', () => {
 
   /*** it should call onSubmitPatientDetails function ***/
   describe('#onSubmitPatientDetails', () => {
-    it('it should call onSubmitPatientDetails', () => {
+    beforeEach(() => {
       component.canvas = {
         toDataURL: () => {},
         renderAll: () => {},
+        getObjects: () => {},
+        getActiveObject: () => {},
+        forEachObject: () => {},
       };
       component.processedImage = 'data64:abcde';
+      spyOn(component, 'ellipseLists');
       component.onSubmitPatientDetails();
+    });
+    it('it should call onSubmitPatientDetails', () => {
       expect(annotatedXrayServiceSpy.xrayAnnotatedService).toHaveBeenCalledWith(
         component.processedImage
       );
       expect(component.onSubmitPatientDetails).toBeDefined();
+      expect(component.ellipseLists).toHaveBeenCalled();
     });
   });
 
@@ -1282,269 +1359,9 @@ describe('CanvasImageComponent', () => {
       expect(component.changeSelectableStatus).toBeDefined();
     });
   });
-
-    /*** it should call onHoveringAnnotation function, if lockRotation is false***/
-    describe('#onHoveringAnnotation', () => {
-      beforeEach(() => {
-        component.lockRotation = false;
-        const objSpy = {};
-        component.canvas = {
-          renderAll: () => {},
-        };
-        component.onHoveringAnnotation(objSpy);
-      });
-      it('should call onHoveringAnnotation function, if lockRotation is false', () => {
-        expect(component.onHoveringAnnotation).toBeDefined();
-      });
-    });
-
-    /*** it should call onHoveringAnnotation function, if objSpy is equal to null ***/
-    describe('#onHoveringAnnotation', () => {
-      beforeEach(() => {
-        component.lockRotation = true;
-        const objSpy = {
-          target: null,
-        };
-        component.onHoveringAnnotation(objSpy);
-      });
-      it('should call onHoveringAnnotation function,  if objSpy is equal to null', () => {
-        expect(component.onHoveringAnnotation).toBeDefined();
-      });
-    });
-
-    /*** it should call onHoveringAnnotation function, if objSpy not equal to null ***/
-    describe('#onHoveringAnnotation', () => {
-      beforeEach(() => {
-        component.lockRotation = true;
-        const objSpy = {
-          target: {
-            textContent: 'abcd',
-            getBoundingRect: () => {
-              return {
-                top: 60
-              }
-            },
-            calcCoords: () => {
-              return {
-                mb: {
-                  x: 123,
-                  y: 123
-                }
-              }
-            },
-          },
-        };
-        component.canvas = {
-          renderAll: () => {},
-        };
-        const targetRotation = ({
-          style: {
-            display: 'block'
-          },
-        } as unknown) as HTMLElement;
-        spyOn(document, 'getElementById').and.returnValue(targetRotation);
-        component.onHoveringAnnotation(objSpy);
-      });
-      it('should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top less than 70', () => {
-        expect(component.onHoveringAnnotation).toBeDefined();
-      });
-    });
-
-     /*** it should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top greater than 70 ***/
-     describe('#onHoveringAnnotation', () => {
-      beforeEach(() => {
-        component.lockRotation = true;
-        const objSpy = {
-          target: {
-            calcCoords: () => {
-              return {
-                mb: {
-                  x: 123,
-                  y: 123
-                },
-                mt: {
-                  x: 123,
-                  y: 123
-                }
-              }
-            },
-            getBoundingRect: () => {
-              return {
-                top: 80
-              }
-            },
-          },
-        };
-        component.canvas = {
-          renderAll: () => {},
-        };
-        const targetRotation = ({
-          style: {
-            display: 'block'
-          },
-        } as unknown) as HTMLElement;
-        spyOn(document, 'getElementById').and.returnValue(targetRotation);
-        component.onHoveringAnnotation(objSpy);
-      });
-      it('should call onHoveringAnnotation function, if objSpy not equal to null and getBoundingRect top greater than 70 ', () => {
-        expect(component.onHoveringAnnotation).toBeDefined();
-      });
-    });
-
-     /*** it should call onHoveringOutAnnotation function, object.target is equal to null***/
-     describe('#onHoveringOutAnnotation', () => {
-      beforeEach(() => {
-        component.lockRotation = true;
-        const objSpy = {
-          target: null
-        };
-        component.onHoveringOutAnnotation(objSpy);
-      });
-      it('should call onHoveringOutAnnotation function, object.target is equal to null', () => {
-        expect(component.onHoveringOutAnnotation).toBeDefined();
-      });
-    });
-
-     /*** it should call onHoveringOutAnnotation function, object.target is not equal to null***/
-     describe('#onHoveringOutAnnotation', () => {
-      beforeEach(() => {
-        component.lockRotation = true;
-        const objSpy = {
-          target: {
-            lockRotation: true
-          }
-        };
-        const targetRotation = ({
-          style: {
-            display: 'none'
-          },
-        } as unknown) as HTMLElement;
-        spyOn(document, 'getElementById').and.returnValue(targetRotation);
-        component.onHoveringOutAnnotation(objSpy);
-      });
-      it('should call onHoveringOutAnnotation function, object.target is not equal to null', () => {
-        expect(component.onHoveringOutAnnotation).toBeDefined();
-      });
-    });
-
-     /*** it should call onHoveringOutAnnotation function, with else statement***/
-     describe('#onHoveringOutAnnotation', () => {
-      beforeEach(() => {
-        component.lockRotation = false;
-        const objSpy = {
-          target: {
-            lockRotation: false
-          }
-        };
-        component.onHoveringOutAnnotation(objSpy);
-      });
-      it('should call onHoveringOutAnnotation function,  with else statement', () => {
-        expect(component.onHoveringOutAnnotation).toBeDefined();
-      });
-    });  
-    
- 
-     /*** it should call displayMessage function***/
-     describe('#displayMessage', () => {
-      beforeEach(() => {
-        component.lockRotation = false;
-        const objSpy = {
-          target: {
-            lockRotation: false
-          }
-        };
-        component.displayMessage(objSpy);
-      });
-      it('should call displayMessage function', () => {
-        expect(component.displayMessage).toBeDefined();
-      });
-    });   
-    
-      /*** it should call displayMessage function, if object is null***/
-      describe('#displayMessage', () => {
-        beforeEach(() => {
-          component.lockRotation = false;
-          const objSpy = {
-            target: null
-          };
-          component.displayMessage(objSpy);
-        });
-        it('should call displayMessage function, if object is null', () => {
-          expect(component.displayMessage).toBeDefined();
-        });
-      });   
-      
-      /*** it should call displayMessage function, for else statement***/
-      describe('#displayMessage', () => {
-        beforeEach(() => {
-          const objSpy = {
-            target: {
-              lockRotation: true
-            }
-          };
-          spyOn(component, 'onHoveringAnnotation');
-          component.displayMessage(objSpy);
-        });
-        it('should call displayMessage function', () => {
-          expect(component.displayMessage).toBeDefined();
-          expect(component.lockRotation).toBeTruthy;
-          expect(component.onHoveringAnnotation).toHaveBeenCalled();
-        });
-      }); 
-      
-      /*** it should call restrictObjectOnRotate function***/
-      describe('#restrictObjectOnRotate', () => {
-        beforeEach(() => {
-          const objSpy = {
-            target: {
-              calcCoords: () => {
-                return {
-                  bl: {
-                    x: 123,
-                    y: 123
-                  },
-                  br: {
-                    x: 123,
-                    y: 123
-                  },
-                  tl: {
-                    x: 123,
-                    y: 123
-                  },
-                  tr: {
-                    x: 123,
-                    y: 123
-                  },
-                }
-              },
-              canvas: {
-                width: 500
-              },
-              lockRotation: true
-            }
-          };
-          component.canvas = {
-            renderAll: () => {},
-            getActiveObject: () => {
-              return {
-                set: () => {
-                  return{
-                    lockRotation: true
-                  }
-                }
-              }
-            },
-          };
-          spyOn(component, 'onHoveringAnnotation');
-          component.restrictObjectOnRotate(objSpy);
-        });
-        it('should call displayMessage function', () => {
-          expect(component.restrictObjectOnRotate).toBeDefined();
-        });
-      });
       
       /*** it should hide/show Annotation on clicking of eye icon on x-ray image ***/
-      describe('#ellipseLists', () => {
+  describe('#ellipseLists', () => {
         beforeEach(() => {
           component.canvas = {
             clear: () => {},
@@ -1552,13 +1369,152 @@ describe('CanvasImageComponent', () => {
               return [{
                 visible: true,
                 id: 1
-              }]
-            }
+              }];
+            },
+            renderAll: () => {},
           };
           component.ellipseLists(true);
         });
         it('should hide/show annotations based on clickin of eye icon on x-ray image', () => {
           expect(component.ellipseLists).toBeDefined();
         });
-      });  
+      }); 
+      
+  /*** it should call zoomIn function***/
+  describe('#zoomIn', () => {
+    beforeEach(() => {
+      component.fixedScale = 1.2;
+      component.zoomLevelMax = 5;
+      component.displayScaleFactor = 0;
+      spyOn(component, 'zoomScale');
+      spyOn(component, 'incrementZoomLabel');
+      component.zoomIn(123);
+    });
+    it('it should call zoomIn function', () => {
+      expect(component.zoomIn).toBeDefined();
+      expect(component.zoomScale).toHaveBeenCalled();
+      expect(component.incrementZoomLabel).toHaveBeenCalled();
+    });
+  });
+
+    /*** it should call zoomIn function and restrict zoom if it is more than scale factor***/
+  describe('#zoomIn', () => {
+      beforeEach(() => {
+        const point = 123;
+        component.fixedScale = 5.5;
+        component.zoomLevelMax = 5;
+        component.zoomIn(point);
+      });
+      it('it should call zoomIn function and restrict zoom if it is more than scale factor', () => {
+        expect(component.zoomIn).toBeDefined();
+      });
+    }); 
+
+    /*** it should call incrementZoomLabel function, if zoom mood is 0***/
+  describe('#incrementZoomLabel', () => {
+      beforeEach(() => {
+        component.displayScaleFactor = 0;
+        component.incrementZoomLabel();
+      });
+      it('it should call incrementZoomLabel function, if zoom mood is 0', () => {
+        expect(component.incrementZoomLabel).toBeDefined();
+        expect(component.displayScaleFactorBlock).toBeFalsy();
+      });
+    }); 
+        /*** it should call incrementZoomLabel function, if zoom mood is not in 0***/
+  describe('#incrementZoomLabel', () => {
+    beforeEach(() => {
+      component.displayScaleFactor = 1;
+      component.incrementZoomLabel();
+    });
+    it('it should call incrementZoomLabel function, if zoom mood is 0', () => {
+      expect(component.incrementZoomLabel).toBeDefined();
+      expect(component.displayScaleFactorBlock).toBeTruthy();
+    });
+  }); 
+  /*** it should call resetZoom function***/
+  describe('#resetZoom', () => {
+    beforeEach(() => {
+      component.canvas = {
+        setZoom: () => {},
+      };
+      component.xRayImage = {
+        width: 123,
+        height: 123
+      }
+      spyOn(component, 'incrementZoomLabel')
+      component.resetZoom();
+      });
+    it('it should call resetZoom function', () => {
+      expect(component.resetZoom).toBeDefined();
+      expect(component.incrementZoomLabel).toHaveBeenCalled();
+      });
+    }); 
+
+      /*** it should call zoomOut function***/
+  describe('#zoomOut', () => {
+    beforeEach(() => {
+      component.fixedScale = 1;
+      component.zoomLevelMin = 0;
+      spyOn(component, 'zoomScale');
+      spyOn(component, 'incrementZoomLabel');
+      component.zoomOut(123);
+    });
+    it('it should call zoomOut function', () => {
+      expect(component.zoomOut).toBeDefined();
+      expect(component.zoomScale).toHaveBeenCalled();
+      expect(component.incrementZoomLabel).toHaveBeenCalled();
+    });
+  });
+
+    /*** it should call zoomOut function and restrict zoom if it is less than scale factor***/
+  describe('#zoomOut', () => {
+    beforeEach(() => {
+      const point = 123;
+      component.fixedScale = -1;
+      component.zoomLevelMin = 0;
+      component.zoomOut(point);
+    });
+    it('it should call zoomOut function and restrict zoom if it is less than scale factor', () => {
+      expect(component.zoomOut).toBeDefined();
+    });
+  }); 
+  
+    /*** it should call zoomScale function***/
+  describe('#zoomScale', () => {
+      beforeEach(() => {
+        component.canvas = {
+          zoomToPoint: () => {},
+        };
+        const point = 123;
+        component.fixedScale = -1;
+        component.zoomLevelMin = 0;
+        spyOn(component, 'keepPositionInBounds');
+        component.zoomScale(point);
+      });
+      it('it should call zoomScale function', () => {
+        expect(component.zoomScale).toBeDefined();
+        expect(component.keepPositionInBounds).toHaveBeenCalled();
+      });
+    }); 
+
+        /*** it should call keepPositionInBounds function***/
+  describe('#keepPositionInBounds', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getZoom: () => {},
+        getWidth : () => {},
+        getHeight : () => {},
+        viewportTransform: 123,
+        relativePan: () => {},
+      };
+      const point = 123;
+      component.fixedScale = -1;
+      component.zoomLevelMin = 0;
+      component.keepPositionInBounds(point);
+    });
+    it('it should call keepPositionInBounds function', () => {
+      expect(component.keepPositionInBounds).toBeDefined();
+    });
+  }); 
 });
