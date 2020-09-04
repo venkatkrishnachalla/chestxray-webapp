@@ -74,12 +74,12 @@ export class AppComponent implements OnInit {
   }
 
   couterFunction(){
-    this.counter = 30;
+    this.counter = 60;
     this.tick = 1000;
     this.countDown = timer(0, this.tick).subscribe(() => {
       if (this.counter === 0){
         this.dialog.closeAll();
-        this.router.navigate(['login']);
+        this.authService.logOut();
         this.session.start();
       }
       --this.counter;
@@ -91,12 +91,14 @@ export class AppComponent implements OnInit {
     this.countDown.unsubscribe();
     this.session.dispose();
     this.session.start();
+    const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
+    this.authService.refreshToken(accessToken._token, accessToken.refreshToken);
   }
   logout(){
     this.dialog.closeAll();
     this.countDown.unsubscribe();
     this.session.dispose();
     this.session.start();
-    this.router.navigate(['login']);
+    this.authService.logOut();
   }
 }
