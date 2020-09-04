@@ -18,8 +18,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ReportModule } from './module/report/report.module';
 import { NgxPrintModule } from 'ngx-print';
 import { ToastrModule } from 'ngx-toastr';
+import { FormatTimePipe } from './filters/format-time.pipe';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, FormatTimePipe],
   imports: [
     BrowserModule,
     RouterModule,
@@ -46,7 +47,7 @@ import { ToastrModule } from 'ngx-toastr';
     }),
   ],
   providers: [
-    EventEmitterService,
+    EventEmitterService, 
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

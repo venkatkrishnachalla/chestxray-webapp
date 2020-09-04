@@ -74,8 +74,10 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         const UserInfo = JSON.parse(JSON.stringify(user));
-        const tokenNew = window.btoa(UserInfo._token);
-        UserInfo._token = tokenNew;
+        if (UserInfo._token){
+          const tokenNew = window.btoa(UserInfo._token);
+          UserInfo._token = tokenNew;
+        }
         sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
       }
     );
