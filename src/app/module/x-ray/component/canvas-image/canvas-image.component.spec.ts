@@ -940,17 +940,46 @@ describe('CanvasImageComponent', () => {
   /*** it should call getSessionEllipse function if ellipse is in session***/
   describe('#getSessionEllipse', () => {
     beforeEach(() => {
+      const itemMock = null;
       component.canvas = {
         add: () => {},
         renderAll: () => {},
         clear: () => {},
       };
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(itemMock);
+      });
       component.getSessionEllipse();
     });
     it('should call getSessionEllipse function', () => {
       expect(component.getSessionEllipse).toBeDefined();
     });
   });
+
+      /*** it should call getSessionEllipse function if ellipse is in session***/
+  describe('#getSessionEllipse', () => {
+        beforeEach(() => {
+          const itemMock = [
+            {
+              id: 23,
+              coordinateValue: '45 67',
+              color: 'red',
+            },
+          ];
+          component.canvas = {
+            add: () => {},
+            renderAll: () => {},
+            clear: () => {},
+          };
+          spyOn(sessionStorage, 'getItem').and.callFake(() => {
+            return JSON.stringify(itemMock);
+          });
+          component.getSessionEllipse();
+        });
+        it('should call getSessionEllipse function', () => {
+          expect(component.getSessionEllipse).toBeDefined();
+        });
+      });
 
   /*** it should call getSessionFreeHandDrawing function if freeHandDrawing is in session ***/
   describe('#getSessionFreeHandDrawing', () => {
@@ -984,6 +1013,35 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call getSessionFreeHandDrawing function if freeHandDrawing is in session, with no value***/
+  describe('#getSessionFreeHandDrawing', () => {
+    beforeEach(() => {
+      const itemMock = [];
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(itemMock);
+      });
+      component.getSessionFreeHandDrawing();
+    });
+    it('should call getSessionFreeHandDrawing function if freeHandDrawing is in session, with no valuee', () => {
+      expect(component.getSessionFreeHandDrawing).toBeDefined();
+      expect(dialogSpy.closeAll).toHaveBeenCalled();
+    });
+  });
+
+  /*** it should call getSessionFreeHandDrawing function if freeHandDrawing is in session, with null session value ***/
+  describe('#getSessionFreeHandDrawing', () => {
+    beforeEach(() => {
+      const itemMock = null;
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(itemMock);
+      });
+      component.getSessionFreeHandDrawing();
+    });
+    it('should call getSessionFreeHandDrawing function, with null session value', () => {
+      expect(component.getSessionFreeHandDrawing).toBeDefined();
+    });
+  });
+
   /*** it should call saveFreeHandDrawingIntoSession function ***/
   describe('#saveFreeHandDrawingIntoSession', () => {
     beforeEach(() => {
@@ -1004,6 +1062,7 @@ describe('CanvasImageComponent', () => {
   /*** it should call deleteFreeHandDrawingInSession function ***/
   describe('#deleteFreeHandDrawingInSession', () => {
     beforeEach(() => {
+      component.sessionSelectedFreeDrawObject = [];
       component.canvas = {
         getActiveObject: () => {},
         renderAll: () => {},
@@ -1360,7 +1419,7 @@ describe('CanvasImageComponent', () => {
     });
   });
       
-      /*** it should hide/show Annotation on clicking of eye icon on x-ray image ***/
+      /*** it should hide/show Annotation on clicking of eye icon on x-ray image with true condition ***/
   describe('#ellipseLists', () => {
         beforeEach(() => {
           component.canvas = {
@@ -1375,10 +1434,30 @@ describe('CanvasImageComponent', () => {
           };
           component.ellipseLists(true);
         });
-        it('should hide/show annotations based on clickin of eye icon on x-ray image', () => {
+        it('should hide/show annotations based on clickin of eye icon on x-ray image with true condition', () => {
           expect(component.ellipseLists).toBeDefined();
         });
       }); 
+
+            /*** it should hide/show Annotation on clicking of eye icon on x-ray image with false condition***/
+  describe('#ellipseLists', () => {
+    beforeEach(() => {
+      component.canvas = {
+        clear: () => {},
+        getObjects: () => {
+          return [{
+            visible: true,
+            id: 1
+          }];
+        },
+        renderAll: () => {},
+      };
+      component.ellipseLists(false);
+    });
+    it('should hide/show annotations based on clickin of eye icon on x-ray image with false condition', () => {
+      expect(component.ellipseLists).toBeDefined();
+    });
+  }); 
       
   /*** it should call zoomIn function***/
   describe('#zoomIn', () => {
