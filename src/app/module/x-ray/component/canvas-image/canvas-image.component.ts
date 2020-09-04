@@ -119,11 +119,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     DOWN: 3,
   };
   isChangeable: boolean = true;
+  scaleFactor: number;
+  displayScaleFactor: number;
+  fixedScale: number;
+  displayScaleFactorBlock: boolean;
 
   /*
    * constructor for CanvasImageComponent class
    */
-
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
@@ -155,6 +158,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.resize = true;
     this.canvas.clear(fabric.Ellipse);
     this.canvas.clear(fabric.Path);
+    this.resetZoom();
+    this.keepPositionInBounds(this.canvas);
     this.canvasDynamicHeight = 0;
     this.canvasDynamicWidth = 0;
     this.canvasScaleX = 0;
@@ -173,10 +178,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
-    this.zoomLevel = 0;	
-    this.zoomLevelMin = 0;	
-    this.zoomLevelMax = 5;	
-    this.shiftKeyDown = false;	
+    this.displayScaleFactorBlock = false;
+    this.displayScaleFactor = 1;
     this.resize = false;
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
@@ -244,39 +247,40 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    //double click event for reset zoom of image	
-    this.canvas.on('mouse:dblclick', (options) => {	
-      this.canvas.setZoom(1);	
-      this.keepPositionInBounds(this.canvas);	
-    });	
-    // Zoom-In Zoom-Out in part starts	
-    this.canvas.on('mouse:down', (options) => {	
-      const pointer = this.canvas.getPointer(options.e, true);	
-      this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);	
-    });	
-    this.canvas.on('mouse:up', (options) => {	
-      this.mouseDownPoint = null;	
-    });	
-    this.canvas.on('mouse:move', (options) => {	
-      if (this.shiftKeyDown && this.mouseDownPoint) {	
-        const pointer = this.canvas.getPointer(options.e, true);	
-        const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);	
-        this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));	
-        this.mouseDownPoint = mouseMovePoint;	
-        this.keepPositionInBounds(this.canvas);	
-      }	
-    });	
-    this.canvas.on('mouse:wheel', (options) => {	
-      const delta = options.e.deltaY;	
-      if (delta !== 0) {	
-        const pointer = this.canvas.getPointer(options.e, true);	
-        const point = new fabric.Point(pointer.x, pointer.y);	
-        if (delta > 0) {	
-          this.zoomOut(point);	
-        } else if (delta < 0) {	
-          this.zoomIn(point);	
-        }	
-      }	
+    //double click event for reset zoom of image
+    this.canvas.on('mouse:dblclick', (options) => {
+      this.resetZoom();
+      this.keepPositionInBounds(this.canvas);
+    });
+    // Zoom-In Zoom-Out in part starts
+    this.canvas.on('mouse:down', (options) => {
+      const pointer = this.canvas.getPointer(options.e, true);
+      this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);
+    });
+    this.canvas.on('mouse:up', (options) => {
+      this.mouseDownPoint = null;
+    });
+    this.canvas.on('mouse:move', (options) => {
+      if (this.shiftKeyDown && this.mouseDownPoint) {
+        const pointer = this.canvas.getPointer(options.e, true);
+        const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);
+        this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));
+        this.mouseDownPoint = mouseMovePoint;
+        this.keepPositionInBounds(this.canvas);
+      }
+    });
+    this.canvas.on('mouse:wheel', (options) => {
+      // this.displayScaleFactorBlock = true;
+      const delta = options.e.deltaY;
+      if (delta !== 0) {
+        const pointer = this.canvas.getPointer(options.e, true);
+        const point = new fabric.Point(pointer.x, pointer.y);
+        if (delta > 0) {
+          this.zoomOut(point);
+        } else if (delta < 0) {
+          this.zoomIn(point);
+        }
+      }
     });
     this.canvas.on('object:modified', (options) => {
       this.actionIconsModelDispaly(options);
@@ -381,6 +385,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
 
   prevNextPatientChange(patientId) {
+    this.resetZoom();
     this.canvas.setZoom(1);
     this.keepPositionInBounds(this.canvas);
     this.canvas.clear();
@@ -636,6 +641,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   generateCanvas() {
     fabric.Image.fromURL(this.PatientImage, (img) => {
       this.xRayImage = img;
+      this.resetZoom();
       this.setCanvasBackground();
       const xrayData = JSON.parse(sessionStorage.getItem('x-ray_Data'));
       if (xrayData) {
@@ -1650,9 +1656,26 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * zoomIn(123);
    */
   zoomIn(point: number) {
-    if (this.zoomLevel < this.zoomLevelMax) {
+    if (this.fixedScale < this.zoomLevelMax) {
+      this.fixedScale = this.fixedScale + this.scaleFactor;
       this.zoomLevel++;
       this.zoomScale(point);
+      this.incrementZoomLabel();
+    }
+  }
+
+    /**
+   * This is incrementZoomLabel function
+   * @param {void} empty - A empty param
+   * @example
+   * incrementZoomLabel();
+   */
+  incrementZoomLabel() {
+    if (this.displayScaleFactor === 0) {
+      this.displayScaleFactorBlock = false;
+    }
+    else {
+      this.displayScaleFactorBlock = true;
     }
   }
 
@@ -1662,12 +1685,31 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * zoomOut(123);
    */
-
   zoomOut(point: number) {
-    if (this.zoomLevel > this.zoomLevelMin) {
+    if (this.fixedScale > this.zoomLevelMin) {
+      this.fixedScale = this.fixedScale - this.scaleFactor;
       this.zoomLevel--;
       this.zoomScale(point);
+      this.incrementZoomLabel();
     }
+  }
+
+    /**
+   * This is resetZoom function
+   * @param {void} empty - A empty param
+   * @example
+   * resetZoom(123);
+   */
+  resetZoom() {
+    this.displayScaleFactor = 0;
+    this.zoomLevel = 0;
+    this.zoomLevelMin = 1;
+    this.zoomLevelMax = 6;
+    this.shiftKeyDown = false;
+    this.canvas.setZoom(1);
+    this.incrementZoomLabel();
+    this.scaleFactor = this.xRayImage.width / this.xRayImage.height;
+    this.fixedScale = Math.round(this.xRayImage.width / this.xRayImage.height);
   }
 
   /**
@@ -1676,9 +1718,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * zoomScale(123);
    */
-
   zoomScale(point: number) {
-    this.canvas.zoomToPoint(point, Math.pow(1.3, this.zoomLevel));
+    this.displayScaleFactor = this.zoomLevel;
+    this.canvas.zoomToPoint(point, Math.pow(this.scaleFactor, this.zoomLevel));
     this.keepPositionInBounds(this.canvas);
   }
 
@@ -1688,7 +1730,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * keepPositionInBounds(e);
    */
-
   keepPositionInBounds(e: any) {
     const zoom = this.canvas.getZoom();
     const xMin = ((2 - zoom) * this.canvas.getWidth()) / 2;
