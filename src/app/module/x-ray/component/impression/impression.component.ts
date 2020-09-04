@@ -22,6 +22,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   uniqueImpressions = [];
   _subscription: Subscription;
   impressionsText: string = 'Impressions';
+  hideShowAll: boolean;
   
   /*  
 * constructor for ImpressionComponent class  
@@ -45,6 +46,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
 * ngOnInit();
 */ 
   ngOnInit(): void {
+    this.hideShowAll = true;
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (info: { check: any; id: any; disease: any; objectindex: any }) => {
@@ -110,10 +112,13 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           id: item.id,
           name: item.name,
           colors: color,
+          checked: true
         });
       }
       return null;
     });
+    const event = {target: { checked : true}};
+    this.hideorShowAllFun(event);
     this.updateFindings();
   }
 
@@ -179,12 +184,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     }
   }
 
-/**  
-* unction to pass impressions list to report page
-* @param {void} empty - A empty param 
-* @example  
-* getImpressionsToReport();
-*/
+  /**  
+   * unction to pass impressions list to report page
+   * @param {void} empty - A empty param 
+   * @example  
+   * getImpressionsToReport();
+   */
   getImpressionsToReport() {
     const impression = JSON.stringify(this.impression);
     sessionStorage.setItem('impression', impression);
@@ -192,15 +197,59 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       this.uniqueImpressions
     );
   }
+  /**  
+   * function to pass impressions list to report page
+   * @param {void} empty - A empty param 
+   * @example  
+   * displayFun();
+   */
+  displayFun(data, event, index){
+    this.uniqueImpressions[index].checked = event.target.checked;
+    if (!event.target.checked){
+      let count = 0;
+      this.uniqueImpressions.forEach(element => {
+        if (element.checked){
+          count++;
+        }
+      });
+      if (count === 0){
+        this.hideShowAll = false;
+      }
+    }
+    else{
+      this.hideShowAll = true;
+    }
+    this.eventEmitterService.onImpressionCheckboxClick({info: data, check: event.target.checked, title: 'Single'});
+  }
+
+  /**  
+   * function to pass impressions list to report page
+   * @param {void} empty - A empty param 
+   * @example  
+   * displayFun();
+   */
+  hideorShowAllFun(event){
+    if (event.target.checked){
+      this.uniqueImpressions.forEach(element => {
+        element.checked = true;
+      });
+    }
+    else{
+      this.uniqueImpressions.forEach(element => {
+        element.checked = false;
+      });
+    }
+    this.eventEmitterService.onImpressionCheckboxClick({check: event.target.checked, title: 'All'});
+  }
 
   /*** on destroy event subscription ***/
   
-/**  
-* on destroy event subscription 
-* @param {void} empty - A empty param 
-* @example  
-* ngOnDestroy();
-*/
+ /**  
+  * on destroy event subscription 
+  * @param {void} empty - A empty param 
+  * @example  
+  * ngOnDestroy();
+  */
   ngOnDestroy() {
     this._subscription.unsubscribe();
   }

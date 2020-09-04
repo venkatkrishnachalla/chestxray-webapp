@@ -178,11 +178,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
+    this.zoomLevel = 0;
+    this.zoomLevelMin = 0;
+    this.zoomLevelMax = 5;
+    this.shiftKeyDown = false;
     this.displayScaleFactorBlock = false;
-    this.displayScaleFactor = 1;
     this.resize = false;
     sessionStorage.removeItem('ellipse');
-    sessionStorage.removeItem('freeHandDrawing');
     this.savedInfo = {
       data: {
         names: [],
@@ -214,6 +216,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             break;
         }
       }
+    );
+    this.eventEmitterService.invokeImpressionFunction.subscribe(
+      (data: InvokeComponentData) => {
+        switch (data.title) {
+          case 'All':
+            this.ellipseLists(data['check']);
+            break;
+          case 'Single':
+            this.showHideAnnotations(data);
+            break;
+          default:
+            break;
+        }
+        }
     );
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
@@ -1771,19 +1787,29 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * ellipseLists();
    */
   ellipseLists(event: any){
-  let objects = this.canvas.getObjects();
-  if(event === true){
-    objects.forEach(object=>{
+  const objects = this.canvas.getObjects();
+  if (event === true){
+    objects.forEach(object => {
     this.isChangeable = true;
-    this.canvas.setVisible = object.visible= event
+    this.canvas.setVisible = object.visible = event;
     this.canvas.renderAll();
-  })
+  });
   }else{
-    objects.forEach(object=>{
+    objects.forEach(object => {
     this.isChangeable = false;
-    this.canvas.setVisible = object.visible= event
+    this.canvas.setVisible = object.visible = event;
     this.canvas.renderAll();
-      })
+      });
     } 
-  };
+  }
+
+  showHideAnnotations(data) {
+    this.canvas._objects.forEach(element => {
+      if (element.stroke === data.info.colors){
+        this.canvas.setVisible = element.visible = data.check;
+        this.canvas.discardActiveObject();
+        this.canvas.renderAll();
+      }
+    });
+  }
 }
