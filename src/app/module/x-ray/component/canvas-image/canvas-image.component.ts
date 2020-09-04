@@ -127,7 +127,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   /*
    * constructor for CanvasImageComponent class
    */
-
   constructor(
     private spinnerService: SpinnerService,
     private eventEmitterService: EventEmitterService,
