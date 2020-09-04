@@ -118,11 +118,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     RIGHT: 2,
     DOWN: 3,
   };
+  isChangeable: boolean = true;
 
   /*
    * constructor for CanvasImageComponent class
    */
-  isChangeable: boolean = true;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -173,10 +173,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
-    this.zoomLevel = 0;
-    this.zoomLevelMin = 0;
-    this.zoomLevelMax = 5;
-    this.shiftKeyDown = false;
+    this.zoomLevel = 0;	
+    this.zoomLevelMin = 0;	
+    this.zoomLevelMax = 5;	
+    this.shiftKeyDown = false;	
     this.resize = false;
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
@@ -244,39 +244,39 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     fabric.Object.prototype.cornerColor = 'white';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.borderColor = 'white';
-    //double click event for reset zoom of image
-    this.canvas.on('mouse:dblclick', (options) => {
-      this.canvas.setZoom(1);
-      this.keepPositionInBounds(this.canvas);
-    });
-    // Zoom-In Zoom-Out in part starts
-    this.canvas.on('mouse:down', (options) => {
-      const pointer = this.canvas.getPointer(options.e, true);
-      this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);
-    });
-    this.canvas.on('mouse:up', (options) => {
-      this.mouseDownPoint = null;
-    });
-    this.canvas.on('mouse:move', (options) => {
-      if (this.shiftKeyDown && this.mouseDownPoint) {
-        const pointer = this.canvas.getPointer(options.e, true);
-        const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);
-        this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));
-        this.mouseDownPoint = mouseMovePoint;
-        this.keepPositionInBounds(this.canvas);
-      }
-    });
-    this.canvas.on('mouse:wheel', (options) => {
-      const delta = options.e.deltaY;
-      if (delta !== 0) {
-        const pointer = this.canvas.getPointer(options.e, true);
-        const point = new fabric.Point(pointer.x, pointer.y);
-        if (delta > 0) {
-          this.zoomOut(point);
-        } else if (delta < 0) {
-          this.zoomIn(point);
-        }
-      }
+    //double click event for reset zoom of image	
+    this.canvas.on('mouse:dblclick', (options) => {	
+      this.canvas.setZoom(1);	
+      this.keepPositionInBounds(this.canvas);	
+    });	
+    // Zoom-In Zoom-Out in part starts	
+    this.canvas.on('mouse:down', (options) => {	
+      const pointer = this.canvas.getPointer(options.e, true);	
+      this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);	
+    });	
+    this.canvas.on('mouse:up', (options) => {	
+      this.mouseDownPoint = null;	
+    });	
+    this.canvas.on('mouse:move', (options) => {	
+      if (this.shiftKeyDown && this.mouseDownPoint) {	
+        const pointer = this.canvas.getPointer(options.e, true);	
+        const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);	
+        this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));	
+        this.mouseDownPoint = mouseMovePoint;	
+        this.keepPositionInBounds(this.canvas);	
+      }	
+    });	
+    this.canvas.on('mouse:wheel', (options) => {	
+      const delta = options.e.deltaY;	
+      if (delta !== 0) {	
+        const pointer = this.canvas.getPointer(options.e, true);	
+        const point = new fabric.Point(pointer.x, pointer.y);	
+        if (delta > 0) {	
+          this.zoomOut(point);	
+        } else if (delta < 0) {	
+          this.zoomIn(point);	
+        }	
+      }	
     });
     this.canvas.on('object:modified', (options) => {
       this.actionIconsModelDispaly(options);
