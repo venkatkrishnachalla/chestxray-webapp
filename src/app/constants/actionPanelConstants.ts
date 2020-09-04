@@ -15,12 +15,16 @@ export const actionPanelConstants = {
     {
       image: '../../../../assets/images/Icon feather-zoom-in@2x.png',
       alt: 'Zoom In',
-      title: '',
+      title: 'Zoom In',
+      active: false,
+      implemented: false,
     },
     {
       image: '../../../../assets/images/zoom out@2x.png',
       alt: 'Zoom Out',
-      title: '',
+      title: 'Zoom Out',
+      active: false,
+      implemented: false,
     },
   ],
   actionPanelRotate: [

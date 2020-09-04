@@ -1765,7 +1765,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   clamp(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max));
   }
-
   /**
    * Hide/Show list of drawn ellipseList
    * * @param {any} data - A array param     
