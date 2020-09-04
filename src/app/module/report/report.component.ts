@@ -18,6 +18,7 @@ import { FindingsComponent } from '../x-ray/component/findings/findings.componen
 import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
 import { fabric } from 'fabric';
+import html2pdf from 'html2pdf.js';
 import { ToastrService } from 'ngx-toastr';
 declare var jsPDF: any;
 @Component({
@@ -211,6 +212,12 @@ export class ReportComponent implements OnInit {
     }
   }
 
+  /**
+   * This is to make Pdf, when user clicks share buttons.
+   * @param event - A event param is boolean
+   * @example
+   * makePdf();
+   */
   makePdf(event) {
     this.spinnerService.show();
     this.showPrintFormPdf = event;
@@ -220,9 +227,16 @@ export class ReportComponent implements OnInit {
       : this.patientInfo.name;
     this.pdfTitle = hospitalPatientId + '_' + timestamp;
     setTimeout(() => {
-      const doc = new jsPDF();
-      doc.addHTML(this.content.nativeElement, () => {
-        doc.save(this.pdfTitle + '.pdf');
+      const element = document.getElementById('element-to-print');
+      html2pdf(element, {
+        margin: 0,
+        filename: this.pdfTitle + '.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2, logging: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+      }).then((pdf: any) => {
+        this.showPrintFormPdf = false;
+        this.spinnerService.hide();
         this.toastrService.success(
           'filename: ' + this.pdfTitle + '.pdf',
           'X-ray report saved to downloads folder',
@@ -230,9 +244,7 @@ export class ReportComponent implements OnInit {
             timeOut: 3000,
           }
         );
-        this.showPrintFormPdf = false;
-        this.spinnerService.hide();
       });
-    }, 250);
+    }, 0);
   }
 }
