@@ -16,7 +16,7 @@
           <td>{{ status }}</td>
         </tr>
         <tr>
-          <td><mat-label>Date Of Creation</mat-label></td>
+          <td><mat-label>Date of creation</mat-label></td>
           <td>{{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
           <td><mat-label>Age</mat-label></td>
           <td>{{ patientInfo.age }}</td>
@@ -114,9 +114,9 @@
     <table mat-table class="mat-elevation-z0"> 
       <tr>
         <td><b>Patient ID</b></td>
-        <td class='pdf-padding-r-50'>: {{ patientInfo.hospitalPatientId }}</td>
+        <td class='pdf-padding-r-70'>: {{ patientInfo.hospitalPatientId }}</td>
         <td><b>Name</b></td>
-        <td class='pdf-padding-r-50'>: {{ patientInfo.name }}</td>
+        <td class='pdf-padding-r-70'>: {{ patientInfo.name }}</td>
         <td><b>Gender</b></td>
         <td>: {{ patientInfo.sex  }}</td>
       </tr>
@@ -125,7 +125,7 @@
         <td>: {{ status }}</td>
         <td><b>Age</b></td>
         <td>: {{ patientInfo.age }}</td>
-        <td><b>Date Of Creation</b></td>
+        <td><b>Date of creation</b></td>
         <td>: {{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
       </tr>
       <tr>
