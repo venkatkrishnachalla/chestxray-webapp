@@ -155,15 +155,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', [])
   public onResize() {
+    this.canvasDynamicHeight = 0;
+    this.canvasDynamicWidth = 0;
+    this.canvasScaleX = 0;
+    this.canvasScaleY = 0;
     this.resize = true;
     this.canvas.clear(fabric.Ellipse);
     this.canvas.clear(fabric.Path);
     this.resetZoom();
     this.keepPositionInBounds(this.canvas);
-    this.canvasDynamicHeight = 0;
-    this.canvasDynamicWidth = 0;
-    this.canvasScaleX = 0;
-    this.canvasScaleY = 0;
     this.setCanvasDimension();
     this.setCanvasBackground();
     this.getSessionEllipse();
