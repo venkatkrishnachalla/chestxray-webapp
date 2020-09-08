@@ -157,12 +157,12 @@ export class AuthService {
  * @example  
  * refreshToken(token);
  */ 
-  public refreshToken(accessToken: string, refreshToken: string, username: string, userroles: any, _tokenExpirationDate: string) {
-    const body = {
+  public refreshToken(accessToken: string, refreshToken: string, username: string, userroles: any, _tokenExpirationDate: Date) {
+    const token = {
       accessToken: accessToken,
       refreshToken: refreshToken
     }
-    return this.http.post(this.endpoint.getRefreshToken(), body).subscribe(
+    return this.http.post(this.endpoint.getRefreshToken(), token).subscribe(
       (data: any) => {
         console.log(data);
         const UserInfo = {
@@ -172,9 +172,19 @@ export class AuthService {
           _token: data.accessToken,
           refreshToken: data.refreshToken
         }
+        const user = new User(
+          null,
+          null,
+          data.accessToken,
+          data.refreshToken,
+          _tokenExpirationDate,
+          username,
+          userroles
+        );
         sessionStorage.removeItem('userAuthData');
         sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
         sessionStorage.setItem('accessToken', data.accessToken);
+        this.userSubject.next(user);
       },
       error => {
         console.log(JSON.stringify(error.json()));
@@ -189,9 +199,18 @@ export class AuthService {
  * autoSessionTimeOut(expirationDuration);
  */ 
   autoSessionTimeOut(expirationDuration: number) {
+    const expireTime = (expirationDuration - 60000);
     this.tokenExpirationTimer = setTimeout(() => {
-      this.logOut();
-    }, expirationDuration);
+      const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
+      const token = sessionStorage.getItem('accessToken');
+      this.refreshToken(
+        token, 
+        accessToken.refreshToken, 
+        accessToken.username,
+        accessToken.userroles,
+        accessToken._tokenExpirationDate
+        );
+    }, expireTime);
   }
 
    /**  
