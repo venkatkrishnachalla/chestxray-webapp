@@ -96,6 +96,7 @@ export class AuthService {
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
     sessionStorage.removeItem('patientRows');
+    sessionStorage.removeItem('accessToken');
     sessionStorage.clear();
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -156,14 +157,24 @@ export class AuthService {
  * @example  
  * refreshToken(token);
  */ 
-  public refreshToken(accessToken: string, refreshToken: string) {
+  public refreshToken(accessToken: string, refreshToken: string, username: string, userroles: any, _tokenExpirationDate: string) {
     const body = {
       accessToken: accessToken,
       refreshToken: refreshToken
     }
     return this.http.post(this.endpoint.getRefreshToken(), body).subscribe(
-      data => {
-        alert('ok');
+      (data: any) => {
+        console.log(data);
+        const UserInfo = {
+          username: username,
+          userroles: userroles,
+          _tokenExpirationDate: _tokenExpirationDate,
+          _token: data.accessToken,
+          refreshToken: data.refreshToken
+        }
+        sessionStorage.removeItem('userAuthData');
+        sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
+        sessionStorage.setItem('accessToken', data.accessToken);
       },
       error => {
         console.log(JSON.stringify(error.json()));
@@ -192,7 +203,7 @@ export class AuthService {
  */ 
   refreshTokenTimeOut(token: string, refreshToken: string, expirationDuration: number) {
     this.refreshTokenTimer = setTimeout(() => {
-      this.refreshToken(token, refreshToken);
+      // this.refreshToken(token, refreshToken);
     }, expirationDuration - 60 * 1000);
   }
 

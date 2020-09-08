@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
   ) {
-    this.session = new IdleSessionTimeout(5 * 60 * 50);
+    this.session = new IdleSessionTimeout(5 * 60 * 6000);
     this.session.onTimeOut = () => {
       if (window.location.pathname !== '/auth/login'){
         this.couterFunction();
@@ -92,7 +92,14 @@ export class AppComponent implements OnInit {
     this.session.dispose();
     this.session.start();
     const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
-    this.authService.refreshToken(accessToken._token, accessToken.refreshToken);
+    const token = sessionStorage.getItem('accessToken');
+    this.authService.refreshToken(
+      token, 
+      accessToken.refreshToken, 
+      accessToken.username,
+      accessToken.userroles,
+      accessToken._tokenExpirationDate
+      );
   }
   logout(){
     this.dialog.closeAll();
