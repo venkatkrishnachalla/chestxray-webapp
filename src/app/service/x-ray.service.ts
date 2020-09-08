@@ -41,6 +41,16 @@ export class XRayService {
     return this.http.post(this.endpoint.getAskAi(), saveArray, httpOptions);
   }
 
+  /*** submitReport rest api call ***/
+  submitReport(postData: object) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }),
+    };
+    return this.http.post(this.endpoint.submitReport(), JSON.stringify(postData), httpOptions);
+  }
+
   /*** handle error function ***/
   private handleError(errorResponse: HttpErrorResponse) {
     return throwError(errorResponse.error.error.message);

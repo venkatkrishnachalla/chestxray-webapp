@@ -58,7 +58,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
       patientDetail = patient;
     }
     this.patientID = patientDetail ? patientDetail.hospitalPatientId : '';
-    this.isProcessed = patientDetail.status;
+    this.isProcessed = patientDetail.isAnnotated;
 
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
@@ -68,15 +68,20 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.eventEmitterService.onStatusChangeFunction.subscribe(
+      (objEllipse) => {
+        patientDetail.isAnnotated = true;
+      }
+    );
     this.prevNextFunction();
   }
 
    /**  
- * This is a prev and next data filter function.  
- * @param {} - A null param  
- * @example  
- * prevNextFunction();
- */  
+    * This is a prev and next data filter function.  
+    * @param {} - A null param  
+    * @example  
+    * prevNextFunction();
+    */  
   prevNextFunction() {
     this.patientRows = JSON.parse(sessionStorage.getItem('patientRows'));
     if (this.patientRows.length > 0) {
@@ -90,12 +95,12 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-     /**  
- * This is a event to change xray page next patient function.  
- * @param {} - A null param  
- * @example  
- * nextPatient();
- */  
+  /**  
+   * This is a event to change xray page next patient function.  
+   * @param {} - A null param  
+   * @example  
+   * nextPatient();
+   */  
   nextPatient() {
     const currIndex = this.currentIndex + 1;
     const filterData = this.patientRows[currIndex];

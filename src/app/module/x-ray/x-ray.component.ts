@@ -43,6 +43,7 @@ export class XRayComponent implements OnInit, OnDestroy {
   isHospitalRadiologist: boolean;
   disableReportBtn = false;
   userSubscription: Subscription;
+  disableSubmitBtn: boolean;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
@@ -70,6 +71,7 @@ export class XRayComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit(): void {
+    this.disableSubmitBtn = false;
     this.eventEmitterService.invokeReportFunction.subscribe((impressions) => {
       this.eventEmitterService.onReportDataShared(impressions);
     });
@@ -119,29 +121,12 @@ export class XRayComponent implements OnInit, OnDestroy {
       );
   }
 
-  /* close ask ai model when user clicks on reject button */
-  // rejectAI(event: any) {
-  //   this.showAskAI = event;
-  // }
-
-  /* pass ml predictions data to canvas component */
-  // acceptAI(event) {
-  //   this.showAskAI = false;
-  //   this.acceptStatus = true;
-  //   // this.eventsSubject.next(event);
-  // }
-
-  // report() {
-  //   this.router.navigateByUrl('/report');
-  // }
-
-  /**
-   * report button click event
-   * @param {void} empty - A empty param
-   * @example
-   * generateReport();
-   */
-
+/**  
+ * report button click event
+ * @param {void} empty - A empty param  
+ * @example  
+ * generateReport();
+ */ 
   generateReport() {
     this.disableReportBtn = true;
     this.canvas.onSubmitPatientDetails();
@@ -149,14 +134,142 @@ export class XRayComponent implements OnInit, OnDestroy {
     this.findings.getFindingsToReport();
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
   }
-
-  /**
-   * unsubscribe userSubscription event
-   * @param {void} empty - A empty param
-   * @example
-   * ngOnDestroy();
-   */
-
+/**  
+ * report button click event
+ * @param {void} empty - A empty param  
+ * @example  
+ * submitReport();
+ */ 
+submitReport() {
+  this.disableSubmitBtn = true;
+  let indexValue = 0;
+  let indexValueDisease = 0;
+  
+  const annotationData = this.canvas.savedInfo['data'].ndarray[0];
+  annotationData.Impression.forEach(element => {
+    element.index = indexValue;
+    indexValue++;
+  });
+  annotationData.diseases.forEach(element => {
+    delete element.index;
+    element.contours = [
+      {}
+    ],
+    element.ellipses.forEach(ellipse => {
+      delete ellipse.index;
+      delete ellipse.type;
+      delete ellipse.id;
+      delete ellipse.color;
+      delete ellipse.name;
+      delete ellipse.idvalue;
+    });
+    element.idx = indexValueDisease;
+    indexValueDisease++;
+  });
+  
+  if (Object.keys(annotationData.Findings).length === 0){
+      
+      annotationData.Findings = {
+        additional: [],
+        bonythorax: [],
+        cardiacsilhouette: [],
+        costophrenicangles: [],
+        domesofdiaphragm: [],
+        hilarmediastinal: [],
+        lungfields: []
+      };
+  }
+  this.spinnerService.show();
+  this.findings.findings.forEach(input => {
+    const output = input.split(':');
+    let outputSub;
+    let outputMain;
+    if (input.indexOf(':') !== -1){
+      outputSub = output[1].split(',');
+      outputMain = output[0].toLowerCase().replace(/\//g, '').replace(/ /g, '');
+    }
+    else{
+      outputSub = input.split(',');
+      outputMain = 'additional';
+    }
+    if (outputSub.length > 1){
+      outputSub.forEach(finalOutput => {
+        finalOutput = finalOutput.replace(/\//g, '').replace(/ /g, '');
+        
+        const index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
+        if (index === -1){
+          const length = annotationData.Impression.length;
+          const impressionIndex = annotationData.Impression[length - 1].index;
+          const newImpression = {
+            index: impressionIndex + 1, 
+            sentence: finalOutput
+          };
+          if (finalOutput !== ''){
+            if (annotationData.Impression.findIndex(s => s.sentence === finalOutput.trim()) === -1){
+              annotationData.Impression.push(newImpression);
+            }
+            annotationData.Findings[outputMain].push(impressionIndex + 1);
+          }
+        }
+        else{
+          annotationData.Findings[outputMain].push(index);
+        }
+      });
+    }
+    else if (output[0] !== ' '){
+      // tslint:disable-next-line: max-line-length
+      const index =  annotationData.Impression.findIndex(x => x.sentence === (output[1] ? output[1].trim() : '') );
+      if (index === -1){
+        const length = annotationData.Impression.length;
+        const impressionIndex = annotationData.Impression[length - 1].index;
+        const newImpression = {
+          index: impressionIndex + 1, 
+          sentence: output[1]
+        };
+        if (output[1] !== ''){
+          // tslint:disable-next-line: max-line-length
+          if (annotationData.Impression.findIndex(s => s.sentence === (output[1] ? output[1].trim() : '')) === -1){
+            annotationData.Impression.push(newImpression);
+          }
+          annotationData.Findings[outputMain].push(impressionIndex + 1);
+        }
+      }
+      else{
+        annotationData.Findings[outputMain].push(index);
+      }
+    }
+  });
+  const FinalData = {
+    studyId: this.canvas.patientDetail.studyId,
+    seriesId: this.canvas.patientDetail.seriesId,
+    findings: annotationData.Findings,
+    impressions: annotationData.Impression,
+    diseases: annotationData.diseases,
+    updatedBy: this.canvas.patientDetail.assignedTo,
+    updatedOn: new Date().toJSON().slice(0, 10)
+  };
+  this.xrayService
+    .submitReport(FinalData)
+    .subscribe(
+      (response) => {
+        this.spinnerService.hide();
+        this.disableSubmitBtn = false;
+        this.toastrService.success('Report submitted successfully');
+        this.eventEmitterService.onStatusChange('true');
+      },
+      (errorMessage: string) => {
+        this.spinnerService.hide();
+        this.disableSubmitBtn = false;
+        this.toastrService.error('Failed to submit annotated data');
+      }
+    );
+}
+/**  
+ * unsubscribe userSubscription event 
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnDestroy();
+ */ 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }

@@ -19,6 +19,7 @@ export class EventEmitterService {
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
   invokeImpressionFunction = new EventEmitter();
+  onStatusChangeFunction = new EventEmitter();
 
   constructor() {}
 
@@ -79,6 +80,10 @@ export class EventEmitterService {
   /*** event to capture ask ai success state ***/
   onImpressionCheckboxClick(data) {
     this.invokeImpressionFunction.emit(data);
+  }
+
+  onStatusChange(data){
+    this.onStatusChangeFunction.emit(data);
   }
   
 }
