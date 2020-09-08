@@ -32,39 +32,54 @@ describe('ImpressionComponent', () => {
   /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
-      spyOn(component, 'getImpressions');
       const response = {
         check: 'delete',
         disease: [],
       };
       const mock = {
         name: 'BULLA',
+        isMLApi: true
       };
+      const ellipseMock = {
+        x: 198,
+        y: 200,
+        a: 12,
+        b: 14,
+        r: 75
+      }
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
+      eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
       component.ngOnInit();
     });
     it('should call ngOnInit function', () => {
-      expect(component.getImpressions).toHaveBeenCalled();
+      expect(component.ngOnInit).toBeDefined();
     });
   });
 
   /*** it should call ngOnInit function, when info is update ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
-      spyOn(component, 'getImpressions');
       const response = {
         check: 'update',
       };
       const mock = {
         name: 'BULLA',
+        isMLApi: true
       };
+      const ellipseMock = {
+        x: 198,
+        y: 200,
+        a: 12,
+        b: 14,
+        r: 75
+      }
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
+      eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
       component.ngOnInit();
     });
     it('should call ngOnInit function, when info is update', () => {
-      expect(component.getImpressions).toHaveBeenCalled();
       expect(component.ngOnInit).toBeDefined();
     });
   });
@@ -72,19 +87,26 @@ describe('ImpressionComponent', () => {
   /*** it should call ngOnInit function, when info is empty ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
-      spyOn(component, 'getImpressions');
       const response = {
         check: '',
       };
       const mock = {
         name: 'BULLA',
+        isMLApi: true
       };
+      const ellipseMock = {
+        x: 198,
+        y: 200,
+        a: 12,
+        b: 14,
+        r: 75
+      }
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
+      eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
       component.ngOnInit();
     });
     it('should call ngOnInit function, when info is empty', () => {
-      expect(component.getImpressions).toHaveBeenCalled();
       expect(component.ngOnInit).toBeDefined();
     });
   });
@@ -94,6 +116,7 @@ describe('ImpressionComponent', () => {
     beforeEach(() => {
       const response = {
         name: 'BULLA',
+        isMLApi: true
       };
       const mock = {
         name: 'abcde',
@@ -125,10 +148,12 @@ describe('ImpressionComponent', () => {
         {
           name: 'abcde',
           id: 2,
+          isMLApi: true
         },
         {
           name: 'xyz',
           id: 1,
+          isMLApi: true
         },
       ];
       component.deleteImpression(1, null, 2);
@@ -146,6 +171,7 @@ describe('ImpressionComponent', () => {
         {
           name: 'abcde',
           id: 2,
+          isMLApi: true
         },
       ];
       component.updateImpression(response);
@@ -158,7 +184,7 @@ describe('ImpressionComponent', () => {
   /*** it should call getColorMapping function ***/
   describe('#getColorMapping', () => {
     beforeEach(() => {
-      component.getColorMapping('BULLA', 'false', 'red');
+      component.getColorMapping('BULLA', 'true', 'red');
     });
     it('should call getColorMapping', () => {
       expect(component.getColorMapping).toBeDefined();
@@ -172,12 +198,14 @@ describe('ImpressionComponent', () => {
         {
           name: 'abcde',
           id: 2,
+          isMLApi: 'true'
         },
       ];
       component.uniqueImpressions = [
         {
           name: 'abcde',
           id: 2,
+          isMLApi: 'true'
         },
       ];
       component.getImpressionsToReport();
