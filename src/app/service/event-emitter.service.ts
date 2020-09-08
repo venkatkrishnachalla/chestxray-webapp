@@ -18,6 +18,7 @@ export class EventEmitterService {
   invokeAskAiButtonDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
+  invokeImpressionFunction = new EventEmitter();
 
   constructor() {}
 
@@ -75,4 +76,9 @@ export class EventEmitterService {
   onAskAiButtonClick(data) {
     this.invokeAskAiButtonDataFunction.emit(data);
   }
+  /*** event to capture ask ai success state ***/
+  onImpressionCheckboxClick(data) {
+    this.invokeImpressionFunction.emit(data);
+  }
+  
 }

@@ -1022,6 +1022,7 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getSessionFreeHandDrawing function if freeHandDrawing is in session, with no valuee', () => {
       expect(component.getSessionFreeHandDrawing).toBeDefined();
+      expect(dialogSpy.closeAll).toHaveBeenCalled();
     });
   });
 
