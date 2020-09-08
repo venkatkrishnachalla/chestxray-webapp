@@ -44,20 +44,6 @@ describe('PatientDetailsComponent', () => {
     });
   });
 
-  /*** it should call ngOnInit function, when patient data is null ***/
-  describe('#ngOnInit', () => {
-    beforeEach(() => {
-      window.history.pushState({ patientDetails: undefined }, '', '');
-      spyOn(sessionStorage, 'getItem').and.callFake(() => {
-        return JSON.stringify(mockPatientDetail);
-      });
-      component.ngOnInit();
-    });
-    it('should call ngOnInit function, when patient data is null', () => {
-      expect(component.ngOnInit).toBeDefined();
-    });
-  });
-
   /*** should call ngOnDestroy ****/
   describe('#ngOnDestroy', () => {
     it('it should call ngOnDestroy', () => {
