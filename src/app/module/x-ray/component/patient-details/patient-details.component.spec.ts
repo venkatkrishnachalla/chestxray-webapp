@@ -5,7 +5,10 @@ import { of } from 'rxjs';
 
 describe('PatientDetailsComponent', () => {
   let component: PatientDetailsComponent;
-  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', ['invokePrevNextButtonDataFunction']);
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'invokePrevNextButtonDataFunction',
+  ]);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
   const mockPatientDetail = {
     age: 32,
     birthDate: '1988-05-06T00:00:00',
@@ -25,7 +28,7 @@ describe('PatientDetailsComponent', () => {
     component = new PatientDetailsComponent(eventEmitterServiceSpy);
   });
 
-/*** it should create patient details component ***/
+  /*** it should create patient details component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -38,6 +41,29 @@ describe('PatientDetailsComponent', () => {
     });
     it('should call ngOnInit function', () => {
       expect(component.PatientName).toEqual('Pallavi');
+    });
+  });
+
+  /*** it should call ngOnInit function, when patient data is null ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      window.history.pushState({ patientDetails: undefined }, '', '');
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(mockPatientDetail);
+      });
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when patient data is null', () => {
+      expect(component.ngOnInit).toBeDefined();
+    });
+  });
+
+  /*** should call ngOnDestroy ****/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any)._subscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });

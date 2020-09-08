@@ -246,4 +246,25 @@ describe('ErrorMessageComponent', () => {
       expect(component.showError).toEqual(true);
     });
   });
+
+  /*** ngOnInit function test case, when error code is null ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: null,
+        },
+        error: {
+          error: {
+            message: 'Internal Server Error',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when error message is null', () => {
+      expect(component.showError).toEqual(true);
+    });
+  });
 });

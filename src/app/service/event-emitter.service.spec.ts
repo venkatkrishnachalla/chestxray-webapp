@@ -33,6 +33,12 @@ describe('EventEmitterService', () => {
     expect(service.onComponentEllipseDataShared).toBeDefined();
   });
 
+  /*** it should call onComponentFindingsDataShared function ***/
+  it('should call onComponentFindingsDataShared function', () => {
+    const result = service.onComponentFindingsDataShared('');
+    expect(service.onComponentFindingsDataShared).toBeDefined();
+  });
+
   /*** it should call onComponentReportButtonClick function ***/
   it('should call onComponentReportButtonClick function', () => {
     const result = service.onComponentReportButtonClick('');
@@ -61,5 +67,17 @@ describe('EventEmitterService', () => {
   it('should call onImpressionDataShared function', () => {
     const result = service.onImpressionDataShared('');
     expect(service.onImpressionDataShared).toBeDefined();
+  });
+
+  /*** it should call onPrevNextButtonClick function ***/
+  it('should call onPrevNextButtonClick function', () => {
+    const result = service.onPrevNextButtonClick('');
+    expect(service.onPrevNextButtonClick).toBeDefined();
+  });
+
+  /*** it should call onAskAiButtonClick function ***/
+  it('should call onAskAiButtonClick function', () => {
+    const result = service.onAskAiButtonClick('');
+    expect(service.onAskAiButtonClick).toBeDefined();
   });
 });
