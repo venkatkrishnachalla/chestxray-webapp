@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import User from '../../auth/user.modal';
 import { Subscription } from 'rxjs';
+import { userInfo } from 'os';
 
 interface PatientListData {
   age: number;
@@ -74,8 +75,11 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         const UserInfo = JSON.parse(JSON.stringify(user));
-        const tokenNew = window.btoa(UserInfo._token);
-        UserInfo._token = tokenNew;
+        sessionStorage.setItem('accessToken', UserInfo._token);
+        if (UserInfo._token){
+          const tokenNew = window.btoa(UserInfo._token);
+          UserInfo._token = tokenNew;
+        }
         sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
       }
     );
