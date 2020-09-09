@@ -1798,6 +1798,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     objects.forEach(object => {
     this.isChangeable = false;
     this.canvas.setVisible = object.visible = event;
+    this.canvas.discardActiveObject();
     this.canvas.renderAll();
       });
     } 
