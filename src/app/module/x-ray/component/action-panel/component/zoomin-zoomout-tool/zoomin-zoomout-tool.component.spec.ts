@@ -2,9 +2,12 @@ import { ZoominZoomoutToolComponent } from './zoomin-zoomout-tool.component';
 
 describe('ZoominZoomoutToolComponent', () => {
   let component: ZoominZoomoutToolComponent;
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'onComponentButtonClick',
+  ]);
 
   beforeEach(() => {
-    component = new ZoominZoomoutToolComponent();
+    component = new ZoominZoomoutToolComponent(eventEmitterServiceSpy);
   });
 
   /*** it should create zoom in and zoom out component ***/
