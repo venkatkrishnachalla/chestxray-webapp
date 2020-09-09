@@ -8,23 +8,29 @@
   [style.height.%]="100"
 >
   <div class="content">
-    <span class="material-icons content-visibility content-show" 
-    *ngIf="!isChangeable" 
-    (click)="ellipseLists(true)">
-    visibility_off
+    <span
+      class="material-icons content-visibility content-show"
+      *ngIf="!isChangeable"
+      (click)="ellipseLists(true)"
+    >
+      visibility_off
     </span>
-    <span class="material-icons content-visibility content-hide" 
-    *ngIf="isChangeable" 
-    (click)="ellipseLists(false)">
-    visibility
+    <span
+      class="material-icons content-visibility content-hide"
+      *ngIf="isChangeable"
+      (click)="ellipseLists(false)"
+    >
+      visibility
     </span>
-    </div>
+    <!-- *ngIf="displayScaleFactorBlock" -->
 
-  <div class="contents" *ngIf="displayScaleFactorBlock">
-    <span class="scale-factor">
-      {{ displayScaleFactor + 'x' }}
-    </span>
+    <p class="contents">
+      <span class="scale-factor">
+        {{ displayScaleFactor + 'x' }}
+      </span>
+    </p>
   </div>
+
   <div
     class="xRay-image-canvas-container d-flex justify-content-center"
     id="canvas-wrapper"
