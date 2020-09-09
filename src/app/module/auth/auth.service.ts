@@ -17,6 +17,7 @@ interface AuthResponseData {
   idToken: string;
   email: string;
   token: string;
+  refreshToken: string;
   expiration: string;
   localId: string;
   registered?: boolean;
@@ -68,6 +69,7 @@ export class AuthService {
             responseDate.email,
             responseDate.localId,
             responseDate.token,
+            responseDate.refreshToken,
             responseDate.expiration,
             responseDate.username,
             responseDate.userroles
@@ -94,6 +96,7 @@ export class AuthService {
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
     sessionStorage.removeItem('patientRows');
+    sessionStorage.removeItem('accessToken');
     sessionStorage.clear();
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -120,6 +123,7 @@ export class AuthService {
       email: string;
       id: string;
       _token: string;
+      refreshToken: string;
       _tokenExpirationDate: string;
       username: string;
       userroles: any[];
@@ -131,6 +135,7 @@ export class AuthService {
       authData.email,
       authData.id,
       authData._token,
+      authData.refreshToken,
       new Date(authData._tokenExpirationDate),
       authData.username,
       authData.userroles
@@ -152,28 +157,39 @@ export class AuthService {
  * @example  
  * refreshToken(token);
  */ 
-  private refreshToken(token: string) {
-    return this.http
-      .post<{ idToken: string; refreshToken: string; expiresIn }>(
-        this.endpoint.getRefreshToken(),
-        {
-          token,
-          returnSecureToken: true,
+  public refreshToken(accessToken: string, refreshToken: string, username: string, userroles: any, _tokenExpirationDate: Date) {
+    const token = {
+      accessToken: accessToken,
+      refreshToken: refreshToken
+    }
+    return this.http.post(this.endpoint.getRefreshToken(), token).subscribe(
+      (data: any) => {
+        console.log(data);
+        const UserInfo = {
+          username: username,
+          userroles: userroles,
+          _tokenExpirationDate: _tokenExpirationDate,
+          _token: data.accessToken,
+          refreshToken: data.refreshToken
         }
-      )
-      .pipe(
-        catchError(this.handleAuthError),
-        tap((responseDate) => {
-          this.handleAuthentication(
-            this.user.email,
-            this.user.id,
-            responseDate.idToken,
-            +responseDate.expiresIn,
-            this.user.username,
-            this.user.userroles
-          );
-        })
-      );
+        const user = new User(
+          null,
+          null,
+          data.accessToken,
+          data.refreshToken,
+          _tokenExpirationDate,
+          username,
+          userroles
+        );
+        sessionStorage.removeItem('userAuthData');
+        sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
+        sessionStorage.setItem('accessToken', data.accessToken);
+        this.userSubject.next(user);
+      },
+      error => {
+        console.log(JSON.stringify(error.json()));
+      }
+    )
   }
 
  /**  
@@ -183,9 +199,18 @@ export class AuthService {
  * autoSessionTimeOut(expirationDuration);
  */ 
   autoSessionTimeOut(expirationDuration: number) {
+    const expireTime = (expirationDuration - 60000);
     this.tokenExpirationTimer = setTimeout(() => {
-      this.logOut();
-    }, expirationDuration);
+      const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
+      const token = sessionStorage.getItem('accessToken');
+      this.refreshToken(
+        token, 
+        accessToken.refreshToken, 
+        accessToken.username,
+        accessToken.userroles,
+        accessToken._tokenExpirationDate
+        );
+    }, expireTime);
   }
 
    /**  
@@ -195,9 +220,9 @@ export class AuthService {
  * @example  
  * refreshTokenTimeOut(token, expirationDuration);
  */ 
-  refreshTokenTimeOut(token, expirationDuration: number) {
+  refreshTokenTimeOut(token: string, refreshToken: string, expirationDuration: number) {
     this.refreshTokenTimer = setTimeout(() => {
-      this.refreshToken(token);
+      // this.refreshToken(token, refreshToken);
     }, expirationDuration - 60 * 1000);
   }
 
@@ -216,6 +241,7 @@ export class AuthService {
     email: string,
     userID: string,
     token: string,
+    refreshToken: string,
     expiresIn: any,
     username: string,
     userroles: any
@@ -226,6 +252,7 @@ export class AuthService {
       email,
       userID,
       token,
+      refreshToken,
       expirationDate,
       username,
       userroles

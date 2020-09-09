@@ -1,5 +1,5 @@
-const authLogin= window.cxrDomain + '/identity/v1/Account/Login/';
-const authRefreshToken = window.refreshToken +'/v1/accounts:';
+const authLogin= window.cxrDomain + '/identity-test/v1/Account/Login/';
+const authRefreshToken = window.cxrDomain +'/identity-test/v1/Account/RefreshToken';
 const patientList = window.cxrDomain +'/api/v1/Patient/' ;
 const patientInstanceId = window.cxrDomain +'/api/v1/Patient/';
 const PatientImage= window.cxrDomain +'/api/instance/';

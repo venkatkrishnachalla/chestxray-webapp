@@ -1737,19 +1737,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * ellipseLists();
    */
-  ellipseLists(event: any) {
-    const objects = this.canvas.getObjects();
-    if (event === true) {
-      objects.forEach((object) => {
-        this.isChangeable = true;
-        this.canvas.setVisible = object.visible = event;
-        this.canvas.renderAll();
-      });
-    } else {
-      objects.forEach((object) => {
-        this.isChangeable = false;
-        this.canvas.setVisible = object.visible = event;
-        this.canvas.renderAll();
+  ellipseLists(event: any){
+  const objects = this.canvas.getObjects();
+  if (event === true){
+    objects.forEach(object => {
+    this.isChangeable = true;
+    this.canvas.setVisible = object.visible = event;
+    this.canvas.renderAll();
+  });
+  }else{
+    objects.forEach(object => {
+    this.isChangeable = false;
+    this.canvas.setVisible = object.visible = event;
+    this.canvas.discardActiveObject();
+    this.canvas.renderAll();
       });
     }
   }
