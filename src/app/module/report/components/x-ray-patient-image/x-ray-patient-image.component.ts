@@ -94,4 +94,15 @@ export class XRayPatientImageComponent implements OnInit {
       encodeURIComponent(formattedBody);
     location.href = mailToLink;
   }
+
+  /**
+   * This is on unsubscribe user subscription after moving out from this component
+   * @param {void} empty - A empty param
+   * @example
+   * ngOnDestroy();
+   */
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+  }
 }

@@ -48,10 +48,16 @@ describe('SignInComponent', () => {
         },
       };
       eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.usernameElementRef = {
+        nativeElement: jasmine.createSpyObj('nativeElement', ['focus']),
+      };
       component.ngOnInit();
     });
     it('should call ngOnIit function', () => {
       expect(component.ngOnInit).toBeDefined();
+      expect(
+        component.usernameElementRef.nativeElement.focus
+      ).toHaveBeenCalled();
     });
   });
 
@@ -129,7 +135,7 @@ describe('SignInComponent', () => {
       reset: () => null,
     } as NgForm;
     beforeEach(() => {
-      const signInErrorResponse = { status: 404 };
+      const signInErrorResponse = 'Server not reachable';
       authServiceSpy.signIn.and.returnValue(throwError(signInErrorResponse));
       component.errorMessage = 'Server not reachable';
     });
@@ -159,6 +165,27 @@ describe('SignInComponent', () => {
       expect(toastrServiceSpy.error).toHaveBeenCalledWith(
         component.errorMessage
       );
+    });
+  });
+
+  /*** it should call onSignIn function, when form error and network false ***/
+  describe('#onSignIn', () => {
+    beforeEach(() => {
+      const testForm = {
+        value: {
+          email: 'test',
+          password: 'test@123',
+        },
+        valid: false,
+        resetForm: () => null,
+        reset: () => null,
+      } as NgForm;
+      spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(false);
+      component.onSignIn(testForm);
+    });
+    it('should call onSignIn function, when form is invalid and network false', () => {
+      component.errorMessage = 'Enter all the required fields';
+      expect(component.onSignIn).toBeDefined();
     });
   });
 });

@@ -41,4 +41,20 @@ describe('DrawEllipseFreehandDrawingComponent', () => {
       expect(component.iconAction).toBeDefined();
     });
   });
+
+  /*** it should call iconAction click event, when key not equal to index ***/
+  describe('#iconAction', () => {
+    beforeEach(() => {
+      const mockdata = [
+        {
+          name: 'Ellipse',
+          index: 1,
+        },
+      ];
+      component.iconAction(mockdata, '0');
+    });
+    it('should call iconAction function, when key not equal to index', () => {
+      expect(component.iconAction).toBeDefined();
+    });
+  });
 });

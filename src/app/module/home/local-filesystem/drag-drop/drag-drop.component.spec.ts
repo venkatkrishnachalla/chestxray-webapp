@@ -125,6 +125,42 @@ describe('DragDropComponent', () => {
     });
   });
 
+  /*** should call handleInputChange method, when unknown image format ***/
+  describe('#handleInputChange', () => {
+    beforeEach(() => {
+      const event = {
+        dataTransfer: {
+          files: [
+            {
+              upload: {
+                progress: 0,
+                total: 17343,
+                bytesSent: 0,
+                filename: 'TEST.pdf',
+              },
+              type: 'pdf',
+              width: 350,
+              height: 200,
+              size: 17343,
+              name: 'TEST.pdf',
+              dataURL: 'data:image/pdf;base64, FOO',
+            },
+          ],
+        },
+      };
+      const mockFile = new File([''], 'filename', { type: 'text/html' });
+      const mockReader: FileReader = jasmine.createSpyObj('FileReader', [
+        'readAsDataURL',
+        'onload',
+      ]);
+      spyOn(window as any, 'FileReader').and.returnValue(mockReader);
+      component.handleInputChange(event);
+    });
+    it('should call handleInputChange function, when unknown image format', () => {
+      expect(component.handleInputChange).toBeDefined();
+    });
+  });
+
   /*** should call _handleReaderLoaded method ***/
   describe('#_handleReaderLoaded', () => {
     beforeEach(() => {
@@ -137,6 +173,16 @@ describe('DragDropComponent', () => {
     });
     it('should call _handleReaderLoaded function', () => {
       expect(component._handleReaderLoaded).toBeDefined();
+    });
+  });
+
+  /*** should call getLocalImageSrc method ***/
+  describe('#getLocalImageSrc', () => {
+    beforeEach(() => {
+      component.getLocalImageSrc('abcd');
+    });
+    it('should call getLocalImageSrc function', () => {
+      expect(component.imageSrc).toEqual('abcd');
     });
   });
 });

@@ -12,6 +12,7 @@ describe('LocalFilesystemComponent', () => {
     'markAsDirty',
     'markAsPristine',
     'value',
+    'invalid'
   ]);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
@@ -137,6 +138,12 @@ describe('LocalFilesystemComponent', () => {
   /*** it should call onSubmit method ***/
   describe('#onSubmit', () => {
     it('should call onSubmit function', () => {
+      component.uploadImageForm = formGroupSpy;
+      component.onSubmit();
+      expect(component.onSubmit).toBeDefined();
+    });
+    it('should call onSubmit function, when form is invalid', () => {
+      formGroupSpy.invalid = false;
       component.uploadImageForm = formGroupSpy;
       component.onSubmit();
       expect(component.onSubmit).toBeDefined();
