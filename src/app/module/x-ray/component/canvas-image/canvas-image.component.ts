@@ -518,34 +518,34 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     } else {
       if (obj.angle > 5 && obj.angle <= 40) {
         this.left = objCenterX + 270;
-        this.top = objCenterY;
+        this.top = objCenterY + 30;
       } else if (obj.angle > 40 && obj.angle <= 90) {
         this.left = objCenterX + 270;
-        this.top = objCenterY;
+        this.top = objCenterY + 30;
       } else if (obj.angle > 90 && obj.angle <= 130) {
         this.left = objCenterX + 270;
-        this.top = objCenterY + 30;
+        this.top = objCenterY + 60;
       } else if (obj.angle > 130 && obj.angle <= 150) {
         this.left = objCenterX + 200;
-        this.top = objCenterY + 70;
+        this.top = objCenterY + 100;
       } else if (obj.angle > 150 && obj.angle <= 180) {
         this.left = objCenterX + 150;
-        this.top = objCenterY + 105;
+        this.top = objCenterY + 135;
       } else if (obj.angle > 180 && obj.angle <= 270) {
         this.left = objCenterX + 20;
-        this.top = objCenterY + 80;
+        this.top = objCenterY + 50;
       } else if (obj.angle > 270 && obj.angle <= 300) {
         this.left = objCenterX + 70;
-        this.top = objCenterY + 50;
+        this.top = objCenterY + 20;
       } else if (obj.angle > 300 && obj.angle <= 340) {
         this.left = objCenterX + 150;
-        this.top = objCenterY + 20;
+        this.top = objCenterY + 0;
       } else if (obj.angle > 340 && obj.angle <= 359) {
         this.left = objCenterX + 240;
-        this.top = objCenterY + 10;
+        this.top = objCenterY + 0;
       } else {
-        this.left = objCenterX + 230;
-        this.top = objCenterY;
+        this.left = objCenterX + 135;
+        this.top = objCenterY - 40;
       }
     }
   }
