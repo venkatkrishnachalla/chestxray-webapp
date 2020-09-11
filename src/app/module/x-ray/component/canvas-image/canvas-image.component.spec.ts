@@ -128,6 +128,9 @@ describe('CanvasImageComponent', () => {
   describe('#setCanvasDimension', () => {
     beforeEach(() => {
       component.canvas = {
+        getWidth: () => {},
+        getHeight: () => {},
+        getZoom: () => {},
         setDimensions: () => {},
         setWidth: () => {},
         setHeight: () => {},
@@ -136,6 +139,8 @@ describe('CanvasImageComponent', () => {
             bind: () => {},
           };
         },
+        viewportTransform: () => {},
+        relativePan: () => {},
         setBackgroundImage: () => {},
         clear: () => {},
         setZoom: () => {},
@@ -190,12 +195,17 @@ describe('CanvasImageComponent', () => {
   describe('#generateCanvas', () => {
     beforeEach(() => {
       component.canvas = {
+        getWidth: () => {},
+        getHeight: () => {},
         setWidth: () => {},
         setHeight: () => {},
         setBackgroundImage: () => {},
         renderAll: () => {},
         clear: () => {},
         setZoom: () => {},
+        getZoom: () => {},
+        viewportTransform: () => {},
+        relativePan: () => {},
       };
       component.canvasDynamicWidth = 893;
       component.canvasDynamicHeight = 549;
@@ -1460,125 +1470,27 @@ describe('CanvasImageComponent', () => {
       expect(component.ellipseLists).toBeDefined();
     });
   });
-
-  /*** it should call zoomIn function***/
-  describe('#zoomIn', () => {
-    beforeEach(() => {
-      component.fixedScale = 1.2;
-      component.zoomLevelMax = 5;
-      component.displayScaleFactor = 0;
-      spyOn(component, 'zoomScale');
-      spyOn(component, 'incrementZoomLabel');
-      component.zoomIn(123);
-    });
-    it('it should call zoomIn function', () => {
-      expect(component.zoomIn).toBeDefined();
-      expect(component.zoomScale).toHaveBeenCalled();
-      expect(component.incrementZoomLabel).toHaveBeenCalled();
-    });
-  });
-
-  /*** it should call zoomIn function and restrict zoom if it is more than scale factor***/
-  describe('#zoomIn', () => {
-    beforeEach(() => {
-      const point = 123;
-      component.fixedScale = 5.5;
-      component.zoomLevelMax = 5;
-      component.zoomIn(point);
-    });
-    it('it should call zoomIn function and restrict zoom if it is more than scale factor', () => {
-      expect(component.zoomIn).toBeDefined();
-    });
-  });
-
-  /*** it should call incrementZoomLabel function, if zoom mood is 0***/
-  describe('#incrementZoomLabel', () => {
-    beforeEach(() => {
-      component.displayScaleFactor = 0;
-      component.incrementZoomLabel();
-    });
-    it('it should call incrementZoomLabel function, if zoom mood is 0', () => {
-      expect(component.incrementZoomLabel).toBeDefined();
-      expect(component.displayScaleFactorBlock).toBeFalsy();
-    });
-  });
-  /*** it should call incrementZoomLabel function, if zoom mood is not in 0***/
-  describe('#incrementZoomLabel', () => {
-    beforeEach(() => {
-      component.displayScaleFactor = 1;
-      component.incrementZoomLabel();
-    });
-    it('it should call incrementZoomLabel function, if zoom mood is 0', () => {
-      expect(component.incrementZoomLabel).toBeDefined();
-      expect(component.displayScaleFactorBlock).toBeTruthy();
-    });
-  });
   /*** it should call resetZoom function***/
   describe('#resetZoom', () => {
     beforeEach(() => {
       component.canvas = {
         setZoom: () => {},
+        getZoom: () => {},
+        getWidth: () => {},
+        getHeight: () => {},
+        viewportTransform: () => {},
+        relativePan: () => {},
       };
       component.xRayImage = {
         width: 123,
         height: 123,
       };
-      spyOn(component, 'incrementZoomLabel');
       component.resetZoom();
     });
     it('it should call resetZoom function', () => {
       expect(component.resetZoom).toBeDefined();
-      expect(component.incrementZoomLabel).toHaveBeenCalled();
     });
   });
-
-  /*** it should call zoomOut function***/
-  describe('#zoomOut', () => {
-    beforeEach(() => {
-      component.fixedScale = 1;
-      component.zoomLevelMin = 0;
-      spyOn(component, 'zoomScale');
-      spyOn(component, 'incrementZoomLabel');
-      component.zoomOut(123);
-    });
-    it('it should call zoomOut function', () => {
-      expect(component.zoomOut).toBeDefined();
-      expect(component.zoomScale).toHaveBeenCalled();
-      expect(component.incrementZoomLabel).toHaveBeenCalled();
-    });
-  });
-
-  /*** it should call zoomOut function and restrict zoom if it is less than scale factor***/
-  describe('#zoomOut', () => {
-    beforeEach(() => {
-      const point = 123;
-      component.fixedScale = -1;
-      component.zoomLevelMin = 0;
-      component.zoomOut(point);
-    });
-    it('it should call zoomOut function and restrict zoom if it is less than scale factor', () => {
-      expect(component.zoomOut).toBeDefined();
-    });
-  });
-
-  /*** it should call zoomScale function***/
-  describe('#zoomScale', () => {
-    beforeEach(() => {
-      component.canvas = {
-        zoomToPoint: () => {},
-      };
-      const point = 123;
-      component.fixedScale = -1;
-      component.zoomLevelMin = 0;
-      spyOn(component, 'keepPositionInBounds');
-      component.zoomScale(point);
-    });
-    it('it should call zoomScale function', () => {
-      expect(component.zoomScale).toBeDefined();
-      expect(component.keepPositionInBounds).toHaveBeenCalled();
-    });
-  });
-
   /*** it should call keepPositionInBounds function***/
   describe('#keepPositionInBounds', () => {
     beforeEach(() => {
@@ -1591,7 +1503,6 @@ describe('CanvasImageComponent', () => {
       };
       const point = 123;
       component.fixedScale = -1;
-      component.zoomLevelMin = 0;
       component.keepPositionInBounds(point);
     });
     it('it should call keepPositionInBounds function', () => {
