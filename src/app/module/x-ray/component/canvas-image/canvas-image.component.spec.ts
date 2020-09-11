@@ -67,8 +67,8 @@ describe('CanvasImageComponent', () => {
       };
       component.xRayImage = {
         width: 123,
-        height: 123
-      }
+        height: 123,
+      };
       component.canvasDynamicHeight = 0;
       component.canvasDynamicWidth = 0;
       component.canvasScaleX = 0;
@@ -393,7 +393,6 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-  
   /*** it should call onSelect function with empty item ***/
   describe('#onSelect', () => {
     beforeEach(() => {
@@ -795,7 +794,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-    /*** it should call updatePrediction function for ellipse***/
+  /*** it should call updatePrediction function for ellipse***/
   describe('#updatePrediction', () => {
     beforeEach(() => {
       component.canvas = {
@@ -831,15 +830,14 @@ describe('CanvasImageComponent', () => {
         meta: {},
       };
       component.selectedDisease = 'Bulla';
-      spyOn(component, 'updateEllipseIntoSession')
+      spyOn(component, 'updateEllipseIntoSession');
       component.updatePrediction();
     });
     it('it should call updatePrediction  for ellipse', () => {
-        expect(component.updatePrediction).toBeDefined();
-        expect(component.updateEllipseIntoSession).toHaveBeenCalled();
-      });
+      expect(component.updatePrediction).toBeDefined();
+      expect(component.updateEllipseIntoSession).toHaveBeenCalled();
     });
-  
+  });
 
   /*** it should call save function ***/
   describe('#save', () => {
@@ -956,30 +954,30 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-      /*** it should call getSessionEllipse function if ellipse is in session***/
+  /*** it should call getSessionEllipse function if ellipse is in session***/
   describe('#getSessionEllipse', () => {
-        beforeEach(() => {
-          const itemMock = [
-            {
-              id: 23,
-              coordinateValue: '45 67',
-              color: 'red',
-            },
-          ];
-          component.canvas = {
-            add: () => {},
-            renderAll: () => {},
-            clear: () => {},
-          };
-          spyOn(sessionStorage, 'getItem').and.callFake(() => {
-            return JSON.stringify(itemMock);
-          });
-          component.getSessionEllipse();
-        });
-        it('should call getSessionEllipse function', () => {
-          expect(component.getSessionEllipse).toBeDefined();
-        });
+    beforeEach(() => {
+      const itemMock = [
+        {
+          id: 23,
+          coordinateValue: '45 67',
+          color: 'red',
+        },
+      ];
+      component.canvas = {
+        add: () => {},
+        renderAll: () => {},
+        clear: () => {},
+      };
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(itemMock);
       });
+      component.getSessionEllipse();
+    });
+    it('should call getSessionEllipse function', () => {
+      expect(component.getSessionEllipse).toBeDefined();
+    });
+  });
 
   /*** it should call getSessionFreeHandDrawing function if freeHandDrawing is in session ***/
   describe('#getSessionFreeHandDrawing', () => {
@@ -1277,7 +1275,7 @@ describe('CanvasImageComponent', () => {
           return {
             top: 60,
             oCoords: {
-              tr: { y: 2.23 }
+              tr: { y: 2.23 },
             },
             getCenterPoint: () => {
               return { x: 3.45 };
@@ -1319,7 +1317,7 @@ describe('CanvasImageComponent', () => {
           return {
             top: 80,
             oCoords: {
-              tr: { y: 2.23 }
+              tr: { y: 2.23 },
             },
             getCenterPoint: () => {
               return { x: 3.45 };
@@ -1359,7 +1357,7 @@ describe('CanvasImageComponent', () => {
           return {
             top: 80,
             oCoords: {
-              tr: { y: 2.23 }
+              tr: { y: 2.23 },
             },
             getCenterPoint: () => {
               return { x: 3.45 };
@@ -1418,37 +1416,41 @@ describe('CanvasImageComponent', () => {
       expect(component.changeSelectableStatus).toBeDefined();
     });
   });
-      
-      /*** it should hide/show Annotation on clicking of eye icon on x-ray image with true condition ***/
-  describe('#ellipseLists', () => {
-        beforeEach(() => {
-          component.canvas = {
-            clear: () => {},
-            getObjects: () => {
-              return [{
-                visible: true,
-                id: 1
-              }];
-            },
-            renderAll: () => {},
-          };
-          component.ellipseLists(true);
-        });
-        it('should hide/show annotations based on clickin of eye icon on x-ray image with true condition', () => {
-          expect(component.ellipseLists).toBeDefined();
-        });
-      }); 
 
-            /*** it should hide/show Annotation on clicking of eye icon on x-ray image with false condition***/
+  /*** it should hide/show Annotation on clicking of eye icon on x-ray image with true condition ***/
   describe('#ellipseLists', () => {
     beforeEach(() => {
       component.canvas = {
         clear: () => {},
         getObjects: () => {
-          return [{
-            visible: true,
-            id: 1
-          }];
+          return [
+            {
+              visible: true,
+              id: 1,
+            },
+          ];
+        },
+        renderAll: () => {},
+      };
+      component.ellipseLists(true);
+    });
+    it('should hide/show annotations based on clickin of eye icon on x-ray image with true condition', () => {
+      expect(component.ellipseLists).toBeDefined();
+    });
+  });
+
+  /*** it should hide/show Annotation on clicking of eye icon on x-ray image with false condition***/
+  describe('#ellipseLists', () => {
+    beforeEach(() => {
+      component.canvas = {
+        clear: () => {},
+        getObjects: () => {
+          return [
+            {
+              visible: true,
+              id: 1,
+            },
+          ];
         },
         renderAll: () => {},
       };
@@ -1457,8 +1459,8 @@ describe('CanvasImageComponent', () => {
     it('should hide/show annotations based on clickin of eye icon on x-ray image with false condition', () => {
       expect(component.ellipseLists).toBeDefined();
     });
-  }); 
-      
+  });
+
   /*** it should call zoomIn function***/
   describe('#zoomIn', () => {
     beforeEach(() => {
@@ -1476,31 +1478,31 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-    /*** it should call zoomIn function and restrict zoom if it is more than scale factor***/
+  /*** it should call zoomIn function and restrict zoom if it is more than scale factor***/
   describe('#zoomIn', () => {
-      beforeEach(() => {
-        const point = 123;
-        component.fixedScale = 5.5;
-        component.zoomLevelMax = 5;
-        component.zoomIn(point);
-      });
-      it('it should call zoomIn function and restrict zoom if it is more than scale factor', () => {
-        expect(component.zoomIn).toBeDefined();
-      });
-    }); 
+    beforeEach(() => {
+      const point = 123;
+      component.fixedScale = 5.5;
+      component.zoomLevelMax = 5;
+      component.zoomIn(point);
+    });
+    it('it should call zoomIn function and restrict zoom if it is more than scale factor', () => {
+      expect(component.zoomIn).toBeDefined();
+    });
+  });
 
-    /*** it should call incrementZoomLabel function, if zoom mood is 0***/
+  /*** it should call incrementZoomLabel function, if zoom mood is 0***/
   describe('#incrementZoomLabel', () => {
-      beforeEach(() => {
-        component.displayScaleFactor = 0;
-        component.incrementZoomLabel();
-      });
-      it('it should call incrementZoomLabel function, if zoom mood is 0', () => {
-        expect(component.incrementZoomLabel).toBeDefined();
-        expect(component.displayScaleFactorBlock).toBeFalsy();
-      });
-    }); 
-        /*** it should call incrementZoomLabel function, if zoom mood is not in 0***/
+    beforeEach(() => {
+      component.displayScaleFactor = 0;
+      component.incrementZoomLabel();
+    });
+    it('it should call incrementZoomLabel function, if zoom mood is 0', () => {
+      expect(component.incrementZoomLabel).toBeDefined();
+      expect(component.displayScaleFactorBlock).toBeFalsy();
+    });
+  });
+  /*** it should call incrementZoomLabel function, if zoom mood is not in 0***/
   describe('#incrementZoomLabel', () => {
     beforeEach(() => {
       component.displayScaleFactor = 1;
@@ -1510,7 +1512,7 @@ describe('CanvasImageComponent', () => {
       expect(component.incrementZoomLabel).toBeDefined();
       expect(component.displayScaleFactorBlock).toBeTruthy();
     });
-  }); 
+  });
   /*** it should call resetZoom function***/
   describe('#resetZoom', () => {
     beforeEach(() => {
@@ -1519,18 +1521,18 @@ describe('CanvasImageComponent', () => {
       };
       component.xRayImage = {
         width: 123,
-        height: 123
-      }
-      spyOn(component, 'incrementZoomLabel')
+        height: 123,
+      };
+      spyOn(component, 'incrementZoomLabel');
       component.resetZoom();
-      });
+    });
     it('it should call resetZoom function', () => {
       expect(component.resetZoom).toBeDefined();
       expect(component.incrementZoomLabel).toHaveBeenCalled();
-      });
-    }); 
+    });
+  });
 
-      /*** it should call zoomOut function***/
+  /*** it should call zoomOut function***/
   describe('#zoomOut', () => {
     beforeEach(() => {
       component.fixedScale = 1;
@@ -1546,7 +1548,7 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-    /*** it should call zoomOut function and restrict zoom if it is less than scale factor***/
+  /*** it should call zoomOut function and restrict zoom if it is less than scale factor***/
   describe('#zoomOut', () => {
     beforeEach(() => {
       const point = 123;
@@ -1557,33 +1559,33 @@ describe('CanvasImageComponent', () => {
     it('it should call zoomOut function and restrict zoom if it is less than scale factor', () => {
       expect(component.zoomOut).toBeDefined();
     });
-  }); 
-  
-    /*** it should call zoomScale function***/
-  describe('#zoomScale', () => {
-      beforeEach(() => {
-        component.canvas = {
-          zoomToPoint: () => {},
-        };
-        const point = 123;
-        component.fixedScale = -1;
-        component.zoomLevelMin = 0;
-        spyOn(component, 'keepPositionInBounds');
-        component.zoomScale(point);
-      });
-      it('it should call zoomScale function', () => {
-        expect(component.zoomScale).toBeDefined();
-        expect(component.keepPositionInBounds).toHaveBeenCalled();
-      });
-    }); 
+  });
 
-        /*** it should call keepPositionInBounds function***/
+  /*** it should call zoomScale function***/
+  describe('#zoomScale', () => {
+    beforeEach(() => {
+      component.canvas = {
+        zoomToPoint: () => {},
+      };
+      const point = 123;
+      component.fixedScale = -1;
+      component.zoomLevelMin = 0;
+      spyOn(component, 'keepPositionInBounds');
+      component.zoomScale(point);
+    });
+    it('it should call zoomScale function', () => {
+      expect(component.zoomScale).toBeDefined();
+      expect(component.keepPositionInBounds).toHaveBeenCalled();
+    });
+  });
+
+  /*** it should call keepPositionInBounds function***/
   describe('#keepPositionInBounds', () => {
     beforeEach(() => {
       component.canvas = {
         getZoom: () => {},
-        getWidth : () => {},
-        getHeight : () => {},
+        getWidth: () => {},
+        getHeight: () => {},
         viewportTransform: 123,
         relativePan: () => {},
       };
@@ -1595,5 +1597,5 @@ describe('CanvasImageComponent', () => {
     it('it should call keepPositionInBounds function', () => {
       expect(component.keepPositionInBounds).toBeDefined();
     });
-  }); 
+  });
 });

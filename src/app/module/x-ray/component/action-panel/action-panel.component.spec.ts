@@ -59,6 +59,22 @@ describe('ActionPanelComponent', () => {
     });
   });
 
+  /*** it should call iconAction click event, when key not equal to index ***/
+  describe('#iconAction', () => {
+    beforeEach(() => {
+      const mockdata = [
+        {
+          name: 'Ellipse',
+          index: 1,
+        },
+      ];
+      component.iconAction(mockdata, '0');
+    });
+    it('should call iconAction function, when key not equal to index', () => {
+      expect(component.iconAction).toBeDefined();
+    });
+  });
+
   /*** it should call askAi event, when index not equal to key ***/
   describe('#askAI', () => {
     beforeEach(() => {

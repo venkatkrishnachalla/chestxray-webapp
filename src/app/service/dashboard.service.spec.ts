@@ -1,5 +1,5 @@
 import { DashboardService } from './dashboard.service';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpEventType, HttpEvent } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 
 describe('DashboardService', () => {

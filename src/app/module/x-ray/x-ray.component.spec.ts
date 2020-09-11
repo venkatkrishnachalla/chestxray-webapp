@@ -16,7 +16,7 @@ describe('XRayComponent', () => {
     'onReportDataShared',
     'onComponentReportButtonClick',
     'onErrorMessage',
-    'onAskAiButtonClick'
+    'onAskAiButtonClick',
   ]);
   const anotatedXrayService = jasmine.createSpyObj('XRayService', ['abcd']);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
@@ -26,6 +26,17 @@ describe('XRayComponent', () => {
   const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
     'success',
     'error',
+    'info'
+  ]);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+  const canvasComponentSpy = jasmine.createSpyObj('CanvasImageComponent', [
+    'onSubmitPatientDetails',
+  ]);
+  const impressionSpy = jasmine.createSpyObj('ImpressionComponent', [
+    'getImpressionsToReport',
+  ]);
+  const findingsSpy = jasmine.createSpyObj('FindingsComponent', [
+    'getFindingsToReport',
   ]);
 
   beforeEach(() => {
@@ -103,11 +114,52 @@ describe('XRayComponent', () => {
       component.openAskAI(event);
     });
     it('should call openAskAI function, when returns success', () => {
-      expect(eventEmitterService.onAskAiButtonClick).toHaveBeenCalledWith('success');
+      expect(eventEmitterService.onAskAiButtonClick).toHaveBeenCalledWith(
+        'success'
+      );
       expect(spinnerServiceSpy.show).toHaveBeenCalled();
       XRayServiceSpy.getAskAiDetails(
         'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD'
       ).subscribe((authResponse: any) => {});
+    });
+  });
+
+  /*** it should call openAskAi function, when get ask ai returns empty data ***/
+  describe('#openAskAI', () => {
+    beforeEach(() => {
+      const mLResponseAi = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              findings: {
+                ADDITIONA: [],
+              },
+              Impression: [
+                {
+                  index: 0,
+                  sentence: 'Consolidation seen in left upper and mid zone',
+                },
+              ],
+              diseases: [],
+            },
+          ],
+        },
+      };
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify({ base64Image: 'test', filename: 'abcd' });
+      });
+      XRayServiceSpy.getAskAiDetails.and.returnValue(of(mLResponseAi));
+      const mockInResponse = {
+        username: 'mohan',
+        userroles: ['hospitalradiologist'],
+      };
+      authServiceSpy.userSubject = of(mockInResponse);
+      const event = {};
+      component.openAskAI(event);
+    });
+    it('should call openAskAI function, when returns empty data', () => {
+      expect(component.openAskAI).toBeDefined();
     });
   });
 
@@ -132,15 +184,25 @@ describe('XRayComponent', () => {
     });
   });
 
-  // describe('#rejectAI', () => {
-  //   beforeEach(() => {
-  //     // tslint:disable-next-line: deprecation
-  //     component.rejectAI(event);
-  //   });
-  //   it('should call rejectAI function', () => {
-  //     // tslint:disable-next-line: deprecation
-  //     const result = component.rejectAI(event);
-  //     expect(component.rejectAI).toBeDefined();
-  //   });
-  // });
+  /*** it should call generateReport function ***/
+  describe('#generateReport', () => {
+    beforeEach(() => {
+      component.canvas = canvasComponentSpy;
+      component.impressions = impressionSpy;
+      component.findings = findingsSpy;
+      component.generateReport();
+    });
+    it('should call generateReport function', () => {
+      expect(component.generateReport).toBeDefined();
+    });
+  });
+
+  /*** should call ngOnDestroy ****/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any).userSubscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
+    });
+  });
 });

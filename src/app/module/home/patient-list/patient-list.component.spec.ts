@@ -84,6 +84,19 @@ describe('PatientListComponent', () => {
     });
   });
 
+  /*** it should call getPatientList function, when it returns error ***/
+  describe('#getPatientList', () => {
+    beforeEach(() => {
+      dashboardServiceSpy.getPatientList.and.returnValue(
+        throwError({ status: 404 })
+      );
+      component.getPatientList();
+    });
+    it('should call getPatientList function', () => {
+      expect(component.getPatientList).toBeDefined();
+    });
+  });
+
   /*** it should call onGridReady function ***/
   describe('#onGridReady', () => {
     const params = {
@@ -141,11 +154,32 @@ describe('PatientListComponent', () => {
     });
   });
 
+  /*** it should call onRowClicked function, when action type equal to redirect ***/
+  describe('#onRowClicked', () => {
+    beforeEach(() => {
+      const eventMock = {
+        event: {
+          target: {
+            getAttribute: () => {
+              return {
+                'data-action-type': 'redirect',
+              };
+            },
+          },
+        },
+      };
+      component.onRowClicked(eventMock);
+    });
+    it('should call onRowClicked function, when action type equal to redirect', () => {
+      expect(component.onRowClicked).toBeDefined();
+    });
+  });
+
   /*** it should call onActionViewClick function ***/
   describe('#onActionViewClick', () => {
     beforeEach(() => {
       const dataMock = {
-        name: 'abcde'
+        name: 'abcde',
       };
       component.onActionViewClick(dataMock);
     });
@@ -158,7 +192,7 @@ describe('PatientListComponent', () => {
   describe('#onActionRedirectClick', () => {
     beforeEach(() => {
       const dataMock = {
-        name: 'abcde'
+        name: 'abcde',
       };
       component.onActionRedirectClick(dataMock);
     });

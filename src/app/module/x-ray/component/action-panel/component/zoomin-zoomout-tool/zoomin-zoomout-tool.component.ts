@@ -11,7 +11,13 @@ import { EventEmitterService } from 'src/app/service/event-emitter.service';
 // ZoominZoomoutToolComponent class implementation
 export class ZoominZoomoutToolComponent implements OnInit {
   readonly constants = actionPanelConstants;
-  actionPanelZoom: { image: string; alt: string; title: string; active: boolean; implemented: boolean;}[];
+  actionPanelZoom: {
+    image: string;
+    alt: string;
+    title: string;
+    active: boolean;
+    implemented: boolean;
+  }[];
 
   /*
    * Constructor for ZoominZoomoutToolComponent class
@@ -25,7 +31,7 @@ export class ZoominZoomoutToolComponent implements OnInit {
     );
   }
 
-    /**
+  /**
    * This is a iconAction click function.
    * @example
    * iconAction(data , index);

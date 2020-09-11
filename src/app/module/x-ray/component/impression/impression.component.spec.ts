@@ -7,12 +7,13 @@ describe('ImpressionComponent', () => {
     'invokeComponentFunction',
     'invokeComponentData',
     'invokeComponentEllipseData',
-    'onImpressionDataShared'
+    'onImpressionDataShared',
   ]);
   const xrayAnnotatedImpressionServiceSpy = jasmine.createSpyObj(
-    'EventEmitterService',
-    ['XRayService']
+    'XRayService',
+    ['xrayAnnotatedImpressions']
   );
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(() => {
     const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
@@ -31,73 +32,106 @@ describe('ImpressionComponent', () => {
   /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
-      spyOn(component, 'getImpressions');
       const response = {
         check: 'delete',
         disease: [],
       };
       const mock = {
-        name: 'abcde',
+        name: 'BULLA',
+        isMLApi: true
       };
+      const ellipseMock = {
+        x: 198,
+        y: 200,
+        a: 12,
+        b: 14,
+        r: 75
+      }
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
+      eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
       component.ngOnInit();
     });
     it('should call ngOnInit function', () => {
-      expect(component.getImpressions).toHaveBeenCalled();
+      expect(component.ngOnInit).toBeDefined();
     });
   });
 
-   /*** it should call ngOnInit function, when info is update ***/
+  /*** it should call ngOnInit function, when info is update ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
-      spyOn(component, 'getImpressions');
       const response = {
         check: 'update',
       };
       const mock = {
-        name: 'abcde',
+        name: 'BULLA',
+        isMLApi: true
       };
+      const ellipseMock = {
+        x: 198,
+        y: 200,
+        a: 12,
+        b: 14,
+        r: 75
+      }
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
+      eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
       component.ngOnInit();
     });
     it('should call ngOnInit function, when info is update', () => {
-      expect(component.getImpressions).toHaveBeenCalled();
       expect(component.ngOnInit).toBeDefined();
     });
   });
 
-   /*** it should call ngOnInit function, when info is empty ***/
+  /*** it should call ngOnInit function, when info is empty ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
-      spyOn(component, 'getImpressions');
       const response = {
         check: '',
       };
       const mock = {
-        name: 'abcde',
+        name: 'BULLA',
+        isMLApi: true
       };
+      const ellipseMock = {
+        x: 198,
+        y: 200,
+        a: 12,
+        b: 14,
+        r: 75
+      }
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
+      eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
       component.ngOnInit();
     });
     it('should call ngOnInit function, when info is empty', () => {
-      expect(component.getImpressions).toHaveBeenCalled();
       expect(component.ngOnInit).toBeDefined();
     });
   });
 
-   /*** it should call getImpressions function ***/
+  /*** it should call getImpressions function ***/
   describe('#getImpressions', () => {
     beforeEach(() => {
       const response = {
-        name: 'abcde',
+        name: 'BULLA',
+        isMLApi: true
       };
       const mock = {
         name: 'abcde',
         index: 1,
       };
+      component.impression = [
+        {
+          name: 'abcde',
+          id: 2,
+        },
+        {
+          name: 'xyz',
+          id: 1,
+        },
+      ];
       eventEmitterServiceSpy.invokeComponentData = of(response);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(mock);
       component.getImpressions();
@@ -114,6 +148,12 @@ describe('ImpressionComponent', () => {
         {
           name: 'abcde',
           id: 2,
+          isMLApi: true
+        },
+        {
+          name: 'xyz',
+          id: 1,
+          isMLApi: true
         },
       ];
       component.deleteImpression(1, null, 2);
@@ -131,6 +171,7 @@ describe('ImpressionComponent', () => {
         {
           name: 'abcde',
           id: 2,
+          isMLApi: true
         },
       ];
       component.updateImpression(response);
@@ -140,13 +181,46 @@ describe('ImpressionComponent', () => {
     });
   });
 
-    /*** it should call getColorMapping function ***/
+  /*** it should call getColorMapping function ***/
   describe('#getColorMapping', () => {
     beforeEach(() => {
-      component.getColorMapping('BULLA', 'false', 'red');
+      component.getColorMapping('BULLA', 'true', 'red');
     });
     it('should call getColorMapping', () => {
       expect(component.getColorMapping).toBeDefined();
+    });
+  });
+
+  /*** it should call getImpressionsToReport function ***/
+  describe('#getImpressionsToReport', () => {
+    beforeEach(() => {
+      component.impression = [
+        {
+          name: 'abcde',
+          id: 2,
+          isMLApi: 'true'
+        },
+      ];
+      component.uniqueImpressions = [
+        {
+          name: 'abcde',
+          id: 2,
+          isMLApi: 'true'
+        },
+      ];
+      component.getImpressionsToReport();
+    });
+    it('should call getImpressionsToReport', () => {
+      expect(component.getImpressionsToReport).toBeDefined();
+    });
+  });
+
+  /*** should call ngOnDestroy ****/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any)._subscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });

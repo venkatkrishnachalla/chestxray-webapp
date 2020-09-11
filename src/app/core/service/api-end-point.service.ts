@@ -80,13 +80,7 @@ export class ApiEndPointService {
 * getRefreshToken();
 */  
   public getRefreshToken(): string {
-    // if (environment.isMockAPI) {
-    //   return environment.mockApiEndPoint + '/auth';
-    // }
-    const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
-    return (
-      environment.RefreshToken + 'signInWithCustomToken?key=' + FIREBASE_API_KEY
-    );
+    return environment.RefreshToken;
   }
 
     /**  

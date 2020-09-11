@@ -56,6 +56,25 @@ describe('XRayHeaderComponent', () => {
     });
   });
 
+  /*** ngOnInit function test case, when patient info is empty ****/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const mockInResponse = {
+        username: 'mohan',
+        userroles: ['hospitalradiologist'],
+      };
+      authServiceSpy.userSubject = of(mockInResponse)
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(patientMock);
+      });
+      spyOn(component, 'prevNextFunction');
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when patient info is empty', () => {
+      expect(component.prevNextFunction).toHaveBeenCalled();
+    });
+  });
+
   /*** prevNextFunction function test case ****/
   describe('#prevNextFunction', () => {
     beforeEach(() => {

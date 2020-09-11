@@ -11,6 +11,7 @@ describe('FindingsComponent', () => {
   const xrayAnnotatedImpressionSpy = jasmine.createSpyObj('XRayService', [
     'xrayAnnotatedFindings',
   ]);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(() => {
     const mockData = 'LUNG FIELDS: Visualised lung fields are clear.';
@@ -72,6 +73,11 @@ describe('FindingsComponent', () => {
       component.getFindings();
       expect(component.getFindings).toBeDefined();
     });
+    it('should call getFindings function, when index not equal to -1 ', () => {
+      component.findings = ['LUNG FIELDS: Visualised lung fields are clear.'];
+      component.getFindings();
+      expect(component.getFindings).toBeDefined();
+    });
   });
 
   /*** it should call getFindingsToReport event ***/
@@ -80,6 +86,52 @@ describe('FindingsComponent', () => {
     it('should call getFindingsToReport function', () => {
       component.getFindingsToReport();
       expect(component.getFindingsToReport).toBeDefined();
+    });
+  });
+
+  /*** it should call updateFindings event ***/
+  describe('#updateFindings', () => {
+    beforeEach(() => {});
+    it('should call updateFindings function', () => {
+      const eventspy = {
+        target: {
+          textContent: '',
+        },
+      };
+      component.updateFindings(eventspy, 1);
+      expect(component.updateFindings).toBeDefined();
+    });
+    it('should call updateFindings function, when textContent is not empty', () => {
+      const eventspy = {
+        target: {
+          textContent: 'abcd',
+        },
+      };
+      component.updateFindings(eventspy, 1);
+      expect(component.updateFindings).toBeDefined();
+    });
+  });
+
+  /*** it should call preventBaseValue event ***/
+  describe('#preventBaseValue', () => {
+    beforeEach(() => {});
+    it('should call preventBaseValue function', () => {
+      const eventspy = {
+        target: {
+          textContent: '',
+        },
+      };
+      component.preventBaseValue(eventspy);
+      expect(component.preventBaseValue).toBeDefined();
+    });
+  });
+
+  /*** should call ngOnDestroy ****/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any)._subscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });
