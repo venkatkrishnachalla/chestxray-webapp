@@ -8,6 +8,7 @@ import {
   ViewChild,
   Output,
   EventEmitter,
+  ElementRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
@@ -50,6 +51,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
+  @ViewChild('myDiv') myDiv: ElementRef;
   @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
@@ -126,6 +128,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   displayScaleFactorBlock: boolean;
   brightnessRange: number;
   contrastRange: number;
+  text: string;
+  brightness: any;
+  contrast: any;
 
   /*
    * constructor for CanvasImageComponent class
@@ -411,12 +416,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
 
   prevNextPatientChange(patientId) {
-    this.eventEmitterService.OnDefaultRanges(50);
     this.resetZoom();
     this.canvas.setZoom(1);
     this.keepPositionInBounds(this.canvas);
     this.canvas.clear();
     this.spinnerService.show();
+    this.eventEmitterService.OnDefaultRanges(50);
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
     this.impressionArray = [];
@@ -1840,20 +1845,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * getBrightness(data);
    */
   getBrightness(data) {
+    this.text = 'brightness';
     this.brightnessRange = data;
-    this.setBrightnessRange();
-  }
-
-  /**
-   * This is setBrightnessRange function
-   * @param {void} empty - A empty param
-   * @example
-   * setBrightnessRange();
-   */
-  setBrightnessRange() {
-    return this.sanitizer.bypassSecurityTrustStyle(
-      'brightness(' + this.brightnessRange * 2 + '%)'
-    );
+    this.getRange();
   }
 
   /**
@@ -1863,19 +1857,27 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * getContrast();
    */
   getContrast(data) {
+    this.text = 'contrast';
     this.contrastRange = data;
-    this.setContrastRange();
+    this.getRange();
   }
 
   /**
-   * This is setContrastRange function
+   * This is getRange function
    * @param {void} empty - A empty param
    * @example
-   * setContrastRange();
+   * getRange();
    */
-  setContrastRange() {
-    return this.sanitizer.bypassSecurityTrustStyle(
-      'contrast(' + this.contrastRange * 2 + '%)'
-    );
+  getRange() {
+    if (this.text === 'brightness') {
+      this.brightness = this.sanitizer.bypassSecurityTrustStyle(
+        'brightness(' + this.brightnessRange * 2 + '%)'
+      );
+    }
+    else{
+      this.brightness = this.sanitizer.bypassSecurityTrustStyle(
+        'contrast(' + this.contrastRange * 2 + '%)'
+      );
+    }
   }
 }

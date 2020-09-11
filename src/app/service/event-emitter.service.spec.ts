@@ -13,7 +13,7 @@ describe('EventEmitterService', () => {
   /*** it should create service ***/
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
+  }); 
 
   /*** it should call onComponentButtonClick function ***/
   it('should call onComponentButtonClick function', () => {
@@ -80,4 +80,26 @@ describe('EventEmitterService', () => {
     const result = service.onAskAiButtonClick('');
     expect(service.onAskAiButtonClick).toBeDefined();
   });
+
+  /*** it should call onImpressionCheckboxClick function ***/
+  it('should call onImpressionCheckboxClick function', () => {
+      const result = service.onImpressionCheckboxClick('');
+      expect(service.onImpressionCheckboxClick).toBeDefined();
+    });
+
+    /*** it should call onBrightnessChange function ***/
+  it('should call onBrightnessChange function', () => {
+      const result = service.onBrightnessChange('');
+      expect(service.onBrightnessChange).toBeDefined();
+    });
+      /*** it should call onContrastChange function ***/
+  it('should call onContrastChange function', () => {
+    const result = service.onContrastChange('');
+    expect(service.onContrastChange).toBeDefined();
+  });
+    /*** it should call OnDefaultRanges function ***/
+  it('should call OnDefaultRanges function', () => {
+      const result = service.OnDefaultRanges('');
+      expect(service.OnDefaultRanges).toBeDefined();
+    });
 });

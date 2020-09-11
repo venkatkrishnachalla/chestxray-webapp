@@ -5,7 +5,7 @@ import {
   patientMockInstanceId,
 } from 'src/app/module/auth/patient-mock';
 
-fdescribe('CanvasImageComponent', () => {
+describe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',
@@ -19,7 +19,8 @@ fdescribe('CanvasImageComponent', () => {
     'onComponentFindingsDataShared',
     'invokePrevNextButtonDataFunction',
     'brightnessValue',
-    'contrastValue'
+    'contrastValue',
+    'OnDefaultRanges'
   ]);
   const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
   const xRayServiceSpy = jasmine.createSpyObj('XRayImageService', [
@@ -128,6 +129,7 @@ fdescribe('CanvasImageComponent', () => {
     });
     it('should call prevNextPatientChange function', () => {
       expect(component.prevNextPatientChange).toBeDefined();
+      expect(eventEmitterServiceSpy.OnDefaultRanges).toHaveBeenCalled();
       expect(component.getPatientInstanceId).toHaveBeenCalled();
     });
   });
@@ -1607,4 +1609,26 @@ fdescribe('CanvasImageComponent', () => {
       expect(component.keepPositionInBounds).toBeDefined();
     });
   });
+
+  /*** it should call getBrightness function***/
+  describe('#getBrightness', () => {
+    beforeEach(() => {
+      const point = 33;
+      component.getBrightness(point);
+    });
+    it('it should call getBrightness function', () => {
+      expect(component.getBrightness).toBeDefined();
+    });
+  });
+
+    /*** it should call getContrast function***/
+  describe('#getContrast', () => {
+      beforeEach(() => {
+        const point = 33;
+        component.getContrast(point);
+      });
+      it('it should call getContrast function', () => {
+        expect(component.getContrast).toBeDefined();
+      });
+    });
 });

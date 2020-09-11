@@ -1,13 +1,16 @@
 import { BrightnessContrastToolComponent } from './brightness-contrast-tool.component';
+import { of } from 'rxjs';
 
 describe('BrightnessContrastToolComponent', () => {
   let component: BrightnessContrastToolComponent;
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onBrightnessChange',
     'onContrastChange',
+    'defaultRange'
   ]);
 
   beforeEach(() => {
+    eventEmitterServiceSpy.defaultRange = of(undefined);
     component = new BrightnessContrastToolComponent(eventEmitterServiceSpy);
   });
 
@@ -26,4 +29,26 @@ describe('BrightnessContrastToolComponent', () => {
       expect(component.ngOnInit).toBeDefined();
     });
   });
+
+  /*** it should call setBrightnessSlidervalue function***/
+  describe('#setBrightnessSlidervalue', () => {
+    beforeEach(() => {
+      const point = 60;
+      component.setBrightnessSlidervalue(point);
+    });
+    it('it should call getBrightness function', () => {
+      expect(component.setBrightnessSlidervalue).toBeDefined();
+    });
+  });
+
+    /*** it should call setContrastSlidervalue function***/
+  describe('#setContrastSlidervalue', () => {
+      beforeEach(() => {
+        const point = 60;
+        component.setContrastSlidervalue(point);
+      });
+      it('it should call setContrastSlidervalue function', () => {
+        expect(component.setContrastSlidervalue).toBeDefined();
+      });
+    });
 });

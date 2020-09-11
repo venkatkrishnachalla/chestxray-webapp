@@ -65,7 +65,7 @@ export class BrightnessContrastToolComponent implements OnInit {
    * @example
    * setBrightnessSlidervalue(event);
    */
-  setBrightnessSlidervalue(event: any){
+  setBrightnessSlidervalue(event: number){
     this.eventEmitterService.onBrightnessChange(event);
   }
 
@@ -74,7 +74,7 @@ export class BrightnessContrastToolComponent implements OnInit {
    * @example
    * setContrastSlidervalue(event);
    */
-  setContrastSlidervalue(event: any){
+  setContrastSlidervalue(event: number){
     this.eventEmitterService.onContrastChange(event);
   }
 
