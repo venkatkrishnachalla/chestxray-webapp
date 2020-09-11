@@ -160,7 +160,7 @@ export const actionPanelConstants = {
       alt: 'Contrast',
       title: 'Contrast',
       active: false,
-      implemented: true,
+      implemented: false,
     },
   ],
 };
