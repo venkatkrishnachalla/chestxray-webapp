@@ -37,6 +37,7 @@ import {
   InvokeComponentData,
 } from 'src/app/module/auth/interface.modal';
 import { timeStamp } from 'console';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -123,6 +124,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   displayScaleFactor: number;
   fixedScale: number;
   displayScaleFactorBlock: boolean;
+  brightnessRange: number;
+  contrastRange: number;
 
   /*
    * constructor for CanvasImageComponent class
@@ -134,7 +137,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private xRayService: XRayImageService,
     private annotatedXrayService: XRayService,
     private router: Router,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private sanitizer: DomSanitizer,
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -201,6 +205,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
+    this.eventEmitterService.brightnessValue.subscribe((data) => {
+      this.getBrightness(data); 
+    });
+    this.eventEmitterService.contrastValue.subscribe((data) => {
+      this.getContrast(data); 
+    });
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
         switch (data.title) {
@@ -401,6 +411,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
 
   prevNextPatientChange(patientId) {
+    this.eventEmitterService.OnDefaultRanges(50);
     this.resetZoom();
     this.canvas.setZoom(1);
     this.keepPositionInBounds(this.canvas);
@@ -657,6 +668,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   generateCanvas() {
     fabric.Image.fromURL(this.PatientImage, (img) => {
       this.xRayImage = img;
+      this.contrastRange = 50;
+      this.brightnessRange = 50;
       this.resetZoom();
       this.setCanvasBackground();
       const xrayData = JSON.parse(sessionStorage.getItem('x-ray_Data'));
@@ -1804,6 +1817,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     } 
   }
 
+  /**
+   * This is showHideAnnotations function
+   * @param {any} array - A array param
+   * @example
+   * showHideAnnotations(data);
+   */
   showHideAnnotations(data) {
     this.canvas._objects.forEach(element => {
       if (element.stroke === data.info.colors){
@@ -1812,5 +1831,51 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.canvas.renderAll();
       }
     });
+  }
+
+  /**
+   * This is getBrightness function
+   * @param {any} array - A array param
+   * @example
+   * getBrightness(data);
+   */
+  getBrightness(data) {
+    this.brightnessRange = data;
+    this.setBrightnessRange();
+  }
+
+  /**
+   * This is setBrightnessRange function
+   * @param {void} empty - A empty param
+   * @example
+   * setBrightnessRange();
+   */
+  setBrightnessRange() {
+    return this.sanitizer.bypassSecurityTrustStyle(
+      'brightness(' + this.brightnessRange * 2 + '%)'
+    );
+  }
+
+  /**
+   * This is getContrast function
+   * @param {any} array - A array param
+   * @example
+   * getContrast();
+   */
+  getContrast(data) {
+    this.contrastRange = data;
+    this.setContrastRange();
+  }
+
+  /**
+   * This is setContrastRange function
+   * @param {void} empty - A empty param
+   * @example
+   * setContrastRange();
+   */
+  setContrastRange() {
+    return this.sanitizer.bypassSecurityTrustStyle(
+      'contrast(' + this.contrastRange * 2 + '%)'
+    );
   }
 }

@@ -5,7 +5,7 @@ import {
   patientMockInstanceId,
 } from 'src/app/module/auth/patient-mock';
 
-describe('CanvasImageComponent', () => {
+fdescribe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',
@@ -18,6 +18,8 @@ describe('CanvasImageComponent', () => {
     'onComponentEllipseDataShared',
     'onComponentFindingsDataShared',
     'invokePrevNextButtonDataFunction',
+    'brightnessValue',
+    'contrastValue'
   ]);
   const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
   const xRayServiceSpy = jasmine.createSpyObj('XRayImageService', [
@@ -36,9 +38,14 @@ describe('CanvasImageComponent', () => {
     'success',
     'clear',
   ]);
+  const sanitizerspy = jasmine.createSpyObj('DomSanitizer', [
+    'bypassSecurityTrustStyle',
+  ]);
 
   beforeEach(() => {
     eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(undefined);
+    eventEmitterServiceSpy.brightnessValue = of(undefined);
+    eventEmitterServiceSpy.contrastValue = of(undefined);
     component = new CanvasImageComponent(
       spinnerServiceSpy,
       eventEmitterServiceSpy,
@@ -46,7 +53,8 @@ describe('CanvasImageComponent', () => {
       xRayServiceSpy,
       annotatedXrayServiceSpy,
       routerSpy,
-      toastrServiceSpy
+      toastrServiceSpy,
+      sanitizerspy
     );
   });
 
@@ -1443,6 +1451,7 @@ describe('CanvasImageComponent', () => {
   describe('#ellipseLists', () => {
     beforeEach(() => {
       component.canvas = {
+        discardActiveObject : () => {},
         clear: () => {},
         getObjects: () => {
           return [

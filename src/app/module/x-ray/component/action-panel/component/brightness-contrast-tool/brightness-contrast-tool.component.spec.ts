@@ -2,9 +2,13 @@ import { BrightnessContrastToolComponent } from './brightness-contrast-tool.comp
 
 describe('BrightnessContrastToolComponent', () => {
   let component: BrightnessContrastToolComponent;
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'onBrightnessChange',
+    'onContrastChange',
+  ]);
 
   beforeEach(() => {
-    component = new BrightnessContrastToolComponent();
+    component = new BrightnessContrastToolComponent(eventEmitterServiceSpy);
   });
 
   /*** it should create report component ***/
