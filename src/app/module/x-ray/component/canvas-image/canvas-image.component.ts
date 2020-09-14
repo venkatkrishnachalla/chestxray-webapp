@@ -8,6 +8,7 @@ import {
   ViewChild,
   Output,
   EventEmitter,
+  ElementRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
@@ -37,6 +38,7 @@ import {
   InvokeComponentData,
 } from 'src/app/module/auth/interface.modal';
 import { timeStamp } from 'console';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -49,6 +51,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
+  @ViewChild('myDiv') myDiv: ElementRef;
   @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
@@ -120,6 +123,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   displayScaleFactor: number;
   fixedScale: number;
   displayScaleFactorBlock: boolean;
+  brightnessRange: number;
+  contrastRange: number;
+  checkBrightnessContrast: string;
+  brightness: any;
+  contrast: any;
 
   /*
    * constructor for CanvasImageComponent class
@@ -131,7 +139,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private xRayService: XRayImageService,
     private annotatedXrayService: XRayService,
     private router: Router,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private sanitizer: DomSanitizer
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -196,6 +205,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
+    this.eventEmitterService.brightnessValue.subscribe((data) => {
+      this.getBrightness(data);
+    });
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
         switch (data.title) {
@@ -419,6 +431,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.keepPositionInBounds(this.canvas);
     this.canvas.clear();
     this.spinnerService.show();
+    this.eventEmitterService.OnDefaultRanges(50);
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
     this.impressionArray = [];
@@ -670,6 +683,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   generateCanvas() {
     fabric.Image.fromURL(this.PatientImage, (img) => {
       this.xRayImage = img;
+      this.contrastRange = 50;
+      this.brightnessRange = 50;
       this.resetZoom();
       this.setCanvasBackground();
       const xrayData = JSON.parse(sessionStorage.getItem('x-ray_Data'));
@@ -1737,24 +1752,30 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * ellipseLists();
    */
-  ellipseLists(event: any){
-  const objects = this.canvas.getObjects();
-  if (event === true){
-    objects.forEach(object => {
-    this.isChangeable = true;
-    this.canvas.setVisible = object.visible = event;
-    this.canvas.renderAll();
-  });
-  }else{
-    objects.forEach(object => {
-    this.isChangeable = false;
-    this.canvas.setVisible = object.visible = event;
-    this.canvas.discardActiveObject();
-    this.canvas.renderAll();
+  ellipseLists(event: any) {
+    const objects = this.canvas.getObjects();
+    if (event === true) {
+      objects.forEach((object) => {
+        this.isChangeable = true;
+        this.canvas.setVisible = object.visible = event;
+        this.canvas.renderAll();
+      });
+    } else {
+      objects.forEach((object) => {
+        this.isChangeable = false;
+        this.canvas.setVisible = object.visible = event;
+        this.canvas.discardActiveObject();
+        this.canvas.renderAll();
       });
     }
   }
 
+  /**
+   * This is showHideAnnotations function
+   * @param {any} array - A array param
+   * @example
+   * showHideAnnotations(data);
+   */
   showHideAnnotations(data) {
     this.canvas._objects.forEach((element) => {
       if (element.stroke === data.info.colors) {
@@ -1763,5 +1784,35 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.canvas.renderAll();
       }
     });
+  }
+
+  /**
+   * This is getBrightness function
+   * @param {number} value - A number param
+   * @example
+   * getBrightness(data);
+   */
+  getBrightness(data: number) {
+    this.checkBrightnessContrast = 'brightness';
+    this.brightnessRange = data;
+    this.getRange();
+  }
+
+  /**
+   * This is getRange function
+   * @param {void} empty - A empty param
+   * @example
+   * getRange();
+   */
+  getRange() {
+    if (this.checkBrightnessContrast === 'brightness') {
+      this.brightness = this.sanitizer.bypassSecurityTrustStyle(
+        'brightness(' + this.brightnessRange * 2 + '%)'
+      );
+    } else {
+      this.brightness = this.sanitizer.bypassSecurityTrustStyle(
+        'contrast(' + this.contrastRange * 2 + '%)'
+      );
+    }
   }
 }

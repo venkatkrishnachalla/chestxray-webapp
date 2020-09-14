@@ -18,6 +18,9 @@ describe('CanvasImageComponent', () => {
     'onComponentEllipseDataShared',
     'onComponentFindingsDataShared',
     'invokePrevNextButtonDataFunction',
+    'brightnessValue',
+    'contrastValue',
+    'OnDefaultRanges'
   ]);
   const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
   const xRayServiceSpy = jasmine.createSpyObj('XRayImageService', [
@@ -36,9 +39,14 @@ describe('CanvasImageComponent', () => {
     'success',
     'clear',
   ]);
+  const sanitizerspy = jasmine.createSpyObj('DomSanitizer', [
+    'bypassSecurityTrustStyle',
+  ]);
 
   beforeEach(() => {
     eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(undefined);
+    eventEmitterServiceSpy.brightnessValue = of(undefined);
+    eventEmitterServiceSpy.contrastValue = of(undefined);
     component = new CanvasImageComponent(
       spinnerServiceSpy,
       eventEmitterServiceSpy,
@@ -46,7 +54,8 @@ describe('CanvasImageComponent', () => {
       xRayServiceSpy,
       annotatedXrayServiceSpy,
       routerSpy,
-      toastrServiceSpy
+      toastrServiceSpy,
+      sanitizerspy
     );
   });
 
@@ -120,6 +129,7 @@ describe('CanvasImageComponent', () => {
     });
     it('should call prevNextPatientChange function', () => {
       expect(component.prevNextPatientChange).toBeDefined();
+      expect(eventEmitterServiceSpy.OnDefaultRanges).toHaveBeenCalled();
       expect(component.getPatientInstanceId).toHaveBeenCalled();
     });
   });
@@ -1453,6 +1463,7 @@ describe('CanvasImageComponent', () => {
   describe('#ellipseLists', () => {
     beforeEach(() => {
       component.canvas = {
+        discardActiveObject : () => {},
         clear: () => {},
         getObjects: () => {
           return [
@@ -1507,6 +1518,17 @@ describe('CanvasImageComponent', () => {
     });
     it('it should call keepPositionInBounds function', () => {
       expect(component.keepPositionInBounds).toBeDefined();
+    });
+  });
+
+  /*** it should call getBrightness function***/
+  describe('#getBrightness', () => {
+    beforeEach(() => {
+      const point = 33;
+      component.getBrightness(point);
+    });
+    it('it should call getBrightness function', () => {
+      expect(component.getBrightness).toBeDefined();
     });
   });
 });

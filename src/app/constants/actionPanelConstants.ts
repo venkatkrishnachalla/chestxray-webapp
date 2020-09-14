@@ -151,12 +151,16 @@ export const actionPanelConstants = {
     {
       image: '../../../../assets/images/Brightness@2x.png',
       alt: 'Brightness',
-      title: '',
+      title: 'Brightness',
+      active: false,
+      implemented: true,
     },
     {
       image: '../../../../assets/images/Contrast@2x.png',
       alt: 'Contrast',
-      title: '',
+      title: 'Contrast',
+      active: false,
+      implemented: false,
     },
   ],
 };
