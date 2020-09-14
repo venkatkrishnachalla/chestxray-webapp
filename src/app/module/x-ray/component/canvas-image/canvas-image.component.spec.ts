@@ -5,7 +5,7 @@ import {
   patientMockInstanceId,
 } from 'src/app/module/auth/patient-mock';
 
-describe('CanvasImageComponent', () => {
+fdescribe('CanvasImageComponent', () => {
   let component: CanvasImageComponent;
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'show',

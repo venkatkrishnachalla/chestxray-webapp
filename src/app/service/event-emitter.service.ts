@@ -93,7 +93,7 @@ export class EventEmitterService {
   onContrastChange(title: number) {
     this.contrastValue.emit(title);
   }
-
+  
   /*** onContrastChange event emit function ***/
   OnDefaultRanges(title: number) {
     this.defaultRange.emit(title);

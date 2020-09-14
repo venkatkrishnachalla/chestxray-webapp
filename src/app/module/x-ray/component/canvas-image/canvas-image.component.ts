@@ -1688,7 +1688,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             id: element.id,
           })
         );
-        this.dialog.closeAll();
         this.coordinateList = [];
       });
       this.canvas.renderAll();
