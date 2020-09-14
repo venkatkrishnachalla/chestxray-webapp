@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cxr-auth-layout',
@@ -15,7 +16,9 @@ export class AuthLayoutComponent implements OnInit {
       /*  
     * Constrcutor for AuthLayoutComponent class  
     */  
-  constructor(private authService: AuthService, private breakpointObserver: BreakpointObserver) {}
+  constructor(private authService: AuthService,
+    private breakpointObserver: BreakpointObserver,
+    private router: Router) {}
 
    /**  
  * This is a init function.  

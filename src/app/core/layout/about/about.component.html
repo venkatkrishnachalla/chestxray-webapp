@@ -1,0 +1,43 @@
+<!-- <cxr-auth-layout></cxr-auth-layout> -->
+<div class="about-container">
+    <section class="about-section">
+      <div class="left-image-container">
+        <img src="../../../../assets/about-us.png" alt="" />
+      </div>
+      <div class="right-form-container">
+        <h1>About Chest-rAi</h1>
+        <div class="version-number">V{{ currentApplicationVersion }}</div>
+        <div class="about-info">
+          <p><span>Chest-rAi</span> is a X-Ray annotation tool that
+          uses Artificial Inteligence to provide an
+          effeective and relavent healthcare solution.</p>
+          <p><span>W</span>e merge deep learning, robust software
+          development & usability practices to
+          create a great User Experience for
+          healthcare experts.</p>
+          <p><span>O</span>ur advisory panel consists of radiologist
+          & regulatory experts. We work with
+          specialists to identify clinically relavent
+          problems and design innovative solutions.</p>
+        </div>
+        <br>
+        <div class="contact-us">
+          <a class="hover-effect" title="Get in touch with us | ltts.com/contact-us" href="https://www.ltts.com/contact-us" target="_blank">Get in touch with us.</a>
+        </div>
+      </div>
+    </section>
+    <section class="footer">
+      <div class="social-links">
+        <img
+          [src]="socialMedia.image"
+          [alt]="socialMedia.alt"
+          [title]="socialMedia.title"
+          *ngFor="let socialMedia of socialMediaIcons"
+        />
+      </div>
+      <div class="copyright-msg">
+        <span>{{ copyRightText.copyRightDisplayText }}</span>
+      </div>
+    </section>
+  </div>
+  
