@@ -20,7 +20,7 @@ import { staticContentHTML } from 'src/app/constants/staticContentHTML';
 import { fabric } from 'fabric';
 import html2pdf from 'html2pdf.js';
 import { ToastrService } from 'ngx-toastr';
-declare var jsPDF: any;
+
 @Component({
   selector: 'cxr-report',
   templateUrl: './report.component.html',
@@ -220,12 +220,8 @@ export class ReportComponent implements OnInit {
    */
   makePdf(event) {
     this.spinnerService.show();
-    this.showPrintFormPdf = event;
-    const timestamp = Number(new Date());
-    const hospitalPatientId = this.patientInfo.hospitalPatientId
-      ? this.patientInfo.hospitalPatientId
-      : this.patientInfo.name;
-    this.pdfTitle = hospitalPatientId + '_' + timestamp;
+    this.showPrintFormPdf = true;
+    this.pdfTitle = event;
     setTimeout(() => {
       const element = document.getElementById('element-to-print');
       html2pdf(element, {

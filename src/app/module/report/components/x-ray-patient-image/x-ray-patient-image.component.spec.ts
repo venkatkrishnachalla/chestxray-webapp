@@ -85,6 +85,15 @@ describe('XRayPatientImageComponent', () => {
   });
 
   /*** it should call ngOnDestroy method ***/
+  describe('#handle', () => {
+    it('it should call handle', () => {
+      const event = { file: 'abcde' };
+      component.handle(event);
+      expect(component.handle).toBeDefined();
+    });
+  });
+
+  /*** it should call ngOnDestroy method ***/
   describe('#ngOnDestroy', () => {
     it('it should call ngOnDestroy', () => {
       (component as any).userSubscription = subscriptionSpy;
