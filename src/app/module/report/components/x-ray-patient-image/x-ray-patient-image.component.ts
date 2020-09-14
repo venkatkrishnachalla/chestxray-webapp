@@ -86,13 +86,38 @@ export class XRayPatientImageComponent implements OnInit {
    * shareButtonEvent();
    */
   shareButtonEvent() {
-    this.shareEvent.emit(true);
+    document.querySelector('input').click();
+    const timestamp = Number(new Date());
+    const hospitalPatientId = this.patientInfo.hospitalPatientId
+      ? this.patientInfo.hospitalPatientId
+      : this.patientInfo.name;
+    const fileName = hospitalPatientId + '_' + timestamp + '.pdf';
+    this.shareEvent.emit(fileName);
     const formattedBody =
-      'X-ray Report for patient: ' + this.patientInfo.name + '\n' + '\n';
+      'X-ray Report for patient: ' +
+      this.patientInfo.name +
+      '\n\n\n' +
+      '*** This is an automatically generated text...' +
+      '\n' +
+      'please attach the x-ray report from downloads folder.' +
+      '\n' +
+      'filename: ' +
+      fileName +
+      '\n\n';
     const mailToLink =
       'mailto:?subject=Chest-rAi-Report&body=' +
       encodeURIComponent(formattedBody);
     location.href = mailToLink;
+  }
+
+  /**
+   * This is on handle event to capture file details
+   * @param {void} empty - A empty param
+   * @example
+   * handle();
+   */
+  handle(e) {
+    const fileEvent = e;
   }
 
   /**
