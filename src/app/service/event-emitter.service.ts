@@ -20,7 +20,6 @@ export class EventEmitterService {
   findingsSubject = new BehaviorSubject('');
   invokeImpressionFunction = new EventEmitter();
   brightnessValue = new EventEmitter();
-  contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
 
   constructor() {}
@@ -87,11 +86,6 @@ export class EventEmitterService {
   /*** onComponentButtonClick event emit function ***/
   onBrightnessChange(title) {
     this.brightnessValue.emit(title);
-  }
-
-  /*** onContrastChange event emit function ***/
-  onContrastChange(title: number) {
-    this.contrastValue.emit(title);
   }
 
   /*** onContrastChange event emit function ***/
