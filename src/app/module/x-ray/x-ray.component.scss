@@ -1,0 +1,112 @@
+.x-ray-container {
+  background-color: #f5f5f5;
+  display: flex;
+  overflow: hidden;
+  height: calc(100% - 64px);
+
+  .mat-button,
+  .mat-icon-button,
+  .mat-stroked-button,
+  .mat-flat-button {
+    min-width: 0px;
+    padding: 0px 5px;
+  }
+
+  .action-panel {
+    overflow-y: auto;
+    flex-basis: 10%;
+    @media (max-width: 1240px) and (min-width: 1040px) {
+      flex-basis: 12%;
+    }
+
+    @media (max-width: 1039px) {
+      flex-basis: 15%;
+    }
+
+    @media (max-width: 930px) {
+      flex-basis: 18%;
+    }
+
+    @media (max-width: 830px) {
+      flex-basis: 22%;
+    }
+  }
+
+  .xray-panel {
+    background-color: #000000;
+    flex-basis: 70%;
+  }
+
+  .info-panel {
+    flex-basis: 20%;
+    overflow-y: scroll;
+    position: relative;
+    @media (max-width: 1253px) and (min-width: 1040px) {
+      flex-basis: 23%;
+    }
+
+    @media (max-width: 1134px) {
+      flex-basis: 27%;
+    }
+
+    @media (max-width: 1074px) {
+      flex-basis: 30%;
+    }
+    @media (max-width: 957px) {
+      flex-basis: 35%;
+    }
+    @media (max-width: 875px) {
+      flex-basis: 40%;
+    }
+    @media (max-width: 812px) {
+      flex-basis: 45%;
+    }
+    button {
+      width: 92%;
+      margin: 5px 10px;
+      background-color: #b6d2d8;
+      span {
+        font-weight: bold;
+        padding-right: 10px;
+      }
+      img {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
+  .askAIPopup {
+    position: absolute;
+    top: 8%;
+    left: 10%;
+
+    @media (min-width: 1240px) and (max-height: 768px) {
+      top: 11%;
+      left: 10%;
+    }
+    @media (max-width: 1240px) {
+      top: 9%;
+      left: 12%;
+    }
+
+    @media (max-width: 1240px) and (max-height: 830px) {
+      top: 10%;
+      left: 12%;
+    }
+
+    @media (max-width: 990px) {
+      top: 9%;
+      left: 14%;
+    }
+
+    @media (max-width: 830px) {
+      top: 9%;
+      left: 16%;
+    }
+
+    @media (max-width: 768px) and (max-height: 630px) {
+      top: 11%;
+      left: 16%;
+    }
+  }
+}

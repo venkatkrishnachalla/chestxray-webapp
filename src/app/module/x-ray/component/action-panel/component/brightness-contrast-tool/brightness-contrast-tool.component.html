@@ -1,0 +1,19 @@
+<div class="sliderItems">
+  <div class="slider">
+    <ng5-slider [(value)]="value" [options]="options" [ngClass]="'disabled'"></ng5-slider>
+  </div>
+  <div class="slider">
+    <ng5-slider [(value)]="values" [options]="option" [ngClass]="'disabled'"></ng5-slider>
+  </div>
+</div>
+
+<div class="brightness">
+  <div class="contrast" *ngFor="let brightness of brightnessPanel">
+    <img
+      [src]="brightness.image"
+      [alt]="brightness.alt"
+      [title]="brightness.title"
+      [ngClass]="'disabled'"
+    />
+  </div>
+</div>

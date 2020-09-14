@@ -1,0 +1,200 @@
+<div class="cxr-x-ray-patient-details">
+  <div class="patient-details-group">
+    <div class="profile-icon">
+      <img
+        src="../../../../../assets/images/user_icon@3x.png"
+        alt="profile-icon"
+      />
+      <span> {{ reportPageText.patientDetails | uppercase }}</span>
+    </div>
+    <div class="patient-info">
+      <table mat-table class="mat-elevation-z0"> 
+        <tr>
+          <td><mat-label>Patient ID</mat-label></td>
+          <td>{{ patientInfo.hospitalPatientId }}</td>
+          <td><mat-label>Status</mat-label></td>
+          <td>{{ status }}</td>
+        </tr>
+        <tr>
+          <td><mat-label>Date of creation</mat-label></td>
+          <td>{{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
+          <td><mat-label>Age</mat-label></td>
+          <td>{{ patientInfo.age }}</td>
+        </tr>
+        <tr>
+          <td><mat-label>Name</mat-label></td>
+          <td>{{ patientInfo.name }}</td>
+          <td><mat-label>Time</mat-label></td>
+          <td>{{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
+        </tr>
+        <tr>
+          <td><mat-label>Gender</mat-label></td>
+          <td>{{ patientInfo.sex  }}</td>
+          <td><mat-label>Ref. Physician</mat-label></td>
+          <td>{{ patientInfo.referringPhysicianName || '-' }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="clinical-history-group">
+    <div class="clinical-history-icon">
+      <img
+        src="../../../../../assets/images/clinical_history@3x.png"
+        alt="clinical-history-icon"
+      />
+      <span> {{ reportPageText.clinicalHistory | uppercase }}</span>
+    </div>
+    <div class="clinical-info"></div>
+  </div>
+
+  <div class="impression-group">
+    <div class="impression-icon">
+      <img
+        src="../../../../../assets/images/impression_icon@3x.png"
+        alt="finding-icon"
+      />
+      <span> {{ reportPageText.impressions | uppercase }}</span>
+    </div>
+    <div class="impression-info">
+      <ul>
+        <li
+          *ngFor="let impression of annotatedImpression"
+          contentEditable="false"
+        >
+          > {{ impression.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="findings-group">
+    <div class="findings-icon">
+      <img
+        src="../../../../../assets/images/findings_icon@3x.png"
+        alt="finding-icon"
+      />
+      <span> {{ reportPageText.findings | uppercase }}</span>
+    </div>
+    <div class="findings-info">
+      <ul>
+        <li
+          *ngFor="let finding of annotatedFindings; let i = index"
+          (focusout)="updateFindings($event, i)"
+          contentEditable="true"
+        >
+          > {{ finding }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="comments-group">
+    <div class="comments-icon">
+      <img
+        src="../../../../../assets/images/comment_icon@3x.png"
+        alt="comments-icon"
+      />
+      <span> {{ reportPageText.commentsAndRecommendations | uppercase }}</span>
+    </div>
+    <textarea
+      contentEditable="true"
+      name="comments"
+      ngDefaultControl
+      [(ngModel)]="comments"
+      class="comments-info"
+      (ngModelChange)="commentsChange($event)"
+    ></textarea>
+  </div>
+</div>
+
+<!-- Print option -->
+<div class="print-patient-details">
+  <div class="patient-grid-container">
+    <table mat-table class="mat-elevation-z0"> 
+      <tr>
+        <td><b>Patient ID</b></td>
+        <td class='pdf-padding-r-70'>: {{ patientInfo.hospitalPatientId }}</td>
+        <td><b>Name</b></td>
+        <td class='pdf-padding-r-70'>: {{ patientInfo.name }}</td>
+        <td><b>Gender</b></td>
+        <td>: {{ patientInfo.sex  }}</td>
+      </tr>
+      <tr>
+        <td><b>Status</b></td>
+        <td>: {{ status }}</td>
+        <td><b>Age</b></td>
+        <td>: {{ patientInfo.age }}</td>
+        <td><b>Date of creation</b></td>
+        <td>: {{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
+      </tr>
+      <tr>
+        <td><b>Time</b></td>
+        <td>: {{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
+        <td><b>Ref. Physician</b></td>
+        <td>: {{ patientInfo.referringPhysicianName || '-' }}</td>
+      </tr>
+    </table>
+  </div>
+  <hr class="common-hr" />
+  <h4>
+    <span class="clinical-comments-align">
+      {{ reportPageText.clinicalHistory | uppercase }}</span
+    >
+  </h4>
+  <p class="history">
+    {{ clinicalHistory }}
+  </p>
+
+  <div style="position: relative;">
+    <div class="image-container">
+      <div class="findings-left-content-top">
+        <div class="box-title">
+          {{ reportPageText.impressions | uppercase }}
+        </div>
+        <div
+          class="inside-content-align"
+          *ngFor="let impression of annotatedImpression"
+        >
+          > {{ impression.name }}
+        </div>
+      </div>
+      <div class="findings-left-content-bottom">
+        <div class="box-title">{{ reportPageText.findings | uppercase }}</div>
+        <div class="inside-content-align" *ngFor="let finding of pdfFindings">
+          > {{ finding }}
+        </div>
+      </div>
+    </div>
+    <div
+      class="xray-right-content"
+      id="xray-right-content"
+      style="position: absolute;"
+    >
+      <div class="box-title">XRAY</div>
+      <div align="center">
+        <img
+          [src]="annotatedImage"
+          alt=""
+          [ngStyle]="{
+            'width.px': canvasCorrectedWidth,
+            'height.px': canvasCorrectedHeight
+          }"
+        />
+      </div>
+    </div>
+  </div>
+  <h4>
+    <span class="clinical-comments-align">{{
+      reportPageText.commentsAndRecommendations | uppercase
+    }}</span>
+  </h4>
+
+  <p class="history">
+    {{ pdfComments }}
+  </p>
+
+  <div>
+    <cxr-report-footer></cxr-report-footer>
+  </div>
+</div>

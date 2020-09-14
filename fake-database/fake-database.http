@@ -1,0 +1,23 @@
+GET https://api.github.com/users/sandhyah
+
+###
+GET http://localhost:3000/patient
+
+###
+POST http://localhost:3000/patient HTTP/1.1
+content-type: application/json
+
+{
+    "name": "john"
+}   
+
+###
+PUT http://localhost:3000/patient/0 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "ram"
+}
+
+###
+DELETE http://localhost:3000/patient/tn3Anzt

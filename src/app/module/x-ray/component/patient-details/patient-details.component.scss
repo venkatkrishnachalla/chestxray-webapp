@@ -1,0 +1,28 @@
+.patient-info {
+  position: relative;
+  margin: 1rem;
+  height: auto;
+  flex-basis: 100%;
+  min-height: auto;
+  box-shadow: 5px 0 20px 0 #ababab;
+  border-radius: 10px;
+  background-color: #fff;
+
+  .patient-info-header {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5px;
+    .Patient-info-icon {
+      font-size: 2.5rem;
+      color: white;
+      border-radius: 2px;
+      background-color: #7ca5ae;
+    }
+    .Patient-content {
+      margin: 0;
+      font-size: 1.8rem;
+      height: 30%;
+      padding: 3px 0 0 5px;
+    }
+  }
+}

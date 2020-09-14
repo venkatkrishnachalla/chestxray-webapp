@@ -1,0 +1,139 @@
+<div class="reportContainer">
+  <section class="back-arrow">
+    <div (click)="goBackToXray()" class="background-arrow">
+      <img src="../../../assets/images/Backward arrow@3x.png" alt="" />
+    </div>
+  </section>
+
+  <div class="hide-print-section" id="print-section">
+    <cxr-report-header></cxr-report-header>
+    <cxr-x-ray-patient-details></cxr-x-ray-patient-details>
+  </div>
+
+  <section class="x-ray-patient-image">
+    <cxr-x-ray-patient-image
+      (printEvent)="enablePrint($event)"
+      (shareEvent)="makePdf($event)"
+    ></cxr-x-ray-patient-image>
+  </section>
+
+  <section class="x-ray-patient-details">
+    <cxr-x-ray-patient-details
+      (impressionEvent)="impressionData($event)"
+    ></cxr-x-ray-patient-details>
+  </section>
+</div>
+
+<div #content class="content" id="element-to-print">
+  <div *ngIf="showPrintFormPdf">
+    <br />
+    <div class="content-header">
+      <div class="cxr-report-header">
+        <h1 class="cxr-radiological-header">{{ cxrPrintHeaderName }}</h1>
+        <hr class="common-hr" />
+      </div>
+      <!-- Print option -->
+      <div class="cxr-x-ray-patient-details">
+        <div class="patient-grid-container">
+          <table mat-table class="patient-details-alignment">
+            <tr>
+              <td><b>Patient ID</b></td>
+              <td>: {{ patientInfo.hospitalPatientId }}</td>
+              <td><b>Name</b></td>
+              <td>: {{ patientInfo.name }}</td>
+              <td><b>Gender</b></td>
+              <td>: {{ patientInfo.sex }}</td>
+            </tr>
+            <tr>
+              <td><b>Status</b></td>
+              <td>: {{ status }}</td>
+              <td><b>Age</b></td>
+              <td>: {{ patientInfo.age }}</td>
+              <td><b>Date of creation</b></td>
+              <td>: {{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
+            </tr>
+            <tr>
+              <td><b>Time</b></td>
+              <td>: {{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
+              <td><b>Ref. Physician</b></td>
+              <td>: {{ patientInfo.referringPhysicianName || '-' }}</td>
+            </tr>
+          </table>
+        </div>
+        <hr class="common-hr" />
+        <h4>
+          <span class="clinical-comments-align">
+            {{ reportPageText.clinicalHistory | uppercase }}</span
+          >
+        </h4>
+        <p class="history">
+          {{ clinicalHistory }}
+        </p>
+
+        <div style="position: relative;">
+          <div class="image-container">
+            <div class="findings-left-content-top">
+              <div class="box-title">
+                {{ reportPageText.impressions | uppercase }}
+              </div>
+              <div
+                class="inside-content-align"
+                *ngFor="let impression of annotatedImpression"
+              >
+                > {{ impression.name }}
+              </div>
+            </div>
+            <div class="findings-left-content-bottom">
+              <div class="box-title">
+                {{ reportPageText.findings | uppercase }}
+              </div>
+              <div
+                class="inside-content-align"
+                *ngFor="let finding of pdfFindings"
+              >
+                > {{ finding }}
+              </div>
+            </div>
+          </div>
+          <div
+            class="xray-right-content"
+            id="xray-right-content"
+            style="position: absolute;"
+          >
+            <div class="box-title">XRAY</div>
+            <div align="center">
+              <img
+                [src]="annotatedImage"
+                alt=""
+                [ngStyle]="{
+                  'width.px': 367,
+                  'height.px': 367
+                }"
+              />
+            </div>
+          </div>
+        </div>
+        <h4>
+          <span class="clinical-comments-align">{{
+            reportPageText.commentsAndRecommendations | uppercase
+          }}</span>
+        </h4>
+
+        <p class="history">
+          {{ pdfComments }}
+        </p>
+          <div class="footer-left-content">
+            <label>Dr. Name </label><br />
+            <label>M.B.B.S </label><br />
+            <label>XYZ Radiology Centre </label><br />
+            <label>Radiologist</label>
+            <label class="signature-right-side">SIGNATURE </label>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div id="element-to-print">
+  <h1>I'm on page 1!</h1>
+</div> -->

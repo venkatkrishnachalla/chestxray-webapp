@@ -1,0 +1,84 @@
+<div class="signInContainer">
+  <section class="signInSection">
+    <div class="left-image-container">
+      <img src="../../../../assets/images/illustration.png" alt="" />
+    </div>
+    <div class="right-form-container">
+      <!-- Login form fields -->
+      <mat-card>
+        <!-- Profile icon and text -->
+        <div class="form-header">
+          <img
+            src="../../../../assets/images/profile icon.png"
+            alt="profile-icon"
+          />
+          <p>
+            {{ signInText.loginTitle }}
+          </p>
+        </div>
+
+        <mat-card-content>
+          <form #authForm="ngForm" (ngSubmit)="onSignIn(authForm)">
+            <mat-form-field>
+              <mat-label>Username</mat-label>
+              <input
+                matInput
+                name="text"
+                autocomplete="off"
+                #usernameRef
+                required
+                [(ngModel)]="auth.email"
+                value=""
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Password</mat-label>
+              <input
+                matInput
+                name="password"
+                [type]="hide ? 'password' : 'text'"
+                autocomplete="off"
+                required
+                [(ngModel)]="auth.password"
+                placeholder=""
+                value=""
+                minlength="5"
+              />
+              <mat-icon matSuffix (click)="hide = !hide">{{
+                hide ? 'visibility_off' : 'visibility'
+              }}</mat-icon>
+            </mat-form-field>
+
+            <mat-card-actions>
+              <!-- Login button -->
+              <button
+                mat-flat-button
+                class="login-button"
+                color="primary"
+                type="submit"
+              >
+                LOGIN
+              </button>
+            </mat-card-actions>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <a class="forgot-password">{{ signInText.forgotPasswordText }}</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+  <section class="footer">
+    <div class="social-links">
+      <img
+        [src]="socialMedia.image"
+        [alt]="socialMedia.alt"
+        [title]="socialMedia.title"
+        *ngFor="let socialMedia of socialMediaIcons"
+      />
+    </div>
+    <div class="copyright-msg">
+      <span>{{ copyRightText.copyRightDisplayText }}</span>
+    </div>
+  </section>
+</div>
