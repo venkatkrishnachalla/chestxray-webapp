@@ -1,16 +1,28 @@
 <div class="sliderItems">
   <div class="slider">
-    <ng5-slider [(ngModel)]="value" [options]="options" (ngModelChange)='setBrightnessSlidervalue($event)'></ng5-slider>
+    <ng5-slider
+      [(ngModel)]="brightnessRangeValue"
+      [options]="options"
+      (ngModelChange)="setBrightnessSlidervalue($event)"
+    ></ng5-slider>
   </div>
   <div class="slider">
-    <ng5-slider [(ngModel)]="values" [options]="option" (ngModelChange)='setContrastSlidervalue($event)'></ng5-slider>
+    <ng5-slider
+      [(ngModel)]="contrastRangeValue"
+      [options]="option"
+      (ngModelChange)="setContrastSlidervalue($event)"
+      [ngClass]="'disabled'"
+    ></ng5-slider>
   </div>
 </div>
 <div class="brightness">
-  <div class="contrast" *ngFor="let brightness of brightnessPanel; let i = index">
+  <div
+    class="contrast"
+    *ngFor="let brightness of brightnessPanel; let i = index"
+  >
     <img
-    [ngClass]="
-    brightnessPanel[i].active && brightness.implemented === true
+      [ngClass]="
+        brightnessPanel[i].active && brightness.implemented === true
           ? 'icon-select-BG'
           : brightness.implemented === true
           ? 'icon-active-BG'

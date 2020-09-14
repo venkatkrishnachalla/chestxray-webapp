@@ -6,11 +6,10 @@ describe('BrightnessContrastToolComponent', () => {
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onBrightnessChange',
     'onContrastChange',
-    'defaultRange'
+    'defaultRange',
   ]);
 
   beforeEach(() => {
-    eventEmitterServiceSpy.defaultRange = of(undefined);
     component = new BrightnessContrastToolComponent(eventEmitterServiceSpy);
   });
 
@@ -22,6 +21,7 @@ describe('BrightnessContrastToolComponent', () => {
   /*** it should call BrightnessContrastToolComponent class ngOnInit ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
+      eventEmitterServiceSpy.defaultRange = of(undefined);
       component.ngOnInit();
     });
     it('should call ngOnIit function', () => {
@@ -41,14 +41,14 @@ describe('BrightnessContrastToolComponent', () => {
     });
   });
 
-    /*** it should call setContrastSlidervalue function***/
+  /*** it should call setContrastSlidervalue function***/
   describe('#setContrastSlidervalue', () => {
-      beforeEach(() => {
-        const point = 60;
-        component.setContrastSlidervalue(point);
-      });
-      it('it should call setContrastSlidervalue function', () => {
-        expect(component.setContrastSlidervalue).toBeDefined();
-      });
+    beforeEach(() => {
+      const point = 60;
+      component.setContrastSlidervalue(point);
     });
+    it('it should call setContrastSlidervalue function', () => {
+      expect(component.setContrastSlidervalue).toBeDefined();
+    });
+  });
 });

@@ -12,7 +12,7 @@ import { EventEmitterService } from 'src/app/service/event-emitter.service';
 // BrightnessContrastToolComponent class implementation
 export class BrightnessContrastToolComponent implements OnInit {
   readonly constants = actionPanelConstants;
-  value = 50;
+  brightnessRangeValue = 50;
   options: Options = {
     floor: 0,
     ceil: 100,
@@ -25,7 +25,7 @@ export class BrightnessContrastToolComponent implements OnInit {
     },
   };
 
-  values = 50;
+  contrastRangeValue = 50;
   option: Options = {
     floor: 0,
     ceil: 100,
@@ -37,15 +37,19 @@ export class BrightnessContrastToolComponent implements OnInit {
       to: '#285c68',
     },
   };
-  brightnessPanel: { image: string; alt: string; title: string; active: boolean; implemented: boolean }[];
+  brightnessPanel: {
+    image: string;
+    alt: string;
+    title: string;
+    active: boolean;
+    implemented: boolean;
+  }[];
   disableActionItems = true;
 
   /*
    * Constructor for BrightnessContrastToolComponent class
    */
-  constructor(
-    private eventEmitterService: EventEmitterService,
-  ) {}
+  constructor(private eventEmitterService: EventEmitterService) {}
 
   /*
    * BrightnessContrastToolComponent class ngOnInit function
@@ -54,9 +58,9 @@ export class BrightnessContrastToolComponent implements OnInit {
     this.brightnessPanel = JSON.parse(
       JSON.stringify(this.constants.actionPanelBrightness)
     );
-    this.eventEmitterService.defaultRange.subscribe((data) => {
-      this.value = data; 
-      this.values = data;
+    this.eventEmitterService.defaultRange.subscribe((data: number) => {
+      this.brightnessRangeValue = data;
+      this.contrastRangeValue = data;
     });
   }
 
@@ -65,7 +69,7 @@ export class BrightnessContrastToolComponent implements OnInit {
    * @example
    * setBrightnessSlidervalue(event);
    */
-  setBrightnessSlidervalue(event: number){
+  setBrightnessSlidervalue(event: number) {
     this.eventEmitterService.onBrightnessChange(event);
   }
 
@@ -74,9 +78,7 @@ export class BrightnessContrastToolComponent implements OnInit {
    * @example
    * setContrastSlidervalue(event);
    */
-  setContrastSlidervalue(event: number){
+  setContrastSlidervalue(event: number) {
     this.eventEmitterService.onContrastChange(event);
   }
-
-
 }

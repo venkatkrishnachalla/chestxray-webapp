@@ -22,7 +22,7 @@ export class EventEmitterService {
   brightnessValue = new EventEmitter();
   contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
-  
+
   constructor() {}
 
   /*** onComponentButtonClick event emit function ***/
@@ -84,18 +84,18 @@ export class EventEmitterService {
     this.invokeImpressionFunction.emit(data);
   }
 
-    /*** onComponentButtonClick event emit function ***/
-    onBrightnessChange(title) {
-      this.brightnessValue.emit(title);
-    }  
-      
-    /*** onContrastChange event emit function ***/
-    onContrastChange(title) {
-      this.contrastValue.emit(title);
-    } 
+  /*** onComponentButtonClick event emit function ***/
+  onBrightnessChange(title) {
+    this.brightnessValue.emit(title);
+  }
 
-    /*** onContrastChange event emit function ***/
-    OnDefaultRanges(title) {
-      this.defaultRange.emit(title);
-    } 
+  /*** onContrastChange event emit function ***/
+  onContrastChange(title: number) {
+    this.contrastValue.emit(title);
+  }
+
+  /*** onContrastChange event emit function ***/
+  OnDefaultRanges(title: number) {
+    this.defaultRange.emit(title);
+  }
 }

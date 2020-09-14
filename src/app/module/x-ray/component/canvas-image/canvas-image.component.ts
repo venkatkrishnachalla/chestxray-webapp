@@ -125,7 +125,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   displayScaleFactorBlock: boolean;
   brightnessRange: number;
   contrastRange: number;
-  text: string;
+  checkBrightnessContrast: string;
   brightness: any;
   contrast: any;
 
@@ -140,7 +140,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private annotatedXrayService: XRayService,
     private router: Router,
     private toastrService: ToastrService,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -206,10 +206,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.enableDrawEllipseMode = false;
     this.isDown = false;
     this.eventEmitterService.brightnessValue.subscribe((data) => {
-      this.getBrightness(data); 
+      this.getBrightness(data);
     });
     this.eventEmitterService.contrastValue.subscribe((data) => {
-      this.getContrast(data); 
+      this.getContrast(data);
     });
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
@@ -1755,20 +1755,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * ellipseLists();
    */
-  ellipseLists(event: any){
-  const objects = this.canvas.getObjects();
-  if (event === true){
-    objects.forEach(object => {
-    this.isChangeable = true;
-    this.canvas.setVisible = object.visible = event;
-    this.canvas.renderAll();
-  });
-  }else{
-    objects.forEach(object => {
-    this.isChangeable = false;
-    this.canvas.setVisible = object.visible = event;
-    this.canvas.discardActiveObject();
-    this.canvas.renderAll();
+  ellipseLists(event: any) {
+    const objects = this.canvas.getObjects();
+    if (event === true) {
+      objects.forEach((object) => {
+        this.isChangeable = true;
+        this.canvas.setVisible = object.visible = event;
+        this.canvas.renderAll();
+      });
+    } else {
+      objects.forEach((object) => {
+        this.isChangeable = false;
+        this.canvas.setVisible = object.visible = event;
+        this.canvas.discardActiveObject();
+        this.canvas.renderAll();
       });
     }
   }
@@ -1791,24 +1791,24 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is getBrightness function
-   * @param {any} array - A array param
+   * @param {number} value - A number param
    * @example
    * getBrightness(data);
    */
-  getBrightness(data) {
-    this.text = 'brightness';
+  getBrightness(data: number) {
+    this.checkBrightnessContrast = 'brightness';
     this.brightnessRange = data;
     this.getRange();
   }
 
   /**
    * This is getContrast function
-   * @param {any} array - A array param
+   * @param {number} value - A number param
    * @example
    * getContrast();
    */
-  getContrast(data) {
-    this.text = 'contrast';
+  getContrast(data: number) {
+    this.checkBrightnessContrast = 'contrast';
     this.contrastRange = data;
     this.getRange();
   }
@@ -1820,12 +1820,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * getRange();
    */
   getRange() {
-    if (this.text === 'brightness') {
+    if (this.checkBrightnessContrast === 'brightness') {
       this.brightness = this.sanitizer.bypassSecurityTrustStyle(
         'brightness(' + this.brightnessRange * 2 + '%)'
       );
-    }
-    else{
+    } else {
       this.brightness = this.sanitizer.bypassSecurityTrustStyle(
         'contrast(' + this.contrastRange * 2 + '%)'
       );
