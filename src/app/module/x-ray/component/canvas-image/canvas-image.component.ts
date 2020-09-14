@@ -229,7 +229,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           default:
             break;
         }
-        }
+      }
     );
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
@@ -811,6 +811,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         disease.ellipses.forEach((ellipse: any, index) => {
           ellipse.id = ellipse.index;
           ellipse.color = disease.color;
+          if (ellipse.strokeDashArray && ellipse.isMlAi) {
+            ellipse.strokeDashArray = ellipse.strokeDashArray;
+          } else if (!ellipse.strokeDashArray && ellipse.isMlAi) {
+            ellipse.strokeDashArray = [3, 3];
+          } else {
+            ellipse.strokeDashArray = [0, 0];
+          }
           ellipse.name = disease.name;
           ellipse.index = index;
           if (ellipse.a !== 0 && ellipse.b !== 0) {
@@ -938,12 +945,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             : (diseaseItem.b as any) / this.canvasScaleY / 2,
         angle: diseaseItem.r,
         stroke: diseaseItem.color,
+        strokeDashArray: diseaseItem.strokeDashArray,
         strokeWidth: 2,
         fill: '',
         selectable: true,
         strokeUniform: true,
         index: diseaseItem.index !== 0 ? diseaseItem.index : diseaseItem.id,
         id: diseaseItem.idvalue,
+        isMLAi: true,
       });
       this.canvas.add(ellipse);
       this.canvas.renderAll();
@@ -1244,6 +1253,50 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.updateEllipseIntoSession();
     } else {
       this.updateFreeHandDrawingIntoSession();
+    }
+    const activeObj = this.canvas.getActiveObject();
+    if (activeObj.type === 'ellipse' && activeObj.isMLAi) {
+      activeObj.set({
+        strokeDashArray: [20, 20],
+      });
+      this.canvas.renderAll();
+      const colorName =
+        DISEASE_COLOR_MAPPING[selectedObject.name.toLowerCase()] ||
+        RANDOM_COLOR;
+      this.savedInfo['data'].ndarray[0].diseases.forEach(
+        (element: any, index: number) => {
+          let isMlAi = false;
+          this.savedInfo['data'].ndarray[0].diseases[
+            index
+          ].name = selectedObject.name;
+          if (element.confidence) {
+            isMlAi = true;
+          }
+          this.savedInfo['data'].ndarray[0].diseases[index].color = colorName;
+          element.ellipses.forEach((ellipse: any, indexId: number) => {
+            if (activeObj.id === ellipse.idvalue) {
+              this.savedInfo['data'].ndarray[0].diseases[index].ellipses[
+                indexId
+              ].strokeDashArray = [20, 20];
+              this.savedInfo['data'].ndarray[0].diseases[index].ellipses[
+                indexId
+              ].name = selectedObject.name;
+              this.savedInfo['data'].ndarray[0].diseases[index].ellipses[
+                indexId
+              ].color = colorName;
+              this.savedInfo['data'].ndarray[0].diseases[index].ellipses[
+                indexId
+              ].isMlAi = isMlAi;
+              sessionStorage.setItem(
+                'x-ray_Data',
+                JSON.stringify(this.savedInfo)
+              );
+              console.log('this.savedInfo', ellipse, indexId);
+            }
+          });
+        }
+      );
+      this.updateEllipseIntoSession();
     }
     this.clear();
     this.selectedDisease = '';
@@ -1680,7 +1733,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-    /**
+  /**
    * This is incrementZoomLabel function
    * @param {void} empty - A empty param
    * @example
@@ -1689,8 +1742,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   incrementZoomLabel() {
     if (this.displayScaleFactor === 0) {
       this.displayScaleFactorBlock = false;
-    }
-    else {
+    } else {
       this.displayScaleFactorBlock = true;
     }
   }
@@ -1710,7 +1762,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
-    /**
+  /**
    * This is resetZoom function
    * @param {void} empty - A empty param
    * @example
@@ -1782,31 +1834,31 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
   /**
    * Hide/Show list of drawn ellipseList
-   * * @param {any} data - A array param     
-   * @example  
+   * * @param {any} data - A array param
+   * @example
    * ellipseLists();
    */
-  ellipseLists(event: any){
-  const objects = this.canvas.getObjects();
-  if (event === true){
-    objects.forEach(object => {
-    this.isChangeable = true;
-    this.canvas.setVisible = object.visible = event;
-    this.canvas.renderAll();
-  });
-  }else{
-    objects.forEach(object => {
-    this.isChangeable = false;
-    this.canvas.setVisible = object.visible = event;
-    this.canvas.discardActiveObject();
-    this.canvas.renderAll();
+  ellipseLists(event: any) {
+    const objects = this.canvas.getObjects();
+    if (event === true) {
+      objects.forEach((object) => {
+        this.isChangeable = true;
+        this.canvas.setVisible = object.visible = event;
+        this.canvas.renderAll();
       });
-    } 
+    } else {
+      objects.forEach((object) => {
+        this.isChangeable = false;
+        this.canvas.setVisible = object.visible = event;
+        this.canvas.discardActiveObject();
+        this.canvas.renderAll();
+      });
+    }
   }
 
   showHideAnnotations(data) {
-    this.canvas._objects.forEach(element => {
-      if (element.stroke === data.info.colors){
+    this.canvas._objects.forEach((element) => {
+      if (element.stroke === data.info.colors) {
         this.canvas.setVisible = element.visible = data.check;
         this.canvas.discardActiveObject();
         this.canvas.renderAll();
