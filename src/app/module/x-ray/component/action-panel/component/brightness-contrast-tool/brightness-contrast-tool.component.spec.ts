@@ -41,7 +41,6 @@ describe('BrightnessContrastToolComponent', () => {
     });
   });
 
-  
   /*** it should call setContrastSlidervalue function***/
   describe('#setContrastSlidervalue', () => {
     beforeEach(() => {
