@@ -8,6 +8,7 @@ import {
   ViewChild,
   Output,
   EventEmitter,
+  ElementRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { fabric } from 'fabric';
@@ -37,6 +38,7 @@ import {
   InvokeComponentData,
 } from 'src/app/module/auth/interface.modal';
 import { timeStamp } from 'console';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -49,6 +51,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
+  @ViewChild('myDiv') myDiv: ElementRef;
   @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
@@ -106,9 +109,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   top;
   _subscription: Subscription;
   zoomInEnable: boolean;
-  zoomLevel: number;
-  zoomLevelMin: number;
-  zoomLevelMax: number;
   shiftKeyDown: boolean;
   mouseDownPoint: null;
   resize: boolean;
@@ -123,6 +123,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   displayScaleFactor: number;
   fixedScale: number;
   displayScaleFactorBlock: boolean;
+  brightnessRange: number;
+  contrastRange: number;
+  checkBrightnessContrast: string;
+  brightness: any;
+  contrast: any;
 
   /*
    * constructor for CanvasImageComponent class
@@ -134,7 +139,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private xRayService: XRayImageService,
     private annotatedXrayService: XRayService,
     private router: Router,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private sanitizer: DomSanitizer
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -178,10 +184,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
-    this.zoomLevel = 0;
-    this.zoomLevelMin = 0;
-    this.zoomLevelMax = 5;
     this.shiftKeyDown = false;
+    this.displayScaleFactor = 1.0;
     this.displayScaleFactorBlock = false;
     this.resize = false;
     sessionStorage.removeItem('ellipse');
@@ -201,6 +205,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
+    this.eventEmitterService.brightnessValue.subscribe((data) => {
+      this.getBrightness(data);
+    });
+    this.eventEmitterService.contrastValue.subscribe((data) => {
+      this.getContrast(data);
+    });
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
         switch (data.title) {
@@ -229,7 +239,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           default:
             break;
         }
-        }
+      }
     );
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
@@ -286,17 +296,36 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     this.canvas.on('mouse:wheel', (options) => {
-      // this.displayScaleFactorBlock = true;
       const delta = options.e.deltaY;
-      if (delta !== 0) {
-        const pointer = this.canvas.getPointer(options.e, true);
-        const point = new fabric.Point(pointer.x, pointer.y);
-        if (delta > 0) {
-          this.zoomOut(point);
-        } else if (delta < 0) {
-          this.zoomIn(point);
-        }
+      let newzoom = this.canvas.getZoom();
+      newzoom = newzoom + delta / 200;
+      this.displayScaleFactor = newzoom.toFixed(1);
+      if (newzoom >= 5) {
+        newzoom = 5;
+        this.displayScaleFactor = newzoom.toFixed(0);
       }
+      if (newzoom <= 1) {
+        newzoom = 1;
+        this.displayScaleFactor = newzoom.toFixed(0);
+      }
+      fabric.util.animate({
+        startValue: this.canvas.getZoom(),
+        endValue: newzoom,
+        duration: 500,
+        onChange: (zoomvalue) => {
+          this.canvas.zoomToPoint(
+            { x: options.e.offsetX, y: options.e.offsetY },
+            zoomvalue
+          );
+          this.keepPositionInBounds(this.canvas);
+          this.canvas.renderAll();
+        },
+        onComplete: () => {
+          options.e.preventDefault();
+          options.e.stopPropagation();
+          this.canvas.renderAll();
+        },
+      });
     });
     this.canvas.on('object:modified', (options) => {
       this.actionIconsModelDispaly(options);
@@ -402,10 +431,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   prevNextPatientChange(patientId) {
     this.resetZoom();
-    this.canvas.setZoom(1);
     this.keepPositionInBounds(this.canvas);
     this.canvas.clear();
     this.spinnerService.show();
+    this.eventEmitterService.OnDefaultRanges(50);
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
     this.impressionArray = [];
@@ -657,6 +686,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   generateCanvas() {
     fabric.Image.fromURL(this.PatientImage, (img) => {
       this.xRayImage = img;
+      this.contrastRange = 50;
+      this.brightnessRange = 50;
       this.resetZoom();
       this.setCanvasBackground();
       const xrayData = JSON.parse(sessionStorage.getItem('x-ray_Data'));
@@ -1657,7 +1688,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             id: element.id,
           })
         );
-        this.dialog.closeAll();
         this.coordinateList = [];
       });
       this.canvas.renderAll();
@@ -1666,77 +1696,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * This is ZoomIn function
-   * @param {number} index - A number param
-   * @example
-   * zoomIn(123);
-   */
-  zoomIn(point: number) {
-    if (this.fixedScale < this.zoomLevelMax) {
-      this.fixedScale = this.fixedScale + this.scaleFactor;
-      this.zoomLevel++;
-      this.zoomScale(point);
-      this.incrementZoomLabel();
-    }
-  }
-
-    /**
-   * This is incrementZoomLabel function
-   * @param {void} empty - A empty param
-   * @example
-   * incrementZoomLabel();
-   */
-  incrementZoomLabel() {
-    if (this.displayScaleFactor === 0) {
-      this.displayScaleFactorBlock = false;
-    }
-    else {
-      this.displayScaleFactorBlock = true;
-    }
-  }
-
-  /**
-   * This is ZoomOut function
-   * @param {number} index - A number param
-   * @example
-   * zoomOut(123);
-   */
-  zoomOut(point: number) {
-    if (this.fixedScale > this.zoomLevelMin) {
-      this.fixedScale = this.fixedScale - this.scaleFactor;
-      this.zoomLevel--;
-      this.zoomScale(point);
-      this.incrementZoomLabel();
-    }
-  }
-
-    /**
    * This is resetZoom function
    * @param {void} empty - A empty param
    * @example
    * resetZoom(123);
    */
   resetZoom() {
-    this.displayScaleFactor = 0;
-    this.zoomLevel = 0;
-    this.zoomLevelMin = 1;
-    this.zoomLevelMax = 6;
+    this.displayScaleFactor = 1.0;
     this.shiftKeyDown = false;
     this.canvas.setZoom(1);
-    this.incrementZoomLabel();
-    this.scaleFactor = this.xRayImage.width / this.xRayImage.height;
-    this.fixedScale = Math.round(this.xRayImage.width / this.xRayImage.height);
-  }
-
-  /**
-   * This is ZoomScale function
-   * @param {number} index - A number param
-   * @example
-   * zoomScale(123);
-   */
-  zoomScale(point: number) {
-    this.displayScaleFactor = this.zoomLevel;
-    this.canvas.zoomToPoint(point, Math.pow(this.scaleFactor, this.zoomLevel));
     this.keepPositionInBounds(this.canvas);
   }
 
@@ -1782,35 +1750,83 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
   /**
    * Hide/Show list of drawn ellipseList
-   * * @param {any} data - A array param     
-   * @example  
+   * * @param {any} data - A array param
+   * @example
    * ellipseLists();
    */
-  ellipseLists(event: any){
-  const objects = this.canvas.getObjects();
-  if (event === true){
-    objects.forEach(object => {
-    this.isChangeable = true;
-    this.canvas.setVisible = object.visible = event;
-    this.canvas.renderAll();
-  });
-  }else{
-    objects.forEach(object => {
-    this.isChangeable = false;
-    this.canvas.setVisible = object.visible = event;
-    this.canvas.discardActiveObject();
-    this.canvas.renderAll();
+  ellipseLists(event: any) {
+    const objects = this.canvas.getObjects();
+    if (event === true) {
+      objects.forEach((object) => {
+        this.isChangeable = true;
+        this.canvas.setVisible = object.visible = event;
+        this.canvas.renderAll();
       });
-    } 
+    } else {
+      objects.forEach((object) => {
+        this.isChangeable = false;
+        this.canvas.setVisible = object.visible = event;
+        this.canvas.discardActiveObject();
+        this.canvas.renderAll();
+      });
+    }
   }
 
+  /**
+   * This is showHideAnnotations function
+   * @param {any} array - A array param
+   * @example
+   * showHideAnnotations(data);
+   */
   showHideAnnotations(data) {
-    this.canvas._objects.forEach(element => {
-      if (element.stroke === data.info.colors){
+    this.canvas._objects.forEach((element) => {
+      if (element.stroke === data.info.colors) {
         this.canvas.setVisible = element.visible = data.check;
         this.canvas.discardActiveObject();
         this.canvas.renderAll();
       }
     });
+  }
+
+  /**
+   * This is getBrightness function
+   * @param {number} value - A number param
+   * @example
+   * getBrightness(data);
+   */
+  getBrightness(data: number) {
+    this.checkBrightnessContrast = 'brightness';
+    this.brightnessRange = data;
+    this.getRange();
+  }
+
+  /**
+   * This is getContrast function
+   * @param {number} value - A number param
+   * @example
+   * getContrast();
+   */
+  getContrast(data: number) {
+    this.checkBrightnessContrast = 'contrast';
+    this.contrastRange = data;
+    this.getRange();
+  }
+
+  /**
+   * This is getRange function
+   * @param {void} empty - A empty param
+   * @example
+   * getRange();
+   */
+  getRange() {
+    if (this.checkBrightnessContrast === 'brightness') {
+      this.brightness = this.sanitizer.bypassSecurityTrustStyle(
+        'brightness(' + this.brightnessRange * 2 + '%)'
+      );
+    } else {
+      this.brightness = this.sanitizer.bypassSecurityTrustStyle(
+        'contrast(' + this.contrastRange * 2 + '%)'
+      );
+    }
   }
 }
