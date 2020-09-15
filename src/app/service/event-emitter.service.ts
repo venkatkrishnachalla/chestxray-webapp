@@ -19,6 +19,7 @@ export class EventEmitterService {
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
   invokeImpressionFunction = new EventEmitter();
+  onStatusChangeFunction = new EventEmitter();
   brightnessValue = new EventEmitter();
   defaultRange = new EventEmitter();
 
@@ -83,6 +84,10 @@ export class EventEmitterService {
     this.invokeImpressionFunction.emit(data);
   }
 
+  onStatusChange(data){
+    this.onStatusChangeFunction.emit(data);
+  }
+  
   /*** onComponentButtonClick event emit function ***/
   onBrightnessChange(title) {
     this.brightnessValue.emit(title);

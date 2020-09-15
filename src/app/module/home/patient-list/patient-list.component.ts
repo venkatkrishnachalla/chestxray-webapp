@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { userInfo } from 'os';
 
 interface PatientListData {
+  data: PatientListData;
   age: number;
   birthDate: string;
   hospitalPatientId: string;
@@ -129,8 +130,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
         this.showloader = false;
         this.showTable = true;
         this.showError = false;
-        this.rowData = patientsList;
-        const patientRows = patientsList;
+        this.rowData = patientsList.data;
+        const patientRows = patientsList.data;
         patientRows.sort(
           (d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId
         );
