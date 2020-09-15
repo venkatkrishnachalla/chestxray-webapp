@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { homeConstants } from 'src/app/constants/homeConstants';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { Subject } from 'rxjs';
 import User from '../../auth/user.modal';
 import { Subscription } from 'rxjs';
 import { userInfo } from 'os';
@@ -45,6 +46,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
   showTable: boolean;
   overlayNoRowsTemplate: string;
   errorMessage: string;
+  showPatientInfo: boolean;
+  patientInfoSubject: Subject<any> = new Subject<any>();
+  @ViewChild('toggleButton') toggleButton: ElementRef;
   private userSubscription: Subscription;
 
   /*
@@ -177,7 +181,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
    * onActionViewClick(data);
    */
   public onActionViewClick(data: any) {
-    alert('View action clicked');
+    this.showPatientInfo = true;
+    this.patientInfoSubject.next(data);
   }
 
   /**
@@ -193,13 +198,12 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
 
-  /**
-   * This is on  unsubscribe userSubscription event
-   * @param {void} empty - A empty param
-   * @example
-   * ngOnDestroy();
-   */
+  toggleMenu() {
+    this.showPatientInfo = !this.showPatientInfo;
+  }
+
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
+
 }

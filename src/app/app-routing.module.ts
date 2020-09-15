@@ -14,6 +14,7 @@ import { HeaderComponent } from './core/layout/component/header/header.component
 import { XRayComponent } from './module/x-ray/x-ray.component';
 import { AskAiComponent } from './module/x-ray/component/ask-ai/ask-ai.component';
 import { ReportComponent } from './module/report/report.component';
+import { PatientInfoComponent } from './module/home/patient-info/patient-info.component';
 import { AboutComponent } from './core/layout/about/about.component';
 
 const routes: Routes = [
@@ -67,6 +68,7 @@ const routes: Routes = [
       { path: 'chat-room', component: ChatRoomComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'settings', component: SettingsComponent },
+      { path: 'patient-info', component: PatientInfoComponent },
     ],
   },
   {
@@ -75,16 +77,14 @@ const routes: Routes = [
     component: HeaderComponent,
     children: [
       { path: '', component: XRayComponent },
-      {path: 'ask-ai', component: AskAiComponent}
+      { path: 'ask-ai', component: AskAiComponent },
     ],
   },
   {
     path: 'report',
     canActivate: [AuthGuard],
     component: HeaderComponent,
-    children: [
-      { path: '', component: ReportComponent }
-    ],
+    children: [{ path: '', component: ReportComponent }],
   },
   {
     path: '',
