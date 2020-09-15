@@ -21,6 +21,7 @@ export class PatientInfoComponent implements OnInit {
     this.infoSubscription = this.patientInfo.subscribe((patientInfo: any) => {
       if (patientInfo) {
         this.patientDetail = patientInfo;
+        console.log(this.patientDetail);
         this.showPatientInfo = true;
       }
       this.hideInfo = true;

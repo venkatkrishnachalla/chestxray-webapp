@@ -18,11 +18,11 @@
             class="status"
             [ngStyle]="{
               'background-color':
-                patientDetail.status === false ? '#ff0000' : '#26b526'
+                patientDetail.isAnnotated === false ? '#ff0000' : '#26b526'
             }"
           ></button
         ></span>
-        {{ patientDetail.status === false ? 'Not Started' : 'Completed' }}
+        {{ patientDetail.isAnnotated === false ? 'Not Started' : 'Completed' }}
       </div>
     </div>
 
