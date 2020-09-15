@@ -208,6 +208,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.eventEmitterService.brightnessValue.subscribe((data) => {
       this.getBrightness(data);
     });
+    this.eventEmitterService.contrastValue.subscribe((data) => {
+      this.getContrast(data);
+    });
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
         switch (data.title) {
@@ -1685,7 +1688,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             id: element.id,
           })
         );
-        this.dialog.closeAll();
         this.coordinateList = [];
       });
       this.canvas.renderAll();
@@ -1795,6 +1797,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   getBrightness(data: number) {
     this.checkBrightnessContrast = 'brightness';
     this.brightnessRange = data;
+    this.getRange();
+  }
+
+  /**
+   * This is getContrast function
+   * @param {number} value - A number param
+   * @example
+   * getContrast();
+   */
+  getContrast(data: number) {
+    this.checkBrightnessContrast = 'contrast';
+    this.contrastRange = data;
     this.getRange();
   }
 

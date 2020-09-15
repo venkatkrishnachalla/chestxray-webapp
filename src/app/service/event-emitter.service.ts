@@ -21,6 +21,7 @@ export class EventEmitterService {
   invokeImpressionFunction = new EventEmitter();
   onStatusChangeFunction = new EventEmitter();
   brightnessValue = new EventEmitter();
+  contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
 
   constructor() {}
@@ -93,6 +94,11 @@ export class EventEmitterService {
     this.brightnessValue.emit(title);
   }
 
+  /*** onContrastChange event emit function ***/
+  onContrastChange(title: number) {
+    this.contrastValue.emit(title);
+  }
+  
   /*** onContrastChange event emit function ***/
   OnDefaultRanges(title: number) {
     this.defaultRange.emit(title);

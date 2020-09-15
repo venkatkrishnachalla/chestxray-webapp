@@ -1531,4 +1531,15 @@ describe('CanvasImageComponent', () => {
       expect(component.getBrightness).toBeDefined();
     });
   });
+
+    /*** it should call getContrast function***/
+  describe('#getContrast', () => {
+      beforeEach(() => {
+        const point = 33;
+        component.getContrast(point);
+      });
+      it('it should call getContrast function', () => {
+        expect(component.getContrast).toBeDefined();
+      });
+    });
 });
