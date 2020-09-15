@@ -1,14 +1,25 @@
 <mat-card class="findings">
   <mat-card-title>
-    FINDINGS
+    {{ findingsText | uppercase }}
     <img
       class="refresh-icon"
       src="../../../../../assets/images/update default.png"
       alt="update"
     />
   </mat-card-title>
-  <mat-card-content class="findings-content" *ngFor="let finding of findings; let i = index">
+  <mat-card-content
+    class="findings-content"
+    *ngFor="let finding of findings; let i = index"
+  >
     <button *ngIf="finding !== ' '"></button>
-    <span class="textarea" role="textbox" [ngClass]="{additionalFindings: finding === ' ' }"(keydown)="preventBaseValue($event)" (focusout)="updateFindings($event, i)" contenteditable>{{ finding }}</span>
+    <span
+      class="textarea"
+      role="textbox"
+      [ngClass]="{ additionalFindings: finding === ' ' }"
+      (keydown)="preventBaseValue($event)"
+      (focusout)="updateFindings($event, i)"
+      contenteditable
+      >{{ finding }}</span
+    >
   </mat-card-content>
 </mat-card>

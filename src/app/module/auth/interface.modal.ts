@@ -16,6 +16,8 @@ export interface PatientListData {
   sex: string;
   status: boolean;
   studies: any[];
+  length?: number;
+  findIndex?: any;
 }
 
 export interface EnumServiceItems extends Array<PatientListData> {}

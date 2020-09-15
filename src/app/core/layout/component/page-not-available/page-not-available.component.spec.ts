@@ -8,9 +8,8 @@ describe('PageNotAvailableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageNotAvailableComponent ]
-    })
-    .compileComponents();
+      declarations: [PageNotAvailableComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -18,7 +17,8 @@ describe('PageNotAvailableComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
+  
+  /*** should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });

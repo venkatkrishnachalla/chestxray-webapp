@@ -10,6 +10,7 @@ interface MlApiData {
   templateUrl: './ask-ai.component.html',
   styleUrls: ['./ask-ai.component.scss'],
 })
+// AskAiComponent class implementation  
 export class AskAiComponent implements OnInit {
   @Output() acceptAiEvent = new EventEmitter();
   @Output() rejectAiEvent = new EventEmitter();
@@ -18,12 +19,20 @@ export class AskAiComponent implements OnInit {
   mLResponse;
   findings = [];
   impressions = [];
-
+ 
+/*  
+* constructor for AskAiComponent class  
+*/
   constructor(private xrayService: XRayService) {}
 
-  /*** class init function ***/
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/ 
   ngOnInit(): void {
-    const PatientImage = localStorage.getItem('PatientImage');
+    const PatientImage = sessionStorage.getItem('PatientImage');
     /* post request to ml api to get prediction data */
     this.xrayService.getAskAiDetails(PatientImage, '').subscribe(
       (mLResponse: MlApiData) => {
@@ -33,12 +42,22 @@ export class AskAiComponent implements OnInit {
     );
   }
 
-  /* pass ml response to xray component, when user clicks accept */
+  /**  
+* This is a pass ml response to xray component, when user clicks accept.  
+* @param {void} empty - A empty param  
+* @example  
+* acceptAI();
+*/ 
   acceptAI() {
     this.acceptAiEvent.emit('');
   }
 
-  /* pass false value to xray component, when user clicks reject */
+/**  
+* This is a pass false value to xray component, when user clicks reject.  
+* @param {void} empty - A empty param  
+* @example  
+* rejectAI();
+*/ 
   rejectAI() {
     this.rejectAiEvent.emit(false);
   }

@@ -36,6 +36,10 @@
   }
 }
 
+.share-button-hide {
+  width: 33% !important;
+}
+
 .hide-xray {
   display: none;
 }
@@ -100,4 +104,8 @@
 
 .uploader img.loaded {
   opacity: 1;
+}
+
+.input-file {
+  display: none;
 }

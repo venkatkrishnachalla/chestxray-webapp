@@ -1,9 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PatientDetailsComponent } from './patient-details.component';
+import { of } from 'rxjs';
 
 describe('PatientDetailsComponent', () => {
   let component: PatientDetailsComponent;
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'invokePrevNextButtonDataFunction',
+  ]);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
   const mockPatientDetail = {
     age: 32,
     birthDate: '1988-05-06T00:00:00',
@@ -18,10 +23,12 @@ describe('PatientDetailsComponent', () => {
   };
 
   beforeEach(() => {
-    component = new PatientDetailsComponent();
+    const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
+    eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(patientIdMock);
+    component = new PatientDetailsComponent(eventEmitterServiceSpy);
   });
 
-/*** it should create patient details component ***/
+  /*** it should create patient details component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -34,6 +41,15 @@ describe('PatientDetailsComponent', () => {
     });
     it('should call ngOnInit function', () => {
       expect(component.PatientName).toEqual('Pallavi');
+    });
+  });
+
+  /*** should call ngOnDestroy ****/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any)._subscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });

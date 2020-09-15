@@ -7,6 +7,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { AgGridModule } from '../../../../../node_modules/ag-grid-angular';
 import { of, throwError } from 'rxjs';
 import { GridApi, ColumnApi } from 'ag-grid-community';
+import { patientMock } from '../../auth/patient-mock';
 
 describe('PatientListComponent', () => {
   let component: PatientListComponent;
@@ -19,6 +20,8 @@ describe('PatientListComponent', () => {
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onErrorMessage',
   ]);
+  const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
+  const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,7 +39,7 @@ describe('PatientListComponent', () => {
     component = new PatientListComponent(
       elementRefSpy,
       dashboardServiceSpy,
-      httpSpy,
+      authServiceSpy,
       routerSpy,
       eventEmitterServiceSpy
     );
@@ -49,48 +52,26 @@ describe('PatientListComponent', () => {
 
   /*** it should call ngOnInit function ***/
   describe('#ngOnInit', () => {
-    const samplePatient = [
-      {
-        patientId: 12,
-        name: 'Krishna',
-        gender: 'M',
-        age: 56,
-        priority: 'Minor',
-        referenceDoctor: 'Corkery, Charley DDS',
-        date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-        desc: 'Testing',
-        status: 'in-process',
-        instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-      },
-    ];
+    const samplePatient = patientMock;
+    const mockInResponse = {
+      username: 'mohan',
+      userroles: ['hospitalradiologist'],
+    };
     beforeEach(() => {
       component.defaultColDef = { width: 200 };
       component.columnDefs = component.constants.patientDashboard.headers;
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
-      component.ngOnInit();
     });
     it('should call ngOnIit function', () => {
-      const result = component.ngOnInit();
+      authServiceSpy.userSubject = of(mockInResponse);
+      component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
     });
   });
 
   /*** it should call getPatientList function ***/
   describe('#getPatientList', () => {
-    const samplePatient = [
-      {
-        patientId: 12,
-        name: 'Krishna',
-        gender: 'M',
-        age: 56,
-        priority: 'Minor',
-        referenceDoctor: 'Corkery, Charley DDS',
-        date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
-        desc: 'Testing',
-        status: 'in-process',
-        instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
-      },
-    ];
+    const samplePatient = patientMock;
     beforeEach(() => {
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
       component.getPatientList();
@@ -99,6 +80,19 @@ describe('PatientListComponent', () => {
       dashboardServiceSpy.getPatientList().subscribe((patientResponse: any) => {
         expect(patientResponse).toEqual(samplePatient);
       });
+      expect(component.getPatientList).toBeDefined();
+    });
+  });
+
+  /*** it should call getPatientList function, when it returns error ***/
+  describe('#getPatientList', () => {
+    beforeEach(() => {
+      dashboardServiceSpy.getPatientList.and.returnValue(
+        throwError({ status: 404 })
+      );
+      component.getPatientList();
+    });
+    it('should call getPatientList function', () => {
       expect(component.getPatientList).toBeDefined();
     });
   });
@@ -136,6 +130,83 @@ describe('PatientListComponent', () => {
     });
     it('should call autoSizeAll function', () => {
       expect(component.autoSizeAll).toBeDefined();
+    });
+  });
+
+  /*** it should call onRowClicked function ***/
+  describe('#onRowClicked', () => {
+    beforeEach(() => {
+      const eventMock = {
+        event: {
+          target: {
+            getAttribute: () => {
+              return {
+                'data-action-type': 'viewInfo',
+              };
+            },
+          },
+        },
+      };
+      component.onRowClicked(eventMock);
+    });
+    it('should call onRowClicked function', () => {
+      expect(component.onRowClicked).toBeDefined();
+    });
+  });
+
+  /*** it should call onRowClicked function, when action type equal to redirect ***/
+  describe('#onRowClicked', () => {
+    beforeEach(() => {
+      const eventMock = {
+        event: {
+          target: {
+            getAttribute: () => {
+              return {
+                'data-action-type': 'redirect',
+              };
+            },
+          },
+        },
+      };
+      component.onRowClicked(eventMock);
+    });
+    it('should call onRowClicked function, when action type equal to redirect', () => {
+      expect(component.onRowClicked).toBeDefined();
+    });
+  });
+
+  /*** it should call onActionViewClick function ***/
+  describe('#onActionViewClick', () => {
+    beforeEach(() => {
+      const dataMock = {
+        name: 'abcde',
+      };
+      component.onActionViewClick(dataMock);
+    });
+    it('should call onActionViewClick function', () => {
+      expect(component.onActionViewClick).toBeDefined();
+    });
+  });
+
+  /*** it should call onActionRedirectClick function ***/
+  describe('#onActionRedirectClick', () => {
+    beforeEach(() => {
+      const dataMock = {
+        name: 'abcde',
+      };
+      component.onActionRedirectClick(dataMock);
+    });
+    it('should call onActionRedirectClick function', () => {
+      expect(component.onActionRedirectClick).toBeDefined();
+    });
+  });
+
+  /*** should call ngOnDestroy ***/
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any).userSubscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
     });
   });
 });

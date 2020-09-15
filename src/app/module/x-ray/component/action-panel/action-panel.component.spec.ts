@@ -1,14 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ActionPanelComponent } from './action-panel.component';
+import { of } from 'rxjs';
 
 describe('ActionPanelComponent', () => {
   let component: ActionPanelComponent;
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onComponentButtonClick',
+    'invokePrevNextButtonDataFunction',
   ]);
 
   beforeEach(() => {
+    const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
+    eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(patientIdMock);
     component = new ActionPanelComponent(eventEmitterServiceSpy);
   });
 
@@ -56,6 +59,22 @@ describe('ActionPanelComponent', () => {
     });
   });
 
+  /*** it should call iconAction click event, when key not equal to index ***/
+  describe('#iconAction', () => {
+    beforeEach(() => {
+      const mockdata = [
+        {
+          name: 'Ellipse',
+          index: 1,
+        },
+      ];
+      component.iconAction(mockdata, '0');
+    });
+    it('should call iconAction function, when key not equal to index', () => {
+      expect(component.iconAction).toBeDefined();
+    });
+  });
+
   /*** it should call askAi event, when index not equal to key ***/
   describe('#askAI', () => {
     beforeEach(() => {
@@ -70,14 +89,6 @@ describe('ActionPanelComponent', () => {
     });
     it('should call icon Action function, when index is not equal to key', () => {
       expect(component.iconAction).toBeDefined();
-    });
-  });
-
-  /*** it should call disableAskAiButton event ***/
-  describe('#disableAskAiButton', () => {
-    it('should call disableAskAiButton function', () => {
-      component.disableAskAiButton();
-      expect(component.disableAskAI).toEqual(true);
     });
   });
 });

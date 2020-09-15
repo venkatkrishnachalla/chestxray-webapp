@@ -7,6 +7,29 @@
   [style.width.%]="100"
   [style.height.%]="100"
 >
+  <div class="content">
+    <span
+      class="material-icons content-visibility content-show"
+      *ngIf="!isChangeable"
+      (click)="ellipseLists(true)"
+    >
+      visibility_off
+    </span>
+    <span
+      class="material-icons content-visibility content-hide"
+      *ngIf="isChangeable"
+      (click)="ellipseLists(false)"
+    >
+      visibility
+    </span>
+
+    <p class="contents">
+      <span class="scale-factor">
+        {{ displayScaleFactor + 'x' }}
+      </span>
+    </p>
+  </div>
+
   <div
     class="xRay-image-canvas-container d-flex justify-content-center"
     id="canvas-wrapper"
@@ -15,6 +38,7 @@
       <canvas
         id="at-id-x-ray-Canvas"
         class="xRay-image-canvas align-self-center orange"
+        [style.filter]="brightness"
       ></canvas>
     </div>
   </div>
@@ -173,3 +197,5 @@
     >
   </div>
 </ng-template>
+
+<p id="target">Rotation is restricted at the corner</p>

@@ -14,8 +14,13 @@ export class EventEmitterService {
   invokeReportDataFunction = new EventEmitter();
   invokeDisplayErrorMessage = new EventEmitter();
   invokeFindingsDataFunction = new EventEmitter();
+  invokePrevNextButtonDataFunction = new EventEmitter();
+  invokeAskAiButtonDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
+  invokeImpressionFunction = new EventEmitter();
+  brightnessValue = new EventEmitter();
+  defaultRange = new EventEmitter();
 
   constructor() {}
 
@@ -62,5 +67,29 @@ export class EventEmitterService {
   /*** onImpressionDataShared event emit function ***/
   onImpressionDataShared(data) {
     this.invokeFindingsDataFunction.emit(data);
+  }
+
+  /*** event to capture prev and next button click event emit function ***/
+  onPrevNextButtonClick(data) {
+    this.invokePrevNextButtonDataFunction.emit(data);
+  }
+
+  /*** event to capture ask ai success state ***/
+  onAskAiButtonClick(data) {
+    this.invokeAskAiButtonDataFunction.emit(data);
+  }
+  /*** event to capture ask ai success state ***/
+  onImpressionCheckboxClick(data) {
+    this.invokeImpressionFunction.emit(data);
+  }
+
+  /*** onComponentButtonClick event emit function ***/
+  onBrightnessChange(title) {
+    this.brightnessValue.emit(title);
+  }
+
+  /*** onContrastChange event emit function ***/
+  OnDefaultRanges(title: number) {
+    this.defaultRange.emit(title);
   }
 }

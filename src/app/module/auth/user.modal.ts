@@ -1,11 +1,14 @@
+// User class implementation  
 export default class User {
   constructor(
     public email: string,
     public id: string,
-    private _token: string,
+    public _token: string,
+    public refreshToken: string,
     private _tokenExpirationDate: Date,
     public username: string,
     public userroles: any[]
+
   ) {}
 
   get token() {

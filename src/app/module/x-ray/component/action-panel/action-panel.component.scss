@@ -37,25 +37,24 @@
     .middleItems {
       display: flex;
       flex-wrap: wrap;
-      margin-top: 2.5rem;
+      margin-top: 1.5rem;
 
       .actions,
       .menus {
         width: calc(50% - 10px);
         margin: 5px 0px 6px 5px;
         text-align: center;
-        height: 28px;
+        height: 35px;
         cursor: pointer;
 
         img {
           height: 2rem;
           width: 2rem;
-          margin-top: 4px;
+          margin-top: 8px;
         }
       }
       :hover {
         background-color: #f0e5e5;
-        border-radius: 4px;
       }
       .icon-select-BG {
         width: 30px !important;
@@ -63,12 +62,19 @@
         background-color: #dcdcdc !important;
         border-radius: 4px !important;
       }
+      .icon-disabled-BG {
+        cursor: no-drop;
+        opacity: 0.5;
+      }
+      .icon-active-BG {
+        cursor: pointer;
+      }
     }
 
     .sliderItems {
       display: flex;
       flex-wrap: wrap;
-      margin-top: 2.5rem;
+      margin-top: 1.5rem;
 
       .slider {
         height: 140px;

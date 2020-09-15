@@ -2,22 +2,43 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { PatientDetailData } from 'src/app/module/auth/interface.modal';
 import { fabric } from 'fabric';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/module/auth/auth.service';
+import User from 'src/app/module/auth/user.modal';
 @Component({
   selector: 'cxr-x-ray-patient-image',
   templateUrl: './x-ray-patient-image.component.html',
   styleUrls: ['./x-ray-patient-image.component.scss'],
 })
+
+// XRayPatientImageComponent class implementation
 export class XRayPatientImageComponent implements OnInit {
   patientImage: any;
   xrayAnnotatedImage: string;
   xrayAnnotatedImpression: string;
   patientInfo: PatientDetailData;
   pdfTitle: string;
+  isHospitalRadiologist: boolean;
+  userSubscription: Subscription;
+  mailText: string;
+  emailBody: string;
   @Output() printEvent = new EventEmitter();
+  @Output() shareEvent = new EventEmitter();
 
-  constructor(private annotatedXrayService: XRayService) {}
+  /*
+   * constructor for XRayPatientImageComponent class
+   */
+  constructor(
+    private annotatedXrayService: XRayService,
+    private authService: AuthService
+  ) {}
 
-  /*** class init function ***/
+  /**
+   * This is a init function.
+   * @param - A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     this.patientInfo = history.state.patientDetails;
     if (this.patientInfo === undefined) {
@@ -38,10 +59,75 @@ export class XRayPatientImageComponent implements OnInit {
           this.xrayAnnotatedImage = image;
         }
       });
+    this.userSubscription = this.authService.userSubject.subscribe(
+      (user: User) => {
+        if (user) {
+          this.isHospitalRadiologist =
+            user.userroles[0] === 'HospitalRadiologist' ? true : false;
+        }
+      }
+    );
   }
 
-  /*** print button click emit function ***/
+  /**
+   * This is a print button click emit function.
+   * @param - A empty param
+   * @example
+   * printClick();
+   */
   printClick() {
     this.printEvent.emit(true);
+  }
+
+  /**
+   * This is a shareButtonEvent button click emit function.
+   * @param - A empty param
+   * @example
+   * shareButtonEvent();
+   */
+  shareButtonEvent() {
+    document.querySelector('input').click();
+    const timestamp = Number(new Date());
+    const hospitalPatientId = this.patientInfo.hospitalPatientId
+      ? this.patientInfo.hospitalPatientId
+      : this.patientInfo.name;
+    const fileName = hospitalPatientId + '_' + timestamp + '.pdf';
+    this.shareEvent.emit(fileName);
+    const formattedBody =
+      'X-ray Report for patient: ' +
+      this.patientInfo.name +
+      '\n\n\n' +
+      '*** This is an automatically generated text...' +
+      '\n' +
+      'please attach the x-ray report from downloads folder.' +
+      '\n' +
+      'filename: ' +
+      fileName +
+      '\n\n';
+    const mailToLink =
+      'mailto:?subject=Chest-rAi-Report&body=' +
+      encodeURIComponent(formattedBody);
+    location.href = mailToLink;
+  }
+
+  /**
+   * This is on handle event to capture file details
+   * @param {void} empty - A empty param
+   * @example
+   * handle();
+   */
+  handle(e) {
+    const fileEvent = e;
+  }
+
+  /**
+   * This is on unsubscribe user subscription after moving out from this component
+   * @param {void} empty - A empty param
+   * @example
+   * ngOnDestroy();
+   */
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 }

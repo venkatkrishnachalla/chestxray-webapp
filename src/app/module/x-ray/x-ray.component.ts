@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './x-ray.component.html',
   styleUrls: ['./x-ray.component.scss'],
 })
+// XRayComponent class implementation
 export class XRayComponent implements OnInit, OnDestroy {
   eventsSubject: Subject<any> = new Subject<any>();
   showAskAI = false;
@@ -40,11 +41,16 @@ export class XRayComponent implements OnInit, OnDestroy {
   displayCanvas = true;
   displayErrorBlock = false;
   isHospitalRadiologist: boolean;
+  disableReportBtn = false;
   userSubscription: Subscription;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
   @ViewChild(ActionPanelComponent) actionPanel: ActionPanelComponent;
+
+  /*
+   * constructor for XRayComponent class
+   */
 
   constructor(
     private xrayService: XRayService,
@@ -56,7 +62,13 @@ export class XRayComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService
   ) {}
 
-  /*** component init function ***/
+  /**
+   * This is a init function.
+   * @param {void} empty - A empty param
+   * @example
+   * ngOnInit();
+   */
+
   ngOnInit(): void {
     this.eventEmitterService.invokeReportFunction.subscribe((impressions) => {
       this.eventEmitterService.onReportDataShared(impressions);
@@ -71,7 +83,13 @@ export class XRayComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** open ask ai model when user clicks on ask ai button ***/
+  /**
+   * open ask ai model when user clicks on ask ai button
+   * @param {string} value - A string param
+   * @example
+   * openAskAI(event);
+   */
+
   openAskAI(event: any) {
     this.spinnerService.show();
     const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
@@ -82,7 +100,7 @@ export class XRayComponent implements OnInit, OnDestroy {
           this.mLResponse = mLResponse;
           const mLArray = this.mLResponse.data.ndarray[0].diseases;
           this.eventsSubject.next(mLResponse);
-          this.actionPanel.disableAskAiButton();
+          this.eventEmitterService.onAskAiButtonClick('success');
           this.spinnerService.hide();
           if (mLArray.length === 0 || mLArray === undefined) {
             this.toastrService.info('No significant abnormality detected');
@@ -117,16 +135,27 @@ export class XRayComponent implements OnInit, OnDestroy {
   //   this.router.navigateByUrl('/report');
   // }
 
-  /*** report button click event ***/
+  /**
+   * report button click event
+   * @param {void} empty - A empty param
+   * @example
+   * generateReport();
+   */
 
   generateReport() {
-    this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
+    this.disableReportBtn = true;
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
+    this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
   }
 
-  /*** unsubscribe userSubscription event ***/
+  /**
+   * unsubscribe userSubscription event
+   * @param {void} empty - A empty param
+   * @example
+   * ngOnDestroy();
+   */
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();

@@ -6,13 +6,27 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
+// HomeComponent class implementation
 export class HomeComponent implements OnInit {
+  /*  
+* constructor for HomeComponent class  
+*/ 
   constructor(private authService: AuthService) {}
 
-  /*** class init function ***/
+/**  
+* This is a init function.  
+* @param {void} empty - A empty param  
+* @example  
+* ngOnInit();
+*/  
   ngOnInit(): void {}
 
-  /*** log out function ***/
+/**  
+* This is a logOut.  
+* @param {void} empty - A empty param  
+* @example  
+* logOut();
+*/  
   logOut() {
     this.authService.logOut();
   }

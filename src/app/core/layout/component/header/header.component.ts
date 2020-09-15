@@ -15,6 +15,7 @@ import User from 'src/app/module/auth/user.modal';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
+// HeaderComponent class implementation  
 export class HeaderComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   isAuth = false;
@@ -22,10 +23,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleActive: boolean;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
-
+    /*  
+    * constructor for HeaderComponent class  
+    */  
   constructor(private authService: AuthService, public router: Router) {}
 
-  /*** class init function ***/
+  /**  
+ * This is a class init function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnInit();
+ */  
   ngOnInit(): void {
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
@@ -38,24 +46,46 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.initialize();
   }
 
-  /*** initialize function to check isAuth ***/
+  /**  
+ * This is a initialize function to check isAuth.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * initialize();
+ */  
   private initialize() {
     this.isAuth = !!this.authService.user;
   }
 
-  /*** on logout function ***/
+    /**  
+ * This is a logout function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * onLogout();
+ */ 
   onLogout() {
     sessionStorage.clear();
     this.authService.logOut();
   }
 
-  /*** toggleSidenav function, it will open side nav ***/
+      /**  
+ * This is a toggleSidenav function, it will open side nav.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * toggleSidenav();
+ */ 
   toggleSidenav() {
     this.buttonClicked.emit('clicked');
   }
 
-  /*** unsubscribe user subscription event ***/
+  /**  
+ * This is a unsubscribe user subscription event.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * ngOnDestroy();
+ */ 
   ngOnDestroy() {
-    this.userSubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 }

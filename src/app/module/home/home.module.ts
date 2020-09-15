@@ -38,4 +38,5 @@ import { PatientInfoComponent } from './patient-info/patient-info.component';
     AgGridModule.withComponents([]),
   ],
 })
+// HomeModule class implementation
 export class HomeModule {}

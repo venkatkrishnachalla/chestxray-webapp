@@ -17,6 +17,7 @@ interface AuthResponseData {
   idToken: string;
   email: string;
   token: string;
+  refreshToken: string;
   expiration: string;
   localId: string;
   registered?: boolean;
@@ -26,11 +27,15 @@ interface AuthResponseData {
 @Injectable({
   providedIn: 'root',
 })
+// AuthService class implementation  
 export class AuthService {
   public userSubject: BehaviorSubject<User>;
   private tokenExpirationTimer: any;
   private refreshTokenTimer: any;
 
+    /*  
+    * constructor for AuthService class  
+    */  
   constructor(
     private http: HttpClient,
     private endpoint: ApiEndPointService,
@@ -43,6 +48,13 @@ export class AuthService {
     return this.userSubject.value;
   }
 
+   /**  
+ * This is a signIn click function.  
+ * @param {string} value - A string param  
+ * @param {string} value - A string param  
+ * @example  
+ * signIn(email, password);
+ */ 
   signIn(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(this.endpoint.getSingInURL(), {
@@ -57,6 +69,7 @@ export class AuthService {
             responseDate.email,
             responseDate.localId,
             responseDate.token,
+            responseDate.refreshToken,
             responseDate.expiration,
             responseDate.username,
             responseDate.userroles
@@ -64,11 +77,17 @@ export class AuthService {
         })
       );
   }
-
+  
+ /**  
+ * This is a logOut function.  
+ * @param {} empty - A empty param  
+ * @example  
+ * logOut();
+ */  
   logOut() {
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
-    localStorage.removeItem('userAuthData');
+    sessionStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
     sessionStorage.removeItem('PatientImage');
     sessionStorage.removeItem('isIndividualRadiologist');
@@ -76,6 +95,9 @@ export class AuthService {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
+    sessionStorage.removeItem('patientRows');
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.clear();
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -85,15 +107,27 @@ export class AuthService {
     }
   }
 
+ /**  
+ * This is a autoLoginOnRefresh function.  
+ * @param {} empty - A empty param  
+ * @example  
+ * autoLoginOnRefresh();
+ */ 
   autoLoginOnRefresh() {
+    const authDataSession = JSON.parse(sessionStorage.getItem('userAuthData'));
+    if (authDataSession){
+      const tokenNew = window.atob(authDataSession._token);
+      authDataSession._token = tokenNew;
+    }
     const authData: {
       email: string;
       id: string;
       _token: string;
+      refreshToken: string;
       _tokenExpirationDate: string;
       username: string;
       userroles: any[];
-    } = JSON.parse(localStorage.getItem('userAuthData'));
+    } = authDataSession;
     if (!authData) {
       return;
     }
@@ -101,6 +135,7 @@ export class AuthService {
       authData.email,
       authData.id,
       authData._token,
+      authData.refreshToken,
       new Date(authData._tokenExpirationDate),
       authData.username,
       authData.userroles
@@ -115,52 +150,98 @@ export class AuthService {
       // this.refreshTokenTimeOut(curUser.token, new Date(authData._tokenExpirationDate).getTime() - new Date().getTime());
     }
   }
-
-  private refreshToken(token: string) {
-    return this.http
-      .post<{ idToken: string; refreshToken: string; expiresIn }>(
-        this.endpoint.getRefreshToken(),
-        {
-          token,
-          returnSecureToken: true,
+  
+ /**  
+ * This is a refreshToken function.  
+ * @param {string} value - A string param  
+ * @example  
+ * refreshToken(token);
+ */ 
+  public refreshToken(accessToken: string, refreshToken: string, username: string, userroles: any, _tokenExpirationDate: Date) {
+    const token = {
+      accessToken: accessToken,
+      refreshToken: refreshToken
+    }
+    return this.http.post(this.endpoint.getRefreshToken(), token).subscribe(
+      (data: any) => {
+        console.log(data);
+        const UserInfo = {
+          username: username,
+          userroles: userroles,
+          _tokenExpirationDate: _tokenExpirationDate,
+          _token: data.accessToken,
+          refreshToken: data.refreshToken
         }
-      )
-      .pipe(
-        catchError(this.handleAuthError),
-        tap((responseDate) => {
-          this.handleAuthentication(
-            this.user.email,
-            this.user.id,
-            responseDate.idToken,
-            +responseDate.expiresIn,
-            this.user.username,
-            this.user.userroles
-          );
-        })
-      );
+        const user = new User(
+          null,
+          null,
+          data.accessToken,
+          data.refreshToken,
+          _tokenExpirationDate,
+          username,
+          userroles
+        );
+        sessionStorage.removeItem('userAuthData');
+        sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
+        sessionStorage.setItem('accessToken', data.accessToken);
+        this.userSubject.next(user);
+      },
+      error => {
+        console.log(JSON.stringify(error.json()));
+      }
+    )
   }
 
-  //
+ /**  
+ * This is a autoSessionTimeOut function.  
+ * @param {number} index - A number param  
+ * @example  
+ * autoSessionTimeOut(expirationDuration);
+ */ 
   autoSessionTimeOut(expirationDuration: number) {
+    const expireTime = (expirationDuration - 60000);
     this.tokenExpirationTimer = setTimeout(() => {
-      this.logOut();
-    }, expirationDuration);
+      const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
+      const token = sessionStorage.getItem('accessToken');
+      this.refreshToken(
+        token, 
+        accessToken.refreshToken, 
+        accessToken.username,
+        accessToken.userroles,
+        accessToken._tokenExpirationDate
+        );
+    }, expireTime);
   }
 
-  /**
-   * Refresh token a minute before it expires
-   * @param expirationDuration - expiration time in ms.
-   */
-  refreshTokenTimeOut(token, expirationDuration: number) {
+   /**  
+ * This is a Refresh token a minute before it expires.
+ * @param {string} value - A string param  
+ * @param {number} index - A number param  
+ * @example  
+ * refreshTokenTimeOut(token, expirationDuration);
+ */ 
+  refreshTokenTimeOut(token: string, refreshToken: string, expirationDuration: number) {
     this.refreshTokenTimer = setTimeout(() => {
-      this.refreshToken(token);
+      // this.refreshToken(token, refreshToken);
     }, expirationDuration - 60 * 1000);
   }
 
+     /**  
+ * This is a handleAuthentication function.
+ * @param {string} value - A string param  
+ * @param {string} value - A string param  
+ * @param {string} value - A string param  
+ * @param {any} data - A array param  
+ * @param {string} value - A string param  
+ * @param {any} data - A array param  
+ * @example  
+ * handleAuthentication(email, userID, token, expiresIn, username, userroles);
+ */ 
   private handleAuthentication(
     email: string,
     userID: string,
     token: string,
+    refreshToken: string,
     expiresIn: any,
     username: string,
     userroles: any
@@ -171,6 +252,7 @@ export class AuthService {
       email,
       userID,
       token,
+      refreshToken,
       expirationDate,
       username,
       userroles
@@ -183,12 +265,19 @@ export class AuthService {
     this.autoSessionTimeOut(seconds);
     // Or refresh token, if you decide to keep the session active.
     // this.refreshTokenTimeOut(user.token, expiresIn * 1000);
-    localStorage.setItem('userAuthData', JSON.stringify(user));
   }
 
+/**  
+ * This is a handleAuthError function.
+ * @param {errorResponse} HttpErrorResponse - A response param  
+ * @example  
+ * handleAuthError(errorResponse);
+ */ 
   private handleAuthError(errorResponse: HttpErrorResponse) {
     let errorMessage = 'Unknown error occurred';
-    if (!errorResponse.error || !errorResponse.error.error) {
+    if (errorResponse.status === 0) {
+      return throwError('Server not reachable');
+    } else if (!errorResponse.error || !errorResponse.error.error) {
       return throwError(errorMessage);
     }
 

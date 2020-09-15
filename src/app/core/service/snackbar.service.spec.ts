@@ -8,10 +8,13 @@ describe('SnackbarService', () => {
     snackbarService = new SnackbarService(snackBarSpy);
   });
 
+  
+/*** it should create service ***/
   it('should create', () => {
     expect(snackbarService).toBeTruthy();
   });
 
+    /*** it should open function ***/
   describe('#open', () => {
     beforeEach(() => {
       snackbarService.horizontalPosition = 'center';

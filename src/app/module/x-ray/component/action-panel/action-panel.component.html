@@ -1,64 +1,29 @@
 <div class="x-ray-left-container">
   <div class="action-panel">
     <div class="topItem">
-      <button mat-button (click)="askAI()" [disabled]="disableAskAI">
-        Ask AI <img src="../../../assets/images/askAI.png" alt="Ask AI" />
-      </button>
-      <button mat-button>
-        Pathology
-        <img
-          src="../../../assets/images/add pathology active.png"
-          alt="Add Pathology"
-        />
-      </button>
-      <button mat-button>
-        Timeline<img
-          src="../../../assets/images/timeline icon.png"
-          alt="Timeline"
-        />
-      </button>
+      <cxr-ask-ai-tool (askAiEvent)="askAI()"></cxr-ask-ai-tool>
+      <cxr-pathology-tool></cxr-pathology-tool>
+      <cxr-timeline-tool></cxr-timeline-tool>
     </div>
 
-    <div class="actionItem">
-      <div class="actions" *ngFor="let actions of actionPanel">
-        <img
-          [src]="actions.image"
-          [alt]="actions.alt"
-          [title]="actions.title"
-        />
-      </div>
+    <div>
+      <cxr-select-fitscreen-tool></cxr-select-fitscreen-tool>
+      <cxr-zoomin-zoomout-tool></cxr-zoomin-zoomout-tool>
+      <cxr-rotate-tool></cxr-rotate-tool>
+      <cxr-flip-tool></cxr-flip-tool>
     </div>
 
-    <div class="middleItems">
-      <div class="menus" *ngFor="let middle of middlePanel; let i = index">
-        <img
-          [ngClass]="{ 'icon-select-BG': middlePanel[i].active }"
-          [src]="middle.image"
-          [alt]="middle.alt"
-          (click)="iconAction(middlePanel, i)"
-          [title]="middle.title"
-        />
-      </div>
+    <div>
+      <cxr-undo-redo-tool></cxr-undo-redo-tool>
+      <cxr-draw-ellipse-freehand-drawing></cxr-draw-ellipse-freehand-drawing>
+      <cxr-measure-length-angle-tool></cxr-measure-length-angle-tool>
+      <cxr-arrow-text-tool></cxr-arrow-text-tool>
+      <cxr-save-erase-tool></cxr-save-erase-tool>
+      <cxr-settings-delete-tool></cxr-settings-delete-tool>
     </div>
 
-    <!-- Bottom slider -->
-    <div class="sliderItems">
-      <div class="slider">
-        <ng5-slider [(value)]="value" [options]="options"></ng5-slider>
-      </div>
-      <div class="slider">
-        <ng5-slider [(value)]="values" [options]="option"></ng5-slider>
-      </div>
-    </div>
-
-    <div class="brightness">
-      <div class="contrast" *ngFor="let brightness of brightnessPanel">
-        <img
-          [src]="brightness.image"
-          [alt]="brightness.alt"
-          [title]="brightness.title"
-        />
-      </div>
+    <div>
+      <cxr-brightness-contrast-tool></cxr-brightness-contrast-tool>
     </div>
   </div>
 </div>

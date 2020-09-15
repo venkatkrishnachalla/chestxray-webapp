@@ -7,11 +7,12 @@ describe('ConsoleService', () => {
   beforeEach(() => {
     consoleService = new ConsoleService();
   });
-
+/*** it should create service ***/
   it('should create', () => {
     expect(consoleService).toBeTruthy();
   });
 
+        /*** it should info function ***/
   describe('#info', () => {
     beforeEach(() => {
       consoleService.info('dislay');
@@ -21,6 +22,7 @@ describe('ConsoleService', () => {
     });
   });
 
+        /*** it should log function ***/
   describe('#log', () => {
     beforeEach(() => {
       consoleService.log('log');
@@ -30,6 +32,7 @@ describe('ConsoleService', () => {
     });
   });
 
+      /*** it should warn function ***/
   describe('#warn', () => {
     it('should call warn function', () => {
       consoleService.warn('display');
@@ -37,6 +40,7 @@ describe('ConsoleService', () => {
     });
   });
 
+    /*** it should error function ***/
   describe('#error', () => {
     it('should call error function', () => {
       consoleService.error('display');
