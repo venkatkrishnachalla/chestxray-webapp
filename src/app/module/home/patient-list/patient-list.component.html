@@ -32,3 +32,8 @@
 <ng-container>
   <cxr-error-message></cxr-error-message>
 </ng-container>
+
+<cxr-patient-info
+  (click)="toggleMenu()"
+  [patientInfo]="patientInfoSubject.asObservable()"
+></cxr-patient-info>

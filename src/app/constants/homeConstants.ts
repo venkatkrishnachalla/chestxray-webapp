@@ -88,7 +88,7 @@ export const homeConstants = {
           return { width: 'auto !important' };
         },
         template: `  
-          <img src="../../../../../assets/images/i.png" alt="info_icon" height="20px" width="20px" style="color: #C5C5C5; cursor: pointer; margin-top: 10px; margin-right: 10px;" title="Patient info" title="Patient Info" (click)="patientInfo(e)"/>
+          <img src="../../../../../assets/images/i.png" alt="info_icon" height="20px" width="20px" style="color: #C5C5C5; cursor: pointer; margin-top: 10px; margin-right: 10px;" title="Patient info" title="Patient Info" data-action-type="viewInfo" (click)="patientInfo(e)"/>
           <mat-icon data-action-type="redirect" style="color: #a7a6a6;; cursor: pointer; margin-top: -7px;" title="View X-Ray" (click)="onClick()" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
           arrow_forward_ios</mat-icon>
         </div>`,
