@@ -1524,8 +1524,7 @@ describe('CanvasImageComponent', () => {
   /*** it should call getBrightness function***/
   describe('#getBrightness', () => {
     beforeEach(() => {
-      const point = 33;
-      component.getBrightness(point);
+      component.getBrightness(33);
     });
     it('it should call getBrightness function', () => {
       expect(component.getBrightness).toBeDefined();
@@ -1535,8 +1534,7 @@ describe('CanvasImageComponent', () => {
     /*** it should call getContrast function***/
   describe('#getContrast', () => {
       beforeEach(() => {
-        const point = 33;
-        component.getContrast(point);
+        component.getContrast(33);
       });
       it('it should call getContrast function', () => {
         expect(component.getContrast).toBeDefined();
