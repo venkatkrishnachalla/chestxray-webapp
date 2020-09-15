@@ -1,5 +1,5 @@
 .patientInfoContainer {
-  width: 550px;
+  width: 585px;
   min-height: 300px;
   height: auto;
   border: 1px solid #ffffff;
@@ -38,6 +38,7 @@
   .patient-card-body {
     .row {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       margin: 0px 5px;
 

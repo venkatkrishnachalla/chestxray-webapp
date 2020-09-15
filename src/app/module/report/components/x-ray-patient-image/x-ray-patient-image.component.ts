@@ -271,7 +271,7 @@ export class XRayPatientImageComponent implements OnInit {
    * ngOnDestroy();
    */
 
-  ngOnDestroy() {
-    this.userSubscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.userSubscription.unsubscribe();
+  // }
 }
