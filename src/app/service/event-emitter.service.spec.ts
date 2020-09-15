@@ -92,7 +92,11 @@ describe('EventEmitterService', () => {
     const result = service.onBrightnessChange('');
     expect(service.onBrightnessChange).toBeDefined();
   });
-
+  /*** it should call onContrastChange function ***/
+  it('should call onContrastChange function', () => {
+    const result = service.onContrastChange(50);
+    expect(service.onContrastChange).toBeDefined();
+  });
   /*** it should call OnDefaultRanges function ***/
   it('should call OnDefaultRanges function', () => {
     const result = service.OnDefaultRanges(50);

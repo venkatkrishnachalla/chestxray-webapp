@@ -15,6 +15,7 @@ import { XRayComponent } from './module/x-ray/x-ray.component';
 import { AskAiComponent } from './module/x-ray/component/ask-ai/ask-ai.component';
 import { ReportComponent } from './module/report/report.component';
 import { PatientInfoComponent } from './module/home/patient-info/patient-info.component';
+import { AboutComponent } from './core/layout/about/about.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,16 @@ const routes: Routes = [
     path: 'auth',
     redirectTo: 'auth/login',
     pathMatch: 'full',
+  },
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+      {
+        path: 'about',
+        component: AboutComponent,
+      },
+    ],
   },
   {
     path: 'auth',

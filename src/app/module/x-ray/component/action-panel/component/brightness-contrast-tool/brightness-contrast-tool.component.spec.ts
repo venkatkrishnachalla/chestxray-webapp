@@ -40,4 +40,15 @@ describe('BrightnessContrastToolComponent', () => {
       expect(component.setBrightnessSlidervalue).toBeDefined();
     });
   });
+
+  /*** it should call setContrastSlidervalue function***/
+  describe('#setContrastSlidervalue', () => {
+    beforeEach(() => {
+      const point = 60;
+      component.setContrastSlidervalue(point);
+    });
+    it('it should call setContrastSlidervalue function', () => {
+      expect(component.setContrastSlidervalue).toBeDefined();
+    });
+  });
 });

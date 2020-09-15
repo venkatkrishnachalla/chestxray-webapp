@@ -21,7 +21,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   impressionList = [];
   uniqueImpressions = [];
   _subscription: Subscription;
-  impressionsText: string = 'Impressions';
+  impressionsText = 'Impressions';
   hideShowAll: boolean;
   
   /*  
@@ -236,11 +236,13 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
   hideorShowAllFun(event){
     if (event.target.checked){
+      this.hideShowAll = true;
       this.uniqueImpressions.forEach(element => {
         element.checked = true;
       });
     }
     else{
+      this.hideShowAll = false;
       this.uniqueImpressions.forEach(element => {
         element.checked = false;
       });

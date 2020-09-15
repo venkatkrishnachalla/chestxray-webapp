@@ -28,7 +28,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 // ReportComponent class implementation
 export class ReportComponent implements OnInit {
-  patientInfo: PatientDetailData;
+  patientInfo: any;
   showPrintForm = false;
   showPrintFormPdf = false;
   annotatedImage: string;

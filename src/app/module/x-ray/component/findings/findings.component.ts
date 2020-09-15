@@ -171,7 +171,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
     if (lengthIndex !== -1) {
       if (window.getSelection().getRangeAt(0).startOffset > lengthIndex) {
         if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
-          if (evt.key.charCodeAt() === 66) {
+          if (evt.key.charCodeAt() === 64) {
             evt.preventDefault();
           }
         } else {

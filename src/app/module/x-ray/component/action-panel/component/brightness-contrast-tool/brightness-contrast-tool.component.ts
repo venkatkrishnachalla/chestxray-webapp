@@ -31,7 +31,7 @@ export class BrightnessContrastToolComponent implements OnInit {
     ceil: 100,
     vertical: true,
     showSelectionBar: true,
-    disabled: true,
+    disabled: false,
     selectionBarGradient: {
       from: '#285c68',
       to: '#285c68',
@@ -71,5 +71,14 @@ export class BrightnessContrastToolComponent implements OnInit {
    */
   setBrightnessSlidervalue(event: number) {
     this.eventEmitterService.onBrightnessChange(event);
+  }
+
+  /**
+   * This is a setContrastSlidervalue function.
+   * @example
+   * setContrastSlidervalue(event);
+   */
+  setContrastSlidervalue(event: number) {
+    this.eventEmitterService.onContrastChange(event);
   }
 }

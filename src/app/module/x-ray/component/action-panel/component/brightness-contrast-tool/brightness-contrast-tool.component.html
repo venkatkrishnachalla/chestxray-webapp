@@ -10,7 +10,7 @@
     <ng5-slider
       [(ngModel)]="contrastRangeValue"
       [options]="option"
-      [ngClass]="'disabled'"
+      (ngModelChange)="setContrastSlidervalue($event)"
     ></ng5-slider>
   </div>
 </div>
