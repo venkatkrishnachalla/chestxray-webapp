@@ -205,10 +205,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.pathologyNames = this.constants.diseases;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
-    this.eventEmitterService.brightnessValue.subscribe((data) => {
+    this.eventEmitterService.brightnessValue.subscribe((data: number) => {
       this.getBrightness(data);
     });
-    this.eventEmitterService.contrastValue.subscribe((data) => {
+    this.eventEmitterService.contrastValue.subscribe((data: number) => {
       this.getContrast(data);
     });
     this.eventEmitterService.invokeComponentFunction.subscribe(
