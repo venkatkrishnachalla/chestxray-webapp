@@ -8,18 +8,18 @@
   /></span>
   <span class="menu-items"></span>
   <div>
-    <button mat-button>About</button>
+    <button mat-button [routerLink]="['/about']" routerLinkActive="router-link-active">About</button>
     <button mat-button>Product</button>
-    <button mat-button>Contact Us</button>
-    <button color="primary" mat-flat-button>Sign In</button>
+    <a mat-button href="https://www.ltts.com/contact-us" target="_blank" title="Get in touch with us | ltts.com/contact-us">Contact Us</a>
+    <button color="primary" mat-flat-button [routerLink]="['/auth/login']" >Sign In</button>
   </div>
 </mat-toolbar>
 
 <mat-toolbar class="mobile-header">
-  <button mat-button>About</button>
-  <button mat-button>Product</button>
-  <button mat-button>Contact Us</button>
-  <button color="primary" mat-flat-button>Sign In</button>
+  <button class="mobile-button" mat-button [routerLink]="['/about']" routerLinkActive="router-link-active">About</button>
+  <button class="mobile-button" mat-button>Product</button>
+  <a class="mobile-button" mat-button href="https://www.ltts.com/contact-us" target="_blank" title="Get in touch with us | ltts.com/contact-us">Contact Us</a>
+  <button color="primary" mat-flat-button [routerLink]="['/auth/login']">Sign In</button>
 </mat-toolbar>
 
 <router-outlet></router-outlet>
