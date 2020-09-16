@@ -1367,6 +1367,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  onSubmitPatientDetails() ;
    */
   onSubmitPatientDetails() {
+    this.resetZoom();
+    this.keepPositionInBounds(this.canvas);
     this.ellipseLists(true);
     this.processedImage = this.canvas.toDataURL('image/png');
     sessionStorage.setItem('annotatedImage', this.processedImage);

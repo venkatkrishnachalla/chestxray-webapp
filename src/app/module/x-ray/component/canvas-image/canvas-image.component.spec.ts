@@ -913,6 +913,8 @@ describe('CanvasImageComponent', () => {
       };
       component.processedImage = 'data64:abcde';
       spyOn(component, 'ellipseLists');
+      spyOn(component, 'resetZoom');
+      spyOn(component, 'keepPositionInBounds');
       component.onSubmitPatientDetails();
     });
     it('it should call onSubmitPatientDetails', () => {
@@ -921,6 +923,8 @@ describe('CanvasImageComponent', () => {
       );
       expect(component.onSubmitPatientDetails).toBeDefined();
       expect(component.ellipseLists).toHaveBeenCalled();
+      expect(component.resetZoom).toHaveBeenCalled();
+      expect(component.keepPositionInBounds).toHaveBeenCalled();
     });
   });
 
