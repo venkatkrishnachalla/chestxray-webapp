@@ -128,6 +128,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   checkBrightnessContrast: string;
   brightness: any;
   contrast: any;
+  scalingProperties: any;
 
   /*
    * constructor for CanvasImageComponent class
@@ -1017,6 +1018,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
           const pointer = this.canvas.getPointer(e.e);
           const activeObj = this.canvas.getActiveObject();
+          if (pointer.x <= 0 || pointer.x >= this.canvasCorrectedWidth || pointer.y <= 0 || pointer.y >= this.canvasCorrectedHeight) {
+            this.stopDragging(e.target);
+          }
           if (this.origX > pointer.x) {
             activeObj.set({
               left: Math.abs(pointer.x),
@@ -1828,5 +1832,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         'contrast(' + this.contrastRange * 2 + '%)'
       );
     }
+  }
+
+  stopDragging(element) {
+    element.lockMovementX = true;
+    element.lockMovementY = true;
   }
 }
