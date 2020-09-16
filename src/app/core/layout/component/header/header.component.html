@@ -29,9 +29,10 @@
   <span class="fill-remaining-space"></span>
 
   <button
-    class="icon-styles"
+    class="icon-styles add-patient"
     *ngIf="router.url == '/home/dashboard'"
     title="Add Patient"
+    disabled
   >
     <span class="material-icons">person_add_alt_1</span>
   </button>
@@ -44,7 +45,7 @@
   >
     <span class="material-icons">dashboard</span>
   </button>
-  <button class="icon-styles notification-icon" title="Notifications">
+  <button class="icon-styles notification-icon" title="Notifications" disabled>
     <span class="material-icons">notifications</span>
   </button>
 

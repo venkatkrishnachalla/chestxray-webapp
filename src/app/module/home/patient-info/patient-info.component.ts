@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { Time } from '@angular/common';
 import { Observable } from 'rxjs';
 
@@ -29,5 +29,10 @@ export class PatientInfoComponent implements OnInit {
 
   featureHide(): void {
     this.hideInfo = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout() {
+   this.hideInfo = false;
   }
 }
