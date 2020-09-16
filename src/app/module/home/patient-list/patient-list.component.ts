@@ -67,6 +67,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     sessionStorage.removeItem('x-ray_Data');
+    sessionStorage.removeItem('impression');
+    sessionStorage.removeItem('findings');
+    sessionStorage.removeItem('ellipse');
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200, lockPosition: true };
@@ -76,7 +79,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
       (user: User) => {
         const UserInfo = JSON.parse(JSON.stringify(user));
         sessionStorage.setItem('accessToken', UserInfo._token);
-        if (UserInfo._token){
+        if (UserInfo._token) {
           const tokenNew = window.btoa(UserInfo._token);
           UserInfo._token = tokenNew;
         }
