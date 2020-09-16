@@ -13,6 +13,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { SharedModule } from './module/shared/shared.module';
 import { XRayModule } from './module/x-ray/x-ray.module';
 import { EventEmitterService } from './service/event-emitter.service';
+import { EventEmitterService2 } from './service/event-emitter.service2';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReportModule } from './module/report/report.module';
@@ -47,7 +48,8 @@ import { FormatTimePipe } from './filters/format-time.pipe';
     }),
   ],
   providers: [
-    EventEmitterService, 
+    EventEmitterService,
+    EventEmitterService2,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

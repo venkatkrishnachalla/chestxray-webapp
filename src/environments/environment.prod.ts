@@ -13,5 +13,8 @@ export const environment = {
     // tslint:disable-next-line: no-string-literal
   PatientImage: window['patientImage'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/instance/',
     // tslint:disable-next-line: no-string-literal
-  askAI: window['askAI'] || 'https://52.167.73.54:80/seldon/seldon/cxr-classifier/api/v1.0/predictions'
+  askAI: window['askAI'] || 'https://52.167.73.54:80/seldon/seldon/cxr-classifier/api/v1.0/predictions',
+  // tslint:disable-next-line: no-string-literal
+  submitReport: window['submit'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api-test/v1/Findings'
+
 };
