@@ -7,6 +7,7 @@ import { EventEmitterService } from '../../../../service/event-emitter.service';
 import { XRayService } from 'src/app/service/x-ray.service';
 import { EllipseData } from 'src/app/module/auth/interface.modal';
 import { Subscription } from 'rxjs';
+import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
 
 @Component({
   selector: 'cxr-impression',
@@ -29,7 +30,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
 */
   constructor(
     private eventEmitterService: EventEmitterService,
-    private xrayAnnotatedImpressionService: XRayService
+    private xrayAnnotatedImpressionService: XRayService,
+    private eventEmitterService2 : EventEmitterService2
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -61,6 +63,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           default:
             break;
         }
+      }
+    );
+    this.eventEmitterService2.invokeEyeIconFunction.subscribe(
+      (data) => {
+        const event = {target: { checked : data} } ;
+        this.hideorShowAllFun(event);
       }
     );
   }
@@ -220,10 +228,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       });
       if (count === 0){
         this.hideShowAll = false;
+        this.eventEmitterService.onImpressionCheckboxClick({title: 'hideAll'});
       }
     }
     else{
       this.hideShowAll = true;
+      this.eventEmitterService.onImpressionCheckboxClick({title: 'showAll'});
     }
     this.eventEmitterService.onImpressionCheckboxClick({info: data, check: event.target.checked, title: 'Single'});
   }

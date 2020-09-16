@@ -11,14 +11,14 @@
     <span
       class="material-icons content-visibility content-show"
       *ngIf="!isChangeable"
-      (click)="ellipseLists(true)"
+      (click)="ellipseLists(true, $event)"
     >
       visibility_off
     </span>
     <span
       class="material-icons content-visibility content-hide"
       *ngIf="isChangeable"
-      (click)="ellipseLists(false)"
+      (click)="ellipseLists(false, $event)"
     >
       visibility
     </span>
