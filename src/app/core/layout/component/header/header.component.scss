@@ -35,6 +35,18 @@ mat-toolbar {
   }
   .notification-icon {
     margin-right: 2rem;
+    color: #303030;
+    cursor: no-drop;
+    .material-icons {
+      color: #8f8f8f;
+    }
+  }
+  .add-patient {
+    color: #303030;
+    cursor: no-drop;
+    .material-icons {
+      color: #8f8f8f;
+    }
   }
   .user-name {
     padding: 0.5rem 0.5rem 0 1rem;

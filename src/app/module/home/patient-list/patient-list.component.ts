@@ -72,6 +72,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     sessionStorage.removeItem('x-ray_Data');
+    sessionStorage.removeItem('impression');
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200, lockPosition: true };
