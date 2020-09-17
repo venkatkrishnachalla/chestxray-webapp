@@ -333,7 +333,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
         this.updateEllipseIntoSession();
-        this.ellipseModifiedEvent(options.target.disease);
+        this.ellipseModifiedEvent(
+          options.target.disease,
+          options.target.canvas._activeObject
+        );
       }
     });
     this.canvas.on('object:rotating', (e) => {
@@ -1273,8 +1276,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * ellipseModifiedEvent();
    */
-  ellipseModifiedEvent(disease) {
-    console.log('disease', disease);
+  ellipseModifiedEvent(disease: string, activeObject: any) {
     const savedInfo = cloneDeep(this.savedInfo);
     const selectedObject = {
       id: this.canvas.getActiveObject().id,
@@ -1287,9 +1289,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         strokeDashArray: [3, 3],
       });
       this.canvas.renderAll();
-      const colorName =
-        DISEASE_COLOR_MAPPING[selectedObject.name.toLowerCase()] ||
-        RANDOM_COLOR;
       // tslint:disable-next-line: no-string-literal
       savedInfo['data'].ndarray[0].diseases.forEach(
         (element: any, index: number) => {
@@ -1301,15 +1300,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   indexId
                 ].strokeDashArray = [3, 3];
                 const obj = {
-                  color: colorName,
+                  color: savedInfo['data'].ndarray[0].diseases[index].color,
                   ellipses: [
-                    // tslint:disable-next-line: no-string-literal
-                    savedInfo['data'].ndarray[0].diseases[index].ellipses[
-                      indexId
-                    ],
+                    {
+                      x: activeObject.left,
+                      y: activeObject.top,
+                      a: activeObject.rx,
+                      b: activeObject.ry,
+                      r: activeObject.angle,
+                      index: activeObject.id,
+                      type: 'ellipse',
+                      strokeDashArray: [3, 3],
+                    },
                   ],
-                  index: this.canvas._activeObject.id,
-                  name: selectedObject.name,
+                  index: activeObject.id,
+                  name: disease,
                   isMlAi: true,
                 };
                 // tslint:disable-next-line: no-string-literal
@@ -1325,15 +1330,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   indexId
                 ].strokeDashArray = [3, 3];
                 const obj = {
-                  color: colorName,
+                  color: savedInfo['data'].ndarray[0].diseases[index].color,
                   ellipses: [
-                    // tslint:disable-next-line: no-string-literal
-                    savedInfo['data'].ndarray[0].diseases[index].ellipses[
-                      indexId
-                    ],
+                    {
+                      x: activeObject.left,
+                      y: activeObject.top,
+                      a: activeObject.rx,
+                      b: activeObject.ry,
+                      r: activeObject.angle,
+                      index: activeObject.id,
+                      type: 'ellipse',
+                      strokeDashArray: [3, 3],
+                    },
                   ],
                   index: this.canvas._activeObject.id,
-                  name: selectedObject.name,
+                  name: disease,
                   isMlAi: true,
                 };
                 // tslint:disable-next-line: no-string-literal
