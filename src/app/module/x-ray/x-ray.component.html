@@ -24,7 +24,7 @@
       <img src="../../../assets/images/report icon@2x.png" alt="report" />
     </button>
 
-    <button mat-flat-button type="submit" *ngIf="isHospitalRadiologist">
+    <button mat-flat-button (click)="submitReport()" type="submit" [disabled]="disableSubmitBtn" *ngIf="isHospitalRadiologist">
       <span>SUBMIT</span>
       <img src="../../../assets/images/submit icon@2x.png" alt="submit" />
     </button>

@@ -19,6 +19,10 @@ export class EventEmitterService {
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
   invokeImpressionFunction = new EventEmitter();
+  onStatusChangeFunction = new EventEmitter();
+  brightnessValue = new EventEmitter();
+  contrastValue = new EventEmitter();
+  defaultRange = new EventEmitter();
 
   constructor() {}
 
@@ -80,5 +84,23 @@ export class EventEmitterService {
   onImpressionCheckboxClick(data) {
     this.invokeImpressionFunction.emit(data);
   }
+
+  onStatusChange(data){
+    this.onStatusChangeFunction.emit(data);
+  }
   
+  /*** onComponentButtonClick event emit function ***/
+  onBrightnessChange(title) {
+    this.brightnessValue.emit(title);
+  }
+
+  /*** onContrastChange event emit function ***/
+  onContrastChange(title: number) {
+    this.contrastValue.emit(title);
+  }
+  
+  /*** onContrastChange event emit function ***/
+  OnDefaultRanges(title: number) {
+    this.defaultRange.emit(title);
+  }
 }

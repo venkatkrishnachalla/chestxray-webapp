@@ -3,13 +3,13 @@ export const homeConstants = {
     headers: [
       {
         headerName: '',
-        field: 'priority',
+        field: 'isAnnotated',
         maxWidth: 15,
         cellRenderer: (data) => {
           return '';
         },
         cellStyle: (params) => {
-          if (params.value === 'Emergency') {
+          if (params.value === false) {
             return {
               'border-left': '4px solid red',
               padding: '0',
@@ -20,7 +20,7 @@ export const homeConstants = {
             };
           } else {
             return {
-              'border-left': '4px solid #A5C3C9',
+              'border-left': '4px solid green',
               padding: '0',
               'border-radius': '3px',
               height: '95%',
@@ -32,29 +32,17 @@ export const homeConstants = {
       },
       {
         headerName: 'Report Status',
-        field: 'status',
+        field: 'isAnnotated',
         sortable: true,
         cellRenderer: (params) => {
-          if (params.value === 'Drafted') {
+          if (params.value === false) {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>" +
-              params.value +
-              '</span>'
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>Not Started</span>"
             );
-          } else if (params.value === 'Unreported') {
+          } else if (params.value === true) {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Unreported.png' width='15px' height='15px'/></span><span>" +
-              params.value +
-              '</span>'
+              "<span style='margin-right: 10px !important'><img src='../../assets/images/Reported.png' width='15px' height='15px'/></span><span>Completed</span>"
             );
-          } else if (params.value === 'Reported') {
-            return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Reported.png' width='15px' height='15px'/></span><span>" +
-              params.value +
-              '</span>'
-            );
-          } else if (params.value === false) {
-            return '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Unreported.png\' width=\'15px\' height=\'15px\'/></span><span>Unreported</span>';
           }
         },
       },
@@ -62,6 +50,9 @@ export const homeConstants = {
         headerName: 'Patient Id',
         field: 'hospitalPatientId',
         sortable: true,
+        cellRenderer: (params) => {
+          return params.value.slice(0, 10);
+        },
       },
       {
         headerName: 'Patient Name',
@@ -76,7 +67,7 @@ export const homeConstants = {
       { headerName: 'Age', field: 'age', sortable: true, minWidth: 72 },
       {
         headerName: 'Ref. Doctor',
-        field: 'referringPhysicianName',
+        field: 'assignedTo',
         sortable: true,
       },
       {
@@ -97,7 +88,7 @@ export const homeConstants = {
           return { width: 'auto !important' };
         },
         template: `  
-          <img src="../../../../../assets/images/i.png" alt="info_icon" height="20px" width="20px" style="color: #C5C5C5; cursor: pointer; margin-top: 10px; margin-right: 10px;" title="Patient info" title="Patient Info" (click)="patientInfo(e)"/>
+          <img src="../../../../../assets/images/i.png" alt="info_icon" height="20px" width="20px" style="color: #C5C5C5; cursor: pointer; margin-top: 10px; margin-right: 10px;" title="Patient info" title="Patient Info" data-action-type="viewInfo" (click)="patientInfo(e)"/>
           <mat-icon data-action-type="redirect" style="color: #a7a6a6;; cursor: pointer; margin-top: -7px;" title="View X-Ray" (click)="onClick()" class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">
           arrow_forward_ios</mat-icon>
         </div>`,

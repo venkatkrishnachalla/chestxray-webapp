@@ -42,6 +42,7 @@
       type="button"
       mat-flat-button
       [ngClass]="{ 'share-button-hide': isHospitalRadiologist }"
+      (click)='submitReport()'
     >
       SUBMIT
       <mat-icon aria-hidden="false" aria-label="Example save icon"
@@ -55,3 +56,5 @@
 </div>
 
 <img class="hide-xray" [src]="xrayAnnotatedImage" alt="" />
+
+<input type="file" class="input-file" (change)="handle($event)" />
