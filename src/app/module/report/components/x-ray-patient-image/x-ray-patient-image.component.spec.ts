@@ -25,6 +25,9 @@ describe('XRayPatientImageComponent', () => {
   beforeEach(() => {
     component = new XRayPatientImageComponent(
       annotatedXrayServiceSpy,
+      authServiceSpy,
+      authServiceSpy,
+      authServiceSpy,
       authServiceSpy
     );
   });

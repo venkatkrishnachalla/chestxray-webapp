@@ -20,7 +20,7 @@ describe('CanvasImageComponent', () => {
     'invokePrevNextButtonDataFunction',
     'brightnessValue',
     'contrastValue',
-    'OnDefaultRanges'
+    'OnDefaultRanges',
   ]);
   const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
   const xRayServiceSpy = jasmine.createSpyObj('XRayImageService', [
@@ -774,6 +774,133 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call ellipseModifiedEvent function ***/
+  describe('#ellipseModifiedEvent', () => {
+    it('it should call ellipseModifiedEvent', () => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            id: 1,
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['2345'],
+              },
+            },
+            set: () => {},
+            isMLAi: true,
+            type: 'ellipse'
+          };
+        },
+        _activeObject: {
+          path: '/x-ray',
+        },
+        renderAll: () => {},
+        discardActiveObject: () => {},
+      };
+      component.savedInfo = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              Findings: {},
+              Impression: [],
+              diseases: [
+                {
+                  color: 'rgb(98,0,234)',
+                  confidence: 0.6665520191192627,
+                  contours: [],
+                  ellipses: [
+                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 1 },
+                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 2 },
+                  ],
+                  idx: 0,
+                  isMlAi: true,
+                  name: 'Cardiomegaly',
+                },
+              ],
+            },
+          ],
+        },
+        meta: {},
+      };
+      const activateObject = {
+        path: '/x-ray',
+        left: 434,
+        top: 267,
+        rx: 56,
+        ry: 59,
+        angle: 0,
+        id: 4
+      };
+      component.selectedDisease = 'Bulla';
+      component.ellipseModifiedEvent('Bulla', activateObject);
+      expect(component.ellipseModifiedEvent).toBeDefined();
+    });
+  });
+
+  /*** it should call ellipseModifiedEvent function when only single ellipse in object ***/
+  describe('#ellipseModifiedEvent', () => {
+    it('it should call ellipseModifiedEvent, when only single ellipse in object', () => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            id: 1,
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['2345'],
+              },
+            },
+            set: () => {},
+            isMLAi: true,
+            type: 'ellipse'
+          };
+        },
+        _activeObject: {
+          path: '/x-ray',
+        },
+        renderAll: () => {},
+        discardActiveObject: () => {},
+      };
+      component.savedInfo = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              Findings: {},
+              Impression: [],
+              diseases: [
+                {
+                  color: 'rgb(98,0,234)',
+                  confidence: 0.6665520191192627,
+                  contours: [],
+                  ellipses: [
+                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 1 }
+                  ],
+                  idx: 0,
+                  isMlAi: true,
+                  name: 'Cardiomegaly',
+                },
+              ],
+            },
+          ],
+        },
+        meta: {},
+      };
+      const activateObject = {
+        path: '/x-ray',
+        left: 434,
+        top: 267,
+        rx: 56,
+        ry: 59,
+        angle: 0,
+        id: 4
+      };
+      component.selectedDisease = 'Bulla';
+      component.ellipseModifiedEvent('Bulla', activateObject);
+      expect(component.ellipseModifiedEvent).toBeDefined();
+    });
+  });
+
   /*** it should call updatePrediction function ***/
   describe('#updatePrediction', () => {
     it('it should call updatePrediction', () => {
@@ -854,6 +981,123 @@ describe('CanvasImageComponent', () => {
       component.updatePrediction();
     });
     it('it should call updatePrediction  for ellipse', () => {
+      expect(component.updatePrediction).toBeDefined();
+      expect(component.updateEllipseIntoSession).toHaveBeenCalled();
+    });
+  });
+
+  /*** it should call updatePrediction function, when ellipse is ml ai ***/
+  describe('#updatePrediction', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            id: 1,
+            type: 'ellipse',
+            isMLAi: true,
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['2345'],
+              },
+            },
+            set: () => {},
+          };
+        },
+        _activeObject: {
+          path: '/x-ray',
+        },
+        renderAll: () => {},
+        discardActiveObject: () => {},
+      };
+      component.savedInfo = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              Findings: {},
+              Impression: [],
+              diseases: [
+                {
+                  color: 'rgb(98,0,234)',
+                  confidence: 0.6665520191192627,
+                  contours: [],
+                  ellipses: [
+                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 1 },
+                  ],
+                  idx: 0,
+                  isMlAi: true,
+                  name: 'Cardiomegaly',
+                },
+              ],
+            },
+          ],
+        },
+        meta: {},
+      };
+      component.selectedDisease = 'Bulla';
+      spyOn(component, 'updateEllipseIntoSession');
+      component.updatePrediction();
+    });
+    it('it should call updatePrediction for ellipse, when ellipse is ml ai', () => {
+      expect(component.updatePrediction).toBeDefined();
+      expect(component.updateEllipseIntoSession).toHaveBeenCalled();
+    });
+  });
+
+  /*** it should call updatePrediction function, when ellipse is ml ai and length more than 1 ***/
+  describe('#updatePrediction', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {
+          return {
+            id: 1,
+            type: 'ellipse',
+            isMLAi: true,
+            canvas: {
+              freeDrawingBrush: {
+                _points: ['2345'],
+              },
+            },
+            set: () => {},
+          };
+        },
+        _activeObject: {
+          path: '/x-ray',
+        },
+        renderAll: () => {},
+        discardActiveObject: () => {},
+      };
+      component.savedInfo = {
+        data: {
+          names: [],
+          ndarray: [
+            {
+              Findings: {},
+              Impression: [],
+              diseases: [
+                {
+                  color: 'rgb(98,0,234)',
+                  confidence: 0.6665520191192627,
+                  contours: [],
+                  ellipses: [
+                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 1 },
+                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 2 },
+                  ],
+                  idx: 0,
+                  isMlAi: true,
+                  name: 'Cardiomegaly',
+                },
+              ],
+            },
+          ],
+        },
+        meta: {},
+      };
+      component.selectedDisease = 'Bulla';
+      spyOn(component, 'updateEllipseIntoSession');
+      component.updatePrediction();
+    });
+    it('it should call updatePrediction for ellipse, when ellipse is ml ai and lenght more than 1', () => {
       expect(component.updatePrediction).toBeDefined();
       expect(component.updateEllipseIntoSession).toHaveBeenCalled();
     });
@@ -1463,7 +1707,7 @@ describe('CanvasImageComponent', () => {
   describe('#ellipseLists', () => {
     beforeEach(() => {
       component.canvas = {
-        discardActiveObject : () => {},
+        discardActiveObject: () => {},
         clear: () => {},
         getObjects: () => {
           return [
@@ -1531,13 +1775,13 @@ describe('CanvasImageComponent', () => {
     });
   });
 
-    /*** it should call getContrast function***/
+  /*** it should call getContrast function***/
   describe('#getContrast', () => {
-      beforeEach(() => {
-        component.getContrast(33);
-      });
-      it('it should call getContrast function', () => {
-        expect(component.getContrast).toBeDefined();
-      });
+    beforeEach(() => {
+      component.getContrast(33);
     });
+    it('it should call getContrast function', () => {
+      expect(component.getContrast).toBeDefined();
+    });
+  });
 });
