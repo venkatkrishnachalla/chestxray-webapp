@@ -316,12 +316,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       newzoom = newzoom + delta / 200;
       this.displayScaleFactor = newzoom.toFixed(1);
       if (newzoom >= 5) {
-        newzoom = 5;
-        this.displayScaleFactor = newzoom.toFixed(0);
+      newzoom = 5;
+      this.displayScaleFactor = newzoom.toFixed(0);
       }
       if (newzoom <= 1) {
-        newzoom = 1;
-        this.displayScaleFactor = newzoom.toFixed(0);
+      newzoom = 1;
+      this.displayScaleFactor = newzoom.toFixed(0);
       }
       fabric.util.animate({
       startValue: this.canvas.getZoom(),

@@ -9,6 +9,10 @@
     margin-top: 10px;
     width: calc(50% - 10px);
 
+    span {
+      margin-left: 16px;
+    }
+
     ::ng-deep .ng5-slider .ng5-slider-pointer {
       cursor: pointer;
       width: 20px;
@@ -16,7 +20,7 @@
       background-color: #285c68;
       border: none;
       z-index: 3;
-      border-radius: -16px;
+      border-radius: 16px;
     }
 
     // Slider inside white color background removed(Make it to display:none)
@@ -26,7 +30,7 @@
 
     // Slider verticle bar pointer aligned
     ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-      left: 3px !important;
+      left: -5px !important;
       top: auto;
       bottom: 0;
     }
@@ -41,8 +45,9 @@
 
     // Displaying number 0 to 100 make to display:none
     ::ng-deep .ng5-slider.vertical .ng5-slider-bubble {
-      display: block;
-      left: -28px !important;
+      display: none;
+      font-size: 14px;
+      left: 16px !important;
       bottom: 0;
     }
 
@@ -50,13 +55,13 @@
     @media (max-width: 1999px) and (min-width: 1441px) {
       ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
         bottom: 0;
-        left: 23px;
+        left: 19px;
         width: 8px;
         height: 100%;
       }
 
       ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-        left: 1px !important;
+        left: -3px !important;
         top: auto;
         bottom: 0;
       }
@@ -65,13 +70,13 @@
     @media (max-width: 1440px) and (min-width: 1340px) {
       ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
         bottom: 0;
-        left: 20px;
+        left: 16px;
         width: 8px;
         height: 100%;
       }
 
       ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-        left: 3px !important;
+        left: -6px !important;
         top: auto;
         bottom: 0;
       }
@@ -95,19 +100,41 @@
     @media (max-width: 1160px) {
       ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
         bottom: 0;
-        left: 18px;
+        left: 13px;
         width: 8px;
         height: 100%;
       }
 
       ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-        left: -4px !important;
+        left: -8px !important;
+        top: auto;
+        bottom: 0;
+      }
+
+      .slider {   
+        span {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    @media (max-width: 1074px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 11px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: -11px !important;
         top: auto;
         bottom: 0;
       }
     }
 
-    @media (max-width: 1059px) {
+    
+    @media (max-width: 1039px) {
       ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
         bottom: 0;
         left: 15px;
@@ -125,13 +152,13 @@
     @media (max-width: 768px) {
       ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
         bottom: 0;
-        left: 11px;
+        left: 13px;
         width: 8px;
         height: 100%;
       }
 
       ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-        left: -11px !important;
+        left: -9px !important;
         top: auto;
         bottom: 0;
       }
@@ -139,17 +166,14 @@
   }
 }
 
-::ng-deep .ng5-slider.vertical .ng5-slider-bar-wrapper {
-  margin: 0 0 0 -10px !important;
-}
 .brightness {
   display: flex;
   flex-wrap: wrap;
 
   .contrast {
     width: calc(50% - 10px);
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-left: 4px;
+    margin-top: 25px;
     text-align: center;
 
     img {
