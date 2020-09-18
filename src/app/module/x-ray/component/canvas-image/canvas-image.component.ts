@@ -860,7 +860,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           if (ellipse.strokeDashArray && disease.isMlAi) {
             ellipse.strokeDashArray = ellipse.strokeDashArray;
           } else if (!ellipse.strokeDashArray && disease.isMlAi) {
-            ellipse.strokeDashArray = [15, 3];
+            ellipse.strokeDashArray = [3, 3];
           } else {
             ellipse.strokeDashArray = [0, 0];
           }
@@ -1303,7 +1303,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const activeObj = this.canvas.getActiveObject();
     if (activeObj.type === 'ellipse' && activeObj.isMLAi) {
       activeObj.set({
-        strokeDashArray: [3, 3],
+        strokeDashArray: [15, 3],
       });
       this.canvas.renderAll();
       // tslint:disable-next-line: no-string-literal
@@ -1315,7 +1315,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases[index].ellipses[
                   indexId
-                ].strokeDashArray = [3, 3];
+                ].strokeDashArray = [15, 3];
                 const obj = {
                    // tslint:disable-next-line: no-string-literal
                   color: savedInfo['data'].ndarray[0].diseases[index].color,
@@ -1328,7 +1328,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                       r: activeObject.angle,
                       index: activeObject.id,
                       type: 'ellipse',
-                      strokeDashArray: [3, 3],
+                      strokeDashArray: [15, 3],
                     },
                   ],
                   index: activeObject.id,
@@ -1346,7 +1346,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases[index].ellipses[
                   indexId
-                ].strokeDashArray = [3, 3];
+                ].strokeDashArray = [15, 3];
                 const obj = {
                    // tslint:disable-next-line: no-string-literal
                   color: savedInfo['data'].ndarray[0].diseases[index].color,
@@ -1359,7 +1359,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                       r: activeObject.angle,
                       index: activeObject.id,
                       type: 'ellipse',
-                      strokeDashArray: [3, 3],
+                      strokeDashArray: [15, 3],
                     },
                   ],
                   index: this.canvas._activeObject.id,
@@ -1407,7 +1407,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const activeObj = this.canvas.getActiveObject();
     if (activeObj.type === 'ellipse' && activeObj.isMLAi) {
       activeObj.set({
-        strokeDashArray: [3, 3],
+        strokeDashArray: [15, 3],
       });
       this.canvas.renderAll();
       const colorName =
@@ -1422,7 +1422,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases[index].ellipses[
                   indexId
-                ].strokeDashArray = [3, 3];
+                ].strokeDashArray = [15, 3];
                 const obj = {
                   color: colorName,
                   ellipses: [
@@ -1446,7 +1446,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases[index].ellipses[
                   indexId
-                ].strokeDashArray = [3, 3];
+                ].strokeDashArray = [15, 3];
                 const obj = {
                   color: colorName,
                   ellipses: [
