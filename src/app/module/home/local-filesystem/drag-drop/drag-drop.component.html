@@ -7,6 +7,11 @@
   (dragleave)="handleDragLeave()"
   (drop)="handleDrop($event)"
 >
+  <input
+    type="file"
+    accept=".JPEG, .jpeg, .jpg, .JPG, .png, .PNG"
+    (change)="handleDrop($event)"
+  />
   <span class="drag-image-text" *ngIf="!imageSrc"
     >Drag & drop your files here!</span
   >
