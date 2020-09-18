@@ -14,6 +14,7 @@ import { SpinnerService } from '../../../shared/UI/spinner/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import { XRayPatientDetailsComponent } from '../x-ray-patient-details/x-ray-patient-details.component';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
 import { constants } from 'buffer';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/module/auth/auth.service';
@@ -42,16 +43,19 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
   /*
    * constructor for XRayPatientImageComponent class
    */
-  constructor(
-    private annotatedXrayService: XRayService,
-    private authService: AuthService,
-    private spinnerService: SpinnerService,
-    private toastrService: ToastrService,
-    private eventEmitterService: EventEmitterService
-  ) {
-    this.eventEmitterService.findingsSubject.subscribe((data) => {
-      this.annotatedFindings = data;
-    });
+  constructor(private annotatedXrayService: XRayService,
+              private spinnerService: SpinnerService,
+              private authService: AuthService,
+              private toastrService: ToastrService,
+              private eventEmitterService: EventEmitterService,
+              private eventEmitterService2: EventEmitterService2,
+    ) {
+      this.eventEmitterService.findingsSubject.subscribe((data) => {
+        this.annotatedFindings = data;
+      });
+    }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
   }
 
   /**
@@ -155,17 +159,31 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
   submitReport() {
     let indexValue = 0;
     let indexValueDisease = 0;
+    let mainSource = '';
     const data = sessionStorage.getItem('x-ray_Data');
     // tslint:disable-next-line: no-string-literal
     const annotationData = JSON.parse(data)['data'].ndarray[0];
-    annotationData.Impression.forEach((element) => {
+    annotationData.Impression.forEach(element => {
       element.index = indexValue;
+      if (element.Source === 'ML' && mainSource !== 'ML+DR'){
+        mainSource = 'ML';
+      }
+      else if (mainSource !== 'ML+DR'){
+        mainSource = mainSource + '+DR';
+      }
       indexValue++;
     });
-    annotationData.diseases.forEach((element) => {
+    annotationData.diseases.forEach(element => {
       delete element.index;
-      (element.contours = [{}]),
-        element.ellipses.forEach((ellipse) => {
+      element.contours = [
+        {
+          Source: 'DR',
+          isUpdated: false,
+          isDeleted: false
+      }
+      ];
+      if (element.ellipses){
+        element.ellipses.forEach(ellipse => {
           delete ellipse.index;
           delete ellipse.type;
           delete ellipse.id;
@@ -173,81 +191,71 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
           delete ellipse.name;
           delete ellipse.idvalue;
         });
+      }
       element.idx = indexValueDisease;
       indexValueDisease++;
     });
-
-    if (Object.keys(annotationData.Findings).length === 0) {
-      annotationData.Findings = {
-        additional: [],
-        bonythorax: [],
-        cardiacsilhouette: [],
-        costophrenicangles: [],
-        domesofdiaphragm: [],
-        hilarmediastinal: [],
-        lungfields: [],
-      };
-    }
+    annotationData.Findings = {
+      additional: [],
+      bonythorax: [],
+      cardiacsilhouette: [],
+      costophrenicangles: [],
+      domesofdiaphragm: [],
+      hilarmediastinal: [],
+      lungfields: []
+    };
     this.spinnerService.show();
-    this.annotatedFindings.forEach((input) => {
+    this.annotatedFindings.forEach(input => {
       const output = input.split(':');
       let outputSub;
       let outputMain;
-      if (input.indexOf(':') !== -1) {
+      if (input.indexOf(':') !== -1){
         outputSub = output[1].split(',');
-        outputMain = output[0]
-          .toLowerCase()
-          .replace(/\//g, '')
-          .replace(/ /g, '');
-      } else {
+        outputMain = output[0].toLowerCase().replace(/\//g, '').replace(/ /g, '');
+      }
+      else{
         outputSub = input.split(',');
         outputMain = 'additional';
       }
-      if (outputSub.length > 1) {
-        outputSub.forEach((finalOutput) => {
-          finalOutput = finalOutput.replace(/\//g, '').replace(/ /g, '');
-          const index = annotationData.Impression.findIndex(
-            (x) => x.sentence === finalOutput
-          );
-          if (index === -1) {
+      if (outputSub.length > 0){
+        outputSub.forEach(finalOutput => {
+          finalOutput = finalOutput.replace(/\//g, '').trim();
+          
+          const index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
+          if (index === -1){
             const length = annotationData.Impression.length;
             const impressionIndex = annotationData.Impression[length - 1].index;
             const newImpression = {
-              index: impressionIndex + 1,
+              index: impressionIndex + 1, 
               sentence: finalOutput,
+              Source: 'DR'
             };
-            if (finalOutput !== '') {
-              if (
-                annotationData.Impression.findIndex(
-                  (s) => s.sentence === finalOutput.trim()
-                ) === -1
-              ) {
+            if (finalOutput !== ''){
+              if (annotationData.Impression.findIndex(s => s.sentence === finalOutput.trim()) === -1){
                 annotationData.Impression.push(newImpression);
               }
               annotationData.Findings[outputMain].push(impressionIndex + 1);
             }
-          } else {
+          }
+          else{
             annotationData.Findings[outputMain].push(index);
           }
         });
-      } else if (output[0] !== ' ') {
+      }
+      else if (output[0] !== ' '){
         // tslint:disable-next-line: max-line-length
-        const index = annotationData.Impression.findIndex(
-          (x) => x.sentence === (output[1] ? output[1].trim() : '')
-        );
-        if (index === -1) {
+        const index =  annotationData.Impression.findIndex(x => x.sentence === (output[1] ? output[1].trim() : '') );
+        if (index === -1){
           const length = annotationData.Impression.length;
           const impressionIndex = annotationData.Impression[length - 1].index;
           const newImpression = {
-            index: impressionIndex + 1,
+            index: impressionIndex + 1, 
             sentence: output[1],
+            Source: 'DR'
           };
-          if (output[1] !== '') {
-            if (
-              annotationData.Impression.findIndex(
-                (s) => s.sentence === (output[1] ? output[1].trim() : '')
-              ) === -1
-            ) {
+          if (output[1] !== ''){
+            // tslint:disable-next-line: max-line-length
+            if (annotationData.Impression.findIndex(s => s.sentence === (output[1] ? output[1].trim() : '')) === -1){
               annotationData.Impression.push(newImpression);
             }
             annotationData.Findings[outputMain].push(impressionIndex + 1);
@@ -256,27 +264,44 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
           annotationData.Findings[outputMain].push(index);
         }
       }
-    });
+  });
     const FinalData = {
-      studyId: this.patientInfo.studyId,
-      seriesId: this.patientInfo.seriesId,
-      findings: annotationData.Findings,
-      impressions: annotationData.Impression,
-      diseases: annotationData.diseases,
-      updatedBy: this.patientInfo.assignedTo,
-      updatedOn: new Date().toJSON().slice(0, 10),
-    };
-    this.annotatedXrayService.submitReport(FinalData).subscribe(
-      (response) => {
-        this.spinnerService.hide();
-        this.toastrService.success('Report submitted successfully');
-        this.patientInfo.isAnnotated = true;
-      },
-      (errorMessage: string) => {
-        this.spinnerService.hide();
-        this.toastrService.error('Failed to submit annotated data');
+    xRayId: this.patientInfo.xRayId,
+    findings: annotationData.Findings,
+    impressions: annotationData.Impression,
+    diseases: annotationData.diseases,
+    updatedBy: this.patientInfo.assignedTo,
+    updatedOn: new Date().toJSON().slice(0, 10),
+    Source: mainSource
+  };
+    if (this.patientInfo.isAnnotated){
+      this.annotatedXrayService.updateSubmitReport(FinalData)
+      .subscribe(
+        (response) => {
+          this.spinnerService.hide();
+          this.eventEmitterService.onStatusChange(true);
+          this.eventEmitterService2.patientInfoStatusChange(true);
+          this.toastrService.success('Report submitted successfully');
+        },
+        (errorMessage: string) => {
+          this.spinnerService.hide();
+          this.toastrService.error('Failed to submit annotated data');
+        });
+    }
+    else{
+      this.annotatedXrayService.submitReport(FinalData)
+      .subscribe(
+        (response) => {
+          this.spinnerService.hide();
+          this.eventEmitterService.onStatusChange(true);
+          this.eventEmitterService2.patientInfoStatusChange(true);
+          this.toastrService.success('Report submitted successfully');
+        },
+        (errorMessage: string) => {
+          this.spinnerService.hide();
+          this.toastrService.error('Failed to submit annotated data');
+        });
       }
-    );
   }
 
   /**

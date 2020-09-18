@@ -43,6 +43,7 @@ export interface PatientDetailData {
   seriesId: string;
   assignedTo: string;
   isAnnotated: boolean;
+  xRayId: number;
 }
 
 export interface EllipseData {

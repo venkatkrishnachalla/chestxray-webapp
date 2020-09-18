@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
 import { XRayService } from 'src/app/service/x-ray.service';
 import {
   PatientDetailData,
@@ -48,6 +49,7 @@ export class XRayPatientDetailsComponent implements OnInit {
 
   constructor(
     private eventEmitterService: EventEmitterService,
+    private eventEmitterService2: EventEmitterService2,
     private xrayAnnotatedImpression: XRayService,
     private changeDetector: ChangeDetectorRef
   ) {
@@ -78,10 +80,10 @@ export class XRayPatientDetailsComponent implements OnInit {
       this.patientInfo = patientInfo;
     }
     // tslint:disable-next-line: no-conditional-assignment
-    if (this.patientInfo.status === false) {
-      this.status = 'Drafted';
+    if (this.patientInfo.isAnnotated === false) {
+      this.status = 'Not Started';
     } else {
-      this.status = 'Unreported';
+      this.status = 'Completed';
     }
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
@@ -95,6 +97,11 @@ export class XRayPatientDetailsComponent implements OnInit {
           default:
             break;
         }
+      }
+    );
+    this.eventEmitterService2.invokePatientInfoStatusChange.subscribe(
+      (data) => {
+        this.status = 'Completed';
       }
     );
 

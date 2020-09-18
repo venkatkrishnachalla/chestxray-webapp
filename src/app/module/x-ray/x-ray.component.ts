@@ -144,16 +144,26 @@ submitReport() {
   this.disableSubmitBtn = true;
   let indexValue = 0;
   let indexValueDisease = 0;
-  
+  let mainSource = '';
   const annotationData = this.canvas.savedInfo['data'].ndarray[0];
   annotationData.Impression.forEach(element => {
     element.index = indexValue;
+    if (element.Source === 'ML' && mainSource !== 'ML+DR'){
+      mainSource = 'ML';
+    }
+    else if (mainSource !== 'ML+DR'){
+      mainSource = mainSource + '+DR';
+    }
     indexValue++;
   });
   annotationData.diseases.forEach(element => {
     delete element.index;
     element.contours = [
-      {}
+      {
+        Source: 'DR',
+        isUpdated: false,
+        isDeleted: false
+    }
     ];
     if (element.ellipses){
       element.ellipses.forEach(ellipse => {
@@ -192,7 +202,7 @@ submitReport() {
     }
     if (outputSub.length > 0){
       outputSub.forEach(finalOutput => {
-        finalOutput = finalOutput.replace(/\//g, '').replace(/ /g, '');
+        finalOutput = finalOutput.replace(/\//g, '').trim();
         
         const index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
         if (index === -1){
@@ -200,7 +210,8 @@ submitReport() {
           const impressionIndex = annotationData.Impression[length - 1].index;
           const newImpression = {
             index: impressionIndex + 1, 
-            sentence: finalOutput
+            sentence: finalOutput,
+            Source: 'DR'
           };
           if (finalOutput !== ''){
             if (annotationData.Impression.findIndex(s => s.sentence === finalOutput.trim()) === -1){
@@ -222,7 +233,8 @@ submitReport() {
         const impressionIndex = annotationData.Impression[length - 1].index;
         const newImpression = {
           index: impressionIndex + 1, 
-          sentence: output[1]
+          sentence: output[1],
+          Source: 'DR'
         };
         if (output[1] !== ''){
           // tslint:disable-next-line: max-line-length
@@ -238,29 +250,46 @@ submitReport() {
     }
   });
   const FinalData = {
-    studyId: this.canvas.patientDetail.studyId,
-    seriesId: this.canvas.patientDetail.seriesId,
+    xRayId: this.canvas.patientDetail.xRayId,
     findings: annotationData.Findings,
     impressions: annotationData.Impression,
     diseases: annotationData.diseases,
     updatedBy: this.canvas.patientDetail.assignedTo,
-    updatedOn: new Date().toJSON().slice(0, 10)
+    updatedOn: new Date().toJSON().slice(0, 10),
+    Source: mainSource
   };
-  this.xrayService
-    .submitReport(FinalData)
-    .subscribe(
-      (response) => {
-        this.spinnerService.hide();
-        this.disableSubmitBtn = false;
-        this.toastrService.success('Report submitted successfully');
-        this.eventEmitterService.onStatusChange('true');
-      },
-      (errorMessage: string) => {
-        this.spinnerService.hide();
-        this.disableSubmitBtn = false;
-        this.toastrService.error('Failed to submit annotated data');
-      }
-    );
+  if (this.canvas.patientDetail.isAnnotated){
+      this.xrayService.updateSubmitReport(FinalData)
+        .subscribe(
+          (response) => {
+            this.spinnerService.hide();
+            this.disableSubmitBtn = false;
+            this.eventEmitterService.onStatusChange(true);
+            this.toastrService.success('Report submitted successfully');
+          },
+          (errorMessage: string) => {
+            this.spinnerService.hide();
+            this.disableSubmitBtn = false;
+            this.toastrService.error('Failed to submit annotated data');
+          }
+        );
+    }
+    else{
+      this.xrayService.submitReport(FinalData)
+        .subscribe(
+          (response) => {
+            this.spinnerService.hide();
+            this.disableSubmitBtn = false;
+            this.eventEmitterService.onStatusChange(true);
+            this.toastrService.success('Report submitted successfully');
+          },
+          (errorMessage: string) => {
+            this.spinnerService.hide();
+            this.disableSubmitBtn = false;
+            this.toastrService.error('Failed to submit annotated data');
+          }
+        );
+    }
 }
 /**  
  * unsubscribe userSubscription event 

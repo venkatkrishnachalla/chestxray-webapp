@@ -5,6 +5,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 })
 export class EventEmitterService2 {
   invokeEyeIconFunction = new EventEmitter();
+  invokePatientInfoStatusChange = new EventEmitter();
 
 
   constructor() {}
@@ -12,5 +13,10 @@ export class EventEmitterService2 {
   /*** onEyeIconClick event emit function  ***/
   onEyeIconClick(data) {
     this.invokeEyeIconFunction.emit(data);
+  }
+
+  /*** onEyeIconClick event emit function  ***/
+  patientInfoStatusChange(data) {
+    this.invokePatientInfoStatusChange.emit(data);
   }
 }

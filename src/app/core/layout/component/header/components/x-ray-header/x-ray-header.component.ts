@@ -69,8 +69,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
       }
     );
     this.eventEmitterService.onStatusChangeFunction.subscribe(
-      (objEllipse) => {
-        patientDetail.isAnnotated = true;
+      (data) => {
+        this.isProcessed = data;
       }
     );
     this.prevNextFunction();
