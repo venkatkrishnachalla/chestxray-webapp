@@ -260,11 +260,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.savedInfo['data'].ndarray[0].Findings =
           mlResponse.data.ndarray[0].Findings;
         mlResponse.data.ndarray[0].Impression.forEach((element) => {
+          element.Source = 'ML';
           // tslint:disable-next-line: no-string-literal
           this.savedInfo['data'].ndarray[0].Impression.push(element);
         });
         mlResponse.data.ndarray[0].diseases.forEach((element) => {
           element.isMlAi = true;
+          element.Source = 'ML';
           // tslint:disable-next-line: no-string-literal
           this.savedInfo['data'].ndarray[0].diseases.push(element);
         });
@@ -308,8 +310,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.keepPositionInBounds(this.canvas);
       }
     });
-    this.canvas.on('mouse:wheel', (options) => {
-      const delta = options.e.deltaY;
+    this.canvas.on('mouse:wheel', (opt) => {
+      const delta = opt.e.deltaY;
       let newzoom = this.canvas.getZoom();
       newzoom = newzoom + delta / 200;
       this.displayScaleFactor = newzoom.toFixed(1);
@@ -322,23 +324,19 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.displayScaleFactor = newzoom.toFixed(0);
       }
       fabric.util.animate({
-        startValue: this.canvas.getZoom(),
-        endValue: newzoom,
-        duration: 500,
-        onChange: (zoomvalue) => {
-          this.canvas.zoomToPoint(
-            { x: options.e.offsetX, y: options.e.offsetY },
-            zoomvalue
+      startValue: this.canvas.getZoom(),
+      endValue: newzoom,
+      onChange: () => {
+        this.canvas.zoomToPoint(
+          { x: opt.e.offsetX, y: opt.e.offsetY },
+          newzoom
           );
-          this.keepPositionInBounds(this.canvas);
-          this.canvas.renderAll();
-        },
-        onComplete: () => {
-          options.e.preventDefault();
-          options.e.stopPropagation();
-          this.canvas.renderAll();
-        },
-      });
+        this.keepPositionInBounds(this.canvas);
+        this.canvas.renderAll();
+        }
+       });
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
     });
     this.canvas.on('object:modified', (options) => {
       this.actionIconsModelDispaly(options);
@@ -797,6 +795,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         id: impression.index,
         name: impression.sentence,
         isMLApi: true,
+        Source: 'ML',
       };
     });
     if (mlList.data.ndarray[0].Impression.length === 0) {
@@ -834,8 +833,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           if (currentFinding.length !== 0) {
             finalFinding +=
               currentFinding[0].sentence[0].toUpperCase() +
-              currentFinding[0].sentence.substr(1).toLowerCase() +
-              '. ';
+              currentFinding[0].sentence.substr(1).toLowerCase();
           } else {
             finalFinding += '';
           }
@@ -868,10 +866,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
           ellipse.name = disease.name;
           ellipse.index = index;
+          ellipse.Source = 'ML';
           if (ellipse.a !== 0 && ellipse.b !== 0) {
             this.eventEmitterService.onComponentEllipseDataShared({
               name: disease.name,
               index: ellipse.index,
+              Source: ellipse.Source
             });
             const random = Math.floor(Math.random() * 100 + 1);
             const selectedObject = {
@@ -880,6 +880,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               id: check !== 'session' ? random : ellipse.id,
               name: disease.name,
               color: ellipse.color,
+              Source: ellipse.Source
             };
             this.impressionArray.push(selectedObject);
             const colorFinding = this.impressionArray.filter(
@@ -897,6 +898,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.eventEmitterService.onComponentEllipseDataShared({
           name: disease.name,
           index: disease.index,
+          Source: 'DR'
         });
         const random = Math.floor(Math.random() * 100 + 1);
         const selectedObject = {
@@ -905,6 +907,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           id: check !== 'session' ? random : disease.id,
           name: disease.name,
           color: disease.color,
+          Source: 'DR'
         };
         this.impressionArray.push(selectedObject);
         const colorFinding = this.impressionArray.filter(
@@ -1225,14 +1228,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedObjectPrediction = this.canvas.getActiveObject();
     const selectedObjectPrediction = this.canvas.getActiveObject();
     selectedObjectPrediction.id = random;
-    const selectedObject = { id: random, name: this.selectedDisease };
+    const selectedObject = { id: random, name: this.selectedDisease, Source: 'DR' };
     this.savedObjects.push(selectedObjectPrediction);
     this.storeDataInSession(
-      { index: random, sentence: this.selectedDisease },
+      { index: random, sentence: this.selectedDisease, Source: 'DR'},
       'impression'
     );
     this.eventEmitterService.onComponentDataShared(selectedObject);
-    this.getColorMapping(this.selectedDisease, 'save');
+    this.getColorMapping(this.selectedDisease, 'save', 'DR');
     this.clear();
     this.activeIcon.active = false;
     this.dialog.closeAll();
@@ -1390,9 +1393,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       id: this.canvas.getActiveObject().id,
       check: 'update',
       name: this.selectedDisease,
+      Source: 'DR'
     };
     this.eventEmitterService.onComponentButtonClick(selectedObject);
-    this.getColorMapping(this.selectedDisease, 'update');
+    this.getColorMapping(this.selectedDisease, 'update', 'DR');
     this.clear();
     this.dialog.closeAll();
     if (this.canvas.getActiveObject().type === 'ellipse') {
@@ -1578,7 +1582,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * getColorMapping(diseases, check);
    */
-  getColorMapping(diseases, check) {
+  getColorMapping(diseases, check, src) {
     const colorName =
       DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
     if (!this.canvas._activeObject.path) {
@@ -1593,10 +1597,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             r: this.canvas._activeObject.angle,
             index: this.canvas._activeObject.id,
             type: 'ellipse',
+            Source: src
           },
         ],
         index: this.canvas._activeObject.id,
         name: diseases,
+        Source: src
       };
       if (check === 'update') {
         sessionStorage.removeItem('x-ray_Data');
@@ -1611,6 +1617,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               this.savedInfo['data'].ndarray[0].Impression.splice(index, 1, {
                 index: this.canvas._activeObject.id,
                 sentence: diseases,
+                Source: src
               });
               // tslint:disable-next-line: no-string-literal
               this.savedInfo['data'].ndarray[0].diseases.splice(index, 1, obj);
@@ -1630,6 +1637,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         index: this.canvas._activeObject.id,
         name: diseases,
         type: 'ellipse',
+        Source: src
       };
       if (check === 'update') {
         sessionStorage.removeItem('x-ray_Data');
@@ -1644,6 +1652,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               this.savedInfo['data'].ndarray[0].Impression.splice(index, 1, {
                 index: this.canvas._activeObject.id,
                 sentence: diseases,
+                Source: src
               });
               // tslint:disable-next-line: no-string-literal
               this.savedInfo['data'].ndarray[0].diseases.splice(index, 1, obj);

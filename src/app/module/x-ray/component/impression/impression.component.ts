@@ -82,7 +82,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
 
   getImpressions() {
     this.eventEmitterService.invokeComponentData.subscribe(
-      (obj: { name: any; isMLApi: any; color: any }) => {
+      (obj: { name: any; isMLApi: any; color: any; Source: any }) => {
         const index = this.impression.findIndex((a) => a.id === '00');
         if (index !== -1) {
           this.impression.splice(index, 1);
@@ -123,6 +123,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           id: item.id,
           name: item.name,
           colors: color,
+          Source: item.Source,
           checked: true
         });
       }

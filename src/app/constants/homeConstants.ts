@@ -50,9 +50,6 @@ export const homeConstants = {
         headerName: 'Patient Id',
         field: 'hospitalPatientId',
         sortable: true,
-        cellRenderer: (params) => {
-          return params.value.slice(0, 10);
-        },
       },
       {
         headerName: 'Patient Name',
