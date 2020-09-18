@@ -1300,6 +1300,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   indexId
                 ].strokeDashArray = [3, 3];
                 const obj = {
+                   // tslint:disable-next-line: no-string-literal
                   color: savedInfo['data'].ndarray[0].diseases[index].color,
                   ellipses: [
                     {
@@ -1330,6 +1331,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   indexId
                 ].strokeDashArray = [3, 3];
                 const obj = {
+                   // tslint:disable-next-line: no-string-literal
                   color: savedInfo['data'].ndarray[0].diseases[index].color,
                   ellipses: [
                     {
