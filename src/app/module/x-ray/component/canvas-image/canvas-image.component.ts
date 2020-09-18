@@ -40,6 +40,8 @@ import {
 import { timeStamp } from 'console';
 import * as cloneDeep from 'lodash/cloneDeep';
 import { DomSanitizer } from '@angular/platform-browser';
+import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -141,7 +143,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private annotatedXrayService: XRayService,
     private router: Router,
     private toastrService: ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+
+    private eventEmitterService2 : EventEmitterService2
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -232,10 +236,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       (data: InvokeComponentData) => {
         switch (data.title) {
           case 'All':
-            this.ellipseLists(data['check']);
+            this.ellipseLists(data['check'], '');
             break;
           case 'Single':
             this.showHideAnnotations(data);
+            break;
+          case 'showAll':
+            this.isChangeable = true;
+            break;
+          case 'hideAll':
+            this.isChangeable = false;
             break;
           default:
             break;
@@ -1546,7 +1556,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  onSubmitPatientDetails() ;
    */
   onSubmitPatientDetails() {
-    this.ellipseLists(true);
+    this.ellipseLists(true, '');
     this.processedImage = this.canvas.toDataURL('image/png');
     sessionStorage.setItem('annotatedImage', this.processedImage);
     this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
@@ -1933,18 +1943,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * ellipseLists();
    */
-  ellipseLists(event: any) {
+  ellipseLists(value, event: any) {
     const objects = this.canvas.getObjects();
-    if (event === true) {
+    if (event.type === 'click'){
+      this.eventEmitterService2.onEyeIconClick(value);
+    }
+    if (value === true) {
       objects.forEach((object) => {
         this.isChangeable = true;
-        this.canvas.setVisible = object.visible = event;
+        this.canvas.setVisible = object.visible = value;
         this.canvas.renderAll();
       });
     } else {
       objects.forEach((object) => {
         this.isChangeable = false;
-        this.canvas.setVisible = object.visible = event;
+        this.canvas.setVisible = object.visible = value;
         this.canvas.discardActiveObject();
         this.canvas.renderAll();
       });
@@ -1959,6 +1972,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   showHideAnnotations(data) {
     this.canvas._objects.forEach((element) => {
+      element.stroke = element.stroke.trim();
+      data.info.colors = data.info.colors.trim();
+      if (element.stroke[0] === '#' && data.info.colors[0] !== '#'){
+        const hex2rgb = c => `rgb(${c.substr(1).match(/../g).map( x => + `0x${x}`)})`;
+        element.stroke = hex2rgb(element.stroke);
+      }
       if (element.stroke === data.info.colors) {
         this.canvas.setVisible = element.visible = data.check;
         this.canvas.discardActiveObject();

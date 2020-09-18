@@ -24,6 +24,7 @@ export class EventEmitterService {
   contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
 
+
   constructor() {}
 
   /*** onComponentButtonClick event emit function ***/
@@ -80,7 +81,7 @@ export class EventEmitterService {
   onAskAiButtonClick(data) {
     this.invokeAskAiButtonDataFunction.emit(data);
   }
-  /*** event to capture ask ai success state ***/
+  /*** onImpressionCheckboxClick event emit function  ***/
   onImpressionCheckboxClick(data) {
     this.invokeImpressionFunction.emit(data);
   }

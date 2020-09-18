@@ -154,31 +154,29 @@ submitReport() {
     delete element.index;
     element.contours = [
       {}
-    ],
-    element.ellipses.forEach(ellipse => {
-      delete ellipse.index;
-      delete ellipse.type;
-      delete ellipse.id;
-      delete ellipse.color;
-      delete ellipse.name;
-      delete ellipse.idvalue;
-    });
+    ];
+    if (element.ellipses){
+      element.ellipses.forEach(ellipse => {
+        delete ellipse.index;
+        delete ellipse.type;
+        delete ellipse.id;
+        delete ellipse.color;
+        delete ellipse.name;
+        delete ellipse.idvalue;
+      });
+    }
     element.idx = indexValueDisease;
     indexValueDisease++;
   });
-  
-  if (Object.keys(annotationData.Findings).length === 0){
-      
-      annotationData.Findings = {
-        additional: [],
-        bonythorax: [],
-        cardiacsilhouette: [],
-        costophrenicangles: [],
-        domesofdiaphragm: [],
-        hilarmediastinal: [],
-        lungfields: []
-      };
-  }
+  annotationData.Findings = {
+    additional: [],
+    bonythorax: [],
+    cardiacsilhouette: [],
+    costophrenicangles: [],
+    domesofdiaphragm: [],
+    hilarmediastinal: [],
+    lungfields: []
+  };
   this.spinnerService.show();
   this.findings.findings.forEach(input => {
     const output = input.split(':');
@@ -192,7 +190,7 @@ submitReport() {
       outputSub = input.split(',');
       outputMain = 'additional';
     }
-    if (outputSub.length > 1){
+    if (outputSub.length > 0){
       outputSub.forEach(finalOutput => {
         finalOutput = finalOutput.replace(/\//g, '').replace(/ /g, '');
         

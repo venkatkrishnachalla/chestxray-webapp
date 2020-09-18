@@ -171,7 +171,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
     if (lengthIndex !== -1) {
       if (window.getSelection().getRangeAt(0).startOffset > lengthIndex) {
         if (evt.target.textContent[evt.target.textContent.length - 1] === ':') {
-          if (evt.key.charCodeAt() === 64) {
+          if (evt.which === 8) {
             evt.preventDefault();
           }
         } else {
@@ -179,11 +179,11 @@ export class FindingsComponent implements OnInit, OnDestroy {
             window.getSelection().getRangeAt(0).startOffset ===
             lengthIndex + 1
           ) {
-            if (evt.key.charCodeAt() === 68) {
+            if (evt.which === 68) {
               return true;
             }
             return false;
-          } else if (evt.key.charCodeAt() === 46) {
+          } else if (evt.which === 46) {
             return true;
           }
         }
