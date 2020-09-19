@@ -26,7 +26,7 @@ import User from 'src/app/module/auth/user.modal';
 })
 
 // XRayPatientImageComponent class implementation
-export class XRayPatientImageComponent implements OnInit, OnDestroy {
+export class XRayPatientImageComponent implements OnInit {
   patientImage: any;
   xrayAnnotatedImage: string;
   xrayAnnotatedImpression: string;
@@ -43,18 +43,17 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
   /*
    * constructor for XRayPatientImageComponent class
    */
-  constructor(
-    private annotatedXrayService: XRayService,
-    private spinnerService: SpinnerService,
-    private authService: AuthService,
-    private toastrService: ToastrService,
-    private eventEmitterService: EventEmitterService,
-    private eventEmitterService2: EventEmitterService2
-  ) {
-    this.eventEmitterService.findingsSubject.subscribe((data) => {
-      this.annotatedFindings = data;
-    });
-  }
+  constructor(private annotatedXrayService: XRayService,
+              private spinnerService: SpinnerService,
+              private authService: AuthService,
+              private toastrService: ToastrService,
+              private eventEmitterService: EventEmitterService,
+              private eventEmitterService2: EventEmitterService2,
+    ) {
+      this.eventEmitterService.findingsSubject.subscribe((data) => {
+        this.annotatedFindings = data;
+      });
+    }
 
   /**
    * This is a init function.
@@ -163,9 +162,13 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
     const annotationData = JSON.parse(data)['data'].ndarray[0];
     annotationData.Impression.forEach((element) => {
       element.index = indexValue;
-      if (element.Source === 'ML' && mainSource !== 'ML+DR') {
+      if (element.Source === 'ML' && mainSource !== 'ML+DR'){
         mainSource = 'ML';
-      } else if (mainSource !== 'ML+DR') {
+      }
+      else if (element.Source === 'DR' && mainSource === ''){
+        mainSource = 'DR';
+      }
+      else if (element.Source === 'DR' && mainSource === 'ML'){
         mainSource = mainSource + '+DR';
       }
       indexValue++;
@@ -187,6 +190,7 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
           delete ellipse.color;
           delete ellipse.name;
           delete ellipse.idvalue;
+          ellipse.Source = element.Source;
         });
       }
       element.idx = indexValueDisease;
@@ -302,6 +306,7 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
           this.spinnerService.hide();
           this.eventEmitterService.onStatusChange(true);
           this.eventEmitterService2.patientInfoStatusChange(true);
+          this.patientInfo.isAnnotated = true;
           this.toastrService.success('Report submitted successfully');
         },
         (errorMessage: string) => {

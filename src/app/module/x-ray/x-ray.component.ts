@@ -20,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./x-ray.component.scss'],
 })
 // XRayComponent class implementation
-export class XRayComponent implements OnInit, OnDestroy {
+export class XRayComponent implements OnInit {
   eventsSubject: Subject<any> = new Subject<any>();
   showAskAI = false;
   acceptStatus = false;
@@ -151,7 +151,10 @@ submitReport() {
     if (element.Source === 'ML' && mainSource !== 'ML+DR'){
       mainSource = 'ML';
     }
-    else if (mainSource !== 'ML+DR'){
+    else if (element.Source === 'DR' && mainSource === ''){
+      mainSource = 'DR';
+    }
+    else if (element.Source === 'DR' && mainSource === 'ML'){
       mainSource = mainSource + '+DR';
     }
     indexValue++;
@@ -281,7 +284,13 @@ submitReport() {
             this.spinnerService.hide();
             this.disableSubmitBtn = false;
             this.eventEmitterService.onStatusChange(true);
+            const updatePatientData = history.state.patientDetails;
+            updatePatientData.isAnnotated = true;
+            const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
+            patientInfo.isAnnotated = true;
+            sessionStorage.setItem('patientDetail', JSON.stringify(patientInfo));
             this.toastrService.success('Report submitted successfully');
+            this.canvas.patientDetail.isAnnotated = true;
           },
           (errorMessage: string) => {
             this.spinnerService.hide();
@@ -297,7 +306,7 @@ submitReport() {
  * @example  
  * ngOnDestroy();
  */ 
-  ngOnDestroy() {
-    this.userSubscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.userSubscription.unsubscribe();
+  // }
 }
