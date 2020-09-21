@@ -52,7 +52,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     this.hideShowAll = true;
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
-      (info: { check: any; id: any; disease: any; objectindex: any }) => {
+      (info: { check: any; id: any; disease: any; objectindex: any; isMLAi: boolean }) => {
         switch (info.check) {
           case 'delete':
             this.deleteImpression(info.id, info.disease, info.objectindex);
@@ -81,13 +81,18 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
 
   getImpressions() {
+    // this.impression = [];
     this.eventEmitterService.invokeComponentData.subscribe(
-      (obj: { name: any; isMLApi: any; color: any; Source: any }) => {
-        const index = this.impression.findIndex((a) => a.id === '00');
-        if (index !== -1) {
-          this.impression.splice(index, 1);
+      (obj: { name: any; isMLApi: any; color: any; Source: any, idNew: any }) => {
+        if (obj.idNew !== '00'){
+          const index = this.impression.findIndex((a) => a.id === obj.idNew);
+          if (index !== -1) {
+            this.impression.splice(index, 1);
+          }
+          else{
+            this.impression.push(obj);
+          }
         }
-        this.impression.push(obj);
         this.uniqueImpressionsData();
         this.getColorMapping(obj.name, obj.isMLApi, obj.color);
       }
@@ -144,8 +149,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
 
   deleteImpression(id: number, disease: string, objectindex: number) {
-    const index = this.impression.findIndex((item) => item.id === id);
-    this.impression.splice(index, 1);
+    const index = this.impression.findIndex((item) => item.idNew === id);
+    if (index !== -1){
+      this.impression.splice(index, 1);
+    }
     this.uniqueImpressionsData();
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
@@ -171,8 +178,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
 
   updateImpression(info) {
-    const index = this.impression.findIndex((item) => item.id === info.id);
-    this.impression.splice(index, 1, { id: info.id, name: info.name });
+    const index = this.impression.findIndex((item) => item.idNew === info.id);
+    this.impression.splice(index, 1, { idNew: info.id, name: info.name });
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
