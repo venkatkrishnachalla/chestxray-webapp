@@ -857,6 +857,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         disease.ellipses.forEach((ellipse: any, index) => {
           ellipse.id = ellipse.index;
           ellipse.color = disease.color;
+          ellipse.Source = 'ML';
           if (ellipse.strokeDashArray && disease.isMlAi) {
             ellipse.strokeDashArray = ellipse.strokeDashArray;
           } else if (!ellipse.strokeDashArray && disease.isMlAi) {
@@ -866,7 +867,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
           ellipse.name = disease.name;
           ellipse.index = index;
-          ellipse.Source = 'ML';
           if (ellipse.a !== 0 && ellipse.b !== 0) {
             this.eventEmitterService.onComponentEllipseDataShared({
               name: disease.name,
@@ -1328,7 +1328,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                       r: activeObject.angle,
                       index: activeObject.id,
                       type: 'ellipse',
-                      strokeDashArray: [15, 3],
+                      strokeDashArray: [3, 3],
+                      Source: 'ML'
                     },
                   ],
                   index: activeObject.id,
@@ -1359,7 +1360,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                       r: activeObject.angle,
                       index: activeObject.id,
                       type: 'ellipse',
-                      strokeDashArray: [15, 3],
+                      strokeDashArray: [3, 3],
+                      Source: 'ML'
                     },
                   ],
                   index: this.canvas._activeObject.id,
@@ -1422,7 +1424,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases[index].ellipses[
                   indexId
-                ].strokeDashArray = [15, 3];
+                ].strokeDashArray = [3, 3];
+                savedInfo['data'].ndarray[0].diseases[index].ellipses[
+                  indexId
+                ].Source = 'ML';
                 const obj = {
                   color: colorName,
                   ellipses: [
@@ -1446,7 +1451,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases[index].ellipses[
                   indexId
-                ].strokeDashArray = [15, 3];
+                ].strokeDashArray = [3, 3];
+                savedInfo['data'].ndarray[0].diseases[index].ellipses[
+                  indexId
+                ].Source = 'ML';
                 const obj = {
                   color: colorName,
                   ellipses: [

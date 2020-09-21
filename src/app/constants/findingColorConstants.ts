@@ -62,6 +62,7 @@ export const DISEASE_COLOR_MAPPING = {
   scoliosis: '#3E3258',
   kyphosis: '#333B57',
   fracture: '#5F6768',
+  'support devices': '#52808A'
 };
 
 export const RANDOM_COLOR = '#FFFF00';
