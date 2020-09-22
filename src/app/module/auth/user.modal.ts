@@ -4,6 +4,7 @@ export default class User {
     public email: string,
     public id: string,
     public _token: string,
+    public refreshToken: string,
     private _tokenExpirationDate: Date,
     public username: string,
     public userroles: any[]

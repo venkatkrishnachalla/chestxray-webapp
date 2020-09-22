@@ -48,10 +48,16 @@ describe('SignInComponent', () => {
         },
       };
       eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.usernameElementRef = {
+        nativeElement: jasmine.createSpyObj('nativeElement', ['focus']),
+      };
       component.ngOnInit();
     });
     it('should call ngOnIit function', () => {
       expect(component.ngOnInit).toBeDefined();
+      expect(
+        component.usernameElementRef.nativeElement.focus
+      ).toHaveBeenCalled();
     });
   });
 
@@ -117,6 +123,29 @@ describe('SignInComponent', () => {
     });
   });
 
+  /*** it should call onSignIn function, when server not reachable error ***/
+  describe('#onSignIn', () => {
+    const testForm = {
+      value: {
+        email: 'test',
+        password: 'test@123',
+      },
+      valid: true,
+      resetForm: () => null,
+      reset: () => null,
+    } as NgForm;
+    beforeEach(() => {
+      const signInErrorResponse = 'Server not reachable';
+      authServiceSpy.signIn.and.returnValue(throwError(signInErrorResponse));
+      component.errorMessage = 'Server not reachable';
+    });
+    it('should call onSignIn function, when login error, when server not rechable is false', () => {
+      spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(false);
+      component.onSignIn(testForm);
+      expect(toastrServiceSpy.error).toHaveBeenCalled();
+    });
+  });
+
   /*** it should call onSignIn function, when error ***/
   describe('#onSignIn', () => {
     beforeEach(() => {
@@ -136,6 +165,27 @@ describe('SignInComponent', () => {
       expect(toastrServiceSpy.error).toHaveBeenCalledWith(
         component.errorMessage
       );
+    });
+  });
+
+  /*** it should call onSignIn function, when form error and network false ***/
+  describe('#onSignIn', () => {
+    beforeEach(() => {
+      const testForm = {
+        value: {
+          email: 'test',
+          password: 'test@123',
+        },
+        valid: false,
+        resetForm: () => null,
+        reset: () => null,
+      } as NgForm;
+      spyOnProperty(Navigator.prototype, 'onLine').and.returnValue(false);
+      component.onSignIn(testForm);
+    });
+    it('should call onSignIn function, when form is invalid and network false', () => {
+      component.errorMessage = 'Enter all the required fields';
+      expect(component.onSignIn).toBeDefined();
     });
   });
 });

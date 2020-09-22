@@ -1,0 +1,55 @@
+<div *ngIf="showPatientInfo" class="patientInfoContainer" (click)="$event.stopPropagation()" [hidden]="!hideInfo">
+  <div class="patient-card-header">
+    <h1>
+      <span class="material-icons patient-info-icon">person</span> PATIENT
+      DETAILS
+    </h1>
+    <span class="cross-icon" title="Cancel" (click)="featureHide()"> X </span>
+  </div>
+  <div class="patient-card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <span>Patient ID:</span> {{ patientDetail.hospitalPatientId }}
+      </div>
+      <div class="col-md-6">
+        <span
+          >Status:
+          <button
+            class="status"
+            [ngStyle]="{
+              'background-color':
+                patientDetail.isAnnotated === false ? '#ff0000' : '#26b526'
+            }"
+          ></button
+        ></span>
+        {{ patientDetail.isAnnotated === false ? 'Not Started' : 'Completed' }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6"><span>Name:</span> {{ patientDetail.name }}</div>
+      <div class="col-md-6"><span>Sex:</span> {{ patientDetail.sex }}</div>
+      <div class="col-md-6"><span>Age:</span> {{ patientDetail.age }}</div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <span>Date of creation:</span>
+        {{ patientDetail.lastUpdate | date: 'dd-MM-yyyy' }}
+      </div>
+      <div class="col-md-6">
+        <span>Time:</span> {{ patientDetail.lastUpdate | date: 'HH:mm:ss' }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <span>Ref. Physician:</span> {{ patientDetail.assignedTo }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6"><span>Clinical History:</span> {{ history }}</div>
+    </div>
+  </div>
+</div>

@@ -9,9 +9,16 @@ describe('AppComponent', () => {
   const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
     'getLoaderData',
   ]);
+  const dialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
+  const routerSpy = jasmine.createSpyObj('Router', ['Navigate']);
 
   beforeEach(() => {
-    component = new AppComponent(authServiceSpy, spinnerServiceSpy);
+    component = new AppComponent(
+      authServiceSpy,
+      spinnerServiceSpy,
+      dialogSpy,
+      routerSpy
+    );
   });
 
   /*** it should create component ***/
@@ -34,7 +41,7 @@ describe('AppComponent', () => {
     });
   });
 
-    /*** it should loginOnBrowserRefresh function ***/
+  /*** it should loginOnBrowserRefresh function ***/
   describe('#loginOnBrowserRefresh', () => {
     beforeEach(() => {
       component.loginOnBrowserRefresh();

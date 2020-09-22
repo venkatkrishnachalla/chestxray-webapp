@@ -33,7 +33,7 @@ describe('SideNavComponent', () => {
     });
   });
 
-    /*** should call sidenavDisplay function, screen less than or equal to 760 ***/
+  /*** should call sidenavDisplay function, screen less than or equal to 760 ***/
   describe('#sidenavDisplay', () => {
     beforeEach(() => {
       spyOnProperty(window, 'innerWidth').and.returnValue(760);
@@ -45,8 +45,8 @@ describe('SideNavComponent', () => {
     });
   });
 
-    /*** should call sidenavDisplay function, screen greater than 760 ***/
-    describe('#sidenavDisplay', () => {
+  /*** should call sidenavDisplay function, screen greater than 760 ***/
+  describe('#sidenavDisplay', () => {
     beforeEach(() => {
       spyOnProperty(window, 'innerWidth').and.returnValue(780);
       component.sidenavDisplay();

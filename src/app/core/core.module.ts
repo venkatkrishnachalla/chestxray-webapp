@@ -9,6 +9,7 @@ import { MaterialModule } from '../material.module';
 import { XRayHeaderComponent } from './layout/component/header/components/x-ray-header/x-ray-header.component';
 import { ErrorMessageComponent } from './layout/component/error-message/error-message.component';
 import { PageNotAvailableComponent } from './layout/component/page-not-available/page-not-available.component';
+import { AboutComponent } from './layout/about/about.component';
 
 const coreComponents = [
   ErrorMessageComponent,
@@ -19,7 +20,7 @@ const coreComponents = [
   AuthLayoutComponent,
 ];
 @NgModule({
-  declarations: [...coreComponents, PageNotAvailableComponent],
+  declarations: [...coreComponents, PageNotAvailableComponent, AboutComponent],
   imports: [CommonModule, RouterModule, MaterialModule],
   exports: [...coreComponents, PageNotAvailableComponent],
 })

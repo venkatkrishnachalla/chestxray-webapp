@@ -1,0 +1,26 @@
+<div class="settingsDeleteItems">
+    <div
+      class="menus"
+      *ngFor="let settings of settingDeletePanel; let i = index"
+      [ngStyle]="{
+        cursor: settings.implemented === true ? 'pointer' : 'no-drop'
+      }"
+    >
+      <img
+        [ngClass]="
+        settingDeletePanel[i].active && settings.implemented === true
+            ? 'icon-select-BG'
+            : settings.implemented === true
+            ? 'icon-active-BG'
+            : 'icon-disabled-BG'
+        "
+        [src]="settings.image"
+        [alt]="settings.alt"
+        (click)="
+        settings.implemented === true ? iconAction(settingDeletePanel, i) : ''
+        "
+        [title]="settings.title"
+      />
+    </div>
+  </div>
+  

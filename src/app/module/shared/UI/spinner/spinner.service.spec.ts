@@ -13,7 +13,7 @@ describe('SpinnerService', () => {
   it('should create', () => {
     expect(service).toBeTruthy();
   });
-  
+
   /*** it should show function ***/
   describe('#show', () => {
     beforeEach(() => {
@@ -33,7 +33,7 @@ describe('SpinnerService', () => {
     });
   });
 
-/*** it should hide function ***/
+  /*** it should hide function ***/
   describe('#hide', () => {
     beforeEach(() => {
       service.hide();
@@ -49,6 +49,16 @@ describe('SpinnerService', () => {
         .subscribe((res) => expect(res).toEqual(value));
       subjectMock.next(false);
       expect(service.hide).toBeDefined();
+    });
+  });
+
+  /*** it should call getLoaderData function ***/
+  describe('#getLoaderData', () => {
+    beforeEach(() => {
+      service.getLoaderData();
+    });
+    it('should call getLoaderData function', () => {
+      expect(service.getLoaderData).toBeDefined();
     });
   });
 });

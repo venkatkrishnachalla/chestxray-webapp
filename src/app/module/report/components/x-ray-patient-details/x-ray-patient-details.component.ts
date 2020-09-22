@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
 import { XRayService } from 'src/app/service/x-ray.service';
 import {
   PatientDetailData,
@@ -8,13 +9,12 @@ import {
 } from 'src/app/module/auth/interface.modal';
 import { fabric } from 'fabric';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
-
 @Component({
   selector: 'cxr-x-ray-patient-details',
   templateUrl: './x-ray-patient-details.component.html',
   styleUrls: ['./x-ray-patient-details.component.scss'],
 })
-// XRayPatientDetailsComponent class implementation  
+// XRayPatientDetailsComponent class implementation
 export class XRayPatientDetailsComponent implements OnInit {
   findings = [];
   patientInfo: PatientDetailData;
@@ -41,12 +41,15 @@ export class XRayPatientDetailsComponent implements OnInit {
     findings: string;
     commentsAndRecommendations: string;
   };
+  @Output() impressionEvent = new EventEmitter();
 
-/*  
-* constructor for XRayPatientDetailsComponent class  
-*/ 
+  /*
+   * constructor for XRayPatientDetailsComponent class
+   */
+
   constructor(
     private eventEmitterService: EventEmitterService,
+    private eventEmitterService2: EventEmitterService2,
     private xrayAnnotatedImpression: XRayService,
     private changeDetector: ChangeDetectorRef
   ) {
@@ -60,12 +63,13 @@ export class XRayPatientDetailsComponent implements OnInit {
     });
   }
 
-/**  
-* This is a init function.  
-* @param {void} empty - A empty param  
-* @example  
-* ngOnInit();
-*/  
+  /**
+   * This is a class init function.
+   * @param {void} empty - A empty param
+   * @example
+   * ngOnInit();
+   */
+
   ngOnInit(): void {
     this.reportPageText = this.constants.reportPage;
     this.patientInfo = history.state.patientDetails;
@@ -76,10 +80,10 @@ export class XRayPatientDetailsComponent implements OnInit {
       this.patientInfo = patientInfo;
     }
     // tslint:disable-next-line: no-conditional-assignment
-    if (this.patientInfo.status === false) {
-      this.status = 'Drafted';
+    if (this.patientInfo.isAnnotated === false) {
+      this.status = 'Not Started';
     } else {
-      this.status = 'Unreported';
+      this.status = 'Completed';
     }
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
@@ -95,17 +99,18 @@ export class XRayPatientDetailsComponent implements OnInit {
         }
       }
     );
+    this.eventEmitterService2.invokePatientInfoStatusChange.subscribe(
+      (data) => {
+        this.status = 'Completed';
+      }
+    );
 
     this.xrayAnnotatedImpression
       .xrayAnnotatedImpressionsService()
       .subscribe((impression: ImpressionData) => {
         this.annotatedImpression = impression;
+        this.impressionEvent.emit(this.annotatedImpression);
       });
-
-    // if (Object.keys(this.annotatedImpression).length === 0) {
-    //   const impression = JSON.parse(sessionStorage.getItem('impression'));
-    //   this.annotatedImpression = impression;
-    // }
 
     if (
       this.annotatedImpression !== undefined &&
@@ -113,6 +118,7 @@ export class XRayPatientDetailsComponent implements OnInit {
     ) {
       const impression = JSON.parse(sessionStorage.getItem('impression'));
       this.annotatedImpression = impression;
+      this.impressionEvent.emit(this.annotatedImpression);
     }
 
     this.xrayAnnotatedImpression
@@ -132,12 +138,13 @@ export class XRayPatientDetailsComponent implements OnInit {
     this.setCanvasDimension();
   }
 
-  /**  
-* This is a function to store impressions data .  
-* @param {string} value - A string param  
-* @example  
-* storeImpressions(impression);
-*/  
+  /**
+   * This is a function to store impressions data .
+   * @param {string} value - A string param
+   * @example
+   * storeImpressions(impression);
+   */
+
   storeImpressions(impression) {
     // tslint:disable-next-line: forin
     for (const i in impression) {
@@ -145,12 +152,13 @@ export class XRayPatientDetailsComponent implements OnInit {
     }
   }
 
-/**  
-* This is a  function to emit patient details .  
-* @param {void} empty - A empty param  
-* @example  
-* storePatientDetails();
-*/ 
+  /**
+   * This is a  function to emit patient details .
+   * @param {void} empty - A empty param
+   * @example
+   * storePatientDetails();
+   */
+
   storePatientDetails() {
     this.eventEmitterService.onReportDataPatientDataShared({
       data: this.patientInfo,
@@ -158,46 +166,50 @@ export class XRayPatientDetailsComponent implements OnInit {
     });
   }
 
-  /**  
-* This is a commentsChange function.  
-* @param {any} data - A array param  
-* @example  
-* commentsChange(data);
-*/ 
+  /**
+   * This is a commentsChange function.
+   * @param {any} data - A array param
+   * @example
+   * commentsChange(data);
+   */
+
   commentsChange(data) {
     this.eventEmitterService.commentSubject.next(data);
   }
 
-  /**  
-* This is a updateFindings function.  
-* @param {string} value - A string param  
-* @param {string} value - A string param  
-* @example  
-* updateFindings(evt, index);
-*/ 
+  /**
+   * This is a updateFindings function.
+   * @param {string} value - A string param
+   * @param {string} value - A string param
+   * @example
+   * updateFindings(evt, index);
+   */
+
   updateFindings(evt, index) {
     this.annotatedFindings.splice(index, 1, evt.target.textContent.slice(2));
     this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
   }
 
-    /**  
-* This is to get the dimensions for image container.  
-* @param {void} empty - A empty param   
-* @example  
-* setCanvasDimension();
-*/ 
+  /**
+   * This is to get the dimensions for image container.
+   * @param {void} empty - A empty param
+   * @example
+   * setCanvasDimension();
+   */
+
   setCanvasDimension() {
     this.canvasDynamicWidth = 367;
     this.canvasDynamicHeight = 367;
     this.generateCanvas();
   }
 
-/**  
-* This is to generate a canvas using fabric.js .  
-* @param {void} empty - A empty param   
-* @example  
-* generateCanvas();
-*/ 
+  /**
+   * This is to generate a canvas using fabric.js .
+   * @param {void} empty - A empty param
+   * @example
+   * generateCanvas();
+   */
+
   generateCanvas() {
     fabric.Image.fromURL(this.annotatedImage, (img) => {
       this.xRayImage = img;
@@ -205,23 +217,25 @@ export class XRayPatientDetailsComponent implements OnInit {
     });
   }
 
-  /**  
-* function to compare image vs container aspect ratio width .  
-* @param {string} value - A string param  
-* @param {string} value - A string param   
-* @example  
-* getWidthFirst(imageAspectRatio, containerAspectRatio);
-*/ 
+  /**
+   * function to compare image vs container aspect ratio width .
+   * @param {string} value - A string param
+   * @param {string} value - A string param
+   * @example
+   * getWidthFirst(imageAspectRatio, containerAspectRatio);
+   */
+
   getWidthFirst(imageAspectRatio, containerAspectRatio) {
     return imageAspectRatio > containerAspectRatio;
   }
 
-  /**  
-* This is to setting BackgroundImage for canvas block .  
-* @param {void} empty - A empty param   
-* @example  
-* setCanvasBackground();
-*/ 
+  /**
+   * This is to setting BackgroundImage for canvas block .
+   * @param {void} empty - A empty param
+   * @example
+   * setCanvasBackground();
+   */
+
   setCanvasBackground() {
     const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
     const containerAspectRatio =

@@ -80,13 +80,7 @@ export class ApiEndPointService {
 * getRefreshToken();
 */  
   public getRefreshToken(): string {
-    // if (environment.isMockAPI) {
-    //   return environment.mockApiEndPoint + '/auth';
-    // }
-    const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
-    return (
-      environment.RefreshToken + 'signInWithCustomToken?key=' + FIREBASE_API_KEY
-    );
+    return environment.RefreshToken;
   }
 
     /**  
@@ -130,4 +124,13 @@ export class ApiEndPointService {
     // return 'https://cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/api/v1.0/predictions';
     return 'https://cxrml.eastus2.cloudapp.azure.com/seldon/default/cxr-classifier/api/v1.0/predictions';
   }
+/**  
+ * This is a getAskAi function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * getAskAi();
+ */  
+public submitReport(): string {
+  return environment.submitReport;
+}
 }

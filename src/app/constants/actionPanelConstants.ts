@@ -1,5 +1,5 @@
 export const actionPanelConstants = {
-  actionPanelTop: [
+  actionPanelSelectFitScreen: [
     {
       image: '../../../../assets/images/select icon active@2x.png',
       alt: 'Select Icon',
@@ -10,16 +10,24 @@ export const actionPanelConstants = {
       alt: 'Fit to Screen',
       title: '',
     },
+  ],
+  actionPanelZoomInZoomOut: [
     {
       image: '../../../../assets/images/Icon feather-zoom-in@2x.png',
       alt: 'Zoom In',
-      title: '',
+      title: 'Zoom In',
+      active: false,
+      implemented: false,
     },
     {
       image: '../../../../assets/images/zoom out@2x.png',
       alt: 'Zoom Out',
-      title: '',
+      title: 'Zoom Out',
+      active: false,
+      implemented: false,
     },
+  ],
+  actionPanelRotate: [
     {
       image: '../../../../assets/images/rotate clockwise active@2x.png',
       alt: 'Rotate Clockwise',
@@ -30,6 +38,8 @@ export const actionPanelConstants = {
       alt: 'Rotate Anticlockwise',
       title: '',
     },
+  ],
+  actionPanelFlip: [
     {
       image: '../../../../assets/images/Flip Horizontal@2x.png',
       alt: 'Flip Horizontal',
@@ -41,7 +51,7 @@ export const actionPanelConstants = {
       title: '',
     },
   ],
-  actionPanelMiddle: [
+  actionPanelUndoRedo: [
     {
       image: '../../../../assets/images/undo active@2x.png',
       alt: 'Undo Active',
@@ -56,6 +66,8 @@ export const actionPanelConstants = {
       active: false,
       implemented: false,
     },
+  ],
+  actionPanelEllipseFreeHand: [
     {
       image: '../../../../assets/images/ellipse@3x.png',
       alt: 'Ellipse',
@@ -70,6 +82,8 @@ export const actionPanelConstants = {
       active: false,
       implemented: true,
     },
+  ],
+  actionPanelLengthAngle: [
     {
       image: '../../../../assets/images/measure length active@2x.png',
       alt: 'Measure Length',
@@ -84,6 +98,8 @@ export const actionPanelConstants = {
       active: false,
       implemented: false,
     },
+  ],
+  actionPanelArrowText: [
     {
       image: '../../../../assets/images/arrow active@2x.png',
       alt: 'Arrow',
@@ -98,6 +114,8 @@ export const actionPanelConstants = {
       active: false,
       implemented: false,
     },
+  ],
+  actionPanelSaveErase: [
     {
       image: '../../../../assets/images/save active@2x.png',
       alt: 'Save',
@@ -112,6 +130,8 @@ export const actionPanelConstants = {
       active: false,
       implemented: false,
     },
+  ],
+  actionPanelSettingsDelete: [
     {
       image: '../../../../assets/images/settings active@2x.png',
       alt: 'Settings',
@@ -131,12 +151,16 @@ export const actionPanelConstants = {
     {
       image: '../../../../assets/images/Brightness@2x.png',
       alt: 'Brightness',
-      title: '',
+      title: 'Brightness',
+      active: false,
+      implemented: true,
     },
     {
       image: '../../../../assets/images/Contrast@2x.png',
       alt: 'Contrast',
-      title: '',
+      title: 'Contrast',
+      active: false,
+      implemented: true,
     },
   ],
 };

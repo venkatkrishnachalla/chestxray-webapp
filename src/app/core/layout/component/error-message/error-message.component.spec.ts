@@ -100,6 +100,48 @@ describe('ErrorMessageComponent', () => {
     });
   });
 
+  /*** ngOnInit function test case, when error code is 405 ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: 405,
+        },
+        error: {
+          error: {
+            message: 'Internal Server Error',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when error message is 405', () => {
+      expect(component.showError).toEqual(true);
+    });
+  });
+
+  /*** ngOnInit function test case, when error code is 415 ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: 415,
+        },
+        error: {
+          error: {
+            message: 'Internal Server Error',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when error message is 415', () => {
+      expect(component.showError).toEqual(true);
+    });
+  });
+
   /*** ngOnInit function test case, when error code is 500 ***/
   describe('#ngOnInit', () => {
     beforeEach(() => {
@@ -117,6 +159,111 @@ describe('ErrorMessageComponent', () => {
       component.ngOnInit();
     });
     it('should call ngOnInit function, when error message is 500', () => {
+      expect(component.showError).toEqual(true);
+    });
+  });
+
+  /*** ngOnInit function test case, when error code is 501 ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: 501,
+        },
+        error: {
+          error: {
+            message: 'Internal Server Error',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when error message is 501', () => {
+      expect(component.showError).toEqual(true);
+    });
+  });
+
+  /*** ngOnInit function test case, when error code is 502 ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: 502,
+        },
+        error: {
+          error: {
+            message: 'Internal Server Error',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when error message is 502', () => {
+      expect(component.showError).toEqual(true);
+    });
+  });
+
+  /*** ngOnInit function test case, when error code is 503 ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: 503,
+        },
+        error: {
+          error: {
+            message: 'Internal Server Error',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when error message is 503', () => {
+      expect(component.showError).toEqual(true);
+    });
+  });
+
+  /*** ngOnInit function test case, when error code is 504 ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: 504,
+        },
+        error: {
+          error: {
+            message: 'Internal Server Error',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when error message is 504', () => {
+      expect(component.showError).toEqual(true);
+    });
+  });
+
+  /*** ngOnInit function test case, when error code is null ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const errorResponse = {
+        data: {
+          status: null,
+        },
+        error: {
+          error: {
+            message: 'Internal Server Error',
+          },
+        },
+      };
+      eventEmitterServiceSpy.invokeDisplayErrorMessage = of(errorResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnInit function, when error message is null', () => {
       expect(component.showError).toEqual(true);
     });
   });

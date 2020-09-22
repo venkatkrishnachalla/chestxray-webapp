@@ -13,13 +13,15 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { SharedModule } from './module/shared/shared.module';
 import { XRayModule } from './module/x-ray/x-ray.module';
 import { EventEmitterService } from './service/event-emitter.service';
+import { EventEmitterService2 } from './service/event-emitter.service2';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReportModule } from './module/report/report.module';
 import { NgxPrintModule } from 'ngx-print';
 import { ToastrModule } from 'ngx-toastr';
+import { FormatTimePipe } from './filters/format-time.pipe';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, FormatTimePipe],
   imports: [
     BrowserModule,
     RouterModule,
@@ -47,6 +49,7 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   providers: [
     EventEmitterService,
+    EventEmitterService2,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

@@ -76,6 +76,50 @@ describe('XRayPatientDetailsComponent', () => {
     });
   });
 
+  /*** it should call ngOnInit function, when title is impression ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      const patientMockData = patientMock[0];
+      const mockData = {
+        title: 'impression',
+      };
+      const findingsMock = [{ name: 'Bulla', index: 0 }];
+      const impressionsMock = [{ name: 'Bulla', index: 0 }];
+      eventEmitterServiceSpy.commentSubject = of('abcde');
+      eventEmitterServiceSpy.invokeComponentFunction = of(mockData);
+      xrayAnnotatedImpressionSpy.xrayAnnotatedImpressionsService.and.returnValue(
+        of(findingsMock)
+      );
+      xrayAnnotatedImpressionSpy.xrayAnnotatedFindingsService.and.returnValue(
+        of(impressionsMock)
+      );
+      window.history.pushState({ patientDetails: undefined }, '', '');
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(patientMockData);
+      });
+
+      eventEmitterServiceSpy.commentSubject = new BehaviorSubject<any>('');
+      const value = '';
+      eventEmitterServiceSpy.commentSubject
+        .pipe(filter((res) => !!res))
+        .subscribe((res) => expect(res).toEqual(value));
+      eventEmitterServiceSpy.commentSubject.next('');
+
+      eventEmitterServiceSpy.findingsSubject = new BehaviorSubject<any>('');
+      const fvalue = [{ name: 'Bulla', index: 0 }];
+      eventEmitterServiceSpy.findingsSubject
+        .pipe(filter((res) => !!res))
+        .subscribe((res) => expect(res).toEqual(fvalue));
+      eventEmitterServiceSpy.findingsSubject.next([
+        { name: 'Bulla', index: 0 },
+      ]);
+    });
+    it('should call ngOnIit function, when title is impression', () => {
+      component.ngOnInit();
+      expect(component.ngOnInit).toBeDefined();
+    });
+  });
+
   /*** it should call storeImpressions function ***/
   describe('#storeImpressions', () => {
     beforeEach(() => {});

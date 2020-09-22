@@ -39,6 +39,11 @@ export interface PatientDetailData {
   studies: any[];
   imageSource?: string;
   isIndividualRadiologist?: boolean;
+  studyId: string;
+  seriesId: string;
+  assignedTo: string;
+  isAnnotated: boolean;
+  xRayId: number;
 }
 
 export interface EllipseData {

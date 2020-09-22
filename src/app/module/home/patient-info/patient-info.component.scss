@@ -1,0 +1,71 @@
+.patientInfoContainer {
+  width: 585px;
+  min-height: 300px;
+  height: auto;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 1px rgba(255, 253, 253, 0.3),
+    0 1px 25px 8px rgba(0, 0, 0, 0.22);
+  background-color: #ffffff;
+  position: absolute;
+  top: 15%;
+  left: 22%;
+
+  .patient-card-header {
+    text-align: center;
+    margin: 1.5rem;
+
+    .patient-info-icon {
+      font-size: 2.5rem;
+      color: white;
+      border-radius: 2px;
+      background-color: #7ca5ae;
+    }
+    .cross-icon {
+      border: 1px solid #dbdbdb;
+      padding: 5px;
+      font-size: 2rem;
+      position: absolute;
+      color: #848484;
+      background-color: #dbdbdb;
+      border-radius: 5px;
+      top: 12px;
+      right: 10px;
+      cursor: pointer;
+    }
+  }
+
+  .patient-card-body {
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 0px 5px;
+
+      .col-md-6 {
+        font-size: 18px;
+        margin: 1rem;
+
+        span {
+          font-weight: 500;
+
+          .status {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            box-shadow: 0px 0px 0px 1px #CCC;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    left: 18%;
+  }
+  @media (max-width: 768px) {
+    width: 450px;
+    left: 16%;
+  }
+}

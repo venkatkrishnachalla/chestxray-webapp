@@ -1,6 +1,11 @@
 <div class="x-ray-patient-image-container">
   <section class="buttonGroup">
-    <button type="button" mat-flat-button>
+    <button
+      type="button"
+      mat-flat-button
+      *ngIf="!isHospitalRadiologist"
+      (click)="shareButtonEvent()"
+    >
       SHARE
       <mat-icon aria-hidden="false" aria-label="Example share icon"
         >share</mat-icon
@@ -15,6 +20,7 @@
       printTitle="{{ pdfTitle }}"
       ngxPrint
       styleSheetFile="assets/css/patient-details.css"
+      [ngClass]="{ 'share-button-hide': isHospitalRadiologist }"
     >
       PRINT
       <mat-icon aria-hidden="false" aria-label="Example print icon"
@@ -22,13 +28,22 @@
       >
     </button>
 
-    <button type="button" mat-flat-button>
+    <button
+      type="button"
+      mat-flat-button
+      [ngClass]="{ 'share-button-hide': isHospitalRadiologist }"
+    >
       SIGNATURE
       <mat-icon aria-hidden="false" aria-label="Example gesture icon"
         >gesture</mat-icon
       >
     </button>
-    <button type="button" mat-flat-button>
+    <button
+      type="button"
+      mat-flat-button
+      [ngClass]="{ 'share-button-hide': isHospitalRadiologist }"
+      (click)='submitReport()'
+    >
       SUBMIT
       <mat-icon aria-hidden="false" aria-label="Example save icon"
         >save</mat-icon
@@ -41,3 +56,5 @@
 </div>
 
 <img class="hide-xray" [src]="xrayAnnotatedImage" alt="" />
+
+<input type="file" class="input-file" (change)="handle($event)" />

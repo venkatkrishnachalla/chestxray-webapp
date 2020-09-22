@@ -119,7 +119,7 @@ describe('AuthService', () => {
       endpointSpy.getRefreshToken.and.returnValue('http://localhost:3000/auth');
       mockHttpClient.post.and.returnValue(of(response));
       (authService as any).refreshToken();
-      authService.refreshTokenTimeOut('axhyysss', 4563);
+      authService.refreshTokenTimeOut('axhyysss', 'trhahhshs', 4563);
     });
     it('should call refreshTokenTimeOut function', () => {
       expect(authService.refreshTokenTimeOut).toBeDefined();

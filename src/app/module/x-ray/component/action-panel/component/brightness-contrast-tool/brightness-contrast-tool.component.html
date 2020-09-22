@@ -1,0 +1,37 @@
+<div class="sliderItems">
+  <div class="slider">
+    <span>{{brightnessRangeValue}}</span>
+    <ng5-slider
+      [(ngModel)]="brightnessRangeValue"
+      [options]="options"
+      (ngModelChange)="setBrightnessSlidervalue($event)"
+    ></ng5-slider>
+  </div>
+  <div class="slider">
+    <span>{{contrastRangeValue}}</span>
+    <ng5-slider
+      [(ngModel)]="contrastRangeValue"
+      [options]="option"
+      (ngModelChange)="setContrastSlidervalue($event)"
+    ></ng5-slider>
+  </div>
+</div>
+<div class="brightness">
+  <div
+    class="contrast"
+    *ngFor="let brightness of brightnessPanel; let i = index"
+  >
+    <img
+      [ngClass]="
+        brightnessPanel[i].active && brightness.implemented === true
+          ? 'icon-select-BG'
+          : brightness.implemented === true
+          ? 'icon-active-BG'
+          : 'icon-disabled-BG'
+      "
+      [src]="brightness.image"
+      [alt]="brightness.alt"
+      [title]="brightness.title"
+    />
+  </div>
+</div>

@@ -6,13 +6,13 @@
   background-size: cover;
   height: calc(100% - 64px); // 64px is the height of app bar
 
-  @media (max-width: 900px) {
-    height: calc(100% - 128px);
-  }
+  // @media (max-width: 900px) {
+  //   height: calc(100% - 128px);
+  // }
 
-  @media (max-width: 600px) {
-    height: calc(100% - 112px);
-  }
+  // @media (max-width: 600px) {
+  //   height: calc(100% - 112px);
+  // }
 
   .signInSection {
     display: flex;

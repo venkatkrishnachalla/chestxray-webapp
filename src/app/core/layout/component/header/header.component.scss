@@ -1,6 +1,6 @@
 mat-toolbar {
   background-color: #434343 !important;
-  z-index: 9999;
+  // z-index: 9999;
   position: sticky;
   position: -webkit-sticky; /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
@@ -35,6 +35,18 @@ mat-toolbar {
   }
   .notification-icon {
     margin-right: 2rem;
+    color: #303030;
+    cursor: no-drop;
+    .material-icons {
+      color: #8f8f8f;
+    }
+  }
+  .add-patient {
+    color: #303030;
+    cursor: no-drop;
+    .material-icons {
+      color: #8f8f8f;
+    }
   }
   .user-name {
     padding: 0.5rem 0.5rem 0 1rem;
@@ -53,9 +65,9 @@ mat-toolbar {
     width: 75%;
   }
 }
-::ng-deep .mat-menu-content:not(:empty) {
-  padding-top: 25px !important;
-}
+// ::ng-deep .mat-menu-content:not(:empty) {
+//   padding-top: 25px !important;
+// }
 @media only screen and (min-width: 768px) {
   .x-ray_header_logo {
     margin-top: 0px;
@@ -84,6 +96,10 @@ mat-toolbar {
     background-color: #285c68 !important;
   }
 }
-::ng-deep.mat-menu-content:not(:empty) {
-  padding-top: 25px !important;
+// ::ng-deep.mat-menu-content:not(:empty) {
+//   padding-top: 25px !important;
+// }
+::ng-deep .mat-menu-panel{
+  position: relative;
+    top: 22px;
 }

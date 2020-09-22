@@ -232,3 +232,34 @@
   z-index: 9999;
 }
 
+.content {
+  float: right;
+}
+
+.content-visibility {
+  font-size: 2.5rem;
+  color: white;
+  border-radius: 2px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.contents {
+  float: right;
+  text-align: center;
+  border: 1px solid white;
+  border-radius: 50%;
+  margin: 0px 0px 0px 5px;
+  height: 3.5rem;
+  position: absolute;
+  min-width: 3.5rem;
+  width: auto;
+}
+
+.scale-factor {
+  font-size: 1.3rem;
+  color: white;
+  top: 20%;
+  position: relative;
+  cursor: pointer;
+}

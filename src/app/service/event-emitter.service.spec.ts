@@ -33,6 +33,12 @@ describe('EventEmitterService', () => {
     expect(service.onComponentEllipseDataShared).toBeDefined();
   });
 
+  /*** it should call onComponentFindingsDataShared function ***/
+  it('should call onComponentFindingsDataShared function', () => {
+    const result = service.onComponentFindingsDataShared('');
+    expect(service.onComponentFindingsDataShared).toBeDefined();
+  });
+
   /*** it should call onComponentReportButtonClick function ***/
   it('should call onComponentReportButtonClick function', () => {
     const result = service.onComponentReportButtonClick('');
@@ -61,5 +67,39 @@ describe('EventEmitterService', () => {
   it('should call onImpressionDataShared function', () => {
     const result = service.onImpressionDataShared('');
     expect(service.onImpressionDataShared).toBeDefined();
+  });
+
+  /*** it should call onPrevNextButtonClick function ***/
+  it('should call onPrevNextButtonClick function', () => {
+    const result = service.onPrevNextButtonClick('');
+    expect(service.onPrevNextButtonClick).toBeDefined();
+  });
+
+  /*** it should call onAskAiButtonClick function ***/
+  it('should call onAskAiButtonClick function', () => {
+    const result = service.onAskAiButtonClick('');
+    expect(service.onAskAiButtonClick).toBeDefined();
+  });
+
+  /*** it should call onImpressionCheckboxClick function ***/
+  it('should call onImpressionCheckboxClick function', () => {
+    const result = service.onImpressionCheckboxClick('');
+    expect(service.onImpressionCheckboxClick).toBeDefined();
+  });
+
+  /*** it should call onBrightnessChange function ***/
+  it('should call onBrightnessChange function', () => {
+    const result = service.onBrightnessChange('');
+    expect(service.onBrightnessChange).toBeDefined();
+  });
+  /*** it should call onContrastChange function ***/
+  it('should call onContrastChange function', () => {
+    const result = service.onContrastChange(50);
+    expect(service.onContrastChange).toBeDefined();
+  });
+  /*** it should call OnDefaultRanges function ***/
+  it('should call OnDefaultRanges function', () => {
+    const result = service.OnDefaultRanges(50);
+    expect(service.OnDefaultRanges).toBeDefined();
   });
 });
