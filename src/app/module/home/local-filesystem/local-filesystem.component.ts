@@ -171,7 +171,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     }
     this.uploadImageForm.value.sex = this.uploadImageForm.value.gender;
     this.uploadImageForm.value.lastUpdate = new Date();
-    this.uploadImageForm.value.referringPhysicianName = this.doctorName;
+    this.uploadImageForm.value.assignedTo = this.doctorName;
     this.uploadImageForm.value.imageSource = this.imageSource;
     this.uploadImageForm.value.hospitalPatientId = '';
     this.uploadImageForm.value.isIndividualRadiologist = true;
@@ -194,7 +194,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       gender: this.uploadImageForm.value.gender,
       sex: this.uploadImageForm.value.sex,
       lastUpdate: new Date(),
-      referringPhysicianName: this.doctorName,
+      assignedTo: this.doctorName,
       hospitalPatientId: '',
       isIndividualRadiologist: true,
       status: false,

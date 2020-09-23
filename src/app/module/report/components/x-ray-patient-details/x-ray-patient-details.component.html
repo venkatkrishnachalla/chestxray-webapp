@@ -31,7 +31,7 @@
           <td><mat-label>Gender</mat-label></td>
           <td>{{ patientInfo.sex  }}</td>
           <td><mat-label>Ref. Physician</mat-label></td>
-          <td>{{ patientInfo.referringPhysicianName || '-' }}</td>
+          <td>{{ patientInfo.assignedTo || '-' }}</td>
         </tr>
       </table>
     </div>
@@ -132,7 +132,7 @@
         <td><b>Time</b></td>
         <td>: {{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
         <td><b>Ref. Physician</b></td>
-        <td>: {{ patientInfo.referringPhysicianName || '-' }}</td>
+        <td>: {{ patientInfo.assignedTo || '-' }}</td>
       </tr>
     </table>
   </div>
