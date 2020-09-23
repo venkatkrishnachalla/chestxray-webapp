@@ -14,6 +14,9 @@ export type SaveEllipse = {
   color: string;
   angle: number;
   types: boolean;
+  strokeDashArray: any[];
+  type: string;
+  isMLAi: boolean;
 };
 export class UpdateEllipse {
   id: number;
@@ -26,6 +29,9 @@ export class UpdateEllipse {
   color: string;
   angle: number;
   types: boolean;
+  strokeDashArray: any[];
+  type: string;
+  isMLAi: boolean;
 }
 
 export interface SaveFreeHandDrawing {
