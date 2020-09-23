@@ -16,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCarouselModule } from '@ngmodule/material-carousel';
 
 const materialModules = [
   MatCardModule,
@@ -36,6 +37,7 @@ const materialModules = [
   MatDialogModule,
   MatAutocompleteModule,
   MatTooltipModule,
+  MatCarouselModule
 ];
 
 @NgModule({
