@@ -135,7 +135,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   scalingProperties: any;
   objectAngle: number;
   lockRotation: boolean;
-
+  enableFreeHandDrawing: boolean;
 
   /*
    * constructor for CanvasImageComponent class
@@ -1540,6 +1540,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  freeHandDrawing(data) ;
    */
   freeHandDrawing(data) {
+    this.enableFreeHandDrawing = true;
     this.changeSelectableStatus(false);
     this.activeIcon = data;
     if (data.active) {
@@ -1549,10 +1550,27 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.freeDrawingBrush.color = '#ffff00';
       this.canvas.freeDrawingBrush.width = 2;
       this.canvas.freeDrawingBrush.strokeUniform = true;
+      this.canvas.observe('mouse:move', (e) => {	
+        const pointer = this.canvas.getPointer(e.e);	
+        if (this.enableFreeHandDrawing) {	
+          if (pointer.x <= 0 || pointer.x >= this.canvasCorrectedWidth || pointer.y <= 0 || pointer.y >= this.canvasCorrectedHeight) {	
+            this.canvas.isDrawingMode = false; 	
+          }	
+          else {	
+            this.canvas.isDrawingMode = true;	
+          }	
+        }	
+      });	
+      this.canvas.observe('mouse:up', (e) => {	
+        this.canvas.isDrawingMode = false;	
+        this.enableFreeHandDrawing = false;	
+      });
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
         this.canvas.setActiveObject(object);
         this.save();
+        this.canvas.isDrawingMode = false;	
+        this.enableFreeHandDrawing = false;
       });
     } else {
       this.canvas.isDrawingMode = false;
