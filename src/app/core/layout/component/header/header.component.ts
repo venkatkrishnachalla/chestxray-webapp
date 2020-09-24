@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       (user: User) => {
         if (user) {
           this.doctorName = user.username;
+          console.log(user);
         }
       }
     );

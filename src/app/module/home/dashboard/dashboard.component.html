@@ -1,2 +1,3 @@
-<cxr-patient-list *ngIf="isHospitalRadiologist"></cxr-patient-list>
-<cxr-local-filesystem *ngIf="!isHospitalRadiologist"></cxr-local-filesystem>
+<cxr-patient-list *ngIf="isHospitalRadiologist && !isAdmin"></cxr-patient-list>
+<cxr-local-filesystem *ngIf="!isHospitalRadiologist && !isAdmin"></cxr-local-filesystem>
+<cxr-admin-dashboard *ngIf="isAdmin"></cxr-admin-dashboard>
