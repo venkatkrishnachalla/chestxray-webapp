@@ -136,6 +136,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   objectAngle: number;
   lockRotation: boolean;
   enableFreeHandDrawing: boolean;
+  freeHandDraw: any;
+
 
   /*
    * constructor for CanvasImageComponent class
@@ -168,7 +170,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * HostListener('window:resize', []);
    */
-
   @HostListener('window:resize', [])
   public onResize() {
     this.canvasDynamicHeight = 0;
@@ -1550,20 +1551,24 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.freeDrawingBrush.color = '#ffff00';
       this.canvas.freeDrawingBrush.width = 2;
       this.canvas.freeDrawingBrush.strokeUniform = true;
+      
+      
       this.canvas.observe('mouse:move', (e) => {	
         const pointer = this.canvas.getPointer(e.e);	
         if (this.enableFreeHandDrawing) {	
           if (pointer.x <= 0 || pointer.x >= this.canvasCorrectedWidth || pointer.y <= 0 || pointer.y >= this.canvasCorrectedHeight) {	
-            this.canvas.isDrawingMode = false; 	
+            this.canvas.isDrawingMode = false; 
           }	
           else {	
             this.canvas.isDrawingMode = true;	
           }	
         }	
       });	
-      this.canvas.observe('mouse:up', (e) => {	
-        this.canvas.isDrawingMode = false;	
-        this.enableFreeHandDrawing = false;	
+      this.canvas.observe('mouse:out', (e) => {	
+          this.canvas.isDrawingMode = false; 
+      });
+      this.canvas.observe('mouse:in', (e) => {	
+          this.canvas.isDrawingMode = true; 
       });
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
@@ -2100,16 +2105,28 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * This is stopDragging function
+   * @param {any} array - A array param
+   * @example
+   * stopDragging(element);
+   */
   stopDragging(element) {
     element.lockMovementX = true;
     element.lockMovementY = true;
   }
 
+  /**
+   * This is displayMessage function
+   * @param {any} array - A array param
+   * @example
+   * displayMessage(obj);
+   */
   displayMessage(obj){
-    if(obj.target === null) {
+    if (obj.target === null) {
       return true;
     }
-    else if(obj.target.lockRotation) {
+    else if (obj.target.lockRotation) {
       this.lockRotation = true;
       this.onHoveringAnnotation(obj);
     }
@@ -2117,6 +2134,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.lockRotation = false;
     }
   }
+
+  /**
+   * This is restrictObjectOnRotate function
+   * @param {any} array - A array param
+   * @example
+   * restrictObjectOnRotate(obj);
+   */
   restrictObjectOnRotate(obj) {
     const object = obj.target;
     const coords = object.calcCoords();
@@ -2128,19 +2152,19 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const tly = coords.tl.y;
     const txr = coords.tr.x;
     const tyr = coords.tr.y;
-    if(blx >= object.canvas.width || brx >= object.canvas.width || tlx >= object.canvas.width || txr >= object.canvas.width){
+    if (blx >= object.canvas.width || brx >= object.canvas.width || tlx >= object.canvas.width || txr >= object.canvas.width){
       this.canvas.getActiveObject().set({
         lockRotation: true,
       });
       this.canvas.renderAll();
     }
-    else if( blx <= 0 || brx <= 0 || tlx <= 0 || txr <= 0) {
+    else if ( blx <= 0 || brx <= 0 || tlx <= 0 || txr <= 0) {
       this.canvas.getActiveObject().set({
         lockRotation: true,
       });
       this.canvas.renderAll();
     }
-    else if(bly >= object.canvas.height || bry >= object.canvas.height || tly >= object.canvas.height || tyr >= object.canvas.height) {
+    else if (bly >= object.canvas.height || bry >= object.canvas.height || tly >= object.canvas.height || tyr >= object.canvas.height) {
       this.canvas.getActiveObject().set({
         lockRotation: true,
       });
@@ -2160,8 +2184,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.renderAll();
     }
   }
+
+  /**
+   * This is onHoveringOutAnnotation function
+   * @param {any} array - A array param
+   * @example
+   * onHoveringOutAnnotation(obj);
+   */
   onHoveringOutAnnotation(obj) {
-    if(obj.target === null) {
+    if (obj.target === null) {
       return true;
     }
     else if (obj.target.lockRotation) {
@@ -2171,16 +2202,27 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       return true;
     }
   }
+
+  /**
+   * This is onHoveringAnnotation function
+   * @param {any} array - A array param
+   * @example
+   * onHoveringAnnotation(obj);
+   */
   onHoveringAnnotation(obj) {
-    if(this.lockRotation === true) {
+    if (this.lockRotation === true) {
         const object = obj.target;
-        const coords = object.calcCoords();
-        document.getElementById('target').style.display = 'block';
-        if(object.getBoundingRect().top <= 70) {
-          let mbx = coords.mb.x;
-          let mby = coords.mb.y;
-          document.getElementById('target').style.top = mby + 100 + 'px';
-          document.getElementById('target').style.left = mbx + 150 + 'px';
+        if (object === null) {
+          return;
+        } 
+        else {
+          const coords = object.calcCoords();
+          document.getElementById('target').style.display = 'block';
+          if (object.getBoundingRect().top <= 70) {
+            let mbx = coords.mb.x;
+            let mby = coords.mb.y;
+            document.getElementById('target').style.top = mby + 100 + 'px';
+            document.getElementById('target').style.left = mbx + 150 + 'px';
         }
         else {
           let mtx = coords.mt.x;
@@ -2188,8 +2230,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           document.getElementById('target').style.top = mty - 40 + 'px';
           document.getElementById('target').style.left = mtx + 150 + 'px';
         }
+      }
     }
     this.canvas.renderAll();
   }
-
 }
