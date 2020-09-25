@@ -547,8 +547,25 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const obj = data.target;
     const objCenterX = this.canvas.getActiveObject().getCenterPoint().x;
     const objCenterY = this.canvas.getActiveObject().oCoords.tr.y;
+    console.log(
+      'coords',
+      this.canvas.getActiveObject().left,
+      this.canvas.getActiveObject().top
+    );
 
-    if (
+    if (this.canvas.getActiveObject().left < 200 && this.canvas.getActiveObject().top > 65) {
+      this.left = objCenterX + 275;
+      this.top = objCenterY;
+    } else if (this.canvas.getActiveObject().left < 200 && this.canvas.getActiveObject().top < 65) {
+      this.left = objCenterX + 275;
+      this.top = objCenterY + 150;
+    } else if (this.canvas.getActiveObject().left > 450 && this.canvas.getActiveObject().top > 65) {
+      this.left = objCenterX;
+      this.top = objCenterY;
+    } else if (this.canvas.getActiveObject().top < 65) {
+      this.left = objCenterX;
+      this.top = objCenterY + 150;
+    } else if (
       this.canvas.getActiveObject().top < 60 &&
       this.canvas.getActiveObject().left > 200
     ) {
