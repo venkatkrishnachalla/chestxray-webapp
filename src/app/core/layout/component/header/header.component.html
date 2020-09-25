@@ -29,9 +29,14 @@
   <span class="fill-remaining-space"></span>
 
   <button
-    class="icon-styles add-patient"
+    class="add-patient"
     *ngIf="router.url == '/home/dashboard'"
-    title="Add Patient"
+    [ngClass]="{
+      'icon-styles': userroles == 'Admin',
+      'disabled-add-patient': userroles != 'Admin'
+    }"
+    [title]="userroles == 'Admin' ? 'Add Radiologist' : 'Add Patient'"
+    (click)="addRadiologists()"
   >
     <span class="material-icons">person_add_alt_1</span>
   </button>

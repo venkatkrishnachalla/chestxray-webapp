@@ -17,7 +17,7 @@ mat-toolbar {
   .fill-remaining-space {
     flex: 1 1 auto;
   }
-  .icon-styles {
+  .icon-styles, .add-patient {
     height: 100%;
     width: 6rem;
     margin: 0px 2px;
@@ -29,7 +29,7 @@ mat-toolbar {
       margin-right: 0px !important;
     }
   }
-  .icon-styles:hover {
+  .icon-styles:hover, .add-patient:hover {
     border-bottom: 4px solid white;
     background-color: #818181;
   }
@@ -41,13 +41,20 @@ mat-toolbar {
       color: #8f8f8f;
     }
   }
-  .add-patient {
+
+  .disabled-add-patient {
+    height: 100%;
+    width: 6rem;
+    margin: 0px 2px;
+    background-color: #434343;
+    border: 0;
     color: #303030;
     cursor: no-drop;
     .material-icons {
       color: #8f8f8f;
     }
   }
+
   .user-name {
     padding: 0.5rem 0.5rem 0 1rem;
     font-size: 1.3rem;

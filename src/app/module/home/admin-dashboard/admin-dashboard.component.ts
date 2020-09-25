@@ -6,6 +6,7 @@ import User from '../../auth/user.modal';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { RadiologistRegisterComponent } from './radiologist-register/radiologist-register.component';
 
 
 @Component({
@@ -21,6 +22,8 @@ export class AdminDashboardComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(RadiologistRegisterComponent) radiologist: RadiologistRegisterComponent;
+  // radiologistForm: boolean;
 
   constructor(private authService: AuthService) {}
 
@@ -47,6 +50,11 @@ export class AdminDashboardComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  addRadiologist(event) {
+    this.radiologist.toggleRadiologist(event);
+    console.log('edited', event);
   }
 
   ngAfterViewInit() {

@@ -16,6 +16,7 @@ import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.compon
 import { CoreModule } from 'src/app/core/core.module';
 import { PatientInfoComponent } from './patient-info/patient-info.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { RadiologistRegisterComponent } from './admin-dashboard/radiologist-register/radiologist-register.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     DragDropComponent,
     PatientInfoComponent,
     AdminDashboardComponent,
+    RadiologistRegisterComponent,
   ],
   imports: [
     MaterialModule,

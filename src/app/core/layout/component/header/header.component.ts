@@ -21,8 +21,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuth = false;
   doctorName: string;
   toggleActive: boolean;
+  userroles: string;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
+  @Output() addRadiologist: EventEmitter<string> = new EventEmitter<string>();
     /*  
     * constructor for HeaderComponent class  
     */  
@@ -39,6 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       (user: User) => {
         if (user) {
           this.doctorName = user.username;
+          this.userroles = user.userroles[0];
           console.log(user);
         }
       }
@@ -77,6 +80,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleSidenav() {
     this.buttonClicked.emit('clicked');
   }
+
+  addRadiologists() {
+    this.addRadiologist.emit('clicked');
+    console.log('Emitted')
+  }
+
+  /**  
+   * This is a radiologistForm function, it will open Radiologist form.  
+   * @param {void} empty - A empty param  
+   * @example  
+   * radiologistForm();
+   */ 
+  // radiologistForm() {
+  //   this.buttonClicked.emit('click')
+  // }
 
   /**  
  * This is a unsubscribe user subscription event.  
