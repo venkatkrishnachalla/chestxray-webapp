@@ -547,22 +547,23 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const obj = data.target;
     const objCenterX = this.canvas.getActiveObject().getCenterPoint().x;
     const objCenterY = this.canvas.getActiveObject().oCoords.tr.y;
-    console.log(
-      'coords',
-      this.canvas.getActiveObject().left,
-      this.canvas.getActiveObject().top
-    );
 
-    if (this.canvas.getActiveObject().left < 200 && this.canvas.getActiveObject().top > 65) {
-      this.left = objCenterX + 275;
-      this.top = objCenterY;
-    } else if (this.canvas.getActiveObject().left < 200 && this.canvas.getActiveObject().top < 65) {
+    if (this.canvas.getActiveObject().top < 140 && this.canvas.getActiveObject().left < 450 && obj.angle > 240) {
       this.left = objCenterX + 275;
       this.top = objCenterY + 150;
-    } else if (this.canvas.getActiveObject().left > 450 && this.canvas.getActiveObject().top > 65) {
+    } else if (this.canvas.getActiveObject().left < 200 && this.canvas.getActiveObject().top > 105) {
+      this.left = objCenterX + 275;
+      this.top = objCenterY;
+    } else if (this.canvas.getActiveObject().left < 200 && this.canvas.getActiveObject().top < 105) {
+      this.left = objCenterX + 275;
+      this.top = objCenterY + 150;
+    } else if (this.canvas.getActiveObject().left > 450 && this.canvas.getActiveObject().top > 105) {
       this.left = objCenterX;
       this.top = objCenterY;
-    } else if (this.canvas.getActiveObject().top < 65) {
+    } else if (this.canvas.getActiveObject().left < 45 && this.canvas.getActiveObject().top < 180) {
+      this.left = objCenterX + 150;
+      this.top = objCenterY + 150;
+    } else if (this.canvas.getActiveObject().top < 105) {
       this.left = objCenterX;
       this.top = objCenterY + 150;
     } else if (
