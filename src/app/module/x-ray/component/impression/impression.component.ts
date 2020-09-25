@@ -81,7 +81,6 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
 
   getImpressions() {
-    // this.impression = [];
     this.eventEmitterService.invokeComponentData.subscribe(
       (obj: { name: any; isMLApi: any; color: any; Source: any, idNew: any }) => {
         if (obj.idNew !== '00'){
@@ -213,7 +212,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * getImpressionsToReport();
    */
   getImpressionsToReport() {
-    const impression = JSON.stringify(this.impression);
+    const impression = JSON.stringify(this.uniqueImpressions);
     sessionStorage.setItem('impression', impression);
     this.xrayAnnotatedImpressionService.xrayAnnotatedImpressions(
       this.uniqueImpressions

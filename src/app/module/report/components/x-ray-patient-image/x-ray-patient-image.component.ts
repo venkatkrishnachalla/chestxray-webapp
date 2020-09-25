@@ -157,9 +157,15 @@ export class XRayPatientImageComponent implements OnInit {
     let indexValue = 0;
     let indexValueDisease = 0;
     let mainSource = '';
+    let annotationData = {
+      Impression: [],
+      diseases: [],
+      Findings: {}
+    };
     const data = sessionStorage.getItem('x-ray_Data');
-    // tslint:disable-next-line: no-string-literal
-    const annotationData = JSON.parse(data)['data'].ndarray[0];
+    if (data){
+      // tslint:disable-next-line: no-string-literal
+    annotationData = JSON.parse(data)['data'].ndarray[0];
     annotationData.Impression.forEach((element) => {
       element.index = indexValue;
       if (element.Source === 'ML' && mainSource !== 'ML+DR'){
@@ -220,7 +226,8 @@ export class XRayPatientImageComponent implements OnInit {
         outputSub = input.split(',');
         outputMain = 'additional';
       }
-      if (outputSub.length > 0) {
+      const length = annotationData.Impression.length;
+      if (outputSub.length > 0 && length !== 0) {
         outputSub.forEach((finalOutput) => {
           finalOutput = finalOutput.replace(/\//g, '').trim();
 
@@ -228,7 +235,6 @@ export class XRayPatientImageComponent implements OnInit {
             (x) => x.sentence === finalOutput
           );
           if (index === -1) {
-            const length = annotationData.Impression.length;
             const impressionIndex = annotationData.Impression[length - 1].index;
             const newImpression = {
               index: impressionIndex + 1,
@@ -249,13 +255,11 @@ export class XRayPatientImageComponent implements OnInit {
             annotationData.Findings[outputMain].push(index);
           }
         });
-      } else if (output[0] !== ' ') {
-        // tslint:disable-next-line: max-line-length
+      } else if (output[0] !== ' ' && length !== 0) {
         const index = annotationData.Impression.findIndex(
           (x) => x.sentence === (output[1] ? output[1].trim() : '')
         );
         if (index === -1) {
-          const length = annotationData.Impression.length;
           const impressionIndex = annotationData.Impression[length - 1].index;
           const newImpression = {
             index: impressionIndex + 1,
@@ -263,7 +267,6 @@ export class XRayPatientImageComponent implements OnInit {
             Source: 'DR',
           };
           if (output[1] !== '') {
-            // tslint:disable-next-line: max-line-length
             if (
               annotationData.Impression.findIndex(
                 (s) => s.sentence === (output[1] ? output[1].trim() : '')
@@ -278,6 +281,7 @@ export class XRayPatientImageComponent implements OnInit {
         }
       }
     });
+    }
     const FinalData = {
       xRayId: this.patientInfo.xRayId,
       findings: annotationData.Findings,
@@ -285,7 +289,7 @@ export class XRayPatientImageComponent implements OnInit {
       diseases: annotationData.diseases,
       updatedBy: this.patientInfo.assignedTo,
       updatedOn: new Date().toJSON().slice(0, 10),
-      Source: mainSource,
+      Source: mainSource === '' ? 'DR' : mainSource,
     };
     if (this.patientInfo.isAnnotated) {
       this.annotatedXrayService.updateSubmitReport(FinalData).subscribe(
@@ -293,11 +297,11 @@ export class XRayPatientImageComponent implements OnInit {
           this.spinnerService.hide();
           this.eventEmitterService.onStatusChange(true);
           this.eventEmitterService2.patientInfoStatusChange(true);
-          this.toastrService.success('Report submitted successfully');
+          this.toastrService.success('Report updated successfully');
         },
         (errorMessage: string) => {
           this.spinnerService.hide();
-          this.toastrService.error('Failed to submit annotated data');
+          this.toastrService.error('Failed to update annotated data');
         }
       );
     } else {

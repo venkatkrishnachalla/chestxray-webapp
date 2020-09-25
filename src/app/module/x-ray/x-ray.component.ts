@@ -203,13 +203,12 @@ submitReport() {
       outputSub = input.split(',');
       outputMain = 'additional';
     }
-    if (outputSub.length > 0){
+    const length = annotationData.Impression.length;
+    if (outputSub.length > 0 && length !== 0){
       outputSub.forEach(finalOutput => {
         finalOutput = finalOutput.replace(/\//g, '').trim();
-        
         const index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
         if (index === -1){
-          const length = annotationData.Impression.length;
           const impressionIndex = annotationData.Impression[length - 1].index;
           const newImpression = {
             index: impressionIndex + 1, 
@@ -228,11 +227,10 @@ submitReport() {
         }
       });
     }
-    else if (output[0] !== ' '){
+    else if (output[0] !== ' ' && length !== 0){
       // tslint:disable-next-line: max-line-length
       const index =  annotationData.Impression.findIndex(x => x.sentence === (output[1] ? output[1].trim() : '') );
       if (index === -1){
-        const length = annotationData.Impression.length;
         const impressionIndex = annotationData.Impression[length - 1].index;
         const newImpression = {
           index: impressionIndex + 1, 
@@ -259,7 +257,7 @@ submitReport() {
     diseases: annotationData.diseases,
     updatedBy: this.canvas.patientDetail.assignedTo,
     updatedOn: new Date().toJSON().slice(0, 10),
-    Source: mainSource
+    Source: mainSource === '' ? 'DR' : mainSource
   };
   if (this.canvas.patientDetail.isAnnotated){
       this.xrayService.updateSubmitReport(FinalData)
@@ -268,12 +266,12 @@ submitReport() {
             this.spinnerService.hide();
             this.disableSubmitBtn = false;
             this.eventEmitterService.onStatusChange(true);
-            this.toastrService.success('Report submitted successfully');
+            this.toastrService.success('Report updated successfully');
           },
           (errorMessage: string) => {
             this.spinnerService.hide();
             this.disableSubmitBtn = false;
-            this.toastrService.error('Failed to submit annotated data');
+            this.toastrService.error('Failed to update annotated data');
           }
         );
     }
