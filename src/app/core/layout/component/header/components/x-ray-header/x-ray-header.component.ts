@@ -90,6 +90,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
         (a) => a.hospitalPatientId === this.patientID
       );
       this.currentPatientData = this.patientRows[this.currentIndex];
+      this.isProcessed = this.currentPatientData.isAnnotated;
       this.disablePrevious = this.currentIndex === 0 ? true : false;
       this.disableNext = this.currentIndex === lastIndex ? true : false;
     }
