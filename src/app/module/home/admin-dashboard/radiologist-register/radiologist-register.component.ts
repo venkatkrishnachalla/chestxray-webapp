@@ -1,9 +1,6 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, ViewChild, } from '@angular/core';
+import { AdminDashboardComponent } from '../admin-dashboard.component';
 
-/**
- * @title Dialog elements
- */
 @Component({
   selector: 'cxr-radiologist-register',
   templateUrl: './radiologist-register.component.html',
@@ -11,18 +8,5 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class RadiologistRegisterComponent implements OnInit {
-
-  constructor(public dialog: MatDialog) { }
-
-  ngOnInit(): void {
-  }
-
-  openDialog() {
-    this.dialog.open(RadiologistRegisterComponent);
-  }
-
-  toggleRadiologist(event) {
-    console.log('evnets', event);
-  }
-
+  ngOnInit(): void {}
 }

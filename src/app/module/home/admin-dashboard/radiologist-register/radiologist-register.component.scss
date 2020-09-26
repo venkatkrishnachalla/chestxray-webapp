@@ -1,0 +1,16 @@
+::ng-deep .mat-dialog-container {
+    padding-top: 0 !important;
+    background-color: #ffffff;
+    height: 100% !important;
+    opacity: 1.0 !important;
+}
+
+.add-radiologist-container {
+    .close {
+        float: right;
+        cursor: pointer;
+    }
+    .row {
+        display: flex;
+    }
+}

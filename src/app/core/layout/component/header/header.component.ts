@@ -3,12 +3,13 @@ import {
   OnInit,
   EventEmitter,
   Output,
-  OnDestroy,
+  OnDestroy, ViewChild
 } from '@angular/core';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import User from 'src/app/module/auth/user.modal';
+import { AdminDashboardComponent } from 'src/app/module/home/admin-dashboard/admin-dashboard.component';
 
 @Component({
   selector: 'cxr-header',
@@ -22,13 +23,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   doctorName: string;
   toggleActive: boolean;
   userroles: string;
-
+  disabled: boolean;
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
-  @Output() addRadiologist: EventEmitter<string> = new EventEmitter<string>();
     /*  
     * constructor for HeaderComponent class  
     */  
-  constructor(private authService: AuthService, public router: Router) {}
+  constructor(private authService: AuthService, public router: Router) {
+    this.authService.addRadiologist.next(false);
+  }
 
   /**  
  * This is a class init function.  
@@ -82,8 +84,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   addRadiologists() {
-    this.addRadiologist.emit('clicked');
-    console.log('Emitted')
+    this.authService.addRadiologist.next(true);
   }
 
   /**  

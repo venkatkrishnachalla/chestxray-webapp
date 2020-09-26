@@ -7,13 +7,14 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { RadiologistRegisterComponent } from './radiologist-register/radiologist-register.component';
-
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'cxr-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss']
 })
+
 export class AdminDashboardComponent implements OnInit {
   private userSubscription: Subscription;
 
@@ -23,11 +24,17 @@ export class AdminDashboardComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(RadiologistRegisterComponent) radiologist: RadiologistRegisterComponent;
-  // radiologistForm: boolean;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,
+    public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    // To open addRadiologist pop up modal
+    this.authService.addRadiologist.subscribe((status: Boolean) => {
+      if(status){
+      this.dialog.open(RadiologistRegisterComponent, { disableClose: true });
+      }
+    });
 
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
@@ -40,7 +47,6 @@ export class AdminDashboardComponent implements OnInit {
         }
       }
     );
-
   }
 
   applyFilter(event: Event) {
@@ -50,11 +56,6 @@ export class AdminDashboardComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-
-  addRadiologist(event) {
-    this.radiologist.toggleRadiologist(event);
-    console.log('edited', event);
   }
 
   ngAfterViewInit() {

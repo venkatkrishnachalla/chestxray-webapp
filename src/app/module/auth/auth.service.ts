@@ -30,6 +30,7 @@ interface AuthResponseData {
 // AuthService class implementation  
 export class AuthService {
   public userSubject: BehaviorSubject<User>;
+  public addRadiologist = new BehaviorSubject(false);
   private tokenExpirationTimer: any;
   private refreshTokenTimer: any;
 

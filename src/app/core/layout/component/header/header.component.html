@@ -36,6 +36,7 @@
       'disabled-add-patient': userroles != 'Admin'
     }"
     [title]="userroles == 'Admin' ? 'Add Radiologist' : 'Add Patient'"
+    [disabled] = "userroles != 'Admin'"
     (click)="addRadiologists()"
   >
     <span class="material-icons">person_add_alt_1</span>
