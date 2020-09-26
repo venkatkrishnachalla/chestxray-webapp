@@ -5,6 +5,7 @@ const patientInstanceId = window.cxrDomain +'/api/v1/Patient/';
 const PatientImage= window.cxrDomain +'/api/instance/';
 const askAI = window.askAI +'/seldon/seldon/cxr-classifier/api/v1.0/predictions';
 const submitReport = window.cxrDomain +'/api-dev/v1/Annotation';
+const addRadiologist = window.cxrDomain + '/identity-test/v1/Account/Register';
 
 window ["login"] = authLogin;
 window ["refreshToken"] = authRefreshToken;
@@ -13,3 +14,4 @@ window ["patientInstanceId"] = patientInstanceId;
 window ["patientImage"]= PatientImage;
 window ["askAI"] = askAI;
 window ["submit"] = submitReport;
+window ["addRadiologist"] = addRadiologist;
