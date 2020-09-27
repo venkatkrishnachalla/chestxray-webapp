@@ -17,6 +17,7 @@ import { CoreModule } from 'src/app/core/core.module';
 import { PatientInfoComponent } from './patient-info/patient-info.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { RadiologistRegisterComponent } from './admin-dashboard/radiologist-register/radiologist-register.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { RadiologistRegisterComponent } from './admin-dashboard/radiologist-regi
     ReactiveFormsModule,
     CommonModule,
     CoreModule,
+    SharedModule,
     AgGridModule.withComponents([]),
   ],
 })

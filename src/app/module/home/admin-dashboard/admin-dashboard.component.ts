@@ -32,7 +32,7 @@ export class AdminDashboardComponent implements OnInit {
     // To open addRadiologist pop up modal
     this.authService.addRadiologist.subscribe((status: Boolean) => {
       if(status){
-      this.dialog.open(RadiologistRegisterComponent, { disableClose: true });
+      this.dialog.open(RadiologistRegisterComponent, { disableClose: true, width: '100%' });
       }
     });
 

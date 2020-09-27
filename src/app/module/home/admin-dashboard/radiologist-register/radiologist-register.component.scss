@@ -26,6 +26,10 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.container {
+    width: 100%;
+}
+
 .add-radiologist-container {
     h1 {
         margin: 10px auto;
@@ -43,7 +47,7 @@
     }
 
     input[type=text], input[type=password], input[type=email], select {
-        min-width: 70%;
+        // min-width: 70%;
         width: 100%;
         padding: 8px;
         margin: 8px 0;
