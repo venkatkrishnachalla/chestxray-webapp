@@ -35,7 +35,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is a init function, retrieve current user details.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
@@ -83,7 +83,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is a f function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * f();
    */
@@ -94,7 +94,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is a get today date to disable future dates in date picker.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getToday();
    */
@@ -105,7 +105,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is on image file changing event.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * onFileChange(event);
    */
@@ -133,7 +133,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is on capture drag and drop of image.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * dragDropEvent(event);
    */
@@ -144,7 +144,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is on capture drag and drop of image file event.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * dragDropFile(event);
    */
@@ -159,7 +159,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is on new patient form submit.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * onSubmit();
    */
@@ -214,7 +214,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is on unsubscribe user subscription after moving out from this component
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnDestroy();
    */

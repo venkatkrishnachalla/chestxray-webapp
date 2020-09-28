@@ -6,23 +6,25 @@ import { EventEmitterService } from 'src/app/service/event-emitter.service';
   templateUrl: './error-message.component.html',
   styleUrls: ['./error-message.component.scss'],
 })
-// ErrorMessageComponent class implementation  
+// ErrorMessageComponent class implementation
 export class ErrorMessageComponent implements OnInit {
   showError: boolean;
   errorMessage: string;
   errorStatus: any;
 
-/*  
-* Constructor for ErrorMessageComponent class  
-*/  
+  /*
+   * Constructor for ErrorMessageComponent class
+   */
+
   constructor(private eventEmitterService: EventEmitterService) {}
 
-   /**  
- * This is a init function, it will handle the error messages  
- * @param {void} empty - A empty param  
- * @example  
- * ngOnInit();
- */  
+  /**
+   * This is a init function, it will handle the error messages
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
+
   ngOnInit(): void {
     this.eventEmitterService.invokeDisplayErrorMessage.subscribe(
       (errorResponse) => {

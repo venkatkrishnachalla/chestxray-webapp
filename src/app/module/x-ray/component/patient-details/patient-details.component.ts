@@ -20,7 +20,7 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
   history: string;
   patientDetails: PatientDetailData;
   _subscription: Subscription;
-  PatientDetailsText: string = 'patient details';
+  PatientDetailsText: string;
   /*
    * constructor for PatientDetailsComponent class
    */
@@ -35,22 +35,21 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
-
   ngOnInit(): void {
+    this.PatientDetailsText = 'patient details';
     this.getPatientDetails();
   }
 
   /**
    * get patient detail function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getPatientDetails();
    */
-
   getPatientDetails() {
     let patient = history.state.patientDetails;
     if (patient === undefined) {
@@ -70,11 +69,10 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * on destroy event subscription
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnDestroy();
    */
-
   ngOnDestroy() {
     this._subscription.unsubscribe();
   }

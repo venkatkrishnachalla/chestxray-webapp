@@ -15,7 +15,7 @@ import User from 'src/app/module/auth/user.modal';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-// HeaderComponent class implementation  
+// HeaderComponent class implementation
 export class HeaderComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   isAuth = false;
@@ -23,17 +23,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleActive: boolean;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
-    /*  
-    * constructor for HeaderComponent class  
-    */  
+  /*
+   * constructor for HeaderComponent class
+   */
+
   constructor(private authService: AuthService, public router: Router) {}
 
-  /**  
- * This is a class init function.  
- * @param {void} empty - A empty param  
- * @example  
- * ngOnInit();
- */  
+  /**
+   * This is a class init function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
+
   ngOnInit(): void {
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
@@ -46,43 +48,47 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.initialize();
   }
 
-  /**  
- * This is a initialize function to check isAuth.  
- * @param {void} empty - A empty param  
- * @example  
- * initialize();
- */  
+  /**
+   * This is a initialize function to check isAuth.
+   * @param '{void}' empty - A empty param
+   * @example
+   * initialize();
+   */
+
   private initialize() {
     this.isAuth = !!this.authService.user;
   }
 
-    /**  
- * This is a logout function.  
- * @param {void} empty - A empty param  
- * @example  
- * onLogout();
- */ 
+  /**
+   * This is a logout function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * onLogout();
+   */
+
   onLogout() {
     sessionStorage.clear();
     this.authService.logOut();
   }
 
-      /**  
- * This is a toggleSidenav function, it will open side nav.  
- * @param {void} empty - A empty param  
- * @example  
- * toggleSidenav();
- */ 
+  /**
+   * This is a toggleSidenav function, it will open side nav.
+   * @param '{void}' empty - A empty param
+   * @example
+   * toggleSidenav();
+   */
+
   toggleSidenav() {
     this.buttonClicked.emit('clicked');
   }
 
-  /**  
- * This is a unsubscribe user subscription event.  
- * @param {void} empty - A empty param  
- * @example  
- * ngOnDestroy();
- */ 
+  /**
+   * This is a unsubscribe user subscription event.
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnDestroy();
+   */
+
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();

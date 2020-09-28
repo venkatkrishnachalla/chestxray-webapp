@@ -38,15 +38,15 @@ describe('ImpressionComponent', () => {
       };
       const mock = {
         name: 'BULLA',
-        isMLApi: true
+        isMLApi: true,
       };
       const ellipseMock = {
         x: 198,
         y: 200,
         a: 12,
         b: 14,
-        r: 75
-      }
+        r: 75,
+      };
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
@@ -65,15 +65,15 @@ describe('ImpressionComponent', () => {
       };
       const mock = {
         name: 'BULLA',
-        isMLApi: true
+        isMLApi: true,
       };
       const ellipseMock = {
         x: 198,
         y: 200,
         a: 12,
         b: 14,
-        r: 75
-      }
+        r: 75,
+      };
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
@@ -92,15 +92,15 @@ describe('ImpressionComponent', () => {
       };
       const mock = {
         name: 'BULLA',
-        isMLApi: true
+        isMLApi: true,
       };
       const ellipseMock = {
         x: 198,
         y: 200,
         a: 12,
         b: 14,
-        r: 75
-      }
+        r: 75,
+      };
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
@@ -116,7 +116,7 @@ describe('ImpressionComponent', () => {
     beforeEach(() => {
       const response = {
         name: 'BULLA',
-        isMLApi: true
+        isMLApi: true,
       };
       const mock = {
         name: 'abcde',
@@ -148,12 +148,12 @@ describe('ImpressionComponent', () => {
         {
           name: 'abcde',
           id: 2,
-          isMLApi: true
+          isMLApi: true,
         },
         {
           name: 'xyz',
           id: 1,
-          isMLApi: true
+          isMLApi: true,
         },
       ];
       component.deleteImpression(1, null, 2);
@@ -171,7 +171,7 @@ describe('ImpressionComponent', () => {
         {
           name: 'abcde',
           id: 2,
-          isMLApi: true
+          isMLApi: true,
         },
       ];
       component.updateImpression(response);
@@ -198,14 +198,14 @@ describe('ImpressionComponent', () => {
         {
           name: 'abcde',
           id: 2,
-          isMLApi: 'true'
+          isMLApi: 'true',
         },
       ];
       component.uniqueImpressions = [
         {
           name: 'abcde',
           id: 2,
-          isMLApi: 'true'
+          isMLApi: 'true',
         },
       ];
       component.getImpressionsToReport();

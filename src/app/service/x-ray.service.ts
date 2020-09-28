@@ -14,6 +14,8 @@ interface AiData {
 @Injectable({
   providedIn: 'root',
 })
+
+// XRayService class implementation
 export class XRayService {
   private annotatedXraySubject = new BehaviorSubject<any>({});
   private annotatedXrayImpressionSubject = new BehaviorSubject<any>({});
@@ -48,7 +50,11 @@ export class XRayService {
         'content-type': 'application/json',
       }),
     };
-    return this.http.post(this.endpoint.submitReport(), JSON.stringify(postData), httpOptions);
+    return this.http.post(
+      this.endpoint.submitReport(),
+      JSON.stringify(postData),
+      httpOptions
+    );
   }
   /*** update submitReport rest api call ***/
   updateSubmitReport(postData: object) {
@@ -57,7 +63,11 @@ export class XRayService {
         'content-type': 'application/json',
       }),
     };
-    return this.http.put(this.endpoint.submitReport(), JSON.stringify(postData), httpOptions);
+    return this.http.put(
+      this.endpoint.submitReport(),
+      JSON.stringify(postData),
+      httpOptions
+    );
   }
 
   /*** handle error function ***/

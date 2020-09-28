@@ -15,6 +15,11 @@ export class PathologyToolComponent implements OnInit {
    */
   constructor() {}
 
-  /*** PathologyToolComponent class init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty- A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {}
 }

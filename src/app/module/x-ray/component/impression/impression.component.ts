@@ -24,14 +24,14 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   _subscription: Subscription;
   impressionsText = 'Impressions';
   hideShowAll: boolean;
-  
-  /*  
-* constructor for ImpressionComponent class  
-*/
+
+  /*
+   * constructor for ImpressionComponent class
+   */
   constructor(
     private eventEmitterService: EventEmitterService,
     private xrayAnnotatedImpressionService: XRayService,
-    private eventEmitterService2 : EventEmitterService2
+    private eventEmitterService2: EventEmitterService2
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -43,16 +43,21 @@ export class ImpressionComponent implements OnInit, OnDestroy {
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
-
   ngOnInit(): void {
     this.hideShowAll = true;
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
-      (info: { check: any; id: any; disease: any; objectindex: any; isMLAi: boolean }) => {
+      (info: {
+        check: any;
+        id: any;
+        disease: any;
+        objectindex: any;
+        isMLAi: boolean;
+      }) => {
         switch (info.check) {
           case 'delete':
             this.deleteImpression(info.id, info.disease, info.objectindex);
@@ -65,30 +70,32 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.eventEmitterService2.invokeEyeIconFunction.subscribe(
-      (data) => {
-        const event = {target: { checked : data} } ;
-        this.hideorShowAllFun(event);
-      }
-    );
+    this.eventEmitterService2.invokeEyeIconFunction.subscribe((data) => {
+      const event = { target: { checked: data } };
+      this.hideorShowAllFun(event);
+    });
   }
 
   /**
    * function to get impression from xray page
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getImpressions();
    */
-
   getImpressions() {
     this.eventEmitterService.invokeComponentData.subscribe(
-      (obj: { name: any; isMLApi: any; color: any; Source: any, idNew: any }) => {
-        if (obj.idNew !== '00'){
+      (obj: {
+        name: any;
+        isMLApi: any;
+        color: any;
+        Source: any;
+        idNew: any;
+      }) => {
+        if (obj.idNew !== '00') {
           const index = this.impression.findIndex((a) => a.id === obj.idNew);
           if (index !== -1) {
             this.impression.splice(index, 1);
-          }
-          else{
+          } else {
             this.impression.push(obj);
           }
         }
@@ -107,11 +114,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
 
   /**
    * function to filter unique impressions
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * uniqueImpressionsData();
    */
-
   uniqueImpressionsData() {
     this.uniqueImpressions = [];
     this.impression.filter((item) => {
@@ -128,28 +134,27 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           name: item.name,
           colors: color,
           Source: item.Source,
-          checked: true
+          checked: true,
         });
       }
       return null;
     });
-    const event = {target: { checked : true}};
+    const event = { target: { checked: true } };
     this.hideorShowAllFun(event);
     this.updateFindings();
   }
 
   /**
    * delete impression function
-   * @param {string} value - A string param
-   * @param {string} value - A string param
-   * @param {number} index - A number param
+   * @param '{string}'value - A string param
+   * @param '{string}'value - A string param
+   * @param '{number}' index - A number param
    * @example
    * deleteImpression(id, disease, objectindex);
    */
-
   deleteImpression(id: number, disease: string, objectindex: number) {
     const index = this.impression.findIndex((item) => item.idNew === id);
-    if (index !== -1){
+    if (index !== -1) {
       this.impression.splice(index, 1);
     }
     this.uniqueImpressionsData();
@@ -160,22 +165,20 @@ export class ImpressionComponent implements OnInit, OnDestroy {
 
   /**
    * function to update findings
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * updateFindings();
    */
-
   updateFindings() {
     this.eventEmitterService.onImpressionDataShared(this.impression);
   }
 
   /**
    * function to update impression
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * updateImpression(info);
    */
-
   updateImpression(info) {
     const index = this.impression.findIndex((item) => item.idNew === info.id);
     this.impression.splice(index, 1, { idNew: info.id, name: info.name });
@@ -188,9 +191,9 @@ export class ImpressionComponent implements OnInit, OnDestroy {
 
   /**
    * function to update color code to impression list
-   * @param {string} value - A string param
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    * getColorMapping(diseases, isMLApi, impcolor);
    */
@@ -205,10 +208,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**  
+  /**
    * unction to pass impressions list to report page
-   * @param {void} empty - A empty param 
-   * @example  
+   * @param '{void}' empty - A empty param
+   * @example
    * getImpressionsToReport();
    */
   getImpressionsToReport() {
@@ -218,63 +221,69 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       this.uniqueImpressions
     );
   }
-  /**  
+
+  /**
    * function to pass impressions list to report page
-   * @param {void} empty - A empty param 
-   * @example  
+   * @param '{void}' empty - A empty param
+   * @example
    * displayFun();
    */
-  displayFun(data, event, index){
+  displayFun(data, event, index) {
     this.uniqueImpressions[index].checked = event.target.checked;
-    if (!event.target.checked){
+    if (!event.target.checked) {
       let count = 0;
-      this.uniqueImpressions.forEach(element => {
-        if (element.checked){
+      this.uniqueImpressions.forEach((element) => {
+        if (element.checked) {
           count++;
         }
       });
-      if (count === 0){
+      if (count === 0) {
         this.hideShowAll = false;
-        this.eventEmitterService.onImpressionCheckboxClick({title: 'hideAll'});
+        this.eventEmitterService.onImpressionCheckboxClick({
+          title: 'hideAll',
+        });
       }
-    }
-    else{
+    } else {
       this.hideShowAll = true;
-      this.eventEmitterService.onImpressionCheckboxClick({title: 'showAll'});
+      this.eventEmitterService.onImpressionCheckboxClick({ title: 'showAll' });
     }
-    this.eventEmitterService.onImpressionCheckboxClick({info: data, check: event.target.checked, title: 'Single'});
+    this.eventEmitterService.onImpressionCheckboxClick({
+      info: data,
+      check: event.target.checked,
+      title: 'Single',
+    });
   }
 
-  /**  
+  /**
    * function to pass impressions list to report page
-   * @param {void} empty - A empty param 
-   * @example  
+   * @param '{void}' empty - A empty param
+   * @example
    * displayFun();
    */
-  hideorShowAllFun(event){
-    if (event.target.checked){
+  hideorShowAllFun(event) {
+    if (event.target.checked) {
       this.hideShowAll = true;
-      this.uniqueImpressions.forEach(element => {
+      this.uniqueImpressions.forEach((element) => {
         element.checked = true;
       });
-    }
-    else{
+    } else {
       this.hideShowAll = false;
-      this.uniqueImpressions.forEach(element => {
+      this.uniqueImpressions.forEach((element) => {
         element.checked = false;
       });
     }
-    this.eventEmitterService.onImpressionCheckboxClick({check: event.target.checked, title: 'All'});
+    this.eventEmitterService.onImpressionCheckboxClick({
+      check: event.target.checked,
+      title: 'All',
+    });
   }
 
-  /*** on destroy event subscription ***/
-  
- /**  
-  * on destroy event subscription 
-  * @param {void} empty - A empty param 
-  * @example  
-  * ngOnDestroy();
-  */
+  /**
+   * on destroy event subscription
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnDestroy();
+   */
   ngOnDestroy() {
     this._subscription.unsubscribe();
   }

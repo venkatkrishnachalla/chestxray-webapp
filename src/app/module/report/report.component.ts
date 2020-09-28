@@ -80,11 +80,10 @@ export class ReportComponent implements OnInit {
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
-
   ngOnInit(): void {
     this.spinnerService.show();
     this.showPrintForm = false;
@@ -116,17 +115,22 @@ export class ReportComponent implements OnInit {
     }, 2500);
   }
 
+  /**
+   * This is a  impressionData function.
+   * @param '{any}' any - A any param
+   * @example
+   * impressionData(event);
+   */
   impressionData(event: any) {
     this.annotatedImpression = event;
   }
 
   /**
    * This is a  event to go back to xray page .
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * goBackToXray();
    */
-
   goBackToXray() {
     this.eventEmitterService.onComponentButtonClick({
       data: [],
@@ -139,22 +143,20 @@ export class ReportComponent implements OnInit {
 
   /**
    * This is a event to enable print preview selector.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * enablePrint(event);
    */
-
   enablePrint(event) {
     this.showPrintForm = event;
   }
 
   /**
    * This is to get the dimensions for image container.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * setCanvasDimension();
    */
-
   setCanvasDimension() {
     this.canvasDynamicWidth = 367;
     this.canvasDynamicHeight = 367;
@@ -163,11 +165,10 @@ export class ReportComponent implements OnInit {
 
   /**
    * This is to generate a canvas using fabric.js .
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * generateCanvas();
    */
-
   generateCanvas() {
     fabric.Image.fromURL(this.annotatedImage, (img) => {
       this.xRayImage = img;
@@ -177,23 +178,21 @@ export class ReportComponent implements OnInit {
 
   /**
    * function to compare image vs container aspect ratio width .
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    * getWidthFirst(imageAspectRatio, containerAspectRatio);
    */
-
   getWidthFirst(imageAspectRatio, containerAspectRatio) {
     return imageAspectRatio > containerAspectRatio;
   }
 
   /**
    * This is to setting BackgroundImage for canvas block .
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * setCanvasBackground();
    */
-
   setCanvasBackground() {
     const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
     const containerAspectRatio =

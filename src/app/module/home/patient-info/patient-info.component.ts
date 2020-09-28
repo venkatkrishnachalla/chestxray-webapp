@@ -15,7 +15,18 @@ export class PatientInfoComponent implements OnInit {
   history = '-';
   hideInfo: boolean;
 
+  /*
+   * constructor for PatientInfoComponent class
+   */
+
   constructor() {}
+
+  /**
+   * This is a init function, retrieve current user details.
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
 
   ngOnInit(): void {
     this.infoSubscription = this.patientInfo.subscribe((patientInfo: any) => {
@@ -27,12 +38,33 @@ export class PatientInfoComponent implements OnInit {
     });
   }
 
+  /**
+   * This is a featureHide function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * featureHide();
+   */
+
   featureHide(): void {
     this.hideInfo = false;
   }
 
+  /**
+   * This is a HostListener function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * HostListener();
+   */
+
   @HostListener('document:click', ['$event'])
+
+  /**
+   * This is a clickout function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * clickout();
+   */
   clickout() {
-   this.hideInfo = false;
+    this.hideInfo = false;
   }
 }

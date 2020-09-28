@@ -55,11 +55,10 @@ export class SignInComponent implements OnInit {
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
-
   ngOnInit(): void {
     this.usernameElementRef.nativeElement.focus();
     this.signInText = this.constants.loginPage;
@@ -74,11 +73,10 @@ export class SignInComponent implements OnInit {
 
   /**
    * This is on sign in function.
-   * @param {NgForm} data - A array param
+   * @param '{NgForm}' data - A array param
    * @example
    * onSignIn(form);
    */
-
   onSignIn(form: NgForm) {
     const networkStatus = navigator.onLine;
     if (form.valid) {

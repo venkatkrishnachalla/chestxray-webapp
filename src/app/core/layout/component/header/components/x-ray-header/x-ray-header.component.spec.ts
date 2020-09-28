@@ -63,7 +63,7 @@ describe('XRayHeaderComponent', () => {
         username: 'mohan',
         userroles: ['hospitalradiologist'],
       };
-      authServiceSpy.userSubject = of(mockInResponse)
+      authServiceSpy.userSubject = of(mockInResponse);
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(patientMock);
       });

@@ -15,7 +15,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
   readonly constants = pathology;
   order = [];
   findings: any[];
-  findingsText: string = 'Findings';
+  findingsText: string;
   item0: any;
   _subscription: Subscription;
 
@@ -37,19 +37,20 @@ export class FindingsComponent implements OnInit, OnDestroy {
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
 
   ngOnInit(): void {
+    this.findingsText = 'Findings';
     this.findings = [];
     this.getFindings();
   }
 
   /**
    * get findings event to subscribe findings from xray image
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getFindings();
    */
@@ -132,7 +133,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
 
   /**
    * event to pass findings to report page
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getFindingsToReport();
    */
@@ -145,8 +146,8 @@ export class FindingsComponent implements OnInit, OnDestroy {
 
   /**
    * This is a updateFindings function
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    *   updateFindings(evt, index);
    */
@@ -161,7 +162,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
 
   /**
    * This is a preventBaseValue function
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    *   preventBaseValue(evt);
    */
@@ -195,7 +196,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
 
   /**
    * on destroy event subscription
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    *   ngOnDestroy();
    */
