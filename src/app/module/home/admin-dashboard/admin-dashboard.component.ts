@@ -55,7 +55,8 @@ export class AdminDashboardComponent implements OnInit {
     );
   }
 
-  applyFilter(filterValue: any) {
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
@@ -72,11 +73,4 @@ export class AdminDashboardComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
   }
-
-  // tslint:disable-next-line: use-lifecycle-interface
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
 }
-

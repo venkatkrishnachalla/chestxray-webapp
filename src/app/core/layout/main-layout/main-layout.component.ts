@@ -41,7 +41,7 @@ export class MainLayoutComponent implements OnInit {
     */  
   constructor() {}
 
-       /**  
+/**  
  * This is a init function.  
  * @param {void} empty - A empty param  
  * @example  
@@ -54,7 +54,7 @@ export class MainLayoutComponent implements OnInit {
     this.copyRightText = this.staticContents.copyRight;
   }
 
-       /**  
+/**  
  * This is a close function, it will close sidenav.  
  * @param {void} empty - A empty param  
  * @example  
@@ -64,7 +64,7 @@ export class MainLayoutComponent implements OnInit {
     this.sidenav.close();
   }
 
-         /**  
+/**  
  * This is a open function, it will open sidenav.  
  * @param {string} value - A string param  
  * @example  
