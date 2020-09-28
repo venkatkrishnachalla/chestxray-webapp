@@ -9,7 +9,7 @@ export class ValidationService {
     required: 'is required',
     minLengthArray: 'minLengthArray',
     email: 'is Invalid',
-    pattern: 'is Invalid',
+    pattern: 'must be at least 6 characters long, contain a number and special character.',
     max: `Max value is ${validatorValue.max}`,
     min: `Min value is ${validatorValue.min}`,
     invalidPassword:

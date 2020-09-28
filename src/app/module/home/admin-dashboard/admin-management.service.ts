@@ -1,5 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -11,5 +12,10 @@ export class AdminManagementService {
 
   addRadiologist(radiologist) {
     return this.http.post(environment.addRadiologist, radiologist);
+  }
+
+  /*** handle error function ***/
+  private handleError(errorResponse: HttpErrorResponse) {
+    return throwError(errorResponse.error.error.message);
   }
 }

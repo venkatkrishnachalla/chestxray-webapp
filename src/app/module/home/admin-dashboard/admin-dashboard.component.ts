@@ -1,4 +1,4 @@
-import { Component,OnInit,ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import User from '../../auth/user.modal';
@@ -8,6 +8,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { RadiologistRegisterComponent } from './radiologist-register/radiologist-register.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PatientListData } from '../../auth/interface.modal';
+import { DashboardService } from 'src/app/service/dashboard.service';
 
 @Component({
   selector: 'cxr-admin-dashboard',
@@ -17,7 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 export class AdminDashboardComponent implements OnInit {
   private userSubscription: Subscription;
-
+  patientList: PatientListData;
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource < PeriodicElement > (ELEMENT_DATA);
 
@@ -25,13 +27,16 @@ export class AdminDashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(RadiologistRegisterComponent) radiologist: RadiologistRegisterComponent;
 
-  constructor(private authService: AuthService,
-    public dialog: MatDialog) {}
+  constructor(
+    private authService: AuthService,
+    public dialog: MatDialog,
+    private dashboardService: DashboardService
+    ) {}
 
   ngOnInit(): void {
     // To open addRadiologist pop up modal
     this.authService.addRadiologist.subscribe((status: Boolean) => {
-      if(status){
+      if (status){
       this.dialog.open(RadiologistRegisterComponent, { disableClose: true, width: '100%' });
       }
     });
@@ -58,13 +63,20 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
+  getPatientList() {
+    this.dashboardService.getPatientList().subscribe( response => {
+      this.patientList = response;
+    });
+  }
+
+  // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 }
 
-  export interface PeriodicElement {
+export interface PeriodicElement {
     name: string;
     position: number;
     weight: number;

@@ -1,5 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { PatientListData } from 'src/app/module/auth/interface.modal';
+import { DashboardService } from 'src/app/service/dashboard.service';
 import { AdminManagementService } from '../admin-management.service';
 
 @Component({
@@ -12,13 +16,17 @@ export class RadiologistRegisterComponent implements OnInit {
   addRadiologistForm: FormGroup;
   typeOfRadiologist = ['Hospitalradiologist', 'Individualradiologist'];
   isFormSubmit = false;
-  constructor(private formBuilder: FormBuilder, private adminManagment: AdminManagementService) {}
+  constructor(
+    private formBuilder: FormBuilder, 
+    private adminManagment: AdminManagementService,
+    private toastrService: ToastrService,
+    ) {}
   ngOnInit(): void {
     this.addRadiologistForm = this.formBuilder.group(
     {
       userName: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{6,}')]],
       confirmPassword: ['', [Validators.required]],
       roles: ['', Validators.required]
     },
@@ -26,7 +34,6 @@ export class RadiologistRegisterComponent implements OnInit {
       validator: MustMatch('password', 'confirmPassword')
     }
     );
- 
   }
 
   addRadiologists() {
@@ -43,10 +50,26 @@ export class RadiologistRegisterComponent implements OnInit {
         this.addRadiologistForm.value.roles
       ]
     };
-    this.adminManagment.addRadiologist(request).subscribe((response) => {
-      // tslint:disable-next-line: no-console
-      console.log('Response', response);
-    });
+    this.adminManagment.addRadiologist(request).subscribe(
+      (response) => {
+        this.toastrService.success(`${request.userName} is Registered Succesfully`);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        if (errorResponse.error.ConfirmPassword) {
+          this.toastrService.error(errorResponse.error.ConfirmPassword[0]);
+          } else if (errorResponse.error.Email) {
+          this.toastrService.error(errorResponse.error.Email);
+          } else if (errorResponse.error) {
+          this.toastrService.error(errorResponse.error);
+          } else {
+            return;
+          }
+      });
+  }
+
+  resetForm() {
+    this.addRadiologistForm.reset();
+    this.addRadiologistForm.markAsUntouched();
   }
 
 }
