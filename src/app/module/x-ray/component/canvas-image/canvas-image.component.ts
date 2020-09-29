@@ -122,7 +122,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     RIGHT: 2,
     DOWN: 3,
   };
-  isChangeable: boolean = true;
+  isChangeable: boolean;
   scaleFactor: number;
   displayScaleFactor: number;
   fixedScale: number;
@@ -160,12 +160,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a host listener when resizing window.
-   * @param {string} value - A string param
-   * @param {any} array - A array param
+   * @param '{string}' value - A string param
+   * @param' {any}' array - A array param
    * @example
    * HostListener('window:resize', []);
    */
-
   @HostListener('window:resize', [])
   public onResize() {
     this.canvasDynamicHeight = 0;
@@ -185,12 +184,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
-
   ngOnInit() {
+    this.isChangeable = true;
     this.shiftKeyDown = false;
     this.displayScaleFactor = 1.0;
     this.displayScaleFactorBlock = false;
@@ -238,6 +237,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       (data: InvokeComponentData) => {
         switch (data.title) {
           case 'All':
+            // tslint:disable-next-line:no-string-literal
             this.ellipseLists(data['check'], '');
             break;
           case 'Single':
@@ -440,11 +440,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a prevNextPatientChange function.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * prevNextPatientChange(patientId);
    */
-
   prevNextPatientChange(patientId) {
     this.resetZoom();
     this.keepPositionInBounds(this.canvas);
@@ -474,11 +473,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a restrictionToBoundaryLimit function.
-   * @param {any} data - A array param
+   * @param '{any}' data - A array param
    * @example
    * restrictionToBoundaryLimit(obj);
    */
-
   restrictionToBoundaryLimit(obj) {
     if (
       obj.currentHeight > obj.canvas.height ||
@@ -518,11 +516,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a action icons model display event.
-   * @param {any} data - A array param
+   * @param '{any}' data - A array param
    * @example
    * actionIconsModelDispaly(data);
    */
-
   actionIconsModelDispaly(data) {
     this.markactionModelPosition(data);
     if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
@@ -536,11 +533,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a markactionModelPosition function.
-   * @param {any} data - A array param
+   * @param '{any}' data - A array param
    * @example
    * markactionModelPosition(data);
    */
-
   markactionModelPosition(data) {
     this.left = 0;
     this.top = 0;
@@ -548,19 +544,35 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const objCenterX = this.canvas.getActiveObject().getCenterPoint().x;
     const objCenterY = this.canvas.getActiveObject().oCoords.tr.y;
 
-    if (this.canvas.getActiveObject().top < 140 && this.canvas.getActiveObject().left < 450 && obj.angle > 240) {
+    if (
+      this.canvas.getActiveObject().top < 140 &&
+      this.canvas.getActiveObject().left < 450 &&
+      obj.angle > 240
+    ) {
       this.left = objCenterX + 275;
       this.top = objCenterY + 150;
-    } else if (this.canvas.getActiveObject().left < 200 && this.canvas.getActiveObject().top > 105) {
+    } else if (
+      this.canvas.getActiveObject().left < 200 &&
+      this.canvas.getActiveObject().top > 105
+    ) {
       this.left = objCenterX + 275;
       this.top = objCenterY;
-    } else if (this.canvas.getActiveObject().left < 200 && this.canvas.getActiveObject().top < 105) {
+    } else if (
+      this.canvas.getActiveObject().left < 200 &&
+      this.canvas.getActiveObject().top < 105
+    ) {
       this.left = objCenterX + 275;
       this.top = objCenterY + 150;
-    } else if (this.canvas.getActiveObject().left > 450 && this.canvas.getActiveObject().top > 105) {
+    } else if (
+      this.canvas.getActiveObject().left > 450 &&
+      this.canvas.getActiveObject().top > 105
+    ) {
       this.left = objCenterX;
       this.top = objCenterY;
-    } else if (this.canvas.getActiveObject().left < 45 && this.canvas.getActiveObject().top < 180) {
+    } else if (
+      this.canvas.getActiveObject().left < 45 &&
+      this.canvas.getActiveObject().top < 180
+    ) {
       this.left = objCenterX + 150;
       this.top = objCenterY + 150;
     } else if (this.canvas.getActiveObject().top < 105) {
@@ -615,7 +627,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a update search model function.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * updateSearchModel(value);
    */
@@ -628,7 +640,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a clear function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * clear();
    */
@@ -640,7 +652,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is a  retrieve patient instance id from server  function.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * getPatientInstanceId(id);
    */
@@ -662,7 +674,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is setting dimension for canvas container function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * setCanvasDimension();
    */
@@ -682,7 +694,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * retrieve patient image from api function.
-   * @param {string} vale - A string param
+   * @param '{string}' vale - A string param
    * @example
    * getPatientImage(instanceID);
    */
@@ -713,7 +725,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * generate a canvas using fabric.js function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * generateCanvas();
    */
@@ -738,8 +750,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * function to compare image vs container aspect ratio width
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    * getWidthFirst(imageAspectRatio, containerAspectRatio);
    */
@@ -749,7 +761,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * setting BackgroundImage for canvas block
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * setCanvasBackground();
    */
@@ -795,8 +807,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    *  draw ellipse, when user clicks ask ai accept button
-   * @param {any} data - A array param
-   * @param {string} value - A string param
+   * @param '{any}' data - A array param
+   * @param' {string}' value - A string param
    * @example
    * mlApiEllipseLoop(mlList, check);
    */
@@ -872,11 +884,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     let val1 = 0;
-    mLArray.diseases.forEach((disease: any, index) => {
+    mLArray.diseases.forEach((disease: any, index: any) => {
       if (disease.ellipses) {
         const idValue = 1000 + val1;
         let val2 = 0;
-        disease.ellipses.forEach((ellipse: any, index) => {
+        disease.ellipses.forEach((ellipse: any) => {
           ellipse.id = idValue + '' + val2;
           ellipse.color = disease.color;
           ellipse.Source = 'ML';
@@ -960,7 +972,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * on destroy event subscription
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnDestroy();
    */
@@ -973,7 +985,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Register click function from another component
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * firstComponentFunction(title);
    */
@@ -983,9 +995,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Draw Ellipse Functionality
-   * @param {string} value - A string param
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    *  drawEllipse(data, isMlAi?, diseaseItem?);
    */
@@ -1115,7 +1127,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    *  This is scaleSaveEllipse function
-   * @param {string} value - A string param
+   * @param'{string}' value - A string param
    * @example
    *  scaleSaveEllipse(data);
    */
@@ -1143,7 +1155,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    *  This is  changeSelectableStatus function
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    *  changeSelectableStatus(val);
    */
@@ -1156,7 +1168,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * delete ellipse function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * deleteEllipse();
    */
@@ -1175,7 +1187,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Open pathology model
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * openPathologyModal();
    */
@@ -1193,8 +1205,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Search pathology functionality
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    * onSelect(event, item);
    */
@@ -1237,8 +1249,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is storeDataInSession function
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    * storeDataInSession(newdata, check);
    */
@@ -1252,7 +1264,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Emitting selected disease to Impression component
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * savePrediction();
    */
@@ -1289,7 +1301,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Delete active object
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * deletePrediction();
    */
@@ -1328,7 +1340,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * ellipse modified event
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ellipseModifiedEvent();
    */
@@ -1425,7 +1437,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Update active object
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * updatePrediction();
    */
@@ -1532,7 +1544,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Close Pathology modal functionality
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * closePathologyModal();
    */
@@ -1550,7 +1562,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * Free hand Drawing functionality
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    *  freeHandDrawing(data) ;
    */
@@ -1576,7 +1588,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * function to open pathology modal
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    *  save() ;
    */
@@ -1594,7 +1606,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * function to open pathology modal for update
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    *  updateEllipse();
    */
@@ -1609,7 +1621,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * onSubmitPatientDetails function to navigate to report page
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    *  onSubmitPatientDetails() ;
    */
@@ -1627,8 +1639,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    *  This is getColorMapping function
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    * getColorMapping(diseases, check);
    */
@@ -1724,7 +1736,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is saveEllipseIntoSession function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * saveEllipseIntoSession();
    */
@@ -1735,7 +1747,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is updateEllipseIntoSession function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * updateEllipseIntoSession();
    */
@@ -1768,7 +1780,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is updateFreeHandDrawingIntoSession function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * updateFreeHandDrawingIntoSession();
    */
@@ -1804,7 +1816,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is deleteEllipseInSession function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * deleteEllipseInSession();
    */
@@ -1824,7 +1836,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is deleteFreeHandDrawingInSession function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * deleteFreeHandDrawingInSession();
    */
@@ -1844,7 +1856,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is saveFreeHandDrawingIntoSession function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * saveFreeHandDrawingIntoSession();
    */
@@ -1875,7 +1887,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is getSessionEllipse function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getSessionEllipse();
    */
@@ -1911,7 +1923,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is getSessionFreeHandDrawing function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getSessionFreeHandDrawing();
    */
@@ -1957,7 +1969,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is resetZoom function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * resetZoom(123);
    */
@@ -1970,7 +1982,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is keepPositionInBounds function
-   * @param {any} data - A array param
+   * @param '{any}' data - A array param
    * @example
    * keepPositionInBounds(e);
    */
@@ -1999,9 +2011,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is clamp function
-   * @param {number} index - A number param
-   * @param {number} index - A number param
-   * @param {number} index - A number param
+   * @param '{number}' index - A number param
+   * @param '{number}' index - A number param
+   * @param '{number}' index - A number param
    * @example
    * clamp(123, 23, 13);
    */
@@ -2010,7 +2022,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
   /**
    * Hide/Show list of drawn ellipseList
-   * * @param {any} data - A array param
+   * @param '{any}' data - A array param
    * @example
    * ellipseLists();
    */
@@ -2037,7 +2049,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is showHideAnnotations function
-   * @param {any} array - A array param
+   * @param '{any}' array - A array param
    * @example
    * showHideAnnotations(data);
    */
@@ -2071,7 +2083,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is getBrightness function
-   * @param {number} value - A number param
+   * @param '{number}' value - A number param
    * @example
    * getBrightness(data);
    */
@@ -2083,7 +2095,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is getContrast function
-   * @param {number} value - A number param
+   * @param '{number}' value - A number param
    * @example
    * getContrast();
    */
@@ -2095,7 +2107,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   /**
    * This is getRange function
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getRange();
    */
@@ -2110,6 +2122,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       );
     }
   }
+
+  /**
+   * This is stopDragging function
+   * @param '{any}' array - A array param
+   * @example
+   * stopDragging(element);
+   */
 
   stopDragging(element) {
     element.lockMovementX = true;

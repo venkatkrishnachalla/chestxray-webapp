@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
+// EventEmitterService class implementation
 export class EventEmitterService {
   invokeComponentFunction = new EventEmitter();
   invokeComponentData = new EventEmitter();
@@ -23,7 +25,6 @@ export class EventEmitterService {
   brightnessValue = new EventEmitter();
   contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
-
 
   constructor() {}
 
@@ -86,10 +87,10 @@ export class EventEmitterService {
     this.invokeImpressionFunction.emit(data);
   }
 
-  onStatusChange(data){
+  onStatusChange(data) {
     this.onStatusChangeFunction.emit(data);
   }
-  
+
   /*** onComponentButtonClick event emit function ***/
   onBrightnessChange(title) {
     this.brightnessValue.emit(title);
@@ -99,7 +100,7 @@ export class EventEmitterService {
   onContrastChange(title: number) {
     this.contrastValue.emit(title);
   }
-  
+
   /*** onContrastChange event emit function ***/
   OnDefaultRanges(title: number) {
     this.defaultRange.emit(title);

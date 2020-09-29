@@ -17,7 +17,12 @@ export class FlipToolComponent implements OnInit {
    */
   constructor() {}
 
-  /*** FlipToolComponent class on init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty- A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     this.actionPanelFit = JSON.parse(
       JSON.stringify(this.constants.actionPanelFlip)

@@ -30,8 +30,8 @@ export class SideNavComponent implements OnInit {
 
   /**
    * This is a host listener when resizing window function.
-   * @param {string} value - A string param
-   * @param {any} data - A array param
+   * @param '{string}' value - A string param
+   * @param '{any}' data - A array param
    * @example
    * HostListener('window:resize', []);
    */
@@ -43,11 +43,10 @@ export class SideNavComponent implements OnInit {
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
-
   ngOnInit() {
     this.sidenavButton = this.constants.sidenavContent;
     this.sidenavDisplay();
@@ -55,11 +54,10 @@ export class SideNavComponent implements OnInit {
 
   /**
    * This is a sidenavDisplay function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * sidenavDisplay();
    */
-
   sidenavDisplay() {
     if (window.innerWidth <= 768) {
       this.sideNavToggle = true;

@@ -40,7 +40,12 @@ export class AskAiToolComponent implements OnInit, OnDestroy {
     );
   }
 
-  /*** AskAiToolComponent class init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     const askAiSelection = sessionStorage.getItem('askAiSelection');
     if (askAiSelection === 'true') {
@@ -49,16 +54,20 @@ export class AskAiToolComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * This is a askAI function.
-   * Event to emit canvas image, when click on ask ai button
+   * This is a askAI function, Event to emit canvas image, when click on ask ai button
+   * @param '{void}' empty - A empty param
+   * @example
+   * askAI();
    */
   askAI() {
     this.askAiEvent.emit();
   }
 
   /**
-   * This is a disableAskAiButton function.
-   * Event to disable ask ai button after ask ai button click
+   * This is a disableAskAiButton function, Event to disable ask ai button after ask ai button click
+   * @param '{void}' empty - A empty param
+   * @example
+   * disableAskAiButton();
    */
   disableAskAiButton() {
     this.disableAskAI = true;

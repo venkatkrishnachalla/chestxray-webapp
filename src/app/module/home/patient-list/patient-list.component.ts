@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { homeConstants } from 'src/app/constants/homeConstants';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
@@ -65,7 +71,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   /**
    * This is a init function, retrieve current user details.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
@@ -95,7 +101,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   /**
    * This is on ionGridReady method.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * onGridReady(params);
    */
@@ -111,7 +117,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   /**
    * This is on auth size all method.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * autoSizeAll(skipHeader);
    */
@@ -125,7 +131,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   /**
    * This is on get patient list function .
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getPatientList();
    */
@@ -160,7 +166,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   /**
    * This is on row click function.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * onRowClicked(e);
    */
@@ -179,7 +185,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   /**
    * This is on onActionViewClick icon click function
-   * @param {any} data - A any param
+   * @param '{any}' data - A any param
    * @example
    * onActionViewClick(data);
    */
@@ -190,7 +196,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
   /**
    * This is on onActionRedirectClick function , it will redirect to xray page
-   * @param {any} data - A any param
+   * @param '{any}' data - A any param
    * @example
    * onActionRedirectClick(data);
    */
@@ -201,12 +207,23 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.router.navigate(['x-ray'], { state: { patientDetails: data } });
   }
 
+  /**
+   * This is on toggleMenu function
+   * @param '{void}' empty - A void param
+   * @example
+   * toggleMenu();
+   */
   toggleMenu() {
     this.showPatientInfo = !this.showPatientInfo;
   }
 
+  /**
+   * This is on ngOnDestroy function
+   * @param '{void}' empty - A void param
+   * @example
+   * ngOnDestroy();
+   */
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
-
 }

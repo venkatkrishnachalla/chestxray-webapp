@@ -24,7 +24,12 @@ export class ZoominZoomoutToolComponent implements OnInit {
    */
   constructor(private eventEmitterService: EventEmitterService) {}
 
-  /*** ZoominZoomoutToolComponent class on init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty- A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     this.actionPanelZoom = JSON.parse(
       JSON.stringify(this.constants.actionPanelZoomInZoomOut)
@@ -33,8 +38,10 @@ export class ZoominZoomoutToolComponent implements OnInit {
 
   /**
    * This is a iconAction click function.
+   * @param '{any}' array- A any param
+   * @param '{number}' index- A number param
    * @example
-   * iconAction(data , index);
+   * iconAction([ellipse], 1);
    */
   iconAction(data, index) {
     for (const key in data) {

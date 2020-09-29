@@ -19,10 +19,17 @@ interface PatientData {
 @Injectable({
   providedIn: 'root',
 })
+
+// DashboardService class implementation
 export class DashboardService {
   constructor(private http: HttpClient, private endpoint: ApiEndPointService) {}
 
-  /*** get list patient list from rest api call ***/
+  /**
+   * get list patient list from rest api call
+   * @param '{void}' empty - A empty param
+   * @example
+   * getPatientList();
+   */
   getPatientList() {
     return this.http.get<PatientData>(this.endpoint.getPatientList()).pipe(
       catchError(this.handleError),
@@ -32,7 +39,12 @@ export class DashboardService {
     );
   }
 
-  /** handle error block ***/
+  /**
+   * handle error messages
+   * @param '{HttpErrorResponse}' HttpErrorResponse - A HttpErrorResponse param
+   * @example
+   * handleError(errorResponse);
+   */
   private handleError(errorResponse: HttpErrorResponse) {
     return throwError(errorResponse);
   }

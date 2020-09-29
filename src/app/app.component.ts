@@ -11,7 +11,7 @@ import { timer, Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-// AppComponent class implementation 
+// AppComponent class implementation
 export class AppComponent implements OnInit {
   title = 'cxr-web-app';
   isLoading = false;
@@ -21,18 +21,19 @@ export class AppComponent implements OnInit {
   session: any;
   @ViewChild('idleTimeoutModel') idleTimeoutModel: TemplateRef<any>;
 
-  /*  
-* constructor for AppComponent class  
-*/ 
+  /*
+   * constructor for AppComponent class
+   */
+
   constructor(
     private authService: AuthService,
     private spinnerService: SpinnerService,
     private dialog: MatDialog,
-    private router: Router,
+    private router: Router
   ) {
     this.session = new IdleSessionTimeout(5 * 60 * 6000);
     this.session.onTimeOut = () => {
-      if (window.location.pathname !== '/auth/login'){
+      if (window.location.pathname !== '/auth/login') {
         this.couterFunction();
         const dialogConfig = new MatDialogConfig();
         dialogConfig.restoreFocus = false;
@@ -42,19 +43,20 @@ export class AppComponent implements OnInit {
           height: '220px',
           width: '520px',
           disableClose: true,
-          position: {top: '63px'}
+          position: { top: '63px' },
         });
       }
     };
     this.session.start();
   }
 
-  /**  
-* This is a init function.  
-* @param {void} empty - A empty param  
-* @example  
-* ngOnInit();
-*/ 
+  /**
+   * This is a init function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
+
   ngOnInit(): void {
     this.session.start();
     this.loginOnBrowserRefresh();
@@ -63,21 +65,29 @@ export class AppComponent implements OnInit {
     });
   }
 
-  /**  
-* This is a loginOnBrowserRefresh function.  
-* @param {void} empty - A empty param  
-* @example  
-* loginOnBrowserRefresh();
-*/ 
+  /**
+   * This is a loginOnBrowserRefresh function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * loginOnBrowserRefresh();
+   */
+
   loginOnBrowserRefresh() {
     this.authService.autoLoginOnRefresh();
   }
 
-  couterFunction(){
+  /**
+   * This is a couterFunction function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * couterFunction();
+   */
+
+  couterFunction() {
     this.counter = 60;
     this.tick = 1000;
     this.countDown = timer(0, this.tick).subscribe(() => {
-      if (this.counter === 0){
+      if (this.counter === 0) {
         this.dialog.closeAll();
         this.authService.logOut();
         this.session.start();
@@ -86,7 +96,14 @@ export class AppComponent implements OnInit {
     });
   }
 
-  stayInApp(){
+  /**
+   * This is a stayInApp function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * stayInApp();
+   */
+
+  stayInApp() {
     this.dialog.closeAll();
     this.countDown.unsubscribe();
     this.session.dispose();
@@ -94,14 +111,22 @@ export class AppComponent implements OnInit {
     const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
     const token = sessionStorage.getItem('accessToken');
     this.authService.refreshToken(
-      token, 
-      accessToken.refreshToken, 
+      token,
+      accessToken.refreshToken,
       accessToken.username,
       accessToken.userroles,
       accessToken._tokenExpirationDate
-      );
+    );
   }
-  logout(){
+
+  /**
+   * This is a logout function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * logout();
+   */
+
+  logout() {
     this.dialog.closeAll();
     this.countDown.unsubscribe();
     this.session.dispose();

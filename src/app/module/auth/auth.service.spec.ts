@@ -19,7 +19,7 @@ describe('AuthService', () => {
     expect(authService).toBeTruthy();
   });
 
-    /*** it should call signIn function ***/
+  /*** it should call signIn function ***/
   describe('#signIn', () => {
     let responsePromise;
     beforeEach(() => {
@@ -39,7 +39,7 @@ describe('AuthService', () => {
     });
   });
 
-      /*** it should call signIn function ***/
+  /*** it should call signIn function ***/
   describe('#signIn', () => {
     beforeEach(() => {
       endpointSpy.getSingInURL.and.returnValue('http://localhost:4200/auth');
@@ -56,7 +56,7 @@ describe('AuthService', () => {
     });
   });
 
-        /*** it should call logOut function ***/
+  /*** it should call logOut function ***/
   describe('#logOut', () => {
     it('should call logout function, when tokenExpirationTimer is exist', () => {
       (authService as any).tokenExpirationTimer = '3000';
@@ -70,7 +70,7 @@ describe('AuthService', () => {
     });
   });
 
-        /*** it should call autoLoginOnRefresh function ***/
+  /*** it should call autoLoginOnRefresh function ***/
   describe('#autoLoginOnRefresh', () => {
     it('should call autoLoginOnRefresh function', () => {
       const authMock = {
@@ -79,8 +79,8 @@ describe('AuthService', () => {
         _token: 'etuaWqerll',
         _tokenExpirationDate: '2020-08-17T10:11:36.000Z',
         username: 'Ashwini',
-        userroles: ['HospitalRadiologist']
-      }
+        userroles: ['HospitalRadiologist'],
+      };
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(authMock);
       });
@@ -89,7 +89,7 @@ describe('AuthService', () => {
     });
   });
 
-        /*** it should call refreshToken function ***/
+  /*** it should call refreshToken function ***/
   describe('#refreshToken', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 204 });
@@ -102,7 +102,8 @@ describe('AuthService', () => {
     });
   });
 
- /*** it should call autoSessionTimeOut function ***/ 
+  /*** it should call autoSessionTimeOut function ***/
+
   describe('#autoSessionTimeOut', () => {
     beforeEach(() => {
       authService.autoSessionTimeOut(4563);
@@ -112,7 +113,8 @@ describe('AuthService', () => {
     });
   });
 
- /*** it should call refreshTokenTimeOut function ***/ 
+  /*** it should call refreshTokenTimeOut function ***/
+
   describe('#refreshTokenTimeOut', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 204 });
@@ -126,7 +128,7 @@ describe('AuthService', () => {
     });
   });
 
-/*** it should call handleAuthentication function ***/
+  /*** it should call handleAuthentication function ***/
   describe('#handleAuthentication', () => {
     beforeEach(() => {
       (authService as any).handleAuthentication(

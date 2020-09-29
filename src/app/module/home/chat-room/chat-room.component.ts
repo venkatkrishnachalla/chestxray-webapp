@@ -5,17 +5,19 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.scss'],
 })
-// ChatRoomComponent class implementation  
+// ChatRoomComponent class implementation
 export class ChatRoomComponent implements OnInit {
-    /*  
-* constructor for ChatRoomComponent class  
-*/ 
+  /*
+   * constructor for ChatRoomComponent class
+   */
+
   constructor() {}
- /**  
- * This is a init function.  
- * @param {void} empty - A empty param  
- * @example  
- * ngOnInit();
- */  
+  /**
+   * This is a init function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
+
   ngOnInit(): void {}
 }

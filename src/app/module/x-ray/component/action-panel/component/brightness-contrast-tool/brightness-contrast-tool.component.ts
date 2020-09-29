@@ -51,8 +51,11 @@ export class BrightnessContrastToolComponent implements OnInit {
    */
   constructor(private eventEmitterService: EventEmitterService) {}
 
-  /*
-   * BrightnessContrastToolComponent class ngOnInit function
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
    */
   ngOnInit(): void {
     this.brightnessPanel = JSON.parse(
@@ -65,7 +68,8 @@ export class BrightnessContrastToolComponent implements OnInit {
   }
 
   /**
-   * This is a setBrightnessSlidervalue function.
+   * This is a setBrightnessSlidervalue function
+   * @param '{number}' index - A number param
    * @example
    * setBrightnessSlidervalue(event);
    */
@@ -74,7 +78,8 @@ export class BrightnessContrastToolComponent implements OnInit {
   }
 
   /**
-   * This is a setContrastSlidervalue function.
+   * This is a setContrastSlidervalue function
+   * @param '{number}' index - A number param
    * @example
    * setContrastSlidervalue(event);
    */

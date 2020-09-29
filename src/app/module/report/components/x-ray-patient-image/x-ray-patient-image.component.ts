@@ -26,7 +26,7 @@ import User from 'src/app/module/auth/user.modal';
 })
 
 // XRayPatientImageComponent class implementation
-export class XRayPatientImageComponent implements OnInit {
+export class XRayPatientImageComponent implements OnInit, OnDestroy {
   patientImage: any;
   xrayAnnotatedImage: string;
   xrayAnnotatedImpression: string;
@@ -43,17 +43,18 @@ export class XRayPatientImageComponent implements OnInit {
   /*
    * constructor for XRayPatientImageComponent class
    */
-  constructor(private annotatedXrayService: XRayService,
-              private spinnerService: SpinnerService,
-              private authService: AuthService,
-              private toastrService: ToastrService,
-              private eventEmitterService: EventEmitterService,
-              private eventEmitterService2: EventEmitterService2,
-    ) {
-      this.eventEmitterService.findingsSubject.subscribe((data) => {
-        this.annotatedFindings = data;
-      });
-    }
+  constructor(
+    private annotatedXrayService: XRayService,
+    private spinnerService: SpinnerService,
+    private authService: AuthService,
+    private toastrService: ToastrService,
+    private eventEmitterService: EventEmitterService,
+    private eventEmitterService2: EventEmitterService2
+  ) {
+    this.eventEmitterService.findingsSubject.subscribe((data) => {
+      this.annotatedFindings = data;
+    });
+  }
 
   /**
    * This is a init function.
@@ -138,21 +139,20 @@ export class XRayPatientImageComponent implements OnInit {
 
   /**
    * This is a print button click emit function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * printClick();
    */
-
   printClick() {
     this.printEvent.emit(true);
   }
+
   /**
    * This is a submit button click function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * submitReport();
    */
-
   submitReport() {
     let indexValue = 0;
     let indexValueDisease = 0;
@@ -160,91 +160,115 @@ export class XRayPatientImageComponent implements OnInit {
     let annotationData = {
       Impression: [],
       diseases: [],
-      Findings: {}
+      Findings: {},
     };
     const data = sessionStorage.getItem('x-ray_Data');
-    if (data){
+    if (data) {
       // tslint:disable-next-line: no-string-literal
-    annotationData = JSON.parse(data)['data'].ndarray[0];
-    annotationData.Impression.forEach((element) => {
-      element.index = indexValue;
-      if (element.Source === 'ML' && mainSource !== 'ML+DR'){
-        mainSource = 'ML';
-      }
-      else if (element.Source === 'DR' && mainSource === ''){
-        mainSource = 'DR';
-      }
-      else if (element.Source === 'DR' && mainSource === 'ML'){
-        mainSource = mainSource + '+DR';
-      }
-      indexValue++;
-    });
-    annotationData.diseases.forEach((element) => {
-      delete element.index;
-      element.contours = [
-        {
-          Source: 'DR',
-          isUpdated: false,
-          isDeleted: false,
-        },
-      ];
-      if (element.ellipses) {
-        element.ellipses.forEach((ellipse) => {
-          delete ellipse.index;
-          delete ellipse.type;
-          delete ellipse.id;
-          delete ellipse.color;
-          delete ellipse.name;
-          delete ellipse.idvalue;
-          ellipse.Source = element.Source;
-        });
-      }
-      element.idx = indexValueDisease;
-      indexValueDisease++;
-    });
-    annotationData.Findings = {
-      additional: [],
-      bonythorax: [],
-      cardiacsilhouette: [],
-      costophrenicangles: [],
-      domesofdiaphragm: [],
-      hilarmediastinal: [],
-      lungfields: [],
-    };
-    this.spinnerService.show();
-    this.annotatedFindings.forEach((input) => {
-      const output = input.split(':');
-      let outputSub;
-      let outputMain;
-      if (input.indexOf(':') !== -1) {
-        outputSub = output[1].split(',');
-        outputMain = output[0]
-          .toLowerCase()
-          .replace(/\//g, '')
-          .replace(/ /g, '');
-      } else {
-        outputSub = input.split(',');
-        outputMain = 'additional';
-      }
-      const length = annotationData.Impression.length;
-      if (outputSub.length > 0 && length !== 0) {
-        outputSub.forEach((finalOutput) => {
-          finalOutput = finalOutput.replace(/\//g, '').trim();
+      annotationData = JSON.parse(data)['data'].ndarray[0];
+      annotationData.Impression.forEach((element) => {
+        element.index = indexValue;
+        if (element.Source === 'ML' && mainSource !== 'ML+DR') {
+          mainSource = 'ML';
+        } else if (element.Source === 'DR' && mainSource === '') {
+          mainSource = 'DR';
+        } else if (element.Source === 'DR' && mainSource === 'ML') {
+          mainSource = mainSource + '+DR';
+        }
+        indexValue++;
+      });
+      annotationData.diseases.forEach((element) => {
+        delete element.index;
+        element.contours = [
+          {
+            Source: 'DR',
+            isUpdated: false,
+            isDeleted: false,
+          },
+        ];
+        if (element.ellipses) {
+          element.ellipses.forEach((ellipse) => {
+            delete ellipse.index;
+            delete ellipse.type;
+            delete ellipse.id;
+            delete ellipse.color;
+            delete ellipse.name;
+            delete ellipse.idvalue;
+            ellipse.Source = element.Source;
+          });
+        }
+        element.idx = indexValueDisease;
+        indexValueDisease++;
+      });
+      annotationData.Findings = {
+        additional: [],
+        bonythorax: [],
+        cardiacsilhouette: [],
+        costophrenicangles: [],
+        domesofdiaphragm: [],
+        hilarmediastinal: [],
+        lungfields: [],
+      };
+      this.spinnerService.show();
+      this.annotatedFindings.forEach((input) => {
+        const output = input.split(':');
+        let outputSub;
+        let outputMain;
+        if (input.indexOf(':') !== -1) {
+          outputSub = output[1].split(',');
+          outputMain = output[0]
+            .toLowerCase()
+            .replace(/\//g, '')
+            .replace(/ /g, '');
+        } else {
+          outputSub = input.split(',');
+          outputMain = 'additional';
+        }
+        const length = annotationData.Impression.length;
+        if (outputSub.length > 0 && length !== 0) {
+          outputSub.forEach((finalOutput) => {
+            finalOutput = finalOutput.replace(/\//g, '').trim();
 
+            const index = annotationData.Impression.findIndex(
+              (x) => x.sentence === finalOutput
+            );
+            if (index === -1) {
+              const impressionIndex =
+                annotationData.Impression[length - 1].index;
+              const newImpression = {
+                index: impressionIndex + 1,
+                sentence: finalOutput,
+                Source: 'DR',
+              };
+              if (finalOutput !== '') {
+                if (
+                  annotationData.Impression.findIndex(
+                    (s) => s.sentence === finalOutput.trim()
+                  ) === -1
+                ) {
+                  annotationData.Impression.push(newImpression);
+                }
+                annotationData.Findings[outputMain].push(impressionIndex + 1);
+              }
+            } else {
+              annotationData.Findings[outputMain].push(index);
+            }
+          });
+        } else if (output[0] !== ' ' && length !== 0) {
           const index = annotationData.Impression.findIndex(
-            (x) => x.sentence === finalOutput
+            (x) => x.sentence === (output[1] ? output[1].trim() : '')
           );
           if (index === -1) {
             const impressionIndex = annotationData.Impression[length - 1].index;
             const newImpression = {
               index: impressionIndex + 1,
-              sentence: finalOutput,
+              sentence: output[1],
               Source: 'DR',
             };
-            if (finalOutput !== '') {
+            if (output[1] !== '') {
               if (
                 annotationData.Impression.findIndex(
-                  (s) => s.sentence === finalOutput.trim()
+                  (s) => s.sentence === (output[1] ? output[1].trim() : '')
                 ) === -1
               ) {
                 annotationData.Impression.push(newImpression);
@@ -254,33 +278,8 @@ export class XRayPatientImageComponent implements OnInit {
           } else {
             annotationData.Findings[outputMain].push(index);
           }
-        });
-      } else if (output[0] !== ' ' && length !== 0) {
-        const index = annotationData.Impression.findIndex(
-          (x) => x.sentence === (output[1] ? output[1].trim() : '')
-        );
-        if (index === -1) {
-          const impressionIndex = annotationData.Impression[length - 1].index;
-          const newImpression = {
-            index: impressionIndex + 1,
-            sentence: output[1],
-            Source: 'DR',
-          };
-          if (output[1] !== '') {
-            if (
-              annotationData.Impression.findIndex(
-                (s) => s.sentence === (output[1] ? output[1].trim() : '')
-              ) === -1
-            ) {
-              annotationData.Impression.push(newImpression);
-            }
-            annotationData.Findings[outputMain].push(impressionIndex + 1);
-          }
-        } else {
-          annotationData.Findings[outputMain].push(index);
         }
-      }
-    });
+      });
     }
     const FinalData = {
       xRayId: this.patientInfo.xRayId,
@@ -323,9 +322,9 @@ export class XRayPatientImageComponent implements OnInit {
 
   /**
    * This is on handle event to capture file details
-   * @param {void} empty - A empty param
+   * @param '{any}' any - A any param
    * @example
-   * handle();
+   * handle(e);
    */
   handle(e) {
     const fileEvent = e;
@@ -333,12 +332,11 @@ export class XRayPatientImageComponent implements OnInit {
 
   /**
    * This is on unsubscribe user subscription after moving out from this component
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnDestroy();
    */
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
   }
 }
