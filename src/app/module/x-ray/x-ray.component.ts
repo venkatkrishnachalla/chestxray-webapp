@@ -145,6 +145,7 @@ export class XRayComponent implements OnInit {
     let indexValue = 0;
     let indexValueDisease = 0;
     let mainSource = '';
+    // tslint:disable-next-line:no-string-literal
     const annotationData = this.canvas.savedInfo['data'].ndarray[0];
     annotationData.Impression.forEach((element) => {
       element.index = indexValue;

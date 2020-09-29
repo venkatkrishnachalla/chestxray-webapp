@@ -237,6 +237,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       (data: InvokeComponentData) => {
         switch (data.title) {
           case 'All':
+            // tslint:disable-next-line:no-string-literal
             this.ellipseLists(data['check'], '');
             break;
           case 'Single':
@@ -887,7 +888,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       if (disease.ellipses) {
         const idValue = 1000 + val1;
         let val2 = 0;
-        disease.ellipses.forEach((ellipse: any, index: any) => {
+        disease.ellipses.forEach((ellipse: any) => {
           ellipse.id = idValue + '' + val2;
           ellipse.color = disease.color;
           ellipse.Source = 'ML';

@@ -170,14 +170,19 @@ export class AuthService {
     _tokenExpirationDate: Date
   ) {
     const token = {
+      // tslint:disable-next-line: object-literal-shorthand
       accessToken: accessToken,
+      // tslint:disable-next-line: object-literal-shorthand
       refreshToken: refreshToken,
     };
     return this.http.post(this.endpoint.getRefreshToken(), token).subscribe(
       (data: any) => {
         const UserInfo = {
+          // tslint:disable-next-line: object-literal-shorthand
           username: username,
+          // tslint:disable-next-line: object-literal-shorthand
           userroles: userroles,
+          // tslint:disable-next-line: object-literal-shorthand
           _tokenExpirationDate: _tokenExpirationDate,
           _token: data.accessToken,
           refreshToken: data.refreshToken,
