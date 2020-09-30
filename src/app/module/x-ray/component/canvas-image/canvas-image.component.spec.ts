@@ -42,6 +42,9 @@ describe('CanvasImageComponent', () => {
   const sanitizerspy = jasmine.createSpyObj('DomSanitizer', [
     'bypassSecurityTrustStyle',
   ]);
+  const eventEmitterService2Spy = jasmine.createSpyObj('EventEmitterService2', [
+    'onEyeIconClick',
+  ]);
 
   beforeEach(() => {
     eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(undefined);
@@ -55,7 +58,8 @@ describe('CanvasImageComponent', () => {
       annotatedXrayServiceSpy,
       routerSpy,
       toastrServiceSpy,
-      sanitizerspy
+      sanitizerspy,
+      eventEmitterService2Spy
     );
   });
 
@@ -788,7 +792,7 @@ describe('CanvasImageComponent', () => {
             },
             set: () => {},
             isMLAi: true,
-            type: 'ellipse'
+            type: 'ellipse',
           };
         },
         _activeObject: {
@@ -830,7 +834,7 @@ describe('CanvasImageComponent', () => {
         rx: 56,
         ry: 59,
         angle: 0,
-        id: 4
+        id: 4,
       };
       component.selectedDisease = 'Bulla';
       component.ellipseModifiedEvent('Bulla', activateObject);
@@ -852,7 +856,7 @@ describe('CanvasImageComponent', () => {
             },
             set: () => {},
             isMLAi: true,
-            type: 'ellipse'
+            type: 'ellipse',
           };
         },
         _activeObject: {
@@ -874,7 +878,7 @@ describe('CanvasImageComponent', () => {
                   confidence: 0.6665520191192627,
                   contours: [],
                   ellipses: [
-                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 1 }
+                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 1 },
                   ],
                   idx: 0,
                   isMlAi: true,
@@ -893,7 +897,7 @@ describe('CanvasImageComponent', () => {
         rx: 56,
         ry: 59,
         angle: 0,
-        id: 4
+        id: 4,
       };
       component.selectedDisease = 'Bulla';
       component.ellipseModifiedEvent('Bulla', activateObject);
@@ -1198,7 +1202,7 @@ describe('CanvasImageComponent', () => {
         },
         meta: {},
       };
-      component.getColorMapping('Bulla', 'update');
+      component.getColorMapping('Bulla', 'update', '');
       expect(component.getColorMapping).toBeDefined();
     });
   });
@@ -1700,7 +1704,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
       };
-      component.ellipseLists(true);
+      component.ellipseLists(true, '');
     });
     it('should hide/show annotations based on clickin of eye icon on x-ray image with true condition', () => {
       expect(component.ellipseLists).toBeDefined();
@@ -1723,7 +1727,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
       };
-      component.ellipseLists(false);
+      component.ellipseLists(false, '');
     });
     it('should hide/show annotations based on clickin of eye icon on x-ray image with false condition', () => {
       expect(component.ellipseLists).toBeDefined();

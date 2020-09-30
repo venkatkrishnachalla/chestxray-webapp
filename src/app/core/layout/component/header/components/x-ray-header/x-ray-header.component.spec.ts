@@ -21,6 +21,7 @@ describe('XRayHeaderComponent', () => {
     sex: 'F',
     status: false,
     studies: ['9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8'],
+    isAnnotated: true,
   };
   beforeEach(() => {
     component = new XRayHeaderComponent(
@@ -41,8 +42,10 @@ describe('XRayHeaderComponent', () => {
       const mockInResponse = {
         username: 'mohan',
         userroles: ['hospitalradiologist'],
+        isAnnotated: true,
       };
       authServiceSpy.userSubject = of(mockInResponse);
+      eventEmitterServiceSpy.onStatusChangeFunction = of(true);
       window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(patientMock);
@@ -52,6 +55,7 @@ describe('XRayHeaderComponent', () => {
     });
     it('should call ngOnInit function', () => {
       expect(component.patientID).toEqual('1010');
+      expect(component.ngOnInit).toBeDefined();
       expect(component.prevNextFunction).toHaveBeenCalled();
     });
   });
@@ -62,8 +66,10 @@ describe('XRayHeaderComponent', () => {
       const mockInResponse = {
         username: 'mohan',
         userroles: ['hospitalradiologist'],
+        isAnnotated: true,
       };
       authServiceSpy.userSubject = of(mockInResponse);
+      eventEmitterServiceSpy.onStatusChangeFunction = of(true);
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(patientMock);
       });
@@ -71,6 +77,7 @@ describe('XRayHeaderComponent', () => {
       component.ngOnInit();
     });
     it('should call ngOnInit function, when patient info is empty', () => {
+      expect(component.ngOnInit).toBeDefined();
       expect(component.prevNextFunction).toHaveBeenCalled();
     });
   });

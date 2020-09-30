@@ -1,14 +1,29 @@
 import { XRayPatientImageComponent } from './x-ray-patient-image.component';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 
 describe('XRayPatientImageComponent', () => {
   let component: XRayPatientImageComponent;
   const annotatedXrayServiceSpy = jasmine.createSpyObj('XRayService', [
     'getAnnotatedImageData',
+    'xrayAnnotatedFindingsService',
+  ]);
+  const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [
+    'show',
+    'hide',
+  ]);
+  const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
+    'success',
+    'error',
   ]);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
-
+  const eventEmitterService2Spy = jasmine.createSpyObj('EventEmitterService2', [
+    'patientInfoStatusChange',
+  ]);
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'findingsSubject',
+    'onStatusChange',
+  ]);
   const mockPatientDetail = {
     age: 32,
     birthDate: '1988-05-06T00:00:00',
@@ -23,12 +38,14 @@ describe('XRayPatientImageComponent', () => {
   };
 
   beforeEach(() => {
+    eventEmitterServiceSpy.findingsSubject = of('calcification');
     component = new XRayPatientImageComponent(
       annotatedXrayServiceSpy,
+      spinnerServiceSpy,
       authServiceSpy,
-      authServiceSpy,
-      authServiceSpy,
-      authServiceSpy
+      toastrServiceSpy,
+      eventEmitterServiceSpy,
+      eventEmitterService2Spy
     );
   });
 
@@ -45,10 +62,18 @@ describe('XRayPatientImageComponent', () => {
         username: 'mohan',
         userroles: ['hospitalradiologist'],
       };
+      eventEmitterServiceSpy.findingsSubject = new BehaviorSubject<any>('');
+      const mockData = ['Bulla'];
       annotatedXrayServiceSpy.getAnnotatedImageData.and.returnValue(
         of(imageMock)
       );
+      annotatedXrayServiceSpy.xrayAnnotatedFindingsService.and.returnValue(
+        of(mockData)
+      );
       authServiceSpy.userSubject = of(mockInResponse);
+      eventEmitterServiceSpy.findingsSubject.next([
+        { name: 'Bulla', index: 0 },
+      ]);
     });
     it('should call ngOnIit function', () => {
       window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
@@ -80,6 +105,23 @@ describe('XRayPatientImageComponent', () => {
 
   /*** it should call ngOnDestroy method ***/
   describe('#shareButtonEvent', () => {
+    beforeEach(() => {
+      const mockData = [
+        'LUNG FIELDS:',
+        'COSTOPHRENIC ANGLES:',
+        'HILAR/MEDIASTINAL:',
+        'CARDIAC SILHOUETTE:',
+        'DOMES OF DIAPHRAGM:',
+        'BONY THORAX:',
+      ];
+      const clickEvent = ({
+        click: () => {},
+      } as unknown) as HTMLElement;
+      spyOn(document, 'querySelector').and.returnValue(clickEvent);
+      annotatedXrayServiceSpy.xrayAnnotatedFindingsService.and.returnValue(
+        mockData
+      );
+    });
     it('it should call shareButtonEvent', () => {
       component.patientInfo = mockPatientDetail;
       component.shareButtonEvent();
