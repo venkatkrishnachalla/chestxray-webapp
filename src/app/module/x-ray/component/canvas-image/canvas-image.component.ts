@@ -133,6 +133,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   brightness: any;
   contrast: any;
   scalingProperties: any;
+  savedAnnotations: any;
 
   /*
    * constructor for CanvasImageComponent class
@@ -195,6 +196,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.displayScaleFactorBlock = false;
     this.resize = false;
     sessionStorage.removeItem('ellipse');
+    let patientInfo = history.state.patientDetails;
+    if (patientInfo === undefined) {
+      patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
+    }
+    if (patientInfo.xRayList[0].isAnnotated){
+      this.getStoredAnnotations(patientInfo.xRayList[0].xRayId);
+    }
     this.savedInfo = {
       data: {
         names: [],
@@ -362,7 +370,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
     this.PatientImage = patientImage ? patientImage.base64Image : null;
     const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
-    this.patientId = this.patientDetail ? this.patientDetail.id : '';
+    this.patientId = this.patientDetail ? this.patientDetail.xRayList[0].xRayId : '';
 
     if (this.PatientImage && isUser) {
       this.setCanvasDimension();
@@ -659,8 +667,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   getPatientInstanceId(id) {
     this.xRayService.getPatientInstanceId(id).subscribe(
       (patientInstanceIdResponse: any) => {
-        this.instanceId =
-          patientInstanceIdResponse[0].seriesList[0].instanceList[0].id;
+        // this.instanceId =
+        //   patientInstanceIdResponse.seriesList[0].instanceList[0].id;
+        this.instanceId = history.state.xRayList ? history.state.xRayList[0].xRayId : '';
+        if (this.instanceId === '') {
+          const patient = JSON.parse(sessionStorage.getItem('patientDetail'));
+          this.instanceId = patient.xRayList[0].xRayId;
+        }
         this.getPatientImage(this.instanceId);
       },
       (errorMessage: any) => {
@@ -737,12 +750,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.resetZoom();
       this.setCanvasBackground();
       const xrayData = JSON.parse(sessionStorage.getItem('x-ray_Data'));
-      if (xrayData) {
-        this.savedInfo = xrayData;
+      if (this.savedAnnotations && !xrayData){
+        this.savedInfo = this.savedAnnotations;
+        this.mlApiEllipseLoop( this.savedAnnotations, 'savedAnnotations');
       }
-      if (xrayData !== null && xrayData.data.ndarray[0].Impression.length > 0) {
-        if (this.resize === false) {
-          this.mlApiEllipseLoop(xrayData, 'session');
+      else{
+        if (xrayData){
+          this.savedInfo = xrayData;
+        }
+        if (xrayData !== null && xrayData.data.ndarray[0].Impression.length > 0) {
+          if (this.resize === false) {
+            this.mlApiEllipseLoop(xrayData, 'session');
+          }
         }
       }
     });
@@ -829,7 +848,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         Source: 'ML',
       };
     });
-    if (mlList.data.ndarray[0].Impression.length === 0) {
+    if (mLArray.Impression.length === 0) {
       const impressionObject = {
         title: 'impression',
         idNew: '00',
@@ -850,7 +869,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     findingsOrdered.forEach((info) => {
       if (
         mLArray.Findings[info.Name].length === 0 &&
-        info.Name !== 'ADDITIONAL'
+        info.Name !== 'ADDITIONAL' && mLArray.source !== 'DR' 
       ) {
         const finalFinding = info.Name + ': ' + info.Desc;
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
@@ -869,7 +888,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             finalFinding += '';
           }
         });
-        if (finalFinding === '' && info.Name !== 'ADDITIONAL') {
+        if (finalFinding === '' && info.Name !== 'ADDITIONAL' && mLArray.source !== 'DR' ) {
           const finalFinding1 = info.Name + ': ' + info.Desc;
           this.eventEmitterService.onComponentFindingsDataShared(finalFinding1);
         } else {
@@ -888,12 +907,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       if (disease.ellipses) {
         const idValue = 1000 + val1;
         let val2 = 0;
-        disease.ellipses.forEach((ellipse: any) => {
+        if (disease.source === 'ML'){
+          disease.isMlAi = true;
+        }
+        disease.ellipses.forEach((ellipse: any, index) => {
           ellipse.color =
           DISEASE_COLOR_MAPPING[disease.name.toLowerCase()] || RANDOM_COLOR;
           ellipse.id = idValue + '' + val2;
          // ellipse.color = disease.color;
           ellipse.Source = 'ML';
+          // ellipse.type = ellipse.freeHandDrawing ? '' : 'ellipse';
           if (ellipse.strokeDashArray && disease.isMlAi) {
             ellipse.strokeDashArray = ellipse.strokeDashArray;
           } else if (!ellipse.strokeDashArray && disease.isMlAi) {
@@ -917,6 +940,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               name: disease.name,
               color: ellipse.color,
               Source: ellipse.Source,
+              type: 'ellipse'
             };
             this.impressionArray.push(selectedObject);
             // const colorFinding = this.impressionArray.filter(
@@ -1004,6 +1028,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  drawEllipse(data, isMlAi?, diseaseItem?);
    */
   drawEllipse(data, isMlAi?, diseaseItem?) {
+    if (diseaseItem){
+      if (diseaseItem.source === 'DR'){
+        diseaseItem.type = 'ellipse';
+      }
+    }
     this.updateDisease = false;
     this.canvas.isDrawingMode = false;
     this.enableDrawEllipseMode = true;
@@ -2135,5 +2164,22 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   stopDragging(element) {
     element.lockMovementX = true;
     element.lockMovementY = true;
+  }
+
+  getStoredAnnotations(xRayId){
+    this.spinnerService.show();
+    this.annotatedXrayService.getAnnotatedData(xRayId)
+        .subscribe(
+          (response) => {
+            this.savedAnnotations = response;
+            if (this.savedAnnotations.data.ndarray[0].source !== 'DR'){
+              this.eventEmitterService.onAskAiButtonClick('success');
+            }
+          },
+          (errorMessage: string) => {
+            this.spinnerService.hide();
+            this.toastrService.error('Failed to fetch annotated data');
+          }
+        );
   }
 }

@@ -3,13 +3,13 @@ export const homeConstants = {
     headers: [
       {
         headerName: '',
-        field: 'isAnnotated',
+        field: 'xRayList',
         maxWidth: 15,
         cellRenderer: (data) => {
           return '';
         },
         cellStyle: (params) => {
-          if (params.value === false) {
+          if (params.value[0].isAnnotated === false) {
             return {
               'border-left': '4px solid red',
               padding: '0',
@@ -32,16 +32,16 @@ export const homeConstants = {
       },
       {
         headerName: 'Report Status',
-        field: 'isAnnotated',
+        field: 'xRayList',
         sortable: true,
         cellRenderer: (params) => {
-          if (params.value === false) {
+          if (params.value[0].isAnnotated === false) {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Drafted.png'  width='15px' height='15px'/></span><span>Not Started</span>"
+              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Drafted.png\'  width=\'15px\' height=\'15px\'/></span><span>Not Started</span>'
             );
-          } else if (params.value === true) {
+          } else if (params.value[0].isAnnotated === true) {
             return (
-              "<span style='margin-right: 10px !important'><img src='../../assets/images/Reported.png' width='15px' height='15px'/></span><span>Completed</span>"
+              '<span style=\'margin-right: 10px !important\'><img src=\'../../assets/images/Reported.png\' width=\'15px\' height=\'15px\'/></span><span>Completed</span>'
             );
           }
         },
@@ -64,16 +64,19 @@ export const homeConstants = {
       { headerName: 'Age', field: 'age', sortable: true, minWidth: 72 },
       {
         headerName: 'Ref. Physician',
-        field: 'assignedTo',
+        field: 'xRayList',
         sortable: true,
+        cellRenderer: (data) => {
+          return data.value[0].assignedTo;
+        },
       },
       {
         headerName: 'Date & Time',
-        field: 'lastUpdate',
+        field: 'xRayList',
         sortable: true,
         sort: 'desc',
         cellRenderer: (data) => {
-          return data.value ? new Date(data.value).toLocaleString('es-CL') : '';
+          return data.value[0].lastUpdate ? new Date(data.value[0].lastUpdate).toLocaleString('es-CL') : '';
         },
       },
       {

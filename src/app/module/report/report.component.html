@@ -50,13 +50,13 @@
               <td><b>Age</b></td>
               <td>: {{ patientInfo.age }}</td>
               <td><b>Date of creation</b></td>
-              <td>: {{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
+              <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'dd-MM-yyyy' }}</td>
             </tr>
             <tr>
               <td><b>Time</b></td>
-              <td>: {{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
+              <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}</td>
               <td><b>Ref. Physician</b></td>
-              <td>: {{ patientInfo.referringPhysicianName || '-' }}</td>
+              <td>: {{ patientInfo.xRayList[0].referringPhysicianName || '-' }}</td>
             </tr>
           </table>
         </div>

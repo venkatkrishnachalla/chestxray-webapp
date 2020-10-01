@@ -8,6 +8,7 @@ import {
 } from 'src/app/module/auth/interface.modal';
 import User from 'src/app/module/auth/user.modal';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { ArrayType } from '@angular/compiler';
 
 @Component({
   selector: 'cxr-x-ray-header',
@@ -37,6 +38,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     desc: string;
     status: string;
     instanceID: string;
+    xRayList: ArrayType;
   };
 
   /*
@@ -63,7 +65,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
       patientDetail = patient;
     }
     this.patientID = patientDetail ? patientDetail.hospitalPatientId : '';
-    this.isProcessed = patientDetail.isAnnotated;
+    this.isProcessed = patientDetail.xRayList[0].isAnnotated;
 
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
@@ -94,7 +96,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
         (a) => a.hospitalPatientId === this.patientID
       );
       this.currentPatientData = this.patientRows[this.currentIndex];
-      this.isProcessed = this.currentPatientData.isAnnotated;
+      this.isProcessed = this.currentPatientData.xRayList[0].isAnnotated;
       this.disablePrevious = this.currentIndex === 0 ? true : false;
       this.disableNext = this.currentIndex === lastIndex ? true : false;
     }
@@ -119,7 +121,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('askAiSelection', 'false');
     this.patientID = filterData.hospitalPatientId;
     history.pushState(filterData, 'patientDetails', 'x-ray');
-    this.eventEmitterService.onPrevNextButtonClick(filterData.id);
+    this.eventEmitterService.onPrevNextButtonClick(filterData.xRayList[0].xRayId);
     this.prevNextFunction();
   }
 
@@ -141,7 +143,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('askAiSelection', 'false');
     this.patientID = filterData.hospitalPatientId;
     history.pushState(filterData, 'patientDetails', 'x-ray');
-    this.eventEmitterService.onPrevNextButtonClick(filterData.id);
+    this.eventEmitterService.onPrevNextButtonClick(filterData.xRayList[0].xRayId);
     this.prevNextFunction();
   }
 

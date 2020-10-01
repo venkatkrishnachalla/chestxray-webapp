@@ -15,6 +15,7 @@ interface PatientData {
   sex: string;
   status: boolean;
   studies: string[];
+  xRayList: any;
 }
 @Injectable({
   providedIn: 'root',

@@ -1,3 +1,5 @@
+import { ArrayType } from '@angular/compiler';
+
 export interface SignInResponse {
   expiration: string;
   token: string;
@@ -18,6 +20,7 @@ export interface PatientListData {
   studies: any[];
   length?: number;
   findIndex?: any;
+  xRayList: any;
 }
 
 export interface EnumServiceItems extends Array<PatientListData> {}
@@ -44,6 +47,7 @@ export interface PatientDetailData {
   assignedTo: string;
   isAnnotated: boolean;
   xRayId: number;
+  xRayList: ArrayType;
 }
 
 export interface EllipseData {

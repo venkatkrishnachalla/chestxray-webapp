@@ -59,10 +59,10 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
     if (patient) {
       this.PatientName = patient.name;
       this.PatientAge = patient.age;
-      this.refPhysician = patient.assignedTo;
+      this.refPhysician = patient.xRayList[0].assignedTo;
       this.PatientGender = patient.sex;
-      this.Date = patient.lastUpdate;
-      this.Time = patient.lastUpdate;
+      this.Date = patient.xRayList[0].lastUpdate;
+      this.Time = patient.xRayList[0].lastUpdate;
     }
     this.history = '';
   }

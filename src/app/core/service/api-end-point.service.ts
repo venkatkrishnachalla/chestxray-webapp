@@ -103,15 +103,14 @@ export class ApiEndPointService {
     return environment.patientList;
   }
 
-  /**
-   * This is a getPatientInstanceId function.
-   * @param '{string}' value - A string param
-   * @example
+  /**  
+   * This is a getPatientInstanceId function.  
+   * @param '{string}' value - A string param  
+   * @example  
    * getPatientInstanceId(id);
-   */
-
-  getPatientInstanceId(id): any {
-    return environment.patientInstanceId + id + '/studies';
+   */  
+  getPatientInstanceId(xRayId): any {
+    return environment.patientInstanceId + xRayId + '/Study';
   }
 
   /**
@@ -136,15 +135,24 @@ export class ApiEndPointService {
     // return 'https://cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/api/v1.0/predictions';
     return 'https://cxrml.eastus2.cloudapp.azure.com/seldon/default/cxr-classifier/api/v1.0/predictions';
   }
-
-  /**
-   * This is a getAskAi function.
-   * @param '{void}' empty - A empty param
-   * @example
-   * getAskAi();
-   */
-
+/**  
+ * This is a getAskAi function.  
+ * @param '{void}' empty - A empty param  
+ * @example  
+ * getAskAi();
+ */  
   public submitReport(): string {
     return environment.submitReport;
   }
+
+/**  
+ * This is a getAskAi function.  
+ * @param {void} empty - A empty param  
+ * @example  
+ * getAskAi();
+ */  
+  public getAnnotations(xRayId): string {
+    return environment.submitReport + '?xrayid=' + xRayId;
+  }
+
 }
