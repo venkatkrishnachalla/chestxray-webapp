@@ -198,11 +198,11 @@ describe('XRayComponent', () => {
   });
 
   /*** should call ngOnDestroy ****/
-  // describe('#ngOnDestroy', () => {
-  //   it('it should call ngOnDestroy', () => {
-  //     (component as any).userSubscription = subscriptionSpy;
-  //     component.ngOnDestroy();
-  //     expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
-  //   });
-  // });
+  describe('#ngOnDestroy', () => {
+    it('it should call ngOnDestroy', () => {
+      (component as any).userSubscription = subscriptionSpy;
+      component.ngOnDestroy();
+      expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
+    });
+  });
 });
