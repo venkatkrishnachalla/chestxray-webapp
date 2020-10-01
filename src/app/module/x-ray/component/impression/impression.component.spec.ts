@@ -14,13 +14,17 @@ describe('ImpressionComponent', () => {
     ['xrayAnnotatedImpressions']
   );
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+  const eventEmitterService2Spy = jasmine.createSpyObj('EventEmitterService2', [
+    'invokeEyeIconFunction',
+  ]);
 
   beforeEach(() => {
     const patientIdMock = '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08';
     eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(patientIdMock);
     component = new ImpressionComponent(
       eventEmitterServiceSpy,
-      xrayAnnotatedImpressionServiceSpy
+      xrayAnnotatedImpressionServiceSpy,
+      eventEmitterService2Spy
     );
   });
 
@@ -50,10 +54,17 @@ describe('ImpressionComponent', () => {
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
+      eventEmitterService2Spy.invokeEyeIconFunction = of(true);
+      spyOn(component, 'deleteImpression');
+      spyOn(component, 'hideorShowAllFun');
+      spyOn(component, 'getImpressions');
       component.ngOnInit();
     });
     it('should call ngOnInit function', () => {
       expect(component.ngOnInit).toBeDefined();
+      expect(component.deleteImpression).toHaveBeenCalled();
+      expect(component.hideorShowAllFun).toHaveBeenCalled();
+      expect(component.getImpressions).toHaveBeenCalled();
     });
   });
 
@@ -77,10 +88,17 @@ describe('ImpressionComponent', () => {
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
+      eventEmitterService2Spy.invokeEyeIconFunction = of(response);
+      spyOn(component, 'getImpressions');
+      spyOn(component, 'updateImpression');
+      spyOn(component, 'hideorShowAllFun');
       component.ngOnInit();
     });
     it('should call ngOnInit function, when info is update', () => {
       expect(component.ngOnInit).toBeDefined();
+      expect(component.updateImpression).toHaveBeenCalled();
+      expect(component.getImpressions).toHaveBeenCalled();
+      expect(component.hideorShowAllFun).toHaveBeenCalled();
     });
   });
 
@@ -104,10 +122,15 @@ describe('ImpressionComponent', () => {
       eventEmitterServiceSpy.invokeComponentFunction = of(response);
       eventEmitterServiceSpy.invokeComponentData = of(mock);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
+      eventEmitterService2Spy.invokeEyeIconFunction = of(true);
+      spyOn(component, 'getImpressions');
+      spyOn(component, 'hideorShowAllFun');
       component.ngOnInit();
     });
     it('should call ngOnInit function, when info is empty', () => {
       expect(component.ngOnInit).toBeDefined();
+      expect(component.getImpressions).toHaveBeenCalled();
+      expect(component.hideorShowAllFun).toHaveBeenCalled();
     });
   });
 
@@ -134,10 +157,12 @@ describe('ImpressionComponent', () => {
       ];
       eventEmitterServiceSpy.invokeComponentData = of(response);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(mock);
+      spyOn(component, 'uniqueImpressionsData');
       component.getImpressions();
     });
     it('should call getImpressions', () => {
       expect(component.getImpressions).toBeDefined();
+      expect(component.uniqueImpressionsData).toHaveBeenCalled();
     });
   });
 
@@ -156,10 +181,12 @@ describe('ImpressionComponent', () => {
           isMLApi: true,
         },
       ];
+      spyOn(component, 'uniqueImpressionsData');
       component.deleteImpression(1, null, 2);
     });
     it('should call deleteImpression', () => {
       expect(component.deleteImpression).toBeDefined();
+      expect(component.uniqueImpressionsData).toHaveBeenCalled();
     });
   });
 
@@ -174,10 +201,12 @@ describe('ImpressionComponent', () => {
           isMLApi: true,
         },
       ];
+      spyOn(component, 'uniqueImpressionsData');
       component.updateImpression(response);
     });
     it('should call updateImpression', () => {
       expect(component.updateImpression).toBeDefined();
+      expect(component.uniqueImpressionsData).toHaveBeenCalled();
     });
   });
 

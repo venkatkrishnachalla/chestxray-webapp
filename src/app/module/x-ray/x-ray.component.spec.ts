@@ -26,7 +26,7 @@ describe('XRayComponent', () => {
   const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
     'success',
     'error',
-    'info'
+    'info',
   ]);
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
   const canvasComponentSpy = jasmine.createSpyObj('CanvasImageComponent', [

@@ -1,24 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { of } from 'rxjs';
 import { PatientInfoComponent } from './patient-info.component';
 
 describe('PatientInfoComponent', () => {
   let component: PatientInfoComponent;
-  let fixture: ComponentFixture<PatientInfoComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [PatientInfoComponent],
-    }).compileComponents();
-  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PatientInfoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new PatientInfoComponent();
   });
 
+  /*** it should create component ***/
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  /*** it should call ngOnInit function ***/
+  describe('#ngOnInit', () => {
+    beforeEach(() => {
+      component.patientInfo = of();
+      // authServiceSpy.userSubject = of(mockInResponse);
+      component.ngOnInit();
+    });
+    it('should call ngOnIit function', () => {
+      const result = component.ngOnInit();
+      expect(component.ngOnInit).toBeDefined();
+    });
   });
 });

@@ -61,11 +61,13 @@ describe('PatientListComponent', () => {
       component.defaultColDef = { width: 200 };
       component.columnDefs = component.constants.patientDashboard.headers;
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
+      spyOn(component, 'getPatientList');
     });
     it('should call ngOnIit function', () => {
       authServiceSpy.userSubject = of(mockInResponse);
       component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
+      expect(component.getPatientList).toHaveBeenCalled();
     });
   });
 
