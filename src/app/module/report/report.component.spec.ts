@@ -18,6 +18,18 @@ describe('ReportComponent', () => {
     'markForCheck',
   ]);
   const toastrServiceSpy = jasmine.createSpyObj('toastrService', ['success']);
+  const mockPatientDetail = {
+    age: 32,
+    birthDate: '1988-05-06T00:00:00',
+    hospitalPatientId: '1010',
+    id: '1004',
+    lastUpdate: '2020-06-29T14:08:59',
+    name: '^Pallavi',
+    referringPhysicianName: 'mohan',
+    sex: 'F',
+    status: false,
+    studies: ['9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8'],
+  };
 
   beforeEach(() => {
     eventEmitterServiceSpy.findingsSubject = of('calcification');
@@ -61,6 +73,7 @@ describe('ReportComponent', () => {
         name: 'Mohan',
       };
       eventEmitterServiceSpy.invokeReportDataFunction = of(mockData);
+      window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
     });
     it('should call ngOnIit function, when patient info is empty', () => {
       component.ngOnInit();

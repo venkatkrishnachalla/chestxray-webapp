@@ -21,7 +21,6 @@ describe('XRayHeaderComponent', () => {
     sex: 'F',
     status: false,
     studies: ['9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8'],
-    isAnnotated: true,
   };
   beforeEach(() => {
     component = new XRayHeaderComponent(
@@ -73,6 +72,7 @@ describe('XRayHeaderComponent', () => {
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(patientMock);
       });
+      component.patientID = '1011';
       spyOn(component, 'prevNextFunction');
       component.ngOnInit();
     });
@@ -88,6 +88,7 @@ describe('XRayHeaderComponent', () => {
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(patientMock);
       });
+      component.patientID = '1011';
       component.prevNextFunction();
     });
     it('should call prevNextFunction function', () => {

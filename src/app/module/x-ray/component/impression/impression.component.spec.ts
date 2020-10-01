@@ -55,12 +55,14 @@ describe('ImpressionComponent', () => {
       eventEmitterServiceSpy.invokeComponentData = of(mock);
       eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
       eventEmitterService2Spy.invokeEyeIconFunction = of(true);
+      spyOn(component, 'deleteImpression');
       spyOn(component, 'hideorShowAllFun');
       spyOn(component, 'getImpressions');
       component.ngOnInit();
     });
     it('should call ngOnInit function', () => {
       expect(component.ngOnInit).toBeDefined();
+      expect(component.deleteImpression).toHaveBeenCalled();
       expect(component.hideorShowAllFun).toHaveBeenCalled();
       expect(component.getImpressions).toHaveBeenCalled();
     });
@@ -88,11 +90,13 @@ describe('ImpressionComponent', () => {
       eventEmitterServiceSpy.invokeComponentEllipseData = of(ellipseMock);
       eventEmitterService2Spy.invokeEyeIconFunction = of(response);
       spyOn(component, 'getImpressions');
+      spyOn(component, 'updateImpression');
       spyOn(component, 'hideorShowAllFun');
       component.ngOnInit();
     });
     it('should call ngOnInit function, when info is update', () => {
       expect(component.ngOnInit).toBeDefined();
+      expect(component.updateImpression).toHaveBeenCalled();
       expect(component.getImpressions).toHaveBeenCalled();
       expect(component.hideorShowAllFun).toHaveBeenCalled();
     });

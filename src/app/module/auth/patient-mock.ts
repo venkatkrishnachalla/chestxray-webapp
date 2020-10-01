@@ -11,6 +11,7 @@ export const patientMock: any[] = [
     status: 'in-process',
     instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
     hospitalPatientId: '1010',
+    isAnnotated: true,
   },
   {
     patientId: 14,
@@ -24,6 +25,7 @@ export const patientMock: any[] = [
     status: 'in-process',
     instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8gd08',
     hospitalPatientId: '1011',
+    isAnnotated: true,
   },
 ];
 

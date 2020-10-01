@@ -1,6 +1,7 @@
 import { AuthService } from './auth.service';
 import { throwError, Observable, of } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -95,7 +96,7 @@ describe('AuthService', () => {
       const response = new HttpResponse({ status: 204 });
       endpointSpy.getRefreshToken.and.returnValue('http://localhost:3000/auth');
       mockHttpClient.post.and.returnValue(of(response));
-      (authService as any).refreshToken();
+      (authService as any).refreshToken('', '', '', '', '');
     });
     it('should call refreshToken function', () => {
       expect((authService as any).refreshToken).toBeDefined();
@@ -106,10 +107,23 @@ describe('AuthService', () => {
 
   describe('#autoSessionTimeOut', () => {
     beforeEach(() => {
+      const authMock = {
+        email: 'abc@123',
+        id: 1010,
+        _token: 'etuaWqerll',
+        _tokenExpirationDate: '2020-08-17T10:11:36.000Z',
+        username: 'Ashwini',
+        userroles: ['HospitalRadiologist'],
+      };
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(authMock);
+      });
+      spyOn(authService, 'refreshToken');
       authService.autoSessionTimeOut(4563);
     });
     it('should call autoSessionTimeOut function', () => {
       expect(authService.autoSessionTimeOut).toBeDefined();
+      expect(authService.refreshToken).toBeDefined();
     });
   });
 
