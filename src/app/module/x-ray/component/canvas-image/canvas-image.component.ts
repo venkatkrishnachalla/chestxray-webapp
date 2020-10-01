@@ -889,13 +889,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const idValue = 1000 + val1;
         let val2 = 0;
         disease.ellipses.forEach((ellipse: any) => {
+          ellipse.color =
+          DISEASE_COLOR_MAPPING[disease.name.toLowerCase()] || RANDOM_COLOR;
           ellipse.id = idValue + '' + val2;
-          ellipse.color = disease.color;
+         // ellipse.color = disease.color;
           ellipse.Source = 'ML';
           if (ellipse.strokeDashArray && disease.isMlAi) {
             ellipse.strokeDashArray = ellipse.strokeDashArray;
           } else if (!ellipse.strokeDashArray && disease.isMlAi) {
-            ellipse.strokeDashArray = [3, 3];
+            ellipse.strokeDashArray = [4, 2];
           } else {
             ellipse.strokeDashArray = [0, 0];
           }
