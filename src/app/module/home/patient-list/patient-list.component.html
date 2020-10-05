@@ -20,11 +20,15 @@
     [columnDefs]="columnDefs"
     [defaultColDef]="defaultColDef"
     [rowData]="rowData"
+    [infiniteInitialRowCount]='pageCount'
+    [infiniteBlockSize]='pageCount'
     (gridReady)="onGridReady($event)"
     [pagination]="true"
     [quickFilterText]="searchValue"
     [overlayNoRowsTemplate]="overlayNoRowsTemplate"
     suppressDragLeaveHidesColumns= true
+    [paginationPageSize]="10"
+    [cacheBlockSize]= "10"
   >
   </ag-grid-angular>
 </div>

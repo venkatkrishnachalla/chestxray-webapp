@@ -17,7 +17,7 @@
         </tr>
         <tr>
           <td><mat-label>Date of creation</mat-label></td>
-          <td>{{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
+          <td>{{ patientInfo.xRayList[0].lastUpdate | date: 'dd-MM-yyyy' }}</td>
           <td><mat-label>Age</mat-label></td>
           <td>{{ patientInfo.age }}</td>
         </tr>
@@ -25,13 +25,13 @@
           <td><mat-label>Name</mat-label></td>
           <td>{{ patientInfo.name }}</td>
           <td><mat-label>Time</mat-label></td>
-          <td>{{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
+          <td>{{ patientInfo.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}</td>
         </tr>
         <tr>
           <td><mat-label>Gender</mat-label></td>
           <td>{{ patientInfo.sex  }}</td>
           <td><mat-label>Ref. Physician</mat-label></td>
-          <td>{{ patientInfo.assignedTo || '-' }}</td>
+          <td>{{ patientInfo.xRayList[0].assignedTo || '-' }}</td>
         </tr>
       </table>
     </div>
@@ -126,13 +126,13 @@
         <td><b>Age</b></td>
         <td>: {{ patientInfo.age }}</td>
         <td><b>Date of creation</b></td>
-        <td>: {{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
+        <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'dd-MM-yyyy' }}</td>
       </tr>
       <tr>
         <td><b>Time</b></td>
-        <td>: {{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
+        <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}</td>
         <td><b>Ref. Physician</b></td>
-        <td>: {{ patientInfo.assignedTo || '-' }}</td>
+        <td>: {{ patientInfo.xRayList[0].assignedTo || '-' }}</td>
       </tr>
     </table>
   </div>

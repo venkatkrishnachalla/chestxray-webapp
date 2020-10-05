@@ -70,6 +70,16 @@ export class XRayService {
     );
   }
 
+   /*** get  Annotated Data rest api call ***/
+   getAnnotatedData(xRayId: number) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }),
+    };
+    return this.http.get(this.endpoint.getAnnotations(xRayId), httpOptions);
+  }
+
   /*** handle error function ***/
   private handleError(errorResponse: HttpErrorResponse) {
     return throwError(errorResponse.error.error.message);

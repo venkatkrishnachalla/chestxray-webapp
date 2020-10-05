@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 import User from '../../auth/user.modal';
 import { Subscription } from 'rxjs';
 import { userInfo } from 'os';
+import { IDatasource, IGetRowsParams } from 'ag-grid-community';
 
 interface PatientListData {
   data: PatientListData;
@@ -29,6 +30,8 @@ interface PatientListData {
   studies: any[];
   forEach?: any;
   sort?: any;
+  xRayList: any;
+  count: string;
 }
 
 interface EnumServiceItems extends Array<PatientListData> {}
@@ -38,6 +41,18 @@ interface EnumServiceItems extends Array<PatientListData> {}
   styleUrls: ['./patient-list.component.scss'],
 })
 export class PatientListComponent implements OnInit, OnDestroy {
+
+  /*
+   * constructor for PatientListComponent class
+   */
+
+  constructor(
+    private elementRef: ElementRef,
+    private dashboardService: DashboardService,
+    private authService: AuthService,
+    public router: Router,
+    private eventEmitterService: EventEmitterService
+  ) {}
   gridApi;
   gridColumnApi;
   columnDefs;
@@ -53,21 +68,11 @@ export class PatientListComponent implements OnInit, OnDestroy {
   overlayNoRowsTemplate: string;
   errorMessage: string;
   showPatientInfo: boolean;
+  pageCount: string;
   patientInfoSubject: Subject<any> = new Subject<any>();
   @ViewChild('toggleButton') toggleButton: ElementRef;
   private userSubscription: Subscription;
 
-  /*
-   * constructor for PatientListComponent class
-   */
-
-  constructor(
-    private elementRef: ElementRef,
-    private dashboardService: DashboardService,
-    private authService: AuthService,
-    public router: Router,
-    private eventEmitterService: EventEmitterService
-  ) {}
 
   /**
    * This is a init function, retrieve current user details.
@@ -144,6 +149,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
         this.showTable = true;
         this.showError = false;
         this.rowData = patientsList.data;
+        this.pageCount = patientsList.count;
         const patientRows = patientsList.data;
         patientRows.sort(
           (d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId

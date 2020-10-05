@@ -84,7 +84,7 @@ export class XRayPatientDetailsComponent implements OnInit {
       this.patientInfo = patientInfo;
     }
     // tslint:disable-next-line: no-conditional-assignment
-    if (this.patientInfo.isAnnotated === false) {
+    if (this.patientInfo.xRayList[0].isAnnotated === false) {
       this.status = 'Not Started';
     } else {
       this.status = 'Completed';
