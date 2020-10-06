@@ -17,6 +17,7 @@
     id="patientGrid"
     class="ag-theme-material"
     (rowClicked)="onRowClicked($event)"
+    [enableSorting]="true"
     [columnDefs]="columnDefs"
     [defaultColDef]="defaultColDef"
     [rowData]="rowData"
