@@ -8,8 +8,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { RadiologistRegisterComponent } from './radiologist-register/radiologist-register.component';
 import { MatDialog } from '@angular/material/dialog';
-import { PatientListData } from '../../auth/interface.modal';
 import { DashboardService } from 'src/app/service/dashboard.service';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-admin-dashboard',
@@ -22,6 +22,8 @@ export class AdminDashboardComponent implements OnInit {
   patientList: any = [];
   displayedColumns: string[] = ['hospitalPatientId', 'name', 'birthDate', 'sex', 'age'];
   dataSource;
+  showloader: boolean;
+  showTable: boolean;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -30,13 +32,13 @@ export class AdminDashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     public dialog: MatDialog,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private eventEmitterService: EventEmitterService
     ) {}
 
   ngOnInit(): void {
-    console.log(this.getPatientList());
     // To open addRadiologist pop up modal
-    this.authService.addRadiologist.subscribe((status: Boolean) => {
+    this.authService.addRadiologist.subscribe((status: boolean) => {
       if (status){
       this.dialog.open(RadiologistRegisterComponent, { disableClose: true, width: '100%' });
       }
@@ -53,6 +55,7 @@ export class AdminDashboardComponent implements OnInit {
         }
       }
     );
+    this.getPatientList();
   }
 
   applyFilter(event: Event) {
@@ -65,12 +68,24 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getPatientList() {
+    this.showloader = true;
+    this.showTable = false;
     this.dashboardService.getPatientList().subscribe( data => {
+      this.showloader = false;
+      this.showTable = true;
       // tslint:disable-next-line: no-string-literal
       this.patientList = data['data'];
       this.dataSource = new MatTableDataSource(this.patientList);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
+    },
+    (errorMessage: string) => {
+      this.showloader = false;
+      this.showTable = false;
+      this.eventEmitterService.onErrorMessage({
+        data: errorMessage,
+      });
+    }
+    );
   }
 }

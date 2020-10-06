@@ -1,3 +1,7 @@
+<div class="loaderContainer">
+  <span class="loader" *ngIf="showloader"></span>
+</div>
+
 <div class="search-input">
   <mat-icon matPrefix>search</mat-icon>
   <input type="text" (keyup)="applyFilter($event)" autocomplete="off" placeholder="Search here..." #input>
@@ -40,5 +44,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>
+
+<ng-container>
+  <cxr-error-message></cxr-error-message>
+</ng-container>

@@ -2,8 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { PatientListData } from 'src/app/module/auth/interface.modal';
-import { DashboardService } from 'src/app/service/dashboard.service';
 import { AdminManagementService } from '../admin-management.service';
 
 @Component({
