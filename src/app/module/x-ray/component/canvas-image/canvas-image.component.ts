@@ -844,8 +844,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         title: 'impression',
         id: impression.index,
         name: impression.sentence,
-        isMLApi: true,
-        Source: 'ML',
+        isMLApi: impression.Source === 'ML' ? true : false,
+        Source: impression.Source,
+        isUpdated : false,
       };
     });
     if (mLArray.Impression.length === 0) {
@@ -869,7 +870,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     findingsOrdered.forEach((info) => {
       if (
         mLArray.Findings[info.Name].length === 0 &&
-        info.Name !== 'ADDITIONAL' && mLArray.source !== 'DR' 
+        info.Name !== 'ADDITIONAL' && mLArray.Source !== 'DR' 
       ) {
         const finalFinding = info.Name + ': ' + info.Desc;
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
@@ -888,7 +889,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             finalFinding += '';
           }
         });
-        if (finalFinding === '' && info.Name !== 'ADDITIONAL' && mLArray.source !== 'DR' ) {
+        if (finalFinding === '' && info.Name !== 'ADDITIONAL' && mLArray.Source !== 'DR' ) {
           const finalFinding1 = info.Name + ': ' + info.Desc;
           this.eventEmitterService.onComponentFindingsDataShared(finalFinding1);
         } else {
@@ -907,7 +908,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       if (disease.ellipses) {
         const idValue = 1000 + val1;
         let val2 = 0;
-        if (disease.source === 'ML'){
+        if (disease.Source === 'ML'){
           disease.isMlAi = true;
         }
         disease.ellipses.forEach((ellipse: any, index) => {
@@ -915,7 +916,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           DISEASE_COLOR_MAPPING[disease.name.toLowerCase()] || RANDOM_COLOR;
           ellipse.id = idValue + '' + val2;
          // ellipse.color = disease.color;
-          ellipse.Source = 'ML';
+          ellipse.Source = (ellipse.Source === 'ML' || ellipse.Source === undefined) ? 'ML' : 'DR';
           // ellipse.type = ellipse.freeHandDrawing ? '' : 'ellipse';
           if (ellipse.strokeDashArray && disease.isMlAi) {
             ellipse.strokeDashArray = ellipse.strokeDashArray;
@@ -931,6 +932,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               name: disease.name,
               index: ellipse.id,
               Source: ellipse.Source,
+              isUpdated : false,
             });
             const random = Math.floor(Math.random() * 100 + 1);
             const selectedObject = {
@@ -940,7 +942,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               name: disease.name,
               color: ellipse.color,
               Source: ellipse.Source,
-              type: 'ellipse'
+              type: 'ellipse',
+              isUpdated : false,
             };
             this.impressionArray.push(selectedObject);
             // const colorFinding = this.impressionArray.filter(
@@ -970,6 +973,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           name: disease.name,
           color: disease.color,
           Source: 'DR',
+          isUpdated : false,
         };
         this.impressionArray.push(selectedObject);
         const colorFinding = this.impressionArray.filter(
@@ -1029,7 +1033,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   drawEllipse(data, isMlAi?, diseaseItem?) {
     if (diseaseItem){
-      if (diseaseItem.source === 'DR'){
+      if (diseaseItem.Source === 'DR'){
         diseaseItem.type = 'ellipse';
       }
     }
@@ -1478,7 +1482,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       id: this.canvas.getActiveObject().idNew,
       check: 'update',
       name: this.selectedDisease,
-      Source: 'DR',
+      Source: this.canvas._activeObject.isMLAi ? 'ML+DR' : 'DR',
+      isUpdated : this.canvas._activeObject.isMLAi ? true : false,
     };
     this.eventEmitterService.onComponentButtonClick(selectedObject);
     this.getColorMapping(this.selectedDisease, 'update', 'DR');
@@ -1523,6 +1528,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   index: this.canvas._activeObject.id,
                   name: selectedObject.name,
                   isMlAi: true,
+                  Source: this.canvas._activeObject.isMLAi ? 'ML+DR' : 'DR',
                 };
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases.push(obj);
@@ -1551,6 +1557,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   index: this.canvas._activeObject.id,
                   name: selectedObject.name,
                   isMlAi: true,
+                  Source: this.canvas._activeObject.isMLAi ? 'ML+DR' : 'DR',
                 };
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases.push(obj);
@@ -2172,7 +2179,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         .subscribe(
           (response) => {
             this.savedAnnotations = response;
-            if (this.savedAnnotations.data.ndarray[0].source !== 'DR'){
+            if (this.savedAnnotations.data.ndarray[0].Source !== 'DR'){
               this.eventEmitterService.onAskAiButtonClick('success');
             }
           },

@@ -301,7 +301,7 @@ submitReport() {
             this.disableSubmitBtn = false;
             this.eventEmitterService.onStatusChange(true);
             const updatePatientData = history.state.patientDetails;
-            if (updatePatientData.xRayList){
+            if (updatePatientData && updatePatientData.xRayList){
               updatePatientData.xRayList[0].isAnnotated = true;
             }
             else{
