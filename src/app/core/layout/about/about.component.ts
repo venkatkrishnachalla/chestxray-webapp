@@ -14,10 +14,20 @@ export class AboutComponent implements OnInit {
   socialMediaIcons: { image: string; alt: string; title: string }[];
 
   // Slider Images
-  slides = [{'image': '../../../../assets/images/select icon active@2x.png'}, 
-  {'image': 'https://gsr.dev/material2-carousel/assets/demo.png'},
-  {'image': 'https://gsr.dev/material2-carousel/assets/demo.png'}, 
-  {'image': 'https://gsr.dev/material2-carousel/assets/demo.png'}];
+  slides = [
+    {image: '../../../../assets/images/select icon active@2x.png'}, 
+    {image: 'https://gsr.dev/material2-carousel/assets/demo.png'},
+    {image: 'https://gsr.dev/material2-carousel/assets/demo.png'}, 
+    {image: 'https://gsr.dev/material2-carousel/assets/demo.png'}
+  ];
+
+  // Slider content
+  slideContent = [
+    {content: 'Hello Pramod'},
+    {content: 'Hello Pramod'},
+    {content: 'Hello Pramod'},
+    {content: 'Hello Pramod'},
+  ];
 
   constructor() { }
 

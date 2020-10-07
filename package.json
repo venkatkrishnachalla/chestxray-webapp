@@ -33,6 +33,7 @@
     "@angular/platform-browser": "~9.1.7",
     "@angular/platform-browser-dynamic": "~9.1.7",
     "@angular/router": "~9.1.7",
+    "@ngbmodule/material-carousel": "^0.6.0",
     "@ngmodule/material-carousel": "^0.6.0",
     "ag-grid-angular": "^23.1.1",
     "ag-grid-community": "^23.1.1",
