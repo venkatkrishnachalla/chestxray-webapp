@@ -134,6 +134,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   contrast: any;
   scalingProperties: any;
   savedAnnotations: any;
+  objectAngle: number;	
+  lockRotation: boolean;	
+  enableFreeHandDrawing: boolean;	
+  freeHandDraw: any;
+  objectSelected: boolean;
+  selctedObjectArray: any;
 
   /*
    * constructor for CanvasImageComponent class
@@ -348,6 +354,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       opt.e.stopPropagation();
     });
     this.canvas.on('object:modified', (options) => {
+      this.objectSelected = true;
+      this.selectedObject(options);
+      this.restrictObjectOnRotate(options);
       this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
         this.updateEllipseIntoSession();
@@ -356,11 +365,17 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           options.target.canvas._activeObject
         );
       }
+      this.displayMessage(options);
     });
     this.canvas.on('object:rotating', (e) => {
+      this.restrictObjectOnRotate(e);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
+    });
+    this.canvas.on('object:rotated', (e) => {
+      this.objectSelected = true;
+      this.selectedObject(e);
     });
     this.patientDetail = history.state.patientDetails;
     if (this.patientDetail === undefined) {
@@ -384,8 +399,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
 
     this.canvas.on('object:selected', (evt) => {
+      this.objectSelected = true;
+      this.selectedObject(evt);
       this.actionIconsModelDispaly(evt);
       this.canvas.sendToBack(this.canvas._activeObject);
+      this.displayMessage(evt);
     });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
@@ -393,7 +411,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     this.canvas.on('object:moving', (evt) => {
+      this.objectSelected = true;
+      this.selectedObject(evt);
+      document.getElementById('target').style.display = 'none';
       const obj = evt.target;
+      this.objectAngle = obj.angle;
+      this.restrictObjectOnRotate(evt);
       this.restrictionToBoundaryLimit(obj);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
@@ -406,7 +429,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     let width1 = 0;
     let height1 = 0;
     this.canvas.on('object:scaling', (e) => {
-      const obj = e.target;
+      let obj;
+      if (this.objectSelected) {
+        this.selectedObject(e);
+        obj = this.selctedObjectArray;
+        this.objectSelected = false;
+      }
+      else {
+        obj = e.target;
+      }
       obj.setCoords();
       const brNew = obj.getBoundingRect();
 
@@ -437,7 +468,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.requestRenderAll();
     });
     this.canvas.on('object:moved', (evt) => {
+      this.objectSelected = true;
+      this.selectedObject(evt);
       this.actionIconsModelDispaly(evt);
+    });
+    this.canvas.on('mouse:over', (e) => {	
+      this.displayMessage(e);	
+      this.onHoveringAnnotation(e);	
+    });	
+    this.canvas.on('mouse:out', (e) => {	
+      this.onHoveringOutAnnotation(e);	
     });
     this.canvas.on('selection:updated', (evt) => {
       this.dialog.closeAll();
@@ -1604,6 +1644,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  freeHandDrawing(data) ;
    */
   freeHandDrawing(data) {
+    this.enableFreeHandDrawing = true;
     this.changeSelectableStatus(false);
     this.activeIcon = data;
     if (data.active) {
@@ -1613,10 +1654,29 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.freeDrawingBrush.color = '#ffff00';
       this.canvas.freeDrawingBrush.width = 2;
       this.canvas.freeDrawingBrush.strokeUniform = true;
+      this.canvas.observe('mouse:move', (e) => {		
+        const pointer = this.canvas.getPointer(e.e);		
+        if (this.enableFreeHandDrawing) {		
+          if (pointer.x <= 0 || pointer.x >= this.canvasCorrectedWidth || pointer.y <= 0 || pointer.y >= this.canvasCorrectedHeight) {		
+            this.canvas.isDrawingMode = false; 	
+          }		
+          else {		
+            this.canvas.isDrawingMode = true;		
+          }		
+        }		
+      });		
+      this.canvas.observe('mouse:out', (e) => {		
+          this.canvas.isDrawingMode = false; 	
+      });	
+      this.canvas.observe('mouse:in', (e) => {		
+          this.canvas.isDrawingMode = true; 	
+      });
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
         this.canvas.setActiveObject(object);
         this.save();
+        this.canvas.isDrawingMode = false;		
+        this.enableFreeHandDrawing = false;
       });
     } else {
       this.canvas.isDrawingMode = false;
@@ -2172,6 +2232,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     element.lockMovementY = true;
   }
 
+  /**	
+   * This is getStoredAnnotations function	
+   * @param '{number}' index - A number param	
+   * @example	
+   * getStoredAnnotations(xRayId);	
+   */	
   getStoredAnnotations(xRayId){
     this.spinnerService.show();
     this.annotatedXrayService.getAnnotatedData(xRayId)
@@ -2187,5 +2253,129 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.toastrService.error('Failed to fetch annotated data');
           }
         );
+  }
+  
+  /**	
+   * This is displayMessage function	
+   * @param '{any}' array - A array param	
+   * @example	
+   * displayMessage(obj);	
+   */	
+  displayMessage(obj: any){	
+    if (obj.target === null) {	
+      return true;	
+    }	
+    else if (obj.target.lockRotation) {	
+      this.lockRotation = true;	
+      this.onHoveringAnnotation(obj);	
+    }	
+    else{	
+      this.lockRotation = false;	
+    }	
+  }	
+
+  /**	
+   * This is restrictObjectOnRotate function	
+   * @param '{any}' array - A array param	
+   * @example	
+   * restrictObjectOnRotate(obj);	
+   */	
+  restrictObjectOnRotate(obj: any) {	
+    const object = obj.target;	
+    const coords = object.calcCoords();	
+    const blx = coords.bl.x;	
+    const bly = coords.bl.y;	
+    const brx = coords.br.x;	
+    const bry = coords.br.y;	
+    const tlx = coords.tl.x;	
+    const tly = coords.tl.y;	
+    const txr = coords.tr.x;	
+    const tyr = coords.tr.y;	
+    if (blx >= object.canvas.width || brx >= object.canvas.width || tlx >= object.canvas.width || txr >= object.canvas.width){	
+      this.canvas.getActiveObject().set({	
+        lockRotation: true,	
+      });	      	
+      this.canvas.renderAll();	
+    }	
+    else if ( blx <= 0 || brx <= 0 || tlx <= 0 || txr <= 0) {	
+      this.canvas.getActiveObject().set({	
+        lockRotation: true,	
+      });	
+      this.canvas.renderAll();	
+    }	
+    else if (bly >= object.canvas.height || bry >= object.canvas.height || tly >= object.canvas.height || tyr >= object.canvas.height) {	
+      this.canvas.getActiveObject().set({	
+        lockRotation: true,	
+      });	
+      this.canvas.renderAll();	
+    }	
+    else if ( bly <= 0 || bry <= 0 || tly <= 0 || tyr <= 0) {	
+      this.canvas.getActiveObject().set({	
+        lockRotation: true,	
+      });	
+      this.canvas.renderAll();	
+    }	
+    else {	
+      this.canvas.getActiveObject().set({	
+        lockRotation: false,	
+      });	
+      this.lockRotation = false;	
+      this.canvas.renderAll();	
+    }	
+  }	
+
+  /**	
+   * This is onHoveringOutAnnotation function	
+   * @param '{any}' array - A array param	
+   * @example	
+   * onHoveringOutAnnotation(obj);	
+   */	
+  onHoveringOutAnnotation(obj: any) {	
+    if (obj.target === null) {	
+      return true;	
+    }	
+    else if (obj.target.lockRotation) {	
+      document.getElementById('target').style.display = 'none';	
+    }	
+    else {	
+      return true;	
+    }	
+  }	
+
+  /**	
+   * This is onHoveringAnnotation function	
+   * @param '{any}' array - A array param	
+   * @example	
+   * onHoveringAnnotation(obj);	
+   */	
+  onHoveringAnnotation(obj: any) {	
+    if (this.lockRotation === true) {	
+        const object = obj.target;	
+        if (object === null) {	
+          return;	
+        } 	
+        else {	
+          const coords = object.calcCoords();	
+          document.getElementById('target').style.display = 'block';	
+          if (object.getBoundingRect().top <= 70) {	
+            const mbx = coords.mb.x;	
+            const mby = coords.mb.y;	
+            document.getElementById('target').style.top = mby + 100 + 'px';	
+            document.getElementById('target').style.left = mbx + 150 + 'px';	
+        }	
+        else {	
+          const mtx = coords.mt.x;	
+          const mty = coords.mt.y;	
+          document.getElementById('target').style.top = mty - 40 + 'px';	
+          document.getElementById('target').style.left = mtx + 150 + 'px';	
+        }	
+      }	
+    }	
+    this.canvas.renderAll();	
+  }
+
+
+  selectedObject(evt: any) {
+    this.selctedObjectArray = evt;
   }
 }
