@@ -374,7 +374,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
     if (this.PatientImage && isUser) {
       this.setCanvasDimension();
-      this.generateCanvas();
     } else if (!this.instanceId) {
       this.getPatientInstanceId(this.patientId);
     } else if (!this.PatientImage) {

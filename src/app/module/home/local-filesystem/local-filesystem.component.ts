@@ -20,6 +20,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   fileName = 'Choose file';
   imageSource: string;
   doctorName: string;
+  radiologistName: string;
   emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   @ViewChild(DragDropComponent) dragAndDrop: DragDropComponent;
 
@@ -76,6 +77,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
           UserInfo._token = tokenNew;
           sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
           this.doctorName = 'Dr ' + user.username;
+          this.radiologistName = user.username;
         }
       }
     );
@@ -176,6 +178,14 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     this.uploadImageForm.value.hospitalPatientId = '';
     this.uploadImageForm.value.isIndividualRadiologist = true;
     this.uploadImageForm.value.status = false;
+    this.uploadImageForm.value.xRayList = [
+      {
+        assignedTo: this.radiologistName,
+        isAnnotated: false,
+        lastUpdate: new Date(),
+        xRayId: 0,
+      },
+    ];
     const date = new Date(this.uploadImageForm.value.dateOfBirth);
     const timeDiff = Math.abs(Date.now() - date.getTime());
     this.uploadImageForm.value.age = Math.floor(
@@ -199,6 +209,14 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       isIndividualRadiologist: true,
       status: false,
       age: this.uploadImageForm.value.age,
+      xRayList: [
+        {
+          assignedTo: this.radiologistName,
+          isAnnotated: false,
+          lastUpdate: new Date(),
+          xRayId: 0,
+        },
+      ],
     };
     sessionStorage.setItem('patientRows', JSON.stringify([]));
     sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
