@@ -61,6 +61,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit(): void {
+    this.isProcessed = false;
     let patientDetail = history.state.patientDetails;
     if (patientDetail === undefined) {
       const patient = JSON.parse(sessionStorage.getItem('patientDetail'));
@@ -68,7 +69,16 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     }
     this.patientID = patientDetail ? patientDetail.hospitalPatientId : '';
     this.isProcessed = patientDetail.xRayList[0].isAnnotated;
-
+    this.patientRows = JSON.parse(sessionStorage.getItem('patientRows'));
+    if (this.patientRows.length > 0) {
+      const lastIndex = this.patientRows[this.patientRows.length - 1].index;
+      this.currentIndex = this.patientRows.findIndex(
+        (a) => a.hospitalPatientId === this.patientID
+      );
+      this.currentPatientData = this.patientRows[this.currentIndex];
+      this.patientRows[this.currentIndex].xRayList[0].isAnnotated = this.isProcessed;
+      sessionStorage.setItem('patientRows', JSON.stringify(this.patientRows));
+    }
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         if (user) {
@@ -78,8 +88,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
       }
     );
     this.eventEmitterService.onStatusChangeFunction.subscribe((data) => {
-      this.isProcessed = data;
-    });
+    this.isProcessed = data;
+  });
     this.prevNextFunction();
   }
 
@@ -90,7 +100,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    * prevNextFunction();
    */
 
-  prevNextFunction() {
+    prevNextFunction() {
     this.patientRows = JSON.parse(sessionStorage.getItem('patientRows'));
     if (this.patientRows.length > 0) {
       const lastIndex = this.patientRows[this.patientRows.length - 1].index;
@@ -111,7 +121,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    * nextPatient();
    */
 
-  nextPatient() {
+    nextPatient() {
     const currIndex = this.currentIndex + 1;
     const filterData = this.patientRows[currIndex];
     const patientDetail = JSON.stringify(filterData);
@@ -134,7 +144,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    * previousPatient();
    */
 
-  previousPatient() {
+    previousPatient() {
     const currIndex = this.currentIndex - 1;
     const filterData = this.patientRows[currIndex];
     const patientDetail = JSON.stringify(filterData);
@@ -157,7 +167,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    * ngOnDestroy();
    */
 
-  ngOnDestroy() {
+    ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
 }
