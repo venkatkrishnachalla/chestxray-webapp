@@ -20,6 +20,22 @@ import { ReportModule } from './module/report/report.module';
 import { NgxPrintModule } from 'ngx-print';
 import { ToastrModule } from 'ngx-toastr';
 import { FormatTimePipe } from './filters/format-time.pipe';
+import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
+
+const dbConfig: DBConfig = {
+  name: 'XrayDb',
+  version: 3,
+  objectStoresMeta: [
+    {
+      store: 'PatientImage',
+      storeConfig: { keyPath: 'id', autoIncrement: false },
+      storeSchema: [
+        { name: 'name', keypath: 'name', options: { unique: false } },
+      ],
+    },
+  ],
+};
+
 @NgModule({
   declarations: [AppComponent, FormatTimePipe],
   imports: [
@@ -46,6 +62,7 @@ import { FormatTimePipe } from './filters/format-time.pipe';
       autoDismiss: true,
       preventDuplicates: true,
     }),
+    NgxIndexedDBModule.forRoot(dbConfig)
   ],
   providers: [
     EventEmitterService,
@@ -54,5 +71,5 @@ import { FormatTimePipe } from './filters/format-time.pipe';
   ],
   bootstrap: [AppComponent],
 })
-// AppModule class implementation  
+// AppModule class implementation
 export class AppModule {}

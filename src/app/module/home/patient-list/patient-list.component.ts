@@ -15,6 +15,7 @@ import User from '../../auth/user.modal';
 import { Subscription } from 'rxjs';
 import { userInfo } from 'os';
 import { IDatasource, IGetRowsParams } from 'ag-grid-community';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 interface PatientListData {
   data: PatientListData;
@@ -41,7 +42,6 @@ interface EnumServiceItems extends Array<PatientListData> {}
   styleUrls: ['./patient-list.component.scss'],
 })
 export class PatientListComponent implements OnInit, OnDestroy {
-
   /*
    * constructor for PatientListComponent class
    */
@@ -51,7 +51,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
     private dashboardService: DashboardService,
     private authService: AuthService,
     public router: Router,
-    private eventEmitterService: EventEmitterService
+    private eventEmitterService: EventEmitterService,
+    private dbService: NgxIndexedDBService
   ) {}
   gridApi;
   gridColumnApi;
@@ -73,7 +74,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
   @ViewChild('toggleButton') toggleButton: ElementRef;
   private userSubscription: Subscription;
 
-
   /**
    * This is a init function, retrieve current user details.
    * @param '{void}' empty - A empty param
@@ -86,6 +86,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
     sessionStorage.removeItem('ellipse');
+    this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200, lockPosition: true };
