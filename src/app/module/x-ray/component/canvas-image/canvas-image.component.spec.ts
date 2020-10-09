@@ -1792,4 +1792,16 @@ describe('CanvasImageComponent', () => {
       expect(component.getContrast).toBeDefined();
     });
   });
+
+  /*** it should call selectedObject function***/
+  describe('#selectedObject', () => {
+    beforeEach(() => {
+      component.selectedObject('abc');
+    });
+    it('it should call selectedObject function', () => {
+      expect(component.selectedObject).toBeDefined();
+      expect(component.objectModified).toBeTruthy();
+      expect(component.selctedObjectArray).toBe('abc');
+    });
+  });
 });

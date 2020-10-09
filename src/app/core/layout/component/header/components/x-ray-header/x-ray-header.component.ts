@@ -76,7 +76,9 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
         (a) => a.hospitalPatientId === this.patientID
       );
       this.currentPatientData = this.patientRows[this.currentIndex];
-      this.patientRows[this.currentIndex].xRayList[0].isAnnotated = this.isProcessed;
+      this.patientRows[
+        this.currentIndex
+      ].xRayList[0].isAnnotated = this.isProcessed;
       sessionStorage.setItem('patientRows', JSON.stringify(this.patientRows));
     }
     this.userSubscription = this.authService.userSubject.subscribe(
@@ -88,8 +90,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
       }
     );
     this.eventEmitterService.onStatusChangeFunction.subscribe((data) => {
-    this.isProcessed = data;
-  });
+      this.isProcessed = data;
+    });
     this.prevNextFunction();
   }
 
@@ -100,7 +102,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    * prevNextFunction();
    */
 
-    prevNextFunction() {
+  prevNextFunction() {
     this.patientRows = JSON.parse(sessionStorage.getItem('patientRows'));
     if (this.patientRows.length > 0) {
       const lastIndex = this.patientRows[this.patientRows.length - 1].index;
@@ -121,7 +123,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    * nextPatient();
    */
 
-    nextPatient() {
+  nextPatient() {
     const currIndex = this.currentIndex + 1;
     const filterData = this.patientRows[currIndex];
     const patientDetail = JSON.stringify(filterData);
@@ -133,7 +135,9 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('askAiSelection', 'false');
     this.patientID = filterData.hospitalPatientId;
     history.pushState(filterData, 'patientDetails', 'x-ray');
-    this.eventEmitterService.onPrevNextButtonClick(filterData.xRayList[0].xRayId);
+    this.eventEmitterService.onPrevNextButtonClick(
+      filterData.xRayList[0].xRayId
+    );
     this.prevNextFunction();
   }
 
@@ -144,7 +148,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    * previousPatient();
    */
 
-    previousPatient() {
+  previousPatient() {
     const currIndex = this.currentIndex - 1;
     const filterData = this.patientRows[currIndex];
     const patientDetail = JSON.stringify(filterData);
@@ -156,7 +160,9 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('askAiSelection', 'false');
     this.patientID = filterData.hospitalPatientId;
     history.pushState(filterData, 'patientDetails', 'x-ray');
-    this.eventEmitterService.onPrevNextButtonClick(filterData.xRayList[0].xRayId);
+    this.eventEmitterService.onPrevNextButtonClick(
+      filterData.xRayList[0].xRayId
+    );
     this.prevNextFunction();
   }
 
@@ -167,7 +173,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    * ngOnDestroy();
    */
 
-    ngOnDestroy() {
+  ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
 }
