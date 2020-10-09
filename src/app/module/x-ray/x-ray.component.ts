@@ -148,11 +148,11 @@ export class XRayComponent implements OnInit {
     const annotationData = this.canvas.savedInfo['data'].ndarray[0];
     annotationData.Impression.forEach((element) => {
       element.index = indexValue;
-      if (element.Source === 'ML' && mainSource !== 'ML+DR') {
+      if (element.source === 'ML' && mainSource !== 'ML+DR') {
         mainSource = 'ML';
-      } else if (element.Source === 'DR' && mainSource === '') {
+      } else if (element.source === 'DR' && mainSource === '') {
         mainSource = 'DR';
-      } else if (element.Source === 'DR' && mainSource === 'ML') {
+      } else if (element.source === 'DR' && mainSource === 'ML') {
         mainSource = mainSource + '+DR';
       }
       indexValue++;
@@ -160,26 +160,23 @@ export class XRayComponent implements OnInit {
     annotationData.diseases.forEach((element) => {
       delete element.index;
       if (element.freeHandDrawing) {
+        const coordinatesArray = [];
+        element.coordinatevalues.forEach((data) => {
+          coordinatesArray.push([data.x, data.y]);
+        });
         element.type = 'freeHandDrawing';
         element.contours = [
           {
-            Source: 'DR',
+            source: 'DR',
             isUpdated: false,
             isDeleted: false,
-            coordinates: element.coordinatevalues,
+            Coordinates: coordinatesArray,
           },
         ];
         element.ellipses = [];
         delete element.coordinatevalues;
       } else if (element.ellipses) {
-        element.contours = [
-          {
-            coordinates: [],
-            Source: 'DR',
-            isUpdated: false,
-            isDeleted: false,
-          },
-        ];
+        delete element.contours;
         element.ellipses.forEach((ellipse, index) => {
           delete ellipse.index;
           delete ellipse.id;
@@ -224,7 +221,7 @@ export class XRayComponent implements OnInit {
             const newImpression = {
               index: impressionIndex + 1,
               sentence: output[1],
-              Source: 'DR',
+              source: 'DR',
             };
             if (finalOutput !== '') {
               if (
@@ -253,7 +250,7 @@ export class XRayComponent implements OnInit {
           const newImpression = {
             index: impressionIndex + 1,
             sentence: output[1],
-            Source: 'DR',
+            source: 'DR',
           };
           if (output[1] !== '') {
             // tslint:disable-next-line: max-line-length
