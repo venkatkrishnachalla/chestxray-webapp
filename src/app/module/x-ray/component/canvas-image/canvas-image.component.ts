@@ -43,6 +43,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { constants } from 'os';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -154,8 +156,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastrService: ToastrService,
     private sanitizer: DomSanitizer,
-
-    private eventEmitterService2: EventEmitterService2
+    private eventEmitterService2: EventEmitterService2,
+    private dbService: NgxIndexedDBService
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -380,23 +382,25 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientDetail = patientDetail;
     }
-    const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
-    this.PatientImage = patientImage ? patientImage.base64Image : null;
-    const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
-    this.patientId = this.patientDetail
-      ? this.patientDetail.xRayList[0].xRayId
-      : '';
 
-    if (this.PatientImage && isUser) {
-      this.setCanvasDimension();
-    } else if (!this.instanceId) {
-      this.getPatientInstanceId(this.patientId);
-    } else if (!this.PatientImage) {
-      this.getPatientImage(this.instanceId);
-    } else {
-      this.setCanvasDimension();
-      this.generateCanvas();
-    }
+    this.dbService.getByKey('PatientImage', 1).subscribe((patientImage) => {
+      this.PatientImage = patientImage ? patientImage.base64Image : null;
+      const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
+      this.patientId = this.patientDetail
+        ? this.patientDetail.xRayList[0].xRayId
+        : '';
+
+      if (this.PatientImage && isUser) {
+        this.setCanvasDimension();
+      } else if (!this.instanceId) {
+        this.getPatientInstanceId(this.patientId);
+      } else if (!this.PatientImage) {
+        this.getPatientImage(this.instanceId);
+      } else {
+        this.setCanvasDimension();
+        this.generateCanvas();
+      }
+    });
 
     this.canvas.on('object:selected', (evt) => {
       this.objectSelected = true;
@@ -763,12 +767,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const imageInformation = {
           base64Image: this.PatientImage,
           filename: imageResponse.filename,
+          id: 1
         };
-        sessionStorage.setItem(
-          'PatientImage',
-          JSON.stringify(imageInformation)
-        );
         this.setCanvasDimension();
+        this.dbService.add('PatientImage', imageInformation).subscribe((key) => {
+        });
       },
       (errorMessage: any) => {
         this.spinnerService.hide();

@@ -9,6 +9,7 @@ import {
 import User from 'src/app/module/auth/user.modal';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { ArrayType } from '@angular/compiler';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 @Component({
   selector: 'cxr-x-ray-header',
@@ -48,7 +49,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
   constructor(
     public router: Router,
     private authService: AuthService,
-    private eventEmitterService: EventEmitterService
+    private eventEmitterService: EventEmitterService,
+    private dbService: NgxIndexedDBService
   ) {}
 
   /**
@@ -128,7 +130,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
-    sessionStorage.removeItem('PatientImage');
+    this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
     this.patientID = filterData.hospitalPatientId;
@@ -153,6 +155,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
+    this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
     this.patientID = filterData.hospitalPatientId;

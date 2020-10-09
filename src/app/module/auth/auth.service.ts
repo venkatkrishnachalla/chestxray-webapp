@@ -9,6 +9,7 @@ import { throwError, BehaviorSubject } from 'rxjs';
 import User from './user.modal';
 import { Router } from '@angular/router';
 import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 export const FIREBASE_API_KEY = 'AIzaSyBmHTkeOUxDWQ9VDLx2TP3mzyhbamcGHiI';
 const FIREBASE_SIGN_IN_ENDPOINT =
   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
@@ -40,7 +41,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private endpoint: ApiEndPointService,
-    private router: Router
+    private router: Router,
+    private dbService: NgxIndexedDBService
   ) {
     this.userSubject = new BehaviorSubject<User>(null);
   }
@@ -92,7 +94,7 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
     sessionStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
-    sessionStorage.removeItem('PatientImage');
+    this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.removeItem('isIndividualRadiologist');
     sessionStorage.removeItem('askAiSelection');
     sessionStorage.removeItem('x-ray_Data');
