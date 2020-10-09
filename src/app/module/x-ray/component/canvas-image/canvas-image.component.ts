@@ -56,6 +56,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
   @ViewChild('myDiv') myDiv: ElementRef;
+  // @ViewChild('diffusePathology') diffusePathology: TemplateRef<any>;
   @Output() annotatedXrayEvent = new EventEmitter();
   isLoading: boolean;
   studiesId: string;
@@ -134,6 +135,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   contrast: any;
   scalingProperties: any;
   savedAnnotations: any;
+  diffusePathologyNames: any;
 
   /*
    * constructor for CanvasImageComponent class
@@ -217,6 +219,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       meta: {},
     };
     this.pathologyNames = this.constants.diseases;
+    // this.diffusePathologyNames = this.constants.diffusePathology;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
     this.eventEmitterService.brightnessValue.subscribe((data: number) => {
@@ -227,12 +230,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
+        console.log(data)
         switch (data.title) {
           case 'Draw Ellipse':
             this.drawEllipse(data);
             break;
           case 'Free Hand Drawing':
             this.freeHandDrawing(data);
+            break;
+          case 'pathology':
+            this.pathology(data);
             break;
           case 'Delete':
             break;
@@ -1360,6 +1367,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * savePrediction();
    */
   savePrediction() {
+    this.pathologyNames = this.constants.diseases;
     const random = Math.floor(Math.random() * 100 + 1);
     this.canvas.getActiveObject().index = random;
     this.selectedObjectPrediction = this.canvas.getActiveObject();
@@ -1643,12 +1651,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * closePathologyModal();
    */
   closePathologyModal() {
+    this.pathologyNames = this.constants.diseases;
     this.clear();
     if (!this.updateDisease) {
       this.canvas.remove(this.canvas.getActiveObject());
       this.canvas.renderAll();
       this.activeIcon.active = false;
     }
+    this.activeIcon.active = false;
     this.canvas.isDrawingMode = false;
     this.enableDrawEllipseMode = false;
     this.dialog.closeAll();
@@ -1661,6 +1671,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  freeHandDrawing(data) ;
    */
   freeHandDrawing(data) {
+    debugger;
     this.changeSelectableStatus(false);
     this.activeIcon = data;
     if (data.active) {
@@ -2244,5 +2255,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.toastrService.error('Failed to fetch annotated data');
           }
         );
+  }
+
+  pathology(data) {
+    this.dialog.closeAll();
+    this.activeIcon = data;
+    this.pathologyNames = this.constants.diffusePathology;
+    this.openPathologyModal();
   }
 }

@@ -187,4 +187,22 @@ export const pathology = {
     { Name: 'BONY THORAX', Desc: 'Visualised bony thorax is normal.' },
     { Name: 'ADDITIONAL', Desc: '' },
   ],
+
+  diffusePathology: [
+     {
+      abnormality: 'Lungs',
+      Names: [
+        'Bronchitis',
+        'Reticulo Nodular Pattern',
+        'Hyperinflation',
+        'Honey Combing',
+      ],
+    },
+    {
+      abnormality: 'Bony Thorax',
+      Names: [
+        'Osteopenia',
+      ],
+    }
+  ]
 };
