@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import User from '../auth/user.modal';
 import { MlApiData } from '../auth/interface.modal';
 import { ToastrService } from 'ngx-toastr';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 @Component({
   selector: 'cxr-x-ray',
@@ -60,7 +61,8 @@ export class XRayComponent implements OnInit{
     private eventEmitterService: EventEmitterService,
     private anotatedXrayService: XRayService,
     private authService: AuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dbService: NgxIndexedDBService
   ) {}
 
   /**
@@ -92,31 +94,32 @@ export class XRayComponent implements OnInit{
    */
   openAskAI(event: any) {
     this.spinnerService.show();
-    const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
-    this.xrayService
-      .getAskAiDetails(patientImage.base64Image, patientImage.filename)
-      .subscribe(
-        (mLResponse: MlApiData) => {
-          this.mLResponse = mLResponse;
-          const mLArray = this.mLResponse.data.ndarray[0].diseases;
-          this.eventsSubject.next(mLResponse);
-          this.eventEmitterService.onAskAiButtonClick('success');
-          this.spinnerService.hide();
-          if (mLArray.length === 0 || mLArray === undefined) {
-            this.toastrService.info('No significant abnormality detected');
-          } else {
-            this.toastrService.success('ML Annotations updated successfully');
+    this.dbService.getByKey('PatientImage', 1).subscribe((patientImage) => {
+      this.xrayService
+        .getAskAiDetails(patientImage.base64Image, patientImage.filename)
+        .subscribe(
+          (mLResponse: MlApiData) => {
+            this.mLResponse = mLResponse;
+            const mLArray = this.mLResponse.data.ndarray[0].diseases;
+            this.eventsSubject.next(mLResponse);
+            this.eventEmitterService.onAskAiButtonClick('success');
+            this.spinnerService.hide();
+            if (mLArray.length === 0 || mLArray === undefined) {
+              this.toastrService.info('No significant abnormality detected');
+            } else {
+              this.toastrService.success('ML Annotations updated successfully');
+            }
+          },
+          (errorMessage: string) => {
+            this.displayCanvas = false;
+            this.displayErrorBlock = true;
+            this.spinnerService.hide();
+            this.eventEmitterService.onErrorMessage({
+              data: errorMessage,
+            });
           }
-        },
-        (errorMessage: string) => {
-          this.displayCanvas = false;
-          this.displayErrorBlock = true;
-          this.spinnerService.hide();
-          this.eventEmitterService.onErrorMessage({
-            data: errorMessage,
-          });
-        }
-      );
+        );
+    });
   }
 
   /**

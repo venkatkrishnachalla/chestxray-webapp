@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import User from '../../auth/user.modal';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 @Component({
   selector: 'cxr-local-filesystem',
@@ -31,7 +32,8 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private dbService: NgxIndexedDBService
   ) {}
 
   /**
@@ -81,6 +83,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
   }
 
   /**
@@ -194,6 +197,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     const imageResponse = {
       base64Image: this.imageSource,
       filename: '',
+      id: 1
     };
     const patientDetail = {
       name: this.uploadImageForm.value.name,
@@ -219,7 +223,8 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       ],
     };
     sessionStorage.setItem('patientRows', JSON.stringify([]));
-    sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
+    this.dbService.add('PatientImage', imageResponse).subscribe((key) => {
+   });
     sessionStorage.setItem('patientDetail', JSON.stringify(patientDetail));
     sessionStorage.setItem('askAiSelection', 'false');
     sessionStorage.removeItem('x-ray_Data');
