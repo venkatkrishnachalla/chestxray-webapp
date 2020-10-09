@@ -465,6 +465,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.requestRenderAll();
     });
     this.canvas.on('object:scaled', (e) => {
+      document.getElementById('target').style.display = 'none';
       this.selectedObject(e);
     });
     this.canvas.on('object:moved', (evt) => {
