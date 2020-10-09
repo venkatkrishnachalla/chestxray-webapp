@@ -2465,17 +2465,5 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   selectedObject(evt: any) {
     this.objectModified = true;
     this.selctedObjectArray = evt;
-    this.annotatedXrayService.getAnnotatedData(xRayId).subscribe(
-      (response) => {
-        this.savedAnnotations = response;
-        if (this.savedAnnotations.data.ndarray[0].source !== 'DR') {
-          this.eventEmitterService.onAskAiButtonClick('success');
-        }
-      },
-      (errorMessage: string) => {
-        this.spinnerService.hide();
-        this.toastrService.error('Failed to fetch annotated data');
-      }
-    );
   }
 }
