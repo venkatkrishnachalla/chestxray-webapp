@@ -3,68 +3,40 @@
     <div class="left-image-container">
       <!-- <img src="../../../../assets/about-us.png" alt="" /> -->
       <mat-carousel
-      timings="500ms ease-in"
-      [autoplay]="true"
-      interval="5000"
-      color="white"
-      maxWidth="auto"
-      proportion="25"
-      [loop]="true"
-      [maintainAspectRatio]="true"
-      orientation="ltr"
-    >
-
-    <!-- [hideArrows]="false"
+        timings="500ms ease-in"
+        [autoplay]="true"
+        interval="5000"
+        color="white"
+        maxWidth="auto"
+        proportion="25"
+        [loop]="true"
+        [maintainAspectRatio]="true"
+        orientation="ltr"
+        [hideArrows]="false"
+        [hideIndicators]="false"
+        [useKeyboard]="true"
+        [useMouseWheel]="false"
+      >
+        <!-- [hideArrows]="false"
     [hideIndicators]="false"
     [useKeyboard]="true"
     [useMouseWheel]="false" pass inside line number 13-->
 
-      <mat-carousel-slide
-        *ngFor="let slide of slides; let i = index"
-        [image]="slide.image"
-        [hideOverlay]="false"
-      ></mat-carousel-slide>
-    </mat-carousel>
+        <mat-carousel-slide
+          *ngFor="let slide of slides; let i = index"
+          [hideOverlay]="false"
+        >
+          <img [src]="slide.image" width="700" height="500" />
+          <p class="right-form-container">
+            {{ slide.title }}:&nbsp;{{ slide.content }}
+          </p>
+        </mat-carousel-slide>
 
-    </div>
-    <div class="right-form-container">
-      <!-- <h1>About Chest-rAi</h1>
-      <div class="version-number">V{{ currentApplicationVersion }}</div>
-      <div class="about-info">
-        <p><span>Chest-rAi</span> is a X-Ray annotation tool that
-        uses Artificial Inteligence to provide an
-        effective and relevant healthcare solution.</p>
-        <p><span>W</span>e merge deep learning, robust software
-        development & usability practices to
-        create a great User Experience for
-        healthcare experts.</p>
-        <p><span>O</span>ur advisory panel consists of radiologist
-        & regulatory experts. We work with
-        specialists to identify clinically relevant
-        problems and design innovative solutions.</p>
-      </div>
-      <br>
-      <div class="contact-us">
-        <a class="hover-effect" title="Get in touch with us | ltts.com/contact-us" href="https://www.ltts.com/contact-us" target="_blank">Get in touch with us.</a>
-      </div> -->
-
-
-      <mat-carousel
-      timings="500ms ease-in"
-      [autoplay]="true"
-      interval="5000"
-      color="white"
-      maxWidth="auto"
-      orientation="ltr"
-    >
-      <mat-carousel-slide
-        *ngFor="let slide of slideContent; let i = index"
-      > {{slide.content}}
-    </mat-carousel-slide>
-    </mat-carousel>
-
-
-
+        <!-- <p
+          *ngFor="let slide of slideContent; let i = index"
+        > {{slide.content}}
+    </p> -->
+      </mat-carousel>
     </div>
   </section>
   <section class="footer">

@@ -13,15 +13,17 @@
     height: calc(100% - 40px);
 
     .left-image-container {
-      width: 60%;
+      width: 100%;
       margin: auto;
       padding: 20px;
     }
 
-    .right-form-container {
+    .left-image-container .right-form-container {
       width: 40%;
       color: #fff;
       margin: auto 0;
+      float: right;
+      display: end;
 
       h1 {
         font-size: 36px;
