@@ -230,7 +230,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
-        console.log(data)
         switch (data.title) {
           case 'Draw Ellipse':
             this.drawEllipse(data);
@@ -839,6 +838,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * mlApiEllipseLoop(mlList, check);
    */
   mlApiEllipseLoop(mlList: any, check) {
+    console.log("mlList", mlList)
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
@@ -911,6 +911,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     let val1 = 0;
+
     mLArray.diseases.forEach((disease: any, index: any) => {
       if (disease.ellipses && disease.ellipses.length !== 0) {
         const idValue = 1000 + val1;
@@ -919,6 +920,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           disease.isMlAi = true;
         }
         disease.ellipses.forEach((ellipse: any, index) => {
+          console.log("ellipse", ellipse)
           ellipse.color =
           DISEASE_COLOR_MAPPING[disease.name.toLowerCase()] || RANDOM_COLOR;
           ellipse.id = idValue + '' + val2;
@@ -1367,12 +1369,24 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * savePrediction();
    */
   savePrediction() {
-    this.pathologyNames = this.constants.diseases;
     const random = Math.floor(Math.random() * 100 + 1);
-    this.canvas.getActiveObject().index = random;
-    this.selectedObjectPrediction = this.canvas.getActiveObject();
-    const selectedObjectPrediction = this.canvas.getActiveObject();
-    selectedObjectPrediction.idNew = random;
+    let emptyObject;
+    let selectedObjectPrediction;
+    if (this.canvas.getActiveObject() === undefined || this.canvas.getActiveObject() === null) {
+      emptyObject = {
+        index: random,
+      };
+      this.selectedObjectPrediction = emptyObject;
+      selectedObjectPrediction = emptyObject;
+      selectedObjectPrediction.idNew = random;
+    }
+    else {
+      this.canvas.getActiveObject().index = random;
+      this.selectedObjectPrediction = this.canvas.getActiveObject();
+      selectedObjectPrediction = this.canvas.getActiveObject();
+      selectedObjectPrediction.idNew = random;
+      // this.getColorMapping(this.selectedDisease, 'save', 'DR');
+    }    
     const selectedObject = {
       idNew: random,
       name: this.selectedDisease,
@@ -1384,15 +1398,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       'impression'
     );
     this.eventEmitterService.onComponentDataShared(selectedObject);
+
     this.getColorMapping(this.selectedDisease, 'save', 'DR');
     this.clear();
     this.activeIcon.active = false;
     this.dialog.closeAll();
     if (this.selectedObjectPrediction.type === 'ellipse') {
       this.saveEllipseIntoSession();
-    } else {
+    } 
+    if (this.selectedObjectPrediction.type === 'path') {
       this.saveFreeHandDrawingIntoSession();
     }
+    this.pathologyNames = this.constants.diseases;
     this.toastrService.success('Annotation saved successfully');
     this.canvas.discardActiveObject();
     this.canvas.renderAll();
@@ -1752,6 +1769,30 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   getColorMapping(diseases, check, src) {
     const colorName =
       DISEASE_COLOR_MAPPING[diseases.toLowerCase()] || RANDOM_COLOR;
+    if (this.canvas._activeObject === null || this.canvas._activeObject === undefined) {
+      const obj = {
+        color: colorName,
+        ellipses: [
+          // {
+          //   x: this.canvas._activeObject.left,
+          //   y: this.canvas._activeObject.top,
+          //   a: this.canvas._activeObject.rx,
+          //   b: this.canvas._activeObject.ry,
+          //   r: this.canvas._activeObject.angle,
+          //   index: this.canvas._activeObject.id,
+          //   type: 'ellipse',
+          //   source: src,
+          // },
+        ],
+        index: this.selectedObjectPrediction.id,
+        name: diseases,
+        source: src,
+      };
+      this.savedInfo['data'].ndarray[0].diseases.push(obj);
+      sessionStorage.removeItem('x-ray_Data');
+      sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
+      return;
+    }
     if (!this.canvas._activeObject.path) {
       const obj = {
         color: colorName,
@@ -1833,10 +1874,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
-    this.canvas.getActiveObject().set({
-      stroke: colorName,
-    });
-    this.canvas.renderAll();
+    if (this.canvas.getActiveObject() != null) {
+      this.canvas.getActiveObject().set({
+        stroke: colorName,
+      });
+      this.canvas.renderAll();
+    }
   }
 
   /**

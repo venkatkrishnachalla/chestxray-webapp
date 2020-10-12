@@ -13,10 +13,10 @@ export const pathology = {
       abnormality: 'Bronchiectasis',
       Names: [],
     },
-    {
-      abnormality: 'Bronchitis',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Bronchitis',
+    //   Names: [],
+    // },
     {
       abnormality: 'Bulla',
       Names: [],
@@ -91,18 +91,18 @@ export const pathology = {
       abnormality: 'Hilar Enlargement',
       Names: [],
     },
-    {
-      abnormality: 'Honeycombing',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Honeycombing',
+    //   Names: [],
+    // },
     {
       abnormality: 'Hydropneumothorax',
       Names: [],
     },
-    {
-      abnormality: 'Hyperinflation',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Hyperinflation',
+    //   Names: [],
+    // },
     {
       abnormality: 'Mass',
       Names: [],
@@ -126,10 +126,10 @@ export const pathology = {
         'Fracture',
       ],
     },
-    {
-      abnormality: 'Osteopenia',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Osteopenia',
+    //   Names: [],
+    // },
     {
       abnormality: 'Pleural  Effusion',
       Names: ['Pleural Effusion', 'Pleural Thickening'],
@@ -150,10 +150,10 @@ export const pathology = {
       abnormality: 'Pneumothorax',
       Names: [],
     },
-    {
-      abnormality: 'Reticulonodular Pattern',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Reticulonodular Pattern',
+    //   Names: [],
+    // },
     {
       abnormality: 'Support Devices',
       Names: [
