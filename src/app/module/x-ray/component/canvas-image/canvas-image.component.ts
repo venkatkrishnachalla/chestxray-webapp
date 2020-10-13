@@ -1009,85 +1009,88 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.impressionArray.push(selectedObject);
         this.eventEmitterService.onComponentDataShared(selectedObject);
         this.coordinateList = [];
-        const coordinatePath = disease.contours[0].coordinates;
-        coordinatePath.forEach((coords) => {
-          // if (i % 2 === 0) {
-          let xPosition: any = coords.x;
-          xPosition = xPosition / this.canvasScaleX;
-          this.coordinateList.push(xPosition);
-          // }
-          // else {
-          let yPosition: any = coords.y;
-          yPosition = yPosition / this.canvasScaleY;
-          this.coordinateList.push(yPosition);
-          // }
-        });
-        const appendCharacter = 'M' + ' ';
-        this.coordinateList.unshift(appendCharacter);
+        if (disease.contours[0] === undefined) {
+          console.log('diffuse category does not contain disease contours');
+        } else {
+          const coordinatePath = disease.contours[0].coordinates;
+          coordinatePath.forEach((coords) => {
+            // if (i % 2 === 0) {
+            let xPosition: any = coords.x;
+            xPosition = xPosition / this.canvasScaleX;
+            this.coordinateList.push(xPosition);
+            // }
+            // else {
+            let yPosition: any = coords.y;
+            yPosition = yPosition / this.canvasScaleY;
+            this.coordinateList.push(yPosition);
+            // }
+          });
+          const appendCharacter = 'M' + ' ';
+          this.coordinateList.unshift(appendCharacter);
+          this.canvas.add(
+            new fabric.Path(this.coordinateList.join(' '), {
+              // @ts-ignore
+              disease: disease.disease,
+              stroke: disease.color,
+              strokeWidth: 2,
+              fill: '',
+              originX: 'center',
+              originY: 'center',
+              opacity: 0.8,
+              id: disease.idx,
+            })
+          );
+          this.coordinateList = [];
 
-        this.canvas.add(
-          new fabric.Path(this.coordinateList.join(' '), {
-            // @ts-ignore
-            disease: disease.disease,
-            stroke: disease.color,
-            strokeWidth: 2,
-            fill: '',
-            originX: 'center',
-            originY: 'center',
-            opacity: 0.8,
-            id: disease.idx,
-          })
-        );
-        this.coordinateList = [];
+          // const coordinates = [];
+          // disease.contours[0].coordinates.forEach(data1 => {
+          //   coordinates.push({x: data1[0], y: data1[1]});
+          // });
 
-        // const coordinates = [];
-        // disease.contours[0].coordinates.forEach(data1 => {
-        //   coordinates.push({x: data1[0], y: data1[1]});
-        // });
-
-        // // const coordinatePath = coordinates;
-        // this.eventEmitterService.onComponentEllipseDataShared({
-        //   name: disease.name,
-        //   index: disease.idx,
-        //   source: 'DR',
-        //   isUpdated : false,
-        // });
-        // const random = Math.floor(Math.random() * 100 + 1);
-        // const selectedObject = {
-        //   title: 'impression',
-        //   isMLApi: false,
-        //   idNew: check !== 'session' ? random : disease.idx,
-        //   name: disease.name,
-        //   color: disease.color,
-        //   source: 'DR',
-        //   isUpdated : false,
-        // };
-        // this.impressionArray.push(selectedObject);
-        // this.eventEmitterService.onComponentDataShared(selectedObject);
-        // coordinates.forEach((element) => {
-        //   let xPosition: any = element.x;
-        //   xPosition = xPosition / this.canvasScaleX;
-        //   this.coordinateList.push(xPosition);
-        //   let yPosition: any = element.y;
-        //   yPosition = yPosition / this.canvasScaleY;
-        //   this.coordinateList.push(yPosition);
-        //   const appendCharacter = 'M' + ' ';
-        //   this.coordinateList.unshift(appendCharacter);
-        // });
-        // this.canvas.add(
-        //   new fabric.Path(this.coordinateList.join(' '), {
-        //     // @ts-ignore
-        //     stroke: disease.color,
-        //     strokeWidth: 2,
-        //     fill: '',
-        //     originX: 'center',
-        //     originY: 'center',
-        //     opacity: 0.8,
-        //     id: disease.idx,
-        //   })
-        // );
-        // this.coordinateList = [];
-        this.canvas.renderAll();
+          // // const coordinatePath = coordinates;
+          // this.eventEmitterService.onComponentEllipseDataShared({
+          //   name: disease.name,
+          //   index: disease.idx,
+          //   source: 'DR',
+          //   isUpdated : false,
+          // });
+          // const random = Math.floor(Math.random() * 100 + 1);
+          // const selectedObject = {
+          //   title: 'impression',
+          //   isMLApi: false,
+          //   idNew: check !== 'session' ? random : disease.idx,
+          //   name: disease.name,
+          //   color: disease.color,
+          //   source: 'DR',
+          //   isUpdated : false,
+          // };
+          // this.impressionArray.push(selectedObject);
+          // this.eventEmitterService.onComponentDataShared(selectedObject);
+          // coordinates.forEach((element) => {
+          //   let xPosition: any = element.x;
+          //   xPosition = xPosition / this.canvasScaleX;
+          //   this.coordinateList.push(xPosition);
+          //   let yPosition: any = element.y;
+          //   yPosition = yPosition / this.canvasScaleY;
+          //   this.coordinateList.push(yPosition);
+          //   const appendCharacter = 'M' + ' ';
+          //   this.coordinateList.unshift(appendCharacter);
+          // });
+          // this.canvas.add(
+          //   new fabric.Path(this.coordinateList.join(' '), {
+          //     // @ts-ignore
+          //     stroke: disease.color,
+          //     strokeWidth: 2,
+          //     fill: '',
+          //     originX: 'center',
+          //     originY: 'center',
+          //     opacity: 0.8,
+          //     id: disease.idx,
+          //   })
+          // );
+          // this.coordinateList = [];
+          this.canvas.renderAll();
+        }
       }
     });
   }
