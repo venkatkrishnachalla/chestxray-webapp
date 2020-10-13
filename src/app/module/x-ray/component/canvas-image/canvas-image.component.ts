@@ -495,6 +495,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * prevNextPatientChange(patientId);
    */
   prevNextPatientChange(patientId) {
+    this.savedAnnotations = [];
     this.resetZoom();
     this.keepPositionInBounds(this.canvas);
     this.canvas.clear();
@@ -519,6 +520,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
     this.patientDetail = patientDetail;
     this.getPatientInstanceId(patientId);
+    if (this.patientDetail.xRayList[0].isAnnotated){
+      this.getStoredAnnotations(this.patientDetail.xRayList[0].xRayId);
+    }
   }
 
   /**
