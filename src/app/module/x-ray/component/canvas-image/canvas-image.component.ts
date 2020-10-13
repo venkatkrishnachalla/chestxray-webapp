@@ -143,6 +143,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   objectSelected: boolean;
   selctedObjectArray: any;
   objectModified: boolean;
+  isMeasureLength: boolean;
 
   /*
    * constructor for CanvasImageComponent class
@@ -242,6 +243,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             break;
           case 'Free Hand Drawing':
             this.freeHandDrawing(data);
+            break;
+          case 'Measure Length':
+            this.measureTool(data);
             break;
           case 'Delete':
             break;
@@ -521,6 +525,47 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.getPatientInstanceId(patientId);
   }
 
+  measureTool(data: any) {
+    this.isMeasureLength = true;
+    let point1;
+    if (this.isMeasureLength) {
+    this.canvas.observe('mouse:down', (options) => {
+      const x = options.e.clientX - this.canvas._offset.left;
+      const y = options.e.clientY - this.canvas._offset.top;
+  
+      const circle = new fabric.Circle({
+          left: x,
+          top: y,
+          fill: 'red',
+          originX: 'center',
+          originY: 'center',
+          hasControls: false,
+          hasBorders: false,
+          lockMovementX: true,
+          lockMovementY: true,
+          radius: 5,
+          hoverCursor: 'default'
+      });
+  
+      this.canvas.add(circle);
+  
+      if (point1 === undefined) {
+          point1 = new fabric.Point(x, y)
+      } else {
+          this.canvas.add(new fabric.Line([point1.x, point1.y, x, y], {
+              stroke: '#00ffff',
+              hasControls: false,
+              hasBorders: false,
+              lockMovementX: true,
+              lockMovementY: true,
+              hoverCursor: 'default'
+          }));
+          point1 = undefined;
+      }
+    });
+  }
+  }
+
   /**
    * This is a restrictionToBoundaryLimit function.
    * @param '{any}' data - A array param
@@ -767,11 +812,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const imageInformation = {
           base64Image: this.PatientImage,
           filename: imageResponse.filename,
-          id: 1
+          id: 1,
         };
         this.setCanvasDimension();
-        this.dbService.add('PatientImage', imageInformation).subscribe((key) => {
-        });
+        this.dbService
+          .add('PatientImage', imageInformation)
+          .subscribe((key) => {});
       },
       (errorMessage: any) => {
         this.spinnerService.hide();

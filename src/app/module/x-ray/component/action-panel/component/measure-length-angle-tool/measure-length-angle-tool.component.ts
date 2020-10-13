@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { actionPanelConstants } from 'src/app/constants/actionPanelConstants';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-measure-length-angle-tool',
@@ -21,7 +22,7 @@ export class MeasureLengthAngleToolComponent implements OnInit {
   /*
    * Constructor for MeasureLengthAngleToolComponent class
    */
-  constructor() {}
+  constructor(private eventEmitterService: EventEmitterService) {}
 
   /**
    * This is a ngOnInit function
@@ -36,13 +37,19 @@ export class MeasureLengthAngleToolComponent implements OnInit {
   }
 
   /**
-   * This is a iconAction function
-   * @param '{any}' array- A any param
-   * @param '{number}' index- A number param
+   * This is a iconAction click function.
+   * @param '{void}' empty- A empty param
    * @example
-   * iconAction(data, index);
+   * iconAction([ellipse] , 1);
    */
   iconAction(data, index) {
-    return null;
+    for (const key in data) {
+      // tslint:disable-next-line: radix
+      if (parseInt(key) !== index) {
+        data[key].active = false;
+      }
+    }
+    data[index].active = data[index].active ? false : true;
+    this.eventEmitterService.onComponentButtonClick(data[index]);
   }
 }
