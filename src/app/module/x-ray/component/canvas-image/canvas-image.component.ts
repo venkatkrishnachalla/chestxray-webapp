@@ -495,7 +495,19 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * prevNextPatientChange(patientId);
    */
   prevNextPatientChange(patientId) {
-    this.savedAnnotations = [];
+    this.savedAnnotations = {
+      data: {
+        names: [],
+        ndarray: [
+          {
+            Findings: {},
+            Impression: [],
+            diseases: [],
+          },
+        ],
+      },
+      meta: {},
+    };
     this.resetZoom();
     this.keepPositionInBounds(this.canvas);
     this.canvas.clear();
