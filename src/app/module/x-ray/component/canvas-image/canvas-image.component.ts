@@ -2334,10 +2334,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * This is pathology function
+   * This is diffusePathology function
    * @param '{any}' array - A array param
    * @example
-   * pathology(data);
+   * diffusePathology(data);
    */
   diffusePathology(data) {
     this.dialog.closeAll();

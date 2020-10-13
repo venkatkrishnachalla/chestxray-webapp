@@ -20,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./x-ray.component.scss'],
 })
 // XRayComponent class implementation
-export class XRayComponent implements OnInit{
+export class XRayComponent implements OnInit, OnDestroy{
   eventsSubject: Subject<any> = new Subject<any>();
   showAskAI = false;
   acceptStatus = false;
@@ -322,11 +322,11 @@ submitReport() {
   }
 /**  
  * unsubscribe userSubscription event 
- * @param {void} empty - A empty param  
+ * @param '{void}' empty - A empty param  
  * @example  
  * ngOnDestroy();
  */ 
-  // ngOnDestroy() {
-  //   this.userSubscription.unsubscribe();
-  // }
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+  }
 }
