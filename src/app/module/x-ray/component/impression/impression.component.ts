@@ -24,6 +24,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   _subscription: Subscription;
   impressionsText = 'Impressions';
   hideShowAll: boolean;
+  enableDelete: boolean;
 
   /*
    * constructor for ImpressionComponent class
@@ -58,6 +59,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         objectindex: any;
         isMLAi: boolean;
       }) => {
+        console.log('info', info)
         switch (info.check) {
           case 'delete':
             this.deleteImpression(info.id, info.disease, info.objectindex);
@@ -90,6 +92,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         color: any;
         Source: any;
         idNew: any;
+        diseaseType: any;
       }) => {
         if (obj.idNew !== '00') {
           const index = this.impression.findIndex((a) => a.id === obj.idNew);
@@ -135,6 +138,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           colors: color,
           Source: item.Source,
           checked: true,
+          diseaseType: item.diseaseType 
         });
       }
       return null;
@@ -152,12 +156,19 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * @example
    * deleteImpression(id, disease, objectindex);
    */
-  deleteImpression(id: number, disease: string, objectindex: number) {
-    const index = this.impression.findIndex((item) => item.idNew === id);
-    if (index !== -1) {
-      this.impression.splice(index, 1);
+  deleteImpression(id: number, disease: string, objectindex: any) {
+    let index;
+    if (objectindex === 'diffuse category') {
+      index = this.impression.findIndex((item) => item.name === disease);
+      this.impression.filter((item) => item.name === disease);
     }
-    this.uniqueImpressionsData();
+    else {
+      index = this.impression.findIndex((item) => item.idNew === id);
+      if (index !== -1) {
+        this.impression.splice(index, 1);
+      }
+      this.uniqueImpressionsData();
+    }
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
@@ -230,6 +241,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
   displayFun(data, event, index) {
     this.uniqueImpressions[index].checked = event.target.checked;
+    // console.log("data", data)
     if (!event.target.checked) {
       let count = 0;
       this.uniqueImpressions.forEach((element) => {
@@ -286,5 +298,18 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this._subscription.unsubscribe();
+  }
+
+  /**
+   * on deleteImpressions function
+   * @param '{void}' empty - A empty param
+   * @example
+   * deleteImpressions();
+   */
+  deleteImpressions(data, event, index) {
+    this.eventEmitterService.OnDeleteDiffuseImpression({
+        obj: data,
+        title: 'Delete Diffuse Impression',
+    });
   }
 }
