@@ -220,7 +220,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       meta: {},
     };
     this.pathologyNames = this.constants.diseases;
-    // this.diffusePathologyNames = this.constants.diffusePathology;
     this.enableDrawEllipseMode = false;
     this.isDown = false;
     this.eventEmitterService.brightnessValue.subscribe((data: number) => {
@@ -269,11 +268,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.eventEmitterService.deleteDiffuseImpression.subscribe(
-      (data: any) => {
-        this.deleteEllipse(data);
-      }
-    );
+    this.eventEmitterService.deleteDiffuseImpression.subscribe((data: any) => {
+      this.deleteEllipse(data);
+    });
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
       (mlResponse: any) => {
@@ -865,7 +862,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         isMLApi: impression.source === 'ML' ? true : false,
         source: impression.source,
         isUpdated: false,
-        diseaseType: impression.diseaseType
+        diseaseType: impression.diseaseType,
       };
     });
     if (mLArray.Impression.length === 0) {
@@ -877,7 +874,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     }
-
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
     const findingsOrdered = [];
     const order = this.constants.findings;
@@ -928,21 +924,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     let val1 = 0;
-
     mLArray.diseases.forEach((disease: any, index: any) => {
       if (disease.ellipses) {
-        if (disease.ellipses.length === 0) {
+        if (disease.ellipses.length === 0 || disease.ellipses === []) {
           const random = Math.floor(Math.random() * 100 + 1);
           const selectedObject = {
             title: 'impression',
-            isMLApi: true,
+            isMLApi: false,
             idNew: random,
             name: disease.name,
             color: disease.color,
             source: disease.source,
             type: '',
             isUpdated: false,
-            diseaseType: disease.diseaseType,
+            diseaseType: 'diffuse category',
           };
           this.impressionArray.push(selectedObject);
           this.eventEmitterService.onComponentDataShared(selectedObject);
@@ -999,8 +994,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           val2++;
         });
         val1++;
-      }
-      else if (disease.freeHandDrawing) {
+      } else if (disease.freeHandDrawing) {
         this.eventEmitterService.onComponentEllipseDataShared({
           name: disease.name,
           index: disease.idx,
@@ -1045,8 +1039,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           })
         );
         this.coordinateList = [];
-      }
-      else if (disease.contours) {
+      } else if (disease.contours.length !== 0) {
         this.eventEmitterService.onComponentEllipseDataShared({
           name: disease.name,
           index: disease.idx,
@@ -1359,8 +1352,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * deleteEllipse();
    */
-  deleteEllipse(obj?) { 
-    this.diffuseObject = obj;   
+  deleteEllipse(obj?) {
+    this.diffuseObject = obj;
     const activeObject = this.canvas.getActiveObject();
     if (activeObject || obj.title === 'Delete Diffuse Impression') {
       this.dialog.open(this.deleteObjectModel, {
@@ -1466,7 +1459,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     ) {
       emptyObject = {
         index: random,
-        diseaseType: 'diffuse category'
+        diseaseType: 'diffuse category',
       };
       this.selectedObjectPrediction = emptyObject;
       selectedObjectPrediction = emptyObject;
@@ -1488,7 +1481,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     };
     this.savedObjects.push(selectedObjectPrediction);
     this.storeDataInSession(
-      { index: random, sentence: this.selectedDisease, source: 'DR', diseaseType: this.diseaseType},
+      {
+        index: random,
+        sentence: this.selectedDisease,
+        source: 'DR',
+        diseaseType: this.diseaseType,
+      },
       'impression'
     );
     this.eventEmitterService.onComponentDataShared(selectedObject);
@@ -1519,9 +1517,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('x-ray_Data');
     // tslint:disable-next-line: no-string-literal
     this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
-      if (this.canvas.getActiveObject() === null || this.canvas.getActiveObject() === undefined) {
-        this.savedInfo['data'].ndarray[0].Impression.splice(this.diffuseObject.obj.name, 1);
-        this.savedInfo['data'].ndarray[0].diseases.splice(this.diffuseObject.obj.name, 1);
+      if (
+        this.canvas.getActiveObject() === null ||
+        this.canvas.getActiveObject() === undefined
+      ) {
+        // tslint:disable-next-line:no-string-literal
+        this.savedInfo['data'].ndarray[0].Impression.splice(
+          this.diffuseObject.obj.name,
+          1
+        );
+        // tslint:disable-next-line:no-string-literal
+        this.savedInfo['data'].ndarray[0].diseases.splice(
+          this.diffuseObject.obj.name,
+          1
+        );
         sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
         const selectedObject = {
           id: '',
@@ -1531,11 +1540,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           isMLAi: '',
         };
         this.eventEmitterService.onComponentButtonClick(selectedObject);
-      }
-      else {
+      } else {
         const compare = this.canvas.getActiveObject().index
-        ? this.canvas.getActiveObject().index
-        : this.canvas.getActiveObject().id;
+          ? this.canvas.getActiveObject().index
+          : this.canvas.getActiveObject().id;
         if (element.index === compare) {
           // tslint:disable-next-line: no-string-literal
           this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
@@ -1888,7 +1896,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         index: this.selectedObjectPrediction.id,
         name: diseases,
         source: src,
-        diseaseType: this.diseaseType
+        diseaseType: this.diseaseType,
       };
       // tslint:disable-next-line: no-string-literal
       this.savedInfo['data'].ndarray[0].diseases.push(obj);
@@ -1950,7 +1958,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         name: diseases,
         type: 'ellipse',
         source: src,
-        diseaseType: this.diseaseType
+        diseaseType: this.diseaseType,
       };
       if (check === 'update') {
         sessionStorage.removeItem('x-ray_Data');

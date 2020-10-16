@@ -59,7 +59,6 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         objectindex: any;
         isMLAi: boolean;
       }) => {
-        console.log('info', info)
         switch (info.check) {
           case 'delete':
             this.deleteImpression(info.id, info.disease, info.objectindex);
@@ -138,7 +137,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           colors: color,
           Source: item.Source,
           checked: true,
-          diseaseType: item.diseaseType 
+          diseaseType: item.diseaseType,
         });
       }
       return null;
@@ -160,9 +159,11 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     let index;
     if (objectindex === 'diffuse category') {
       index = this.impression.findIndex((item) => item.name === disease);
-      this.impression.filter((item) => item.name === disease);
-    }
-    else {
+      if (index !== -1) {
+        this.impression.splice(index, 1);
+      }
+      this.uniqueImpressionsData();
+    } else {
       index = this.impression.findIndex((item) => item.idNew === id);
       if (index !== -1) {
         this.impression.splice(index, 1);
@@ -241,7 +242,6 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
   displayFun(data, event, index) {
     this.uniqueImpressions[index].checked = event.target.checked;
-    // console.log("data", data)
     if (!event.target.checked) {
       let count = 0;
       this.uniqueImpressions.forEach((element) => {
@@ -307,9 +307,13 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * deleteImpressions();
    */
   deleteImpressions(data, event, index) {
+    // if (objectindex === 'diffuse category') {
+    //   index = this.impression.findIndex((item) => item.name === disease);
+    //   this.impression.filter((item) => item.name === disease);
+    // }
     this.eventEmitterService.OnDeleteDiffuseImpression({
-        obj: data,
-        title: 'Delete Diffuse Impression',
+      obj: data,
+      title: 'Delete Diffuse Impression',
     });
   }
 }

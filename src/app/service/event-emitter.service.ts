@@ -26,7 +26,7 @@ export class EventEmitterService {
   contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
   deleteDiffuseImpression = new EventEmitter();
-  
+
   constructor() {}
 
   /*** onComponentButtonClick event emit function ***/
@@ -107,8 +107,7 @@ export class EventEmitterService {
     this.defaultRange.emit(title);
   }
 
-  OnDeleteDiffuseImpression(title: any){
+  OnDeleteDiffuseImpression(title: any) {
     this.deleteDiffuseImpression.emit(title);
-    console.log('title', title)
   }
 }
