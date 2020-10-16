@@ -156,7 +156,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * deleteImpression(id, disease, objectindex);
    */
   deleteImpression(id: number, disease: string, objectindex: number) {
-    const index = this.impression.findIndex((item) => item.idNew === id);
+    let index = this.impression.findIndex((item) => item.idNew === id);
+    if (index === -1){
+      index = this.impression.findIndex((item) => item.id === id);
+    }
     if (index !== -1) {
       this.impression.splice(index, 1);
     }

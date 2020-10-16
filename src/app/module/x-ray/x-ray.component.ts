@@ -131,6 +131,44 @@ export class XRayComponent implements OnInit {
 
   generateReport() {
     this.disableReportBtn = true;
+    const annotationData = this.canvas.savedInfo['data'].ndarray[0];
+    this.findings.findings.forEach(input => {
+      const output = input.split(':');
+      let outputSub;
+      let outputMain;
+      if (input.indexOf(':') !== -1){
+        outputSub = output[1].split('.');
+        outputMain = output[0];
+      }
+      else{
+        outputSub = input.split('.');
+        outputMain = 'ADDITIONAL';
+      }
+      const length = annotationData.Impression.length;
+      if (outputSub.length > 0 && length !== 0){
+        outputSub.forEach(finalOutput => {
+          finalOutput = finalOutput.replace(/\//g, '').trim();
+          let index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
+          if (index === -1){
+            index = annotationData.diseases.findIndex(x => x.name === finalOutput);
+          }
+          if (index === -1){
+            if (finalOutput !== '' && annotationData.diseases.findIndex(x => x.name === finalOutput) !== -1){
+              const impressionIndex = annotationData.Impression[length - 1].index;
+              const newImpression = {
+                index: impressionIndex + 1,
+                sentence: finalOutput,
+                source: 'DR',
+              };
+              annotationData.Impression.push(newImpression);
+              annotationData.Findings[outputMain].push(impressionIndex + 1);
+            }
+          } else if (index !== -1){
+            annotationData.Findings[outputMain].push(index);
+          }
+        });
+      }
+    });
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
@@ -207,39 +245,33 @@ submitReport() {
     let outputSub;
     let outputMain;
     if (input.indexOf(':') !== -1){
-      outputSub = output[1].split(',');
+      outputSub = output[1].split('.');
       outputMain = output[0];
     }
     else{
-      outputSub = input.split(',');
+      outputSub = input.split('.');
       outputMain = 'ADDITIONAL';
     }
     const length = annotationData.Impression.length;
     if (outputSub.length > 0 && length !== 0){
       outputSub.forEach(finalOutput => {
         finalOutput = finalOutput.replace(/\//g, '').trim();
-        const index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
+        let index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
         if (index === -1){
-          const impressionIndex = annotationData.Impression[length - 1].index;
-          const newImpression = {
-            index: impressionIndex + 1,
-            sentence: output[1],
-            source: 'DR',
-          };
-          if (output[1] !== '') {
-            // tslint:disable-next-line: max-line-length
-            if (
-              annotationData.Impression.findIndex(
-                (s) => s.sentence === (output[1] ? output[1].trim() : '')
-              ) === -1 &&
-              annotationData.diseases.findIndex((a) => a.name === output[1]) !==
-                -1
-            ) {
-              annotationData.Impression.push(newImpression);
-            }
+          index = annotationData.diseases.findIndex(x => x.name === finalOutput);
+        }
+        if (index === -1){
+          if (finalOutput !== '' && annotationData.diseases.findIndex(x => x.name === finalOutput) !== -1){
+            const impressionIndex = annotationData.Impression[length - 1].index;
+            const newImpression = {
+              index: impressionIndex + 1,
+              sentence: finalOutput,
+              source: 'DR',
+            };
+            annotationData.Impression.push(newImpression);
             annotationData.Findings[outputMain].push(impressionIndex + 1);
           }
-        } else {
+        } else if (index !== -1){
           annotationData.Findings[outputMain].push(index);
         }
       });

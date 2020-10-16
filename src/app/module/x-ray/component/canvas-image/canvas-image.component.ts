@@ -950,7 +950,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           if (currentFinding.length !== 0) {
             finalFinding +=
               currentFinding[0].sentence[0].toUpperCase() +
-              currentFinding[0].sentence.substr(1).toLowerCase();
+              currentFinding[0].sentence.substr(1).toLowerCase() + '. ';
           } else {
             finalFinding += '';
           }
@@ -1009,7 +1009,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             const selectedObject = {
               title: 'impression',
               isMLApi: ellipse.source === 'DR' ? false : true,
-              id: ellipse.idx,
+              id: disease.idx,
               idNew: ellipse.id,
               name: disease.name,
               color: ellipse.color,
@@ -1445,7 +1445,7 @@ deletePrediction() {
     });
     sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
     const selectedObject = {
-      id: this.canvas.getActiveObject().idNew,
+      id: this.canvas.getActiveObject().idNew ? this.canvas.getActiveObject().idNew : this.canvas.getActiveObject().id,
       check: 'delete',
       disease: this.canvas.getActiveObject().disease,
       objectindex: this.canvas.getActiveObject().index,
@@ -1475,82 +1475,80 @@ ellipseModifiedEvent(disease: string, activeObject: any) {
       name: disease,
     };
     const activeObj = this.canvas.getActiveObject();
-    if (activeObj.type === 'ellipse' && activeObj.isMLAi) {
-      activeObj.set({
-        strokeDashArray: [15, 3],
-      });
+    if (activeObj.type === 'ellipse') {
+      if (activeObj.isMLAi){
+        activeObj.set({
+          strokeDashArray: [15, 3],
+        });
+      }
       this.canvas.renderAll();
       // tslint:disable-next-line: no-string-literal
       savedInfo['data'].ndarray[0].diseases.forEach(
         (element: any, index: number) => {
-          element.ellipses.forEach((ellipse: any, indexId: number) => {
-            if (activeObj.id === ellipse.idvalue) {
-              if (element.ellipses.length > 1) {
-                // tslint:disable-next-line: no-string-literal
-                savedInfo['data'].ndarray[0].diseases[index].ellipses[
-                  indexId
-                ].strokeDashArray = [15, 3];
-                const obj = {
+          if (element.ellipses){
+            element.ellipses.forEach((ellipse: any, indexId: number) => {
+              if (activeObj.id === ellipse.idvalue) {
+                this.canvasScaleX = this.xRayImage.width / this.canvas.width;
+                this.canvasScaleY = this.xRayImage.height / this.canvas.height;
+                if (element.ellipses.length > 1) {
                   // tslint:disable-next-line: no-string-literal
-                  color: savedInfo['data'].ndarray[0].diseases[index].color,
-                  ellipses: [
-                    {
-                      x: activeObject.left,
-                      y: activeObject.top,
-                      a: activeObject.rx,
-                      b: activeObject.ry,
-                      r: activeObject.angle,
-                      index: activeObject.id,
-                      type: 'ellipse',
-                      strokeDashArray: [15, 3],
-                      source: activeObj.isMLAi ? 'ML' : 'DR',
-                      isUpdated: activeObj.isMLAi ? true : false
-                    },
-                  ],
-                  index: activeObject.id,
-                  name: disease,
-                  isMlAi: true,
-                };
-                // tslint:disable-next-line: no-string-literal
-                savedInfo['data'].ndarray[0].diseases[index].ellipses.splice(
-                  indexId,
-                  1, obj
-                );
-              } else {
-                // tslint:disable-next-line: no-string-literal
-                savedInfo['data'].ndarray[0].diseases[index].ellipses[
-                  indexId
-                ].strokeDashArray = [15, 3];
-                const obj = {
+                  savedInfo['data'].ndarray[0].diseases[index].ellipses[
+                    indexId
+                  ].strokeDashArray = [15, 3];
+                  const obj = {
+                    x: activeObj.isMLAi ? activeObject.left * this.canvasScaleX : activeObject.left,
+                    y: activeObj.isMLAi ? activeObject.top * this.canvasScaleY : activeObject.top,
+                    a: activeObj.isMLAi ? activeObject.rx * this.canvasScaleX * 2 : activeObject.rx,
+                    b: activeObj.isMLAi ? activeObject.ry * this.canvasScaleY * 2 : activeObject.ry,
+                    r: activeObject.angle,
+                    index: activeObject.id,
+                    type: 'ellipse',
+                    strokeDashArray: [15, 3],
+                    source: activeObj.isMLAi ? 'ML' : 'DR',
+                    isUpdated: activeObj.isMLAi ? true : false
+                  };
                   // tslint:disable-next-line: no-string-literal
-                  color: savedInfo['data'].ndarray[0].diseases[index].color,
-                  ellipses: [
-                    {
-                      x: activeObject.left,
-                      y: activeObject.top,
-                      a: activeObject.rx,
-                      b: activeObject.ry,
-                      r: activeObject.angle,
-                      index: activeObject.id,
-                      type: 'ellipse',
-                      strokeDashArray: [15, 3],
-                      source: activeObj.isMLAi ? 'ML' : 'DR',
-                      isUpdated: activeObj.isMLAi ? true : false,
-                    },
-                  ],
-                  index: this.canvas._activeObject.id,
-                  name: disease,
-                  isMlAi: true,
-                };
-                // tslint:disable-next-line: no-string-literal
-                savedInfo['data'].ndarray[0].diseases.splice(index, 1, obj);
+                  savedInfo['data'].ndarray[0].diseases[index].ellipses.splice(
+                    indexId,
+                    1, obj
+                  );
+                } else {
+                  // tslint:disable-next-line: no-string-literal
+                  savedInfo['data'].ndarray[0].diseases[index].ellipses[
+                    indexId
+                  ].strokeDashArray = [15, 3];
+                  const obj = {
+                    // tslint:disable-next-line: no-string-literal
+                    color: savedInfo['data'].ndarray[0].diseases[index].color,
+                    ellipses: [
+                      {
+                        x: activeObj.isMLAi ? activeObject.left * this.canvasScaleX : activeObject.left,
+                        y: activeObj.isMLAi ? activeObject.top * this.canvasScaleY : activeObject.top,
+                        a: activeObj.isMLAi ? activeObject.rx * this.canvasScaleX * 2 : activeObject.rx,
+                        b: activeObj.isMLAi ? activeObject.ry * this.canvasScaleY * 2 : activeObject.ry,
+                        r: activeObject.angle,
+                        index: activeObject.id,
+                        type: 'ellipse',
+                        strokeDashArray: [15, 3],
+                        source: activeObj.isMLAi ? 'ML' : 'DR',
+                        isUpdated: activeObj.isMLAi ? true : false,
+                      },
+                    ],
+                    index: this.canvas._activeObject.id,
+                    name: disease,
+                    isMlAi: true,
+                    source: activeObj.isMLAi ? 'ML' : 'DR',
+                  };
+                  // tslint:disable-next-line: no-string-literal
+                  savedInfo['data'].ndarray[0].diseases.splice(index, 1, obj);
+                }
+                this.savedInfo = savedInfo;
+                sessionStorage.removeItem('x-ray_Data');
+                sessionStorage.setItem('x-ray_Data', JSON.stringify(savedInfo));
+                this.updateEllipseIntoSession();
               }
-              this.savedInfo = savedInfo;
-              sessionStorage.removeItem('x-ray_Data');
-              sessionStorage.setItem('x-ray_Data', JSON.stringify(savedInfo));
-              this.updateEllipseIntoSession();
-            }
-          });
+            });
+          }
         }
       );
     }
@@ -2312,7 +2310,7 @@ stopDragging(element) {
    * getStoredAnnotations(xRayId);
    */
 
-  getStoredAnnotations(xRayId) {
+getStoredAnnotations(xRayId) {
     this.spinnerService.show();
     this.annotatedXrayService.getAnnotatedData(xRayId).subscribe(
       (response) => {
@@ -2335,7 +2333,7 @@ stopDragging(element) {
    * displayMessage(obj);
    */
 
-  displayMessage(obj: any) {
+displayMessage(obj: any) {
     if (obj.target === null) {
       return true;
     } else if (obj.target.lockRotation) {
@@ -2353,7 +2351,7 @@ stopDragging(element) {
    * restrictObjectOnRotate(obj);
    */
 
-  restrictObjectOnRotate(obj: any) {
+restrictObjectOnRotate(obj: any) {
     const object = obj.target;
     const coords = object.calcCoords();
     const blx = coords.bl.x;
@@ -2412,7 +2410,7 @@ stopDragging(element) {
    * onHoveringOutAnnotation(obj);
    */
 
-  onHoveringOutAnnotation(obj: any) {
+onHoveringOutAnnotation(obj: any) {
     if (obj.target === null) {
       return true;
     } else if (obj.target.lockRotation) {
@@ -2429,7 +2427,7 @@ stopDragging(element) {
    * onHoveringAnnotation(obj);
    */
 
-  onHoveringAnnotation(obj: any) {
+onHoveringAnnotation(obj: any) {
     if (this.lockRotation === true) {
       const object = obj.target;
       if (object === null) {
@@ -2460,7 +2458,7 @@ stopDragging(element) {
    * selectedObject(evt);
    */
 
-  selectedObject(evt: any) {
+selectedObject(evt: any) {
     this.objectModified = true;
     this.selctedObjectArray = evt;
   }
