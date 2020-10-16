@@ -43,6 +43,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { constants } from 'os';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+
 @Component({
   selector: 'cxr-canvas-image',
   templateUrl: './canvas-image.component.html',
@@ -137,6 +139,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   diffusePathologyNames: any;
   diseaseType: string;
   diffuseObject: any;
+  objectAngle: number;
+  lockRotation: boolean;
+  enableFreeHandDrawing: boolean;
+  freeHandDraw: any;
+  objectSelected: boolean;
+  selctedObjectArray: any;
+  objectModified: boolean;
 
   /*
    * constructor for CanvasImageComponent class
@@ -150,8 +159,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastrService: ToastrService,
     private sanitizer: DomSanitizer,
-
-    private eventEmitterService2: EventEmitterService2
+    private eventEmitterService2: EventEmitterService2,
+    private dbService: NgxIndexedDBService
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -357,6 +366,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       opt.e.stopPropagation();
     });
     this.canvas.on('object:modified', (options) => {
+      this.restrictionToBoundaryLimit(options.target);
+      this.restrictObjectOnRotate(options);
       this.actionIconsModelDispaly(options);
       if (this.canvas.getActiveObject().type === 'ellipse') {
         this.updateEllipseIntoSession();
@@ -365,8 +376,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           options.target.canvas._activeObject
         );
       }
+      this.displayMessage(options);
+      this.objectSelected = true;
+      this.selectedObject(options);
     });
     this.canvas.on('object:rotating', (e) => {
+      this.restrictObjectOnRotate(e);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
@@ -376,27 +391,31 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientDetail = patientDetail;
     }
-    const patientImage = JSON.parse(sessionStorage.getItem('PatientImage'));
-    this.PatientImage = patientImage ? patientImage.base64Image : null;
-    const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
-    this.patientId = this.patientDetail
-      ? this.patientDetail.xRayList[0].xRayId
-      : '';
+    this.dbService.getByKey('PatientImage', 1).subscribe((patientImage) => {
+      this.PatientImage = patientImage ? patientImage.base64Image : null;
+      const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
+      this.patientId = this.patientDetail
+        ? this.patientDetail.xRayList[0].xRayId
+        : '';
 
-    if (this.PatientImage && isUser) {
-      this.setCanvasDimension();
-    } else if (!this.instanceId) {
-      this.getPatientInstanceId(this.patientId);
-    } else if (!this.PatientImage) {
-      this.getPatientImage(this.instanceId);
-    } else {
-      this.setCanvasDimension();
-      this.generateCanvas();
-    }
+      if (this.PatientImage && isUser) {
+        this.setCanvasDimension();
+      } else if (!this.instanceId) {
+        this.getPatientInstanceId(this.patientId);
+      } else if (!this.PatientImage) {
+        this.getPatientImage(this.instanceId);
+      } else {
+        this.setCanvasDimension();
+        this.generateCanvas();
+      }
+    });
 
     this.canvas.on('object:selected', (evt) => {
+      this.objectSelected = true;
+      this.selectedObject(evt);
       this.actionIconsModelDispaly(evt);
       this.canvas.sendToBack(this.canvas._activeObject);
+      this.displayMessage(evt);
     });
     this.canvas.on('selection:cleared', (evt) => {
       if (!this.enableDrawEllipseMode) {
@@ -404,7 +423,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     this.canvas.on('object:moving', (evt) => {
+      this.objectSelected = true;
+      document.getElementById('target').style.display = 'none';
       const obj = evt.target;
+      this.objectAngle = obj.angle;
+      this.restrictObjectOnRotate(evt);
       this.restrictionToBoundaryLimit(obj);
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
@@ -417,7 +440,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     let width1 = 0;
     let height1 = 0;
     this.canvas.on('object:scaling', (e) => {
-      const obj = e.target;
+      let obj;
+      if (this.objectModified) {
+        obj = this.selctedObjectArray.target;
+        this.objectModified = false;
+      } else {
+        obj = e.target;
+      }
       obj.setCoords();
       const brNew = obj.getBoundingRect();
 
@@ -427,12 +456,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         brNew.left < 0 ||
         brNew.top < 0
       ) {
-        obj.left = left1;
-        obj.top = top1;
-        obj.scaleX = scale1x;
-        obj.scaleY = scale1y;
-        obj.width = width1;
-        obj.height = height1;
+        obj.left = this.selctedObjectArray.target.left + 1;
+        obj.top = this.selctedObjectArray.target.top + 1;
+        obj.scaleX = this.selctedObjectArray.target.scaleX;
+        obj.scaleY = this.selctedObjectArray.target.scaleY;
+        obj.width = this.selctedObjectArray.target.width;
+        obj.height = this.selctedObjectArray.target.height;
       } else {
         left1 = obj.left;
         top1 = obj.top;
@@ -447,8 +476,19 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.getActiveObject().set('strokeUniform', true);
       this.canvas.requestRenderAll();
     });
+    this.canvas.on('object:scaled', (e) => {
+      document.getElementById('target').style.display = 'none';
+      this.selectedObject(e);
+    });
     this.canvas.on('object:moved', (evt) => {
       this.actionIconsModelDispaly(evt);
+    });
+    this.canvas.on('mouse:over', (e) => {
+      this.displayMessage(e);
+      this.onHoveringAnnotation(e);
+    });
+    this.canvas.on('mouse:out', (e) => {
+      this.onHoveringOutAnnotation(e);
     });
     this.canvas.on('selection:updated', (evt) => {
       this.dialog.closeAll();
@@ -504,8 +544,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
     obj.setCoords();
     // top-left  corner
-    if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
+    if (obj.getBoundingRect().top < 0) {
       obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
+    }
+
+    if (obj.getBoundingRect().left < 0) {
       obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
     }
     // bot-right corner
@@ -732,12 +775,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const imageInformation = {
           base64Image: this.PatientImage,
           filename: imageResponse.filename,
+          id: 1
         };
-        sessionStorage.setItem(
-          'PatientImage',
-          JSON.stringify(imageInformation)
-        );
         this.setCanvasDimension();
+        this.dbService.add('PatientImage', imageInformation).subscribe((key) => {
+        });
       },
       (errorMessage: any) => {
         this.spinnerService.hide();
@@ -1062,84 +1104,85 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         if (disease.contours[0] === undefined) {
           console.log('diffuse category does not contain disease contours');
         } else {
-          const coordinatePath = disease.contours[0].coordinates;
-          coordinatePath.forEach((coords) => {
-            // if (i % 2 === 0) {
-            let xPosition: any = coords.x;
-            xPosition = xPosition / this.canvasScaleX;
-            this.coordinateList.push(xPosition);
-            // }
-            // else {
-            let yPosition: any = coords.y;
-            yPosition = yPosition / this.canvasScaleY;
-            this.coordinateList.push(yPosition);
-            // }
-          });
-          const appendCharacter = 'M' + ' ';
-          this.coordinateList.unshift(appendCharacter);
-          this.canvas.add(
-            new fabric.Path(this.coordinateList.join(' '), {
-              // @ts-ignore
-              disease: disease.disease,
-              stroke: disease.color,
-              strokeWidth: 2,
-              fill: '',
-              originX: 'center',
-              originY: 'center',
-              opacity: 0.8,
-              id: disease.idx,
-            })
-          );
-          this.coordinateList = [];
+        const coordinatePath = disease.contours[0].coordinates;
+        coordinatePath.forEach((coords) => {
+          // if (i % 2 === 0) {
+          let xPosition: any = coords.x;
+          xPosition = xPosition / this.canvasScaleX;
+          this.coordinateList.push(xPosition);
+          // }
+          // else {
+          let yPosition: any = coords.y;
+          yPosition = yPosition / this.canvasScaleY;
+          this.coordinateList.push(yPosition);
+          // }
+        });
+        const appendCharacter = 'M' + ' ';
+        this.coordinateList.unshift(appendCharacter);
 
-          // const coordinates = [];
-          // disease.contours[0].coordinates.forEach(data1 => {
-          //   coordinates.push({x: data1[0], y: data1[1]});
-          // });
+        this.canvas.add(
+          new fabric.Path(this.coordinateList.join(' '), {
+            // @ts-ignore
+            disease: disease.disease,
+            stroke: disease.color,
+            strokeWidth: 2,
+            fill: '',
+            originX: 'center',
+            originY: 'center',
+            opacity: 0.8,
+            id: disease.idx,
+          })
+        );
+        this.coordinateList = [];
 
-          // // const coordinatePath = coordinates;
-          // this.eventEmitterService.onComponentEllipseDataShared({
-          //   name: disease.name,
-          //   index: disease.idx,
-          //   source: 'DR',
-          //   isUpdated : false,
-          // });
-          // const random = Math.floor(Math.random() * 100 + 1);
-          // const selectedObject = {
-          //   title: 'impression',
-          //   isMLApi: false,
-          //   idNew: check !== 'session' ? random : disease.idx,
-          //   name: disease.name,
-          //   color: disease.color,
-          //   source: 'DR',
-          //   isUpdated : false,
-          // };
-          // this.impressionArray.push(selectedObject);
-          // this.eventEmitterService.onComponentDataShared(selectedObject);
-          // coordinates.forEach((element) => {
-          //   let xPosition: any = element.x;
-          //   xPosition = xPosition / this.canvasScaleX;
-          //   this.coordinateList.push(xPosition);
-          //   let yPosition: any = element.y;
-          //   yPosition = yPosition / this.canvasScaleY;
-          //   this.coordinateList.push(yPosition);
-          //   const appendCharacter = 'M' + ' ';
-          //   this.coordinateList.unshift(appendCharacter);
-          // });
-          // this.canvas.add(
-          //   new fabric.Path(this.coordinateList.join(' '), {
-          //     // @ts-ignore
-          //     stroke: disease.color,
-          //     strokeWidth: 2,
-          //     fill: '',
-          //     originX: 'center',
-          //     originY: 'center',
-          //     opacity: 0.8,
-          //     id: disease.idx,
-          //   })
-          // );
-          // this.coordinateList = [];
-          this.canvas.renderAll();
+        // const coordinates = [];
+        // disease.contours[0].coordinates.forEach(data1 => {
+        //   coordinates.push({x: data1[0], y: data1[1]});
+        // });
+
+        // // const coordinatePath = coordinates;
+        // this.eventEmitterService.onComponentEllipseDataShared({
+        //   name: disease.name,
+        //   index: disease.idx,
+        //   source: 'DR',
+        //   isUpdated : false,
+        // });
+        // const random = Math.floor(Math.random() * 100 + 1);
+        // const selectedObject = {
+        //   title: 'impression',
+        //   isMLApi: false,
+        //   idNew: check !== 'session' ? random : disease.idx,
+        //   name: disease.name,
+        //   color: disease.color,
+        //   source: 'DR',
+        //   isUpdated : false,
+        // };
+        // this.impressionArray.push(selectedObject);
+        // this.eventEmitterService.onComponentDataShared(selectedObject);
+        // coordinates.forEach((element) => {
+        //   let xPosition: any = element.x;
+        //   xPosition = xPosition / this.canvasScaleX;
+        //   this.coordinateList.push(xPosition);
+        //   let yPosition: any = element.y;
+        //   yPosition = yPosition / this.canvasScaleY;
+        //   this.coordinateList.push(yPosition);
+        //   const appendCharacter = 'M' + ' ';
+        //   this.coordinateList.unshift(appendCharacter);
+        // });
+        // this.canvas.add(
+        //   new fabric.Path(this.coordinateList.join(' '), {
+        //     // @ts-ignore
+        //     stroke: disease.color,
+        //     strokeWidth: 2,
+        //     fill: '',
+        //     originX: 'center',
+        //     originY: 'center',
+        //     opacity: 0.8,
+        //     id: disease.idx,
+        //   })
+        // );
+        // this.coordinateList = [];
+        this.canvas.renderAll();
         }
       }
     });
@@ -1806,6 +1849,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  freeHandDrawing(data) ;
    */
   freeHandDrawing(data) {
+    this.enableFreeHandDrawing = true;
     this.changeSelectableStatus(false);
     this.activeIcon = data;
     if (data.active) {
@@ -1815,10 +1859,33 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.freeDrawingBrush.color = '#ffff00';
       this.canvas.freeDrawingBrush.width = 2;
       this.canvas.freeDrawingBrush.strokeUniform = true;
+      this.canvas.observe('mouse:move', (e) => {
+        const pointer = this.canvas.getPointer(e.e);
+        if (this.enableFreeHandDrawing) {
+          if (
+            pointer.x <= 0 ||
+            pointer.x >= this.canvasCorrectedWidth ||
+            pointer.y <= 0 ||
+            pointer.y >= this.canvasCorrectedHeight
+          ) {
+            this.canvas.isDrawingMode = false;
+          } else {
+            this.canvas.isDrawingMode = true;
+          }
+        }
+      });
+      this.canvas.observe('mouse:out', (e) => {
+        this.canvas.isDrawingMode = false;
+      });
+      this.canvas.observe('mouse:in', (e) => {
+        this.canvas.isDrawingMode = true;
+      });
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
         this.canvas.setActiveObject(object);
         this.save();
+        this.canvas.isDrawingMode = false;
+        this.enableFreeHandDrawing = false;
       });
     } else {
       this.canvas.isDrawingMode = false;
@@ -2395,12 +2462,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     element.lockMovementY = true;
   }
 
+  /**
+   * This is getStoredAnnotations function
+   * @param '{number}' index - A number param
+   * @example
+   * getStoredAnnotations(xRayId);
+   */
   getStoredAnnotations(xRayId) {
     this.spinnerService.show();
     this.annotatedXrayService.getAnnotatedData(xRayId).subscribe(
       (response) => {
         this.savedAnnotations = response;
-        if (this.savedAnnotations.data.ndarray[0].source !== 'DR') {
+        if (this.savedAnnotations.data.ndarray[0].Source !== 'DR') {
           this.eventEmitterService.onAskAiButtonClick('success');
         }
       },
@@ -2422,5 +2495,141 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.activeIcon = data;
     this.pathologyNames = this.constants.diffusePathology;
     this.openPathologyModal();
+  }
+  
+  /**
+   * This is displayMessage function
+   * @param '{any}' array - A array param
+   * @example
+   * displayMessage(obj);
+   */
+  displayMessage(obj: any) {
+    if (obj.target === null) {
+      return true;
+    } else if (obj.target.lockRotation) {
+      this.lockRotation = true;
+      this.onHoveringAnnotation(obj);
+    } else {
+      this.lockRotation = false;
+    }
+  }
+
+  /**
+   * This is restrictObjectOnRotate function
+   * @param '{any}' array - A array param
+   * @example
+   * restrictObjectOnRotate(obj);
+   */
+
+  restrictObjectOnRotate(obj: any) {
+    const object = obj.target;
+    const coords = object.calcCoords();
+    const blx = coords.bl.x;
+    const bly = coords.bl.y;
+    const brx = coords.br.x;
+    const bry = coords.br.y;
+    const tlx = coords.tl.x;
+    const tly = coords.tl.y;
+    const txr = coords.tr.x;
+    const tyr = coords.tr.y;
+    if (
+      blx >= object.canvas.width ||
+      brx >= object.canvas.width ||
+      tlx >= object.canvas.width ||
+      txr >= object.canvas.width
+    ) {
+      this.canvas.getActiveObject().set({
+        lockRotation: true,
+      });
+      this.canvas.renderAll();
+    } else if (blx <= 0 || brx <= 0 || tlx <= 0 || txr <= 0) {
+      this.canvas.getActiveObject().set({
+        lockRotation: true,
+      });
+      this.canvas.renderAll();
+    } else if (
+      bly >= object.canvas.height ||
+      bry >= object.canvas.height ||
+      tly >= object.canvas.height ||
+      tyr >= object.canvas.height
+    ) {
+      this.canvas.getActiveObject().set({
+        lockRotation: true,
+      });
+      this.canvas.renderAll();
+    } else if (bly <= 0 || bry <= 0 || tly <= 0 || tyr <= 0) {
+      this.canvas.getActiveObject().set({
+        lockRotation: true,
+      });
+      this.canvas.renderAll();
+    } else {
+      this.canvas.getActiveObject().set({
+        lockRotation: false,
+      });
+      this.lockRotation = false;
+      this.canvas.renderAll();
+      // this.objectSelected = true;
+      this.selectedObject(obj);
+    }
+  }
+
+  /**
+   * This is onHoveringOutAnnotation function
+   * @param '{any}' array - A array param
+   * @example
+   * onHoveringOutAnnotation(obj);
+   */
+
+  onHoveringOutAnnotation(obj: any) {
+    if (obj.target === null) {
+      return true;
+    } else if (obj.target.lockRotation) {
+      document.getElementById('target').style.display = 'none';
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * This is onHoveringAnnotation function
+   * @param '{any}' array - A array param
+   * @example
+   * onHoveringAnnotation(obj);
+   */
+
+  onHoveringAnnotation(obj: any) {
+    if (this.lockRotation === true) {
+      const object = obj.target;
+      if (object === null) {
+        return;
+      } else {
+        const coords = object.calcCoords();
+        document.getElementById('target').style.display = 'block';
+        if (object.getBoundingRect().top <= 70) {
+          const mbx = coords.mb.x;
+          const mby = coords.mb.y;
+          document.getElementById('target').style.top = mby + 100 + 'px';
+          document.getElementById('target').style.left = mbx + 150 + 'px';
+        } else {
+          const mtx = coords.mt.x;
+          const mty = coords.mt.y;
+          document.getElementById('target').style.top = mty - 40 + 'px';
+          document.getElementById('target').style.left = mtx + 150 + 'px';
+        }
+      }
+    }
+    this.canvas.renderAll();
+  }
+
+  /**
+   * This is selectedObject function
+   * @param '{any}' array - A array param
+   * @example
+   * selectedObject(evt);
+   */
+
+  selectedObject(evt: any) {
+    this.objectModified = true;
+    this.selctedObjectArray = evt;
   }
 }
