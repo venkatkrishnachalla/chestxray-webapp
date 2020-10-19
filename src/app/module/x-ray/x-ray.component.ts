@@ -131,149 +131,153 @@ export class XRayComponent implements OnInit {
 
   generateReport() {
     this.disableReportBtn = true;
+    const annotationData = this.canvas.savedInfo['data'].ndarray[0];
+    this.findings.findings.forEach(input => {
+      const output = input.split(':');
+      let outputSub;
+      let outputMain;
+      if (input.indexOf(':') !== -1){
+        outputSub = output[1].split('.');
+        outputMain = output[0];
+      }
+      else{
+        outputSub = input.split('.');
+        outputMain = 'ADDITIONAL';
+      }
+      const length = annotationData.Impression.length;
+      if (outputSub.length > 0 && length !== 0){
+        outputSub.forEach(finalOutput => {
+          finalOutput = finalOutput.replace(/\//g, '').trim();
+          let index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
+          if (index === -1){
+            index = annotationData.diseases.findIndex(x => x.name === finalOutput);
+          }
+          if (index === -1){
+            if (finalOutput !== '' && annotationData.diseases.findIndex(x => x.name === finalOutput) !== -1){
+              const impressionIndex = annotationData.Impression[length - 1].index;
+              const newImpression = {
+                index: impressionIndex + 1,
+                sentence: finalOutput,
+                source: 'DR',
+              };
+              annotationData.Impression.push(newImpression);
+              annotationData.Findings[outputMain].push(impressionIndex + 1);
+            }
+          } else if (index !== -1){
+            annotationData.Findings[outputMain].push(index);
+          }
+        });
+      }
+    });
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
   }
-  /**
-   * report button click event
-   * @param '{void}' empty - A empty param
-   * @example
-   * submitReport();
-   */
-
-  submitReport() {
-    this.disableSubmitBtn = true;
-    let indexValue = 0;
-    let indexValueDisease = 0;
-    let mainSource = '';
-    const annotationData = this.canvas.savedInfo['data'].ndarray[0];
-    annotationData.Impression.forEach((element) => {
-      element.index = indexValue;
-      if (element.source === 'ML' && mainSource !== 'ML+DR') {
-        mainSource = 'ML';
-      } else if (element.source === 'DR' && mainSource === '') {
-        mainSource = 'DR';
-      } else if (element.source === 'DR' && mainSource === 'ML') {
-        mainSource = mainSource + '+DR';
-      }
-      indexValue++;
-    });
-    annotationData.diseases.forEach((element) => {
-      delete element.index;
-      if (element.freeHandDrawing) {
-        const coordinatesArray = [];
-        element.coordinatevalues.forEach((data) => {
-          coordinatesArray.push([data.x, data.y]);
-        });
-        element.type = 'freeHandDrawing';
-        element.contours = [
-          {
-            source: 'DR',
-            isUpdated: false,
-            isDeleted: false,
-            Coordinates: coordinatesArray,
-          },
-        ];
-        element.ellipses = [];
-        delete element.coordinatevalues;
-      } else if (element.ellipses) {
-        delete element.contours;
-        element.ellipses.forEach((ellipse, index) => {
-          delete ellipse.index;
-          delete ellipse.id;
-          delete ellipse.color;
-          delete ellipse.name;
-          delete ellipse.idvalue;
-        });
-      }
-      element.idx = indexValueDisease;
-      indexValueDisease++;
-    });
-    annotationData.Findings = {
-      ADDITIONAL: [],
-      'BONY THORAX': [],
-      'CARDIAC SILHOUETTE': [],
-      'COSTOPHRENIC ANGLES': [],
-      'DOMES OF DIAPHRAGM': [],
-      'HILAR/MEDIASTINAL': [],
-      'LUNG FIELDS': [],
-    };
-    this.spinnerService.show();
-    this.findings.findings.forEach((input) => {
-      const output = input.split(':');
-      let outputSub;
-      let outputMain;
-      if (input.indexOf(':') !== -1) {
-        outputSub = output[1].split(',');
-        outputMain = output[0];
-      } else {
-        outputSub = input.split(',');
-        outputMain = 'ADDITIONAL';
-      }
-      const length = annotationData.Impression.length;
-      if (outputSub.length > 0 && length !== 0) {
-        outputSub.forEach((finalOutput) => {
-          finalOutput = finalOutput.replace(/\//g, '').trim();
-          const index = annotationData.Impression.findIndex(
-            (x) => x.sentence === finalOutput
-          );
-          if (index === -1) {
+/**  
+ * report button click event
+ * @param {void} empty - A empty param  
+ * @example  
+ * submitReport();
+ */ 
+submitReport() {
+  this.disableSubmitBtn = true;
+  let indexValue = 0;
+  let indexValueDisease = 0;
+  let mainSource = '';
+  const annotationData = this.canvas.savedInfo['data'].ndarray[0];
+  annotationData.Impression.forEach(element => {
+    element.index = indexValue;
+    if (element.source === 'ML' && mainSource !== 'ML+DR'){
+      mainSource = 'ML';
+    }
+    else if (element.source === 'DR' && mainSource === ''){
+      mainSource = 'DR';
+    }
+    else if (element.source === 'DR' && mainSource === 'ML'){
+      mainSource = mainSource + '+DR';
+    }
+    indexValue++;
+  });
+  annotationData.diseases.forEach(element => {
+    delete element.index;
+    if (element.freeHandDrawing){
+      const coordinatesArray = [];
+      element.coordinatevalues.forEach(data => {
+        coordinatesArray.push([data.x, data.y]);
+      });
+      element.type = 'freeHandDrawing';
+      element.contours = [{
+        source : 'DR',
+        isUpdated : false,
+        isDeleted : false,
+        Coordinates : coordinatesArray,
+        angle: element.angle,
+      }];
+      element.ellipses = [];
+      delete element.coordinatevalues;
+    }
+    else if (element.ellipses.length !== 0){
+      delete element.contours;
+      element.ellipses.forEach((ellipse, index) => {
+        delete ellipse.index;
+        delete ellipse.id;
+        delete ellipse.color;
+        delete ellipse.name;
+        delete ellipse.idvalue;
+      });
+    }
+    element.idx = indexValueDisease;
+    indexValueDisease++;
+  });
+  annotationData.Findings = {
+    ADDITIONAL: [],
+    'BONY THORAX': [],
+    'CARDIAC SILHOUETTE': [],
+    'COSTOPHRENIC ANGLES': [],
+    'DOMES OF DIAPHRAGM': [],
+    'HILAR/MEDIASTINAL': [],
+    'LUNG FIELDS': []
+  };
+  this.spinnerService.show();
+  this.findings.findings.forEach(input => {
+    const output = input.split(':');
+    let outputSub;
+    let outputMain;
+    if (input.indexOf(':') !== -1){
+      outputSub = output[1].split('.');
+      outputMain = output[0];
+    }
+    else{
+      outputSub = input.split('.');
+      outputMain = 'ADDITIONAL';
+    }
+    const length = annotationData.Impression.length;
+    if (outputSub.length > 0 && length !== 0){
+      outputSub.forEach(finalOutput => {
+        finalOutput = finalOutput.replace(/\//g, '').trim();
+        let index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
+        if (index === -1){
+          index = annotationData.diseases.findIndex(x => x.name === finalOutput);
+        }
+        if (index === -1){
+          if (finalOutput !== '' && annotationData.diseases.findIndex(x => x.name === finalOutput) !== -1){
             const impressionIndex = annotationData.Impression[length - 1].index;
             const newImpression = {
               index: impressionIndex + 1,
-              sentence: output[1],
+              sentence: finalOutput,
               source: 'DR',
             };
-            if (finalOutput !== '') {
-              if (
-                annotationData.Impression.findIndex(
-                  (s) => s.sentence === finalOutput.trim()
-                ) === -1 &&
-                annotationData.diseases.findIndex(
-                  (a) => a.name === finalOutput
-                ) !== -1
-              ) {
-                annotationData.Impression.push(newImpression);
-              }
-              annotationData.Findings[outputMain].push(impressionIndex + 1);
-            }
-          } else {
-            annotationData.Findings[outputMain].push(index);
-          }
-        });
-      } else if (output[0] !== ' ' && length !== 0) {
-        // tslint:disable-next-line: max-line-length
-        const index = annotationData.Impression.findIndex(
-          (x) => x.sentence === (output[1] ? output[1].trim() : '')
-        );
-        if (index === -1) {
-          const impressionIndex = annotationData.Impression[length - 1].index;
-          const newImpression = {
-            index: impressionIndex + 1,
-            sentence: output[1],
-            source: 'DR',
-          };
-          if (output[1] !== '') {
-            // tslint:disable-next-line: max-line-length
-            if (
-              annotationData.Impression.findIndex(
-                (s) => s.sentence === (output[1] ? output[1].trim() : '')
-              ) === -1 &&
-              annotationData.diseases.findIndex((a) => a.name === output[1]) !==
-                -1
-            ) {
-              annotationData.Impression.push(newImpression);
-            }
+            annotationData.Impression.push(newImpression);
             annotationData.Findings[outputMain].push(impressionIndex + 1);
           }
-        } else {
+        } else if (index !== -1){
           annotationData.Findings[outputMain].push(index);
         }
-      }
-    });
-    const FinalData = {
+      });
+    }
+  });
+  const FinalData = {
       data: {
         names: [{}],
         ndarray: [
@@ -289,7 +293,7 @@ export class XRayComponent implements OnInit {
         ],
       },
     };
-    if (this.canvas.patientDetail.xRayList[0].isAnnotated) {
+  if (this.canvas.patientDetail.xRayList[0].isAnnotated) {
       this.xrayService.updateSubmitReport(FinalData).subscribe(
         (response) => {
           this.spinnerService.hide();

@@ -48,6 +48,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit(): void {
+    this.impression = [];
+    this.uniqueImpressions = [];
     this.hideShowAll = true;
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
@@ -83,6 +85,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * getImpressions();
    */
   getImpressions() {
+    this.impression = [];
     this.eventEmitterService.invokeComponentData.subscribe(
       (obj: {
         name: any;
@@ -92,7 +95,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         idNew: any;
       }) => {
         if (obj.idNew !== '00') {
-          const index = this.impression.findIndex((a) => a.id === obj.idNew);
+          const index = this.impression.findIndex((a) => (a.id ? a.id : a.idNew) === obj.idNew);
           if (index !== -1) {
             this.impression.splice(index, 1);
           } else {
@@ -153,7 +156,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * deleteImpression(id, disease, objectindex);
    */
   deleteImpression(id: number, disease: string, objectindex: number) {
-    const index = this.impression.findIndex((item) => item.idNew === id);
+    let index = this.impression.findIndex((item) => item.idNew === id);
+    if (index === -1){
+      index = this.impression.findIndex((item) => item.id === id);
+    }
     if (index !== -1) {
       this.impression.splice(index, 1);
     }
@@ -180,7 +186,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * updateImpression(info);
    */
   updateImpression(info) {
-    const index = this.impression.findIndex((item) => item.idNew === info.id);
+    let index = this.impression.findIndex((item) => item.idNew === info.id);
+    if (index === -1){
+      index = this.impression.findIndex((item) => item.id === info.id);
+    }
     this.impression.splice(index, 1, { idNew: info.id, name: info.name });
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
