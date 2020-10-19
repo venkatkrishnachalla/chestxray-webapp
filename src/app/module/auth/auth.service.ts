@@ -97,6 +97,7 @@ export class AuthService {
     this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.removeItem('isIndividualRadiologist');
     sessionStorage.removeItem('askAiSelection');
+    sessionStorage.removeItem('reportPageSelection');
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');

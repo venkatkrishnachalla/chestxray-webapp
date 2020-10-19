@@ -8,6 +8,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
 import { EllipseData } from 'src/app/module/auth/interface.modal';
 import { Subscription } from 'rxjs';
 import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
+import { AnyAaaaRecord } from 'dns';
 
 @Component({
   selector: 'cxr-impression',
@@ -49,6 +50,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit(): void {
+    this.impression = [];
+    this.uniqueImpressions = [];
     this.hideShowAll = true;
     this.getImpressions();
     this.eventEmitterService.invokeComponentFunction.subscribe(
@@ -84,6 +87,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * getImpressions();
    */
   getImpressions() {
+    this.impression = [];
     this.eventEmitterService.invokeComponentData.subscribe(
       (obj: {
         name: any;
@@ -94,7 +98,9 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         diseaseType: any;
       }) => {
         if (obj.idNew !== '00') {
-          const index = this.impression.findIndex((a) => a.id === obj.idNew);
+          const index = this.impression.findIndex(
+            (a) => (a.id ? a.id : a.idNew) === obj.idNew
+          );
           if (index !== -1) {
             this.impression.splice(index, 1);
           } else {
@@ -165,10 +171,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       this.uniqueImpressionsData();
     } else {
       index = this.impression.findIndex((item) => item.idNew === id);
+      if (index === -1) {
+        index = this.impression.findIndex((item) => item.id === id);
+      }
       if (index !== -1) {
         this.impression.splice(index, 1);
       }
-      this.uniqueImpressionsData();
     }
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
@@ -192,7 +200,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * updateImpression(info);
    */
   updateImpression(info) {
-    const index = this.impression.findIndex((item) => item.idNew === info.id);
+    let index = this.impression.findIndex((item) => item.idNew === info.id);
+    if (index === -1) {
+      index = this.impression.findIndex((item) => item.id === info.id);
+    }
     this.impression.splice(index, 1, { idNew: info.id, name: info.name });
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
