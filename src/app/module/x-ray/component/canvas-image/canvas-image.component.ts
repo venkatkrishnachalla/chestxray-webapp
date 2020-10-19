@@ -383,6 +383,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.patientDetail = patientDetail;
     }
 
+    const reportPageSelection = sessionStorage.getItem('reportPageSelection');
+    const isReportPageSelection = reportPageSelection === 'true' ? true : false;
+
     this.dbService.getByKey('PatientImage', 1).subscribe((patientImage) => {
       this.PatientImage = patientImage ? patientImage.base64Image : null;
       const isUser = this.patientDetail.isIndividualRadiologist ? true : false;
@@ -392,13 +395,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
       if (this.PatientImage && isUser) {
         this.setCanvasDimension();
+      } else if (this.PatientImage && isReportPageSelection) {
+        this.setCanvasDimension();
       } else if (!this.instanceId) {
         this.getPatientInstanceId(this.patientId);
       } else if (!this.PatientImage) {
         this.getPatientImage(this.instanceId);
       } else {
         this.setCanvasDimension();
-        this.generateCanvas();
       }
     });
 
@@ -788,6 +792,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.setCanvasDimension();
         this.dbService.add('PatientImage', imageInformation).subscribe((key) => {
         });
+        sessionStorage.setItem('reportPageSelection', 'true');
       },
       (errorMessage: any) => {
         this.spinnerService.hide();

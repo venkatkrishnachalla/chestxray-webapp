@@ -113,6 +113,7 @@ export class ReportComponent implements OnInit {
     setTimeout(() => {
       this.spinnerService.hide();
     }, 2500);
+    sessionStorage.setItem('reportPageSelection', 'true');
   }
 
   /**
