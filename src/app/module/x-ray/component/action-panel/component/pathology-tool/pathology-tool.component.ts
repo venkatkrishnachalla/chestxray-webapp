@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EventEmitterService } from 'src/app/service/event-emitter.service';
 
 @Component({
   selector: 'cxr-pathology-tool',
@@ -8,12 +9,12 @@ import { Component, OnInit } from '@angular/core';
 
 // PathologyToolComponent class implementation
 export class PathologyToolComponent implements OnInit {
-  disableActionItems = true;
-
+  disableActionItems: boolean;
+  buttonActive: boolean;
   /*
    * Constructor for PathologyToolComponent class
    */
-  constructor() {}
+  constructor(private eventEmitterService: EventEmitterService) {}
 
   /**
    * This is a ngOnInit function
@@ -21,5 +22,19 @@ export class PathologyToolComponent implements OnInit {
    * @example
    * ngOnInit();
    */
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.disableActionItems = false;
+    this.buttonActive = false;
+  }
+
+  pathologyClicked() {
+    const data = {
+      active: !this.buttonActive,
+      alt: '',
+      image: '',
+      implemented: true,
+      title: 'pathology'
+    };
+    this.eventEmitterService.onComponentButtonClick(data);
+  }
 }

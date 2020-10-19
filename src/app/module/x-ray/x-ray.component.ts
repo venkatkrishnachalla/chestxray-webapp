@@ -132,29 +132,38 @@ export class XRayComponent implements OnInit {
   generateReport() {
     this.disableReportBtn = true;
     const annotationData = this.canvas.savedInfo['data'].ndarray[0];
-    this.findings.findings.forEach(input => {
+    this.findings.findings.forEach((input) => {
       const output = input.split(':');
       let outputSub;
       let outputMain;
-      if (input.indexOf(':') !== -1){
+      if (input.indexOf(':') !== -1) {
         outputSub = output[1].split('.');
         outputMain = output[0];
-      }
-      else{
+      } else {
         outputSub = input.split('.');
         outputMain = 'ADDITIONAL';
       }
       const length = annotationData.Impression.length;
-      if (outputSub.length > 0 && length !== 0){
-        outputSub.forEach(finalOutput => {
+      if (outputSub.length > 0 && length !== 0) {
+        outputSub.forEach((finalOutput) => {
           finalOutput = finalOutput.replace(/\//g, '').trim();
-          let index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
-          if (index === -1){
-            index = annotationData.diseases.findIndex(x => x.name === finalOutput);
+          let index = annotationData.Impression.findIndex(
+            (x) => x.sentence === finalOutput
+          );
+          if (index === -1) {
+            index = annotationData.diseases.findIndex(
+              (x) => x.name === finalOutput
+            );
           }
-          if (index === -1){
-            if (finalOutput !== '' && annotationData.diseases.findIndex(x => x.name === finalOutput) !== -1){
-              const impressionIndex = annotationData.Impression[length - 1].index;
+          if (index === -1) {
+            if (
+              finalOutput !== '' &&
+              annotationData.diseases.findIndex(
+                (x) => x.name === finalOutput
+              ) !== -1
+            ) {
+              const impressionIndex =
+                annotationData.Impression[length - 1].index;
               const newImpression = {
                 index: impressionIndex + 1,
                 sentence: finalOutput,
@@ -163,7 +172,7 @@ export class XRayComponent implements OnInit {
               annotationData.Impression.push(newImpression);
               annotationData.Findings[outputMain].push(impressionIndex + 1);
             }
-          } else if (index !== -1){
+          } else if (index !== -1) {
             annotationData.Findings[outputMain].push(index);
           }
         });
@@ -174,110 +183,119 @@ export class XRayComponent implements OnInit {
     this.findings.getFindingsToReport();
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
   }
-/**  
- * report button click event
- * @param {void} empty - A empty param  
- * @example  
- * submitReport();
- */ 
-submitReport() {
-  this.disableSubmitBtn = true;
-  let indexValue = 0;
-  let indexValueDisease = 0;
-  let mainSource = '';
-  const annotationData = this.canvas.savedInfo['data'].ndarray[0];
-  annotationData.Impression.forEach(element => {
-    element.index = indexValue;
-    if (element.source === 'ML' && mainSource !== 'ML+DR'){
-      mainSource = 'ML';
-    }
-    else if (element.source === 'DR' && mainSource === ''){
-      mainSource = 'DR';
-    }
-    else if (element.source === 'DR' && mainSource === 'ML'){
-      mainSource = mainSource + '+DR';
-    }
-    indexValue++;
-  });
-  annotationData.diseases.forEach(element => {
-    delete element.index;
-    if (element.freeHandDrawing){
-      const coordinatesArray = [];
-      element.coordinatevalues.forEach(data => {
-        coordinatesArray.push([data.x, data.y]);
-      });
-      element.type = 'freeHandDrawing';
-      element.contours = [{
-        source : 'DR',
-        isUpdated : false,
-        isDeleted : false,
-        Coordinates : coordinatesArray,
-        angle: element.angle,
-      }];
-      element.ellipses = [];
-      delete element.coordinatevalues;
-    }
-    else if (element.ellipses.length !== 0){
-      delete element.contours;
-      element.ellipses.forEach((ellipse, index) => {
-        delete ellipse.index;
-        delete ellipse.id;
-        delete ellipse.color;
-        delete ellipse.name;
-        delete ellipse.idvalue;
-      });
-    }
-    element.idx = indexValueDisease;
-    indexValueDisease++;
-  });
-  annotationData.Findings = {
-    ADDITIONAL: [],
-    'BONY THORAX': [],
-    'CARDIAC SILHOUETTE': [],
-    'COSTOPHRENIC ANGLES': [],
-    'DOMES OF DIAPHRAGM': [],
-    'HILAR/MEDIASTINAL': [],
-    'LUNG FIELDS': []
-  };
-  this.spinnerService.show();
-  this.findings.findings.forEach(input => {
-    const output = input.split(':');
-    let outputSub;
-    let outputMain;
-    if (input.indexOf(':') !== -1){
-      outputSub = output[1].split('.');
-      outputMain = output[0];
-    }
-    else{
-      outputSub = input.split('.');
-      outputMain = 'ADDITIONAL';
-    }
-    const length = annotationData.Impression.length;
-    if (outputSub.length > 0 && length !== 0){
-      outputSub.forEach(finalOutput => {
-        finalOutput = finalOutput.replace(/\//g, '').trim();
-        let index = annotationData.Impression.findIndex(x => x.sentence === finalOutput);
-        if (index === -1){
-          index = annotationData.diseases.findIndex(x => x.name === finalOutput);
-        }
-        if (index === -1){
-          if (finalOutput !== '' && annotationData.diseases.findIndex(x => x.name === finalOutput) !== -1){
-            const impressionIndex = annotationData.Impression[length - 1].index;
-            const newImpression = {
-              index: impressionIndex + 1,
-              sentence: finalOutput,
-              source: 'DR',
-            };
-            annotationData.Impression.push(newImpression);
-            annotationData.Findings[outputMain].push(impressionIndex + 1);
+  /**
+   * report button click event
+   * @param {void} empty - A empty param
+   * @example
+   * submitReport();
+   */
+
+  submitReport() {
+    this.disableSubmitBtn = true;
+    let indexValue = 0;
+    let indexValueDisease = 0;
+    let mainSource = '';
+    const annotationData = this.canvas.savedInfo['data'].ndarray[0];
+    annotationData.Impression.forEach((element) => {
+      element.index = indexValue;
+      if (element.source === 'ML' && mainSource !== 'ML+DR') {
+        mainSource = 'ML';
+      } else if (element.source === 'DR' && mainSource === '') {
+        mainSource = 'DR';
+      } else if (element.source === 'DR' && mainSource === 'ML') {
+        mainSource = mainSource + '+DR';
+      }
+      indexValue++;
+    });
+    annotationData.diseases.forEach((element) => {
+      delete element.index;
+      if (element.freeHandDrawing) {
+        const coordinatesArray = [];
+        element.coordinatevalues.forEach((data) => {
+          coordinatesArray.push([data.x, data.y]);
+        });
+        element.type = 'freeHandDrawing';
+        element.contours = [
+          {
+            source: 'DR',
+            isUpdated: false,
+            isDeleted: false,
+            Coordinates: coordinatesArray,
+            angle: element.angle,
+          },
+        ];
+        element.ellipses = [];
+        delete element.coordinatevalues;
+      } else if (element.ellipses.length !== 0) {
+        delete element.contours;
+        element.ellipses.forEach((ellipse, index) => {
+          delete ellipse.index;
+          delete ellipse.id;
+          delete ellipse.color;
+          delete ellipse.name;
+          delete ellipse.idvalue;
+        });
+      }
+      element.idx = indexValueDisease;
+      indexValueDisease++;
+    });
+    annotationData.Findings = {
+      ADDITIONAL: [],
+      'BONY THORAX': [],
+      'CARDIAC SILHOUETTE': [],
+      'COSTOPHRENIC ANGLES': [],
+      'DOMES OF DIAPHRAGM': [],
+      'HILAR/MEDIASTINAL': [],
+      'LUNG FIELDS': [],
+    };
+    this.spinnerService.show();
+    this.findings.findings.forEach((input) => {
+      const output = input.split(':');
+      let outputSub;
+      let outputMain;
+      if (input.indexOf(':') !== -1) {
+        outputSub = output[1].split('.');
+        outputMain = output[0];
+      } else {
+        outputSub = input.split('.');
+        outputMain = 'ADDITIONAL';
+      }
+      const length = annotationData.Impression.length;
+      if (outputSub.length > 0 && length !== 0) {
+        outputSub.forEach((finalOutput) => {
+          finalOutput = finalOutput.replace(/\//g, '').trim();
+          let index = annotationData.Impression.findIndex(
+            (x) => x.sentence === finalOutput
+          );
+          if (index === -1) {
+            index = annotationData.diseases.findIndex(
+              (x) => x.name === finalOutput
+            );
           }
-        } else if (index !== -1){
-          annotationData.Findings[outputMain].push(index);
-        }
-      });
-    }
-  });
-  const FinalData = {
+          if (index === -1) {
+            if (
+              finalOutput !== '' &&
+              annotationData.diseases.findIndex(
+                (x) => x.name === finalOutput
+              ) !== -1
+            ) {
+              const impressionIndex =
+                annotationData.Impression[length - 1].index;
+              const newImpression = {
+                index: impressionIndex + 1,
+                sentence: finalOutput,
+                source: 'DR',
+              };
+              annotationData.Impression.push(newImpression);
+              annotationData.Findings[outputMain].push(impressionIndex + 1);
+            }
+          } else if (index !== -1) {
+            annotationData.Findings[outputMain].push(index);
+          }
+        });
+      }
+    });
+    const FinalData = {
       data: {
         names: [{}],
         ndarray: [
@@ -293,7 +311,7 @@ submitReport() {
         ],
       },
     };
-  if (this.canvas.patientDetail.xRayList[0].isAnnotated) {
+    if (this.canvas.patientDetail.xRayList[0].isAnnotated) {
       this.xrayService.updateSubmitReport(FinalData).subscribe(
         (response) => {
           this.spinnerService.hide();

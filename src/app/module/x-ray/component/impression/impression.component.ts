@@ -8,6 +8,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
 import { EllipseData } from 'src/app/module/auth/interface.modal';
 import { Subscription } from 'rxjs';
 import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
+import { AnyAaaaRecord } from 'dns';
 
 @Component({
   selector: 'cxr-impression',
@@ -24,6 +25,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   _subscription: Subscription;
   impressionsText = 'Impressions';
   hideShowAll: boolean;
+  enableDelete: boolean;
 
   /*
    * constructor for ImpressionComponent class
@@ -93,9 +95,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         color: any;
         Source: any;
         idNew: any;
+        diseaseType: any;
       }) => {
         if (obj.idNew !== '00') {
-          const index = this.impression.findIndex((a) => (a.id ? a.id : a.idNew) === obj.idNew);
+          const index = this.impression.findIndex(
+            (a) => (a.id ? a.id : a.idNew) === obj.idNew
+          );
           if (index !== -1) {
             this.impression.splice(index, 1);
           } else {
@@ -138,6 +143,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           colors: color,
           Source: item.Source,
           checked: true,
+          diseaseType: item.diseaseType,
         });
       }
       return null;
@@ -155,15 +161,23 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * @example
    * deleteImpression(id, disease, objectindex);
    */
-  deleteImpression(id: number, disease: string, objectindex: number) {
-    let index = this.impression.findIndex((item) => item.idNew === id);
-    if (index === -1){
-      index = this.impression.findIndex((item) => item.id === id);
+  deleteImpression(id: number, disease: string, objectindex: any) {
+    let index;
+    if (objectindex === 'diffuse category') {
+      index = this.impression.findIndex((item) => item.name === disease);
+      if (index !== -1) {
+        this.impression.splice(index, 1);
+      }
+      this.uniqueImpressionsData();
+    } else {
+      index = this.impression.findIndex((item) => item.idNew === id);
+      if (index === -1) {
+        index = this.impression.findIndex((item) => item.id === id);
+      }
+      if (index !== -1) {
+        this.impression.splice(index, 1);
+      }
     }
-    if (index !== -1) {
-      this.impression.splice(index, 1);
-    }
-    this.uniqueImpressionsData();
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
@@ -187,7 +201,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
   updateImpression(info) {
     let index = this.impression.findIndex((item) => item.idNew === info.id);
-    if (index === -1){
+    if (index === -1) {
       index = this.impression.findIndex((item) => item.id === info.id);
     }
     this.impression.splice(index, 1, { idNew: info.id, name: info.name });
@@ -295,5 +309,22 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this._subscription.unsubscribe();
+  }
+
+  /**
+   * on deleteImpressions function
+   * @param '{void}' empty - A empty param
+   * @example
+   * deleteImpressions();
+   */
+  deleteImpressions(data, event, index) {
+    // if (objectindex === 'diffuse category') {
+    //   index = this.impression.findIndex((item) => item.name === disease);
+    //   this.impression.filter((item) => item.name === disease);
+    // }
+    this.eventEmitterService.OnDeleteDiffuseImpression({
+      obj: data,
+      title: 'Delete Diffuse Impression',
+    });
   }
 }

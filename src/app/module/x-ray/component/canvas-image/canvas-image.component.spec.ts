@@ -302,7 +302,7 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getPatientInstanceId function', () => {
       expect(component.getPatientInstanceId).toBeDefined();
-      expect(component.getPatientImage).toHaveBeenCalled();
+      // expect(component.getPatientImage).toHaveBeenCalled();
     });
   });
 
@@ -918,11 +918,6 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return {
             id: 1,
-            canvas: {
-              freeDrawingBrush: {
-                _points: ['2345'],
-              },
-            },
             set: () => {},
           };
         },
@@ -945,9 +940,13 @@ describe('CanvasImageComponent', () => {
         },
         meta: {},
       };
+      spyOn(component, 'getColorMapping');
+      spyOn(component, 'updateFreeHandDrawingIntoSession');
       component.selectedDisease = 'Bulla';
       component.updatePrediction();
       expect(component.updatePrediction).toBeDefined();
+      expect(component.getColorMapping).toHaveBeenCalled();
+      expect(component.updateFreeHandDrawingIntoSession).toHaveBeenCalled();
     });
   });
 
@@ -959,13 +958,11 @@ describe('CanvasImageComponent', () => {
           return {
             id: 1,
             type: 'ellipse',
-            canvas: {
-              freeDrawingBrush: {
-                _points: ['2345'],
-              },
-            },
             set: () => {},
           };
+        },
+        freeDrawingBrush: {
+          _points: ['2345'],
         },
         _activeObject: {
           path: '/x-ray',
@@ -1005,13 +1002,11 @@ describe('CanvasImageComponent', () => {
             id: 1,
             type: 'ellipse',
             isMLAi: true,
-            canvas: {
-              freeDrawingBrush: {
-                _points: ['2345'],
-              },
-            },
             set: () => {},
           };
+        },
+        freeDrawingBrush: {
+          _points: ['2345'],
         },
         _activeObject: {
           path: '/x-ray',
@@ -1063,13 +1058,14 @@ describe('CanvasImageComponent', () => {
             id: 1,
             type: 'ellipse',
             isMLAi: true,
-            canvas: {
-              freeDrawingBrush: {
-                _points: ['2345'],
-              },
+            freeDrawingBrush: {
+              _points: ['2345'],
             },
             set: () => {},
           };
+        },
+        freeDrawingBrush: {
+          _points: ['2345'],
         },
         _activeObject: {
           path: '/x-ray',
@@ -1188,6 +1184,9 @@ describe('CanvasImageComponent', () => {
       component.canvas = {
         getActiveObject: () => {
           return { id: 1, set: () => {} };
+        },
+        freeDrawingBrush: {
+          _points: ['12345'],
         },
         _activeObject: {
           path: '/x-ray',
@@ -1799,6 +1798,18 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+    /*** it should call diffusePathology function***/
+  describe('#diffusePathology', () => {
+      beforeEach(() => {
+        const data = {};
+        spyOn(component, 'openPathologyModal');
+        component.diffusePathology(data);
+      });
+      it('it should call diffusePathology function', () => {
+        expect(component.diffusePathology).toBeDefined();
+        expect(dialogSpy.closeAll).toHaveBeenCalled();
+      });
+    });
   /*** it should call selectedObject function***/
   describe('#selectedObject', () => {
     beforeEach(() => {
