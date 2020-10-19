@@ -143,6 +143,17 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   objectSelected: boolean;
   selctedObjectArray: any;
   objectModified: boolean;
+  isMeasureTool: boolean;
+  line: any;
+  isDownMeasure: boolean;
+  arr = new Array();
+  startx = new Array();
+  endx = new Array();
+  starty = new Array();
+  endy = new Array();
+  temp = 0;
+  lineLengthInMilliMeter: any;
+  showMeasurement: boolean;
 
   /*
    * constructor for CanvasImageComponent class
@@ -239,9 +250,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         switch (data.title) {
           case 'Draw Ellipse':
             this.drawEllipse(data);
+            this.isMeasureTool = false;
             break;
           case 'Free Hand Drawing':
             this.freeHandDrawing(data);
+            this.isMeasureTool = false;
+            break;
+          case 'Measure Length':
+            this.measureTool(data);
             break;
           case 'Delete':
             break;
@@ -542,6 +558,108 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   /**
+   *  This is measureTool function
+   * @param '{any}' data - A any param
+   * @example
+   * measureTool(data);
+   */
+  measureTool(data: any) {
+    let point1;
+    this.isMeasureTool = true;
+    this.activeIcon = data;
+    if (!this.activeIcon.active) {
+      this.isMeasureTool = false;
+    } else {
+      this.canvas.observe('mouse:down', (options) => {
+        if (this.isMeasureTool && this.activeIcon.active) {
+          const x = options.e.clientX - this.canvas._offset.left;
+          const y = options.e.clientY - this.canvas._offset.top;
+          this.isDownMeasure = true;
+          const pointer = this.canvas.getPointer(options.e);
+          const points = [pointer.x, pointer.y, pointer.x, pointer.y];
+          this.startx[this.temp] = pointer.x;
+          this.starty[this.temp] = pointer.y;
+
+          const circle = new fabric.Circle({
+            left: x,
+            top: y,
+            fill: 'red',
+            originX: 'center',
+            originY: 'center',
+            hasControls: false,
+            hasBorders: false,
+            lockMovementX: true,
+            lockMovementY: true,
+            radius: 4,
+            hoverCursor: 'default',
+            type: 'circle',
+          });
+          this.canvas.add(circle);
+
+          if (point1 === undefined) {
+            point1 = new fabric.Point(x, y);
+          } else {
+            this.canvas.add(
+              new fabric.Line([point1.x, point1.y, x, y], {
+                stroke: '#00ffff',
+                hasControls: false,
+                hasBorders: false,
+                lockMovementX: true,
+                lockMovementY: true,
+                hoverCursor: 'default',
+              })
+            );
+            point1 = undefined;
+            this.calculateMeasurement();
+          }
+        }
+      });
+
+      this.canvas.on('mouse:up', (o) => {
+        if (this.isMeasureTool && this.activeIcon.active) {
+          const pointer = this.canvas.getPointer(o.e);
+          this.endx[this.temp] = pointer.x;
+          this.endy[this.temp] = pointer.y;
+          this.isDownMeasure = false;
+          if (point1 === undefined) {
+            this.activeIcon.active = false;
+          }
+        }
+      });
+    }
+  }
+
+  /**
+   *  This is calculateMeasurement function
+   * @param '{empty}' - A empty param
+   * @example
+   * calculateMeasurement();
+   */
+  calculateMeasurement() {
+    const startPoint = {
+      x: this.startx[this.temp],
+      y: this.starty[this.temp],
+    };
+    const endPoint = {
+      x: this.endx[this.temp],
+      y: this.endy[this.temp],
+    };
+    let xs = 0;
+    let ys = 0;
+    xs = endPoint.x - startPoint.x;
+    xs = xs * xs;
+    ys = endPoint.y - startPoint.y;
+    ys = ys * ys;
+    const px = 0.264583333;
+    this.lineLengthInMilliMeter = (Math.sqrt(xs + ys) * px).toFixed(2);
+
+    if (this.lineLengthInMilliMeter && !isNaN(this.lineLengthInMilliMeter)) {
+      this.showMeasurement = true;
+    }
+    this.canvas.renderAll();
+  }
+
+  /**
    * This is a restrictionToBoundaryLimit function.
    * @param '{any}' data - A array param
    * @example
@@ -595,7 +713,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   actionIconsModelDispaly(data) {
     this.markactionModelPosition(data);
-    if (!this.enableDrawEllipseMode && this.canvas.isDrawingMode === false) {
+    if (
+      !this.enableDrawEllipseMode &&
+      this.canvas.isDrawingMode === false &&
+      data.target.type !== 'circle' &&
+      data.target.type !== 'line'
+    ) {
       this.dialog.open(this.controlsModel, {
         panelClass: 'my-class',
         hasBackdrop: false,
@@ -787,7 +910,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const imageInformation = {
           base64Image: this.PatientImage,
           filename: imageResponse.filename,
-          id: 1
+          id: 1,
         };
         this.setCanvasDimension();
         this.dbService.add('PatientImage', imageInformation).subscribe((key) => {
@@ -1789,11 +1912,29 @@ onSubmitPatientDetails() {
     this.resetZoom();
     this.keepPositionInBounds(this.canvas);
     this.ellipseLists(true, '');
+    this.removeMeasurementLines();
     this.processedImage = this.canvas.toDataURL('image/png');
     sessionStorage.setItem('annotatedImage', this.processedImage);
     this.annotatedXrayService.xrayAnnotatedService(this.processedImage);
     this.router.navigate(['report'], {
       state: { patientDetails: this.patientDetail },
+    });
+  }
+
+  /**
+   *  This is removeMeasurementLines function
+   * @param '{empty}' value - A empty param
+   * @example
+   * removeMeasurementLines();
+   */
+  removeMeasurementLines() {
+    const objects = this.canvas.getObjects();
+    objects.forEach((object) => {
+      this.isChangeable = true;
+      if (object.type === 'circle' || object.type === 'line') {
+        this.canvas.setVisible = object.visible = false;
+      }
+      this.canvas.renderAll();
     });
   }
 

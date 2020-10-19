@@ -87,9 +87,9 @@ export const actionPanelConstants = {
     {
       image: '../../../../assets/images/measure length active@2x.png',
       alt: 'Measure Length',
-      title: '',
+      title: 'Measure Length',
       active: false,
-      implemented: false,
+      implemented: true,
     },
     {
       image: '../../../../assets/images/measure angle active@2x.png',
