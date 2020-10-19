@@ -45,6 +45,11 @@ describe('CanvasImageComponent', () => {
   const eventEmitterService2Spy = jasmine.createSpyObj('EventEmitterService2', [
     'onEyeIconClick',
   ]);
+  const dbServiceSpy = jasmine.createSpyObj('NgxIndexedDBService', [
+    'getByKey',
+    'add',
+    '',
+  ]);
 
   beforeEach(() => {
     eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(undefined);
@@ -59,7 +64,8 @@ describe('CanvasImageComponent', () => {
       routerSpy,
       toastrServiceSpy,
       sanitizerspy,
-      eventEmitterService2Spy
+      eventEmitterService2Spy,
+      dbServiceSpy
     );
   });
 

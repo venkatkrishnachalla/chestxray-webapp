@@ -92,7 +92,7 @@ export class EventEmitterService {
     this.onStatusChangeFunction.emit(data);
   }
 
-  /*** onComponentButtonClick event emit function ***/
+  /*** onBrightnessChange event emit function ***/
   onBrightnessChange(title) {
     this.brightnessValue.emit(title);
   }
@@ -102,7 +102,7 @@ export class EventEmitterService {
     this.contrastValue.emit(title);
   }
 
-  /*** onContrastChange event emit function ***/
+  /*** OnDefaultRanges event emit function ***/
   OnDefaultRanges(title: number) {
     this.defaultRange.emit(title);
   }
