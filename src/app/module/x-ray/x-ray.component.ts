@@ -131,6 +131,53 @@ export class XRayComponent implements OnInit, OnDestroy {
 
   generateReport() {
     this.disableReportBtn = true;
+    const annotationData = this.canvas.savedInfo['data'].ndarray[0];
+    this.findings.findings.forEach((input) => {
+      const output = input.split(':');
+      let outputSub;
+      let outputMain;
+      if (input.indexOf(':') !== -1) {
+        outputSub = output[1].split('.');
+        outputMain = output[0];
+      } else {
+        outputSub = input.split('.');
+        outputMain = 'ADDITIONAL';
+      }
+      const length = annotationData.Impression.length;
+      if (outputSub.length > 0 && length !== 0) {
+        outputSub.forEach((finalOutput) => {
+          finalOutput = finalOutput.replace(/\//g, '').trim();
+          let index = annotationData.Impression.findIndex(
+            (x) => x.sentence === finalOutput
+          );
+          if (index === -1) {
+            index = annotationData.diseases.findIndex(
+              (x) => x.name === finalOutput
+            );
+          }
+          if (index === -1) {
+            if (
+              finalOutput !== '' &&
+              annotationData.diseases.findIndex(
+                (x) => x.name === finalOutput
+              ) !== -1
+            ) {
+              const impressionIndex =
+                annotationData.Impression[length - 1].index;
+              const newImpression = {
+                index: impressionIndex + 1,
+                sentence: finalOutput,
+                source: 'DR',
+              };
+              annotationData.Impression.push(newImpression);
+              annotationData.Findings[outputMain].push(impressionIndex + 1);
+            }
+          } else if (index !== -1) {
+            annotationData.Findings[outputMain].push(index);
+          }
+        });
+      }
+    });
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
@@ -138,7 +185,7 @@ export class XRayComponent implements OnInit, OnDestroy {
   }
   /**
    * report button click event
-   * @param '{void}' empty - A empty param
+   * @param {void} empty - A empty param
    * @example
    * submitReport();
    */
@@ -174,11 +221,12 @@ export class XRayComponent implements OnInit, OnDestroy {
             isUpdated: false,
             isDeleted: false,
             Coordinates: coordinatesArray,
+            angle: element.angle,
           },
         ];
         element.ellipses = [];
         delete element.coordinatevalues;
-      } else if (element.ellipses) {
+      } else if (element.ellipses.length !== 0) {
         delete element.contours;
         element.ellipses.forEach((ellipse, index) => {
           delete ellipse.index;
@@ -206,71 +254,45 @@ export class XRayComponent implements OnInit, OnDestroy {
       let outputSub;
       let outputMain;
       if (input.indexOf(':') !== -1) {
-        outputSub = output[1].split(',');
+        outputSub = output[1].split('.');
         outputMain = output[0];
       } else {
-        outputSub = input.split(',');
+        outputSub = input.split('.');
         outputMain = 'ADDITIONAL';
       }
       const length = annotationData.Impression.length;
       if (outputSub.length > 0 && length !== 0) {
         outputSub.forEach((finalOutput) => {
           finalOutput = finalOutput.replace(/\//g, '').trim();
-          const index = annotationData.Impression.findIndex(
+          let index = annotationData.Impression.findIndex(
             (x) => x.sentence === finalOutput
           );
           if (index === -1) {
-            const impressionIndex = annotationData.Impression[length - 1].index;
-            const newImpression = {
-              index: impressionIndex + 1,
-              sentence: output[1],
-              source: 'DR',
-            };
-            if (finalOutput !== '') {
-              if (
-                annotationData.Impression.findIndex(
-                  (s) => s.sentence === finalOutput.trim()
-                ) === -1 &&
-                annotationData.diseases.findIndex(
-                  (a) => a.name === finalOutput
-                ) !== -1
-              ) {
-                annotationData.Impression.push(newImpression);
-              }
+            index = annotationData.diseases.findIndex(
+              (x) => x.name === finalOutput
+            );
+          }
+          if (index === -1) {
+            if (
+              finalOutput !== '' &&
+              annotationData.diseases.findIndex(
+                (x) => x.name === finalOutput
+              ) !== -1
+            ) {
+              const impressionIndex =
+                annotationData.Impression[length - 1].index;
+              const newImpression = {
+                index: impressionIndex + 1,
+                sentence: finalOutput,
+                source: 'DR',
+              };
+              annotationData.Impression.push(newImpression);
               annotationData.Findings[outputMain].push(impressionIndex + 1);
             }
-          } else {
+          } else if (index !== -1) {
             annotationData.Findings[outputMain].push(index);
           }
         });
-      } else if (output[0] !== ' ' && length !== 0) {
-        // tslint:disable-next-line: max-line-length
-        const index = annotationData.Impression.findIndex(
-          (x) => x.sentence === (output[1] ? output[1].trim() : '')
-        );
-        if (index === -1) {
-          const impressionIndex = annotationData.Impression[length - 1].index;
-          const newImpression = {
-            index: impressionIndex + 1,
-            sentence: output[1],
-            source: 'DR',
-          };
-          if (output[1] !== '') {
-            // tslint:disable-next-line: max-line-length
-            if (
-              annotationData.Impression.findIndex(
-                (s) => s.sentence === (output[1] ? output[1].trim() : '')
-              ) === -1 &&
-              annotationData.diseases.findIndex((a) => a.name === output[1]) !==
-                -1
-            ) {
-              annotationData.Impression.push(newImpression);
-            }
-            annotationData.Findings[outputMain].push(impressionIndex + 1);
-          }
-        } else {
-          annotationData.Findings[outputMain].push(index);
-        }
       }
     });
     const FinalData = {

@@ -191,11 +191,12 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
               isUpdated: false,
               isDeleted: false,
               Coordinates: coordinatesArray,
+              angle: element.angle,
             },
           ];
           element.ellipses = [];
           delete element.coordinatevalues;
-        } else if (element.ellipses) {
+        } else if (element.ellipses.length !== 0) {
           delete element.contours;
           element.ellipses.forEach((ellipse, index) => {
             delete ellipse.index;
@@ -223,20 +224,60 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
         let outputSub;
         let outputMain;
         if (input.indexOf(':') !== -1) {
-          outputSub = output[1].split(',');
-          outputMain = output[0];
+          outputSub = output[1].split('.');
+          outputMain = output[0].trim();
         } else {
-          outputSub = input.split(',');
+          outputSub = input.split('.');
           outputMain = 'ADDITIONAL';
         }
         const length = annotationData.Impression.length;
         if (outputSub.length > 0 && length !== 0) {
           outputSub.forEach((finalOutput) => {
             finalOutput = finalOutput.replace(/\//g, '').trim();
-            const index = annotationData.Impression.findIndex(
+            let index = annotationData.Impression.findIndex(
               (x) => x.sentence === finalOutput
             );
             if (index === -1) {
+              index = annotationData.diseases.findIndex(
+                (x) => x.name === finalOutput
+              );
+            }
+            if (index === -1) {
+              if (
+                finalOutput !== '' &&
+                annotationData.diseases.findIndex(
+                  (x) => x.name === finalOutput
+                ) !== -1
+              ) {
+                const impressionIndex =
+                  annotationData.Impression[length - 1].index;
+                const newImpression = {
+                  index: impressionIndex + 1,
+                  sentence: finalOutput,
+                  source: 'DR',
+                };
+                annotationData.Impression.push(newImpression);
+                annotationData.Findings[outputMain].push(impressionIndex + 1);
+              }
+            } else if (index !== -1) {
+              annotationData.Findings[outputMain].push(index);
+            }
+          });
+        } else if (output[0] !== ' ' && length !== 0) {
+          let index = annotationData.Impression.findIndex(
+            (x) => x.sentence === output[1]
+          );
+          if (index === -1) {
+            index = annotationData.diseases.findIndex(
+              (x) => x.name === output[1]
+            );
+          }
+          if (index === -1) {
+            if (
+              output[1] !== '' &&
+              annotationData.diseases.findIndex((x) => x.name === output[1]) !==
+                -1
+            ) {
               const impressionIndex =
                 annotationData.Impression[length - 1].index;
               const newImpression = {
@@ -244,50 +285,10 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
                 sentence: output[1],
                 source: 'DR',
               };
-              if (finalOutput !== '') {
-                if (
-                  annotationData.Impression.findIndex(
-                    (s) => s.sentence === finalOutput.trim()
-                  ) === -1 &&
-                  annotationData.diseases.findIndex(
-                    (a) => a.name === finalOutput
-                  ) !== -1
-                ) {
-                  annotationData.Impression.push(newImpression);
-                }
-                annotationData.Findings[outputMain].push(impressionIndex + 1);
-              }
-            } else {
-              annotationData.Findings[outputMain].push(index);
-            }
-          });
-        } else if (output[0] !== ' ' && length !== 0) {
-          // tslint:disable-next-line: max-line-length
-          const index = annotationData.Impression.findIndex(
-            (x) => x.sentence === (output[1] ? output[1].trim() : '')
-          );
-          if (index === -1) {
-            const impressionIndex = annotationData.Impression[length - 1].index;
-            const newImpression = {
-              index: impressionIndex + 1,
-              sentence: output[1],
-              source: 'DR',
-            };
-            if (output[1] !== '') {
-              // tslint:disable-next-line: max-line-length
-              if (
-                annotationData.Impression.findIndex(
-                  (s) => s.sentence === (output[1] ? output[1].trim() : '')
-                ) === -1 &&
-                annotationData.diseases.findIndex(
-                  (a) => a.name === output[1]
-                ) !== -1
-              ) {
-                annotationData.Impression.push(newImpression);
-              }
+              annotationData.Impression.push(newImpression);
               annotationData.Findings[outputMain].push(impressionIndex + 1);
             }
-          } else {
+          } else if (index !== -1) {
             annotationData.Findings[outputMain].push(index);
           }
         }
