@@ -9,6 +9,9 @@ describe('XRayHeaderComponent', () => {
   const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
     'onPrevNextButtonClick',
   ]);
+  const dbServiceSpy = jasmine.createSpyObj('NgxIndexedDBService', [
+    'clear',
+  ]);
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
   const mockPatientDetail = {
     age: 32,
@@ -21,12 +24,22 @@ describe('XRayHeaderComponent', () => {
     sex: 'F',
     status: false,
     studies: ['9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8'],
+    isAnnotated: true,
+    xRayList: [
+      {
+        xRayId: 68,
+        lastUpdate: '2020-10-16T12:39:06.222349',
+        isAnnotated: true,
+        assignedTo: 'mohan',
+      },
+    ],
   };
   beforeEach(() => {
     component = new XRayHeaderComponent(
       routerSpy,
       authServiceSpy,
-      eventEmitterServiceSpy
+      eventEmitterServiceSpy,
+      dbServiceSpy
     );
   });
 
@@ -47,9 +60,10 @@ describe('XRayHeaderComponent', () => {
       eventEmitterServiceSpy.onStatusChangeFunction = of(true);
       window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
-        return JSON.stringify(patientMock);
+        return JSON.stringify(mockPatientDetail);
       });
       spyOn(component, 'prevNextFunction');
+      component.patientRows = patientMock as any;
       component.ngOnInit();
     });
     it('should call ngOnInit function', () => {
@@ -69,9 +83,11 @@ describe('XRayHeaderComponent', () => {
       };
       authServiceSpy.userSubject = of(mockInResponse);
       eventEmitterServiceSpy.onStatusChangeFunction = of(true);
+      window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(patientMock);
       });
+      component.patientRows = patientMock as any;
       component.patientID = '1011';
       spyOn(component, 'prevNextFunction');
       component.ngOnInit();
@@ -104,6 +120,8 @@ describe('XRayHeaderComponent', () => {
       });
       component.patientRows = patientMock as any;
       component.currentIndex = 0;
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.clear.and.returnValue(of(imageSpy));
       component.nextPatient();
       expect(component.nextPatient).toBeDefined();
     });
@@ -117,6 +135,8 @@ describe('XRayHeaderComponent', () => {
       });
       component.patientRows = patientMock as any;
       component.currentIndex = 1;
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.clear.and.returnValue(of(imageSpy));
       component.previousPatient();
       expect(component.previousPatient).toBeDefined();
     });

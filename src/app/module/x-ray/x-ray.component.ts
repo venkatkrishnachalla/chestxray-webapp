@@ -21,7 +21,7 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
   styleUrls: ['./x-ray.component.scss'],
 })
 // XRayComponent class implementation
-export class XRayComponent implements OnInit {
+export class XRayComponent implements OnInit, OnDestroy {
   eventsSubject: Subject<any> = new Subject<any>();
   showAskAI = false;
   acceptStatus = false;
@@ -335,11 +335,11 @@ export class XRayComponent implements OnInit {
   }
   /**
    * unsubscribe userSubscription event
-   * @param {void} empty - A empty param
+   * @param '{empty}' - A empty param
    * @example
    * ngOnDestroy();
    */
-  // ngOnDestroy() {
-  //   this.userSubscription.unsubscribe();
-  // }
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+  }
 }
