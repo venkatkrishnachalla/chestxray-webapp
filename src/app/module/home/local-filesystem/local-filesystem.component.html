@@ -116,6 +116,68 @@
             Date of birth is required.
           </div>
         </div>
+
+        <label for="">Referring Physician:</label>
+        <div class="radio-button">
+          <input
+            type="radio"
+            id="test4"
+            value="SELF"
+            formControlName="referringPhysician"
+            name="referringPhysician"
+            autocomplete="off"
+            (change)="refPhysicianChange('SELF')"
+          />
+          <label for="test4">Self</label>
+          <input
+            type="radio"
+            id="test5"
+            value="OTHERS"
+            formControlName="referringPhysician"
+            name="referringPhysician"
+            autocomplete="off"
+            (change)="refPhysicianChange('OTHERS')"
+          />
+          <label for="test5">Others</label>
+        </div>
+        <div
+          *ngIf="
+            uploadImageForm.controls['referringPhysician'].invalid &&
+            (uploadImageForm.controls['referringPhysician'].dirty ||
+              uploadImageForm.controls['referringPhysician'].touched)
+          "
+          class="alert-danger validation-messages"
+        >
+          <div
+            *ngIf="
+              uploadImageForm.controls['referringPhysician'].errors.required
+            "
+          >
+            Referring Physician is required.
+          </div>
+        </div>
+
+        <div *ngIf="isOtherPhysician">
+          <input
+            type="text"
+            placeholder="Enter referring physician name"
+            formControlName="referringPhysicianName"
+            name="referringPhysicianName"
+            autocomplete="off"
+          />
+        </div>
+        <div
+          *ngIf="
+            uploadImageForm.controls['referringPhysicianName'].invalid &&
+            (uploadImageForm.controls['referringPhysicianName'].dirty ||
+              uploadImageForm.controls['referringPhysicianName'].touched)
+          "
+          class="alert-danger validation-messages"
+        >
+          <div *ngIf="uploadImageForm.controls['referringPhysicianName'].errors.required && isOtherPhysician">
+            Referring physician name is required.
+          </div>
+        </div>
         <br />
 
         <h3>2.Contact Information</h3>
