@@ -22,6 +22,9 @@
   },
   "private": true,
   "dependencies": {
+    "@ag-grid-enterprise/column-tool-panel": "^24.1.0",
+    "@ag-grid-enterprise/menu": "^24.1.0",
+    "@ag-grid-enterprise/server-side-row-model": "^24.1.0",
     "@angular/animations": "~9.1.7",
     "@angular/cdk": "^9.2.4",
     "@angular/common": "~9.1.7",
