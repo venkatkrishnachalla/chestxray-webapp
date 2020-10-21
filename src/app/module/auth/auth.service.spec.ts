@@ -11,9 +11,15 @@ describe('AuthService', () => {
     'getRefreshToken',
   ]);
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const dbServiceSpy = jasmine.createSpyObj('NgxIndexedDBService', ['clear']);
 
   beforeEach(() => {
-    authService = new AuthService(mockHttpClient, endpointSpy, routerSpy);
+    authService = new AuthService(
+      mockHttpClient,
+      endpointSpy,
+      routerSpy,
+      dbServiceSpy
+    );
   });
   /*** it should create service ***/
   it('should create', () => {
@@ -59,6 +65,10 @@ describe('AuthService', () => {
 
   /*** it should call logOut function ***/
   describe('#logOut', () => {
+    beforeEach(() => {
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.clear.and.returnValue(of(imageSpy));
+    });
     it('should call logout function, when tokenExpirationTimer is exist', () => {
       (authService as any).tokenExpirationTimer = '3000';
       authService.logOut();

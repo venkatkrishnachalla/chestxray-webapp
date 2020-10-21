@@ -38,6 +38,9 @@ describe('XRayComponent', () => {
   const findingsSpy = jasmine.createSpyObj('FindingsComponent', [
     'getFindingsToReport',
   ]);
+  const dbServiceSpy = jasmine.createSpyObj('NgxIndexedDBService', [
+    'getByKey',
+  ]);
 
   beforeEach(() => {
     component = new XRayComponent(
@@ -47,7 +50,8 @@ describe('XRayComponent', () => {
       eventEmitterService,
       anotatedXrayService,
       authServiceSpy,
-      toastrServiceSpy
+      toastrServiceSpy,
+      dbServiceSpy
     );
   });
 
@@ -103,6 +107,8 @@ describe('XRayComponent', () => {
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify({ base64Image: 'test', filename: 'abcd' });
       });
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.getByKey.and.returnValue(of(imageSpy));
       XRayServiceSpy.getAskAiDetails.and.returnValue(of(mLResponseNew));
       const mockInResponse = {
         username: 'mohan',
@@ -149,6 +155,8 @@ describe('XRayComponent', () => {
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify({ base64Image: 'test', filename: 'abcd' });
       });
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.getByKey.and.returnValue(of(imageSpy));
       XRayServiceSpy.getAskAiDetails.and.returnValue(of(mLResponseAi));
       const mockInResponse = {
         username: 'mohan',
@@ -170,6 +178,8 @@ describe('XRayComponent', () => {
         return JSON.stringify({ base64Image: 'test', filename: 'abcd' });
       });
       const errorResponse = { status: 401 };
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.getByKey.and.returnValue(of(imageSpy));
       XRayServiceSpy.getAskAiDetails.and.returnValue(throwError(errorResponse));
       const mockInResponse = {
         username: 'mohan',

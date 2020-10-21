@@ -144,6 +144,74 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call measureTool function ***/
+  describe('#measureTool', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        add: () => {},
+        renderAll: () => {},
+        setActiveObject: () => {},
+        isDrawingMode: true,
+        forEachObject: () => {},
+        clear: () => {},
+        observe: () => {},
+        on: () => {}
+      };
+      const mockdata = {
+        active: true
+      };
+      component.measureTool(mockdata);
+    });
+    it('should call measureTool function', () => {
+       expect(component.measureTool).toBeDefined();
+    });
+  });
+
+  /*** it should call measureTool function, when active is false ***/
+  describe('#measureTool', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        add: () => {},
+        renderAll: () => {},
+        setActiveObject: () => {},
+        isDrawingMode: true,
+        forEachObject: () => {},
+        clear: () => {},
+        observe: () => {},
+        on: () => {}
+      };
+      const mockdata = {
+        active: false
+      };
+      component.measureTool(mockdata);
+    });
+    it('should call measureTool function, when active is false', () => {
+       expect(component.measureTool).toBeDefined();
+    });
+  });
+
+  /*** it should call calculateMeasurement function ***/
+  describe('#calculateMeasurement', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        add: () => {},
+        renderAll: () => {}
+      };
+      component.startx = ['234'];
+      component.startx = ['434'];
+      component.endx = ['334'];
+      component.endy = ['134'];
+      component.temp = 0;
+      component.calculateMeasurement();
+    });
+    it('should call calculateMeasurement function', () => {
+       expect(component.calculateMeasurement).toBeDefined();
+    });
+  });
+
   /*** it should call setCanvasDimension function ***/
   describe('#setCanvasDimension', () => {
     beforeEach(() => {
@@ -200,6 +268,8 @@ describe('CanvasImageComponent', () => {
       };
       const mock = JSON.stringify(PatientImageMock);
       xRayServiceSpy.getPatientImage.and.returnValue(of(mock));
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.add.and.returnValue(of(imageSpy));
       spyOn(document, 'getElementById').and.returnValue(controlCheckbox);
       spyOn(component, 'setCanvasDimension');
       spyOn(component, 'generateCanvas');
@@ -302,7 +372,6 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getPatientInstanceId function', () => {
       expect(component.getPatientInstanceId).toBeDefined();
-      // expect(component.getPatientImage).toHaveBeenCalled();
     });
   });
 
@@ -926,6 +995,9 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -969,6 +1041,9 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -1013,6 +1088,9 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -1072,6 +1150,9 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -1157,7 +1238,12 @@ describe('CanvasImageComponent', () => {
       component.canvas = {
         toDataURL: () => {},
         renderAll: () => {},
-        getObjects: () => {},
+        getObjects: () => [
+          {
+            type: 'circle',
+            setVisible: true,
+          },
+        ],
         getActiveObject: () => {},
         forEachObject: () => {},
       };
@@ -1178,6 +1264,27 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call removeMeasurementLines function ***/
+  describe('#removeMeasurementLines', () => {
+    beforeEach(() => {
+      component.canvas = {
+        add: () => {},
+        renderAll: () => {},
+        clear: () => {},
+        getObjects: () => [
+          {
+            type: 'circle',
+            setVisible: true,
+          },
+        ],
+      };
+      component.removeMeasurementLines();
+    });
+    it('should call removeMeasurementLines function', () => {
+      expect(component.removeMeasurementLines).toBeDefined();
+    });
+  });
+
   /*** it should call getColorMapping function ***/
   describe('#getColorMapping', () => {
     it('it should call getColorMapping', () => {
@@ -1193,6 +1300,9 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         clear: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -1299,7 +1409,6 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getSessionFreeHandDrawing function if freeHandDrawing is in session, with no valuee', () => {
       expect(component.getSessionFreeHandDrawing).toBeDefined();
-      expect(dialogSpy.closeAll).toHaveBeenCalled();
     });
   });
 
