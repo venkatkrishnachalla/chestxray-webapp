@@ -138,7 +138,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       const i = this.uniqueImpressions.findIndex((x) => x.name === item.name);
       if (i <= -1) {
         this.uniqueImpressions.push({
-          id: item.id,
+          id: item.idNew,
           name: item.name,
           colors: color,
           Source: item.Source,
@@ -162,22 +162,11 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * deleteImpression(id, disease, objectindex);
    */
   deleteImpression(id: number, disease: string, objectindex: any) {
-    let index;
-    if (objectindex === 'diffuse category') {
-      index = this.impression.findIndex((item) => item.name === disease);
-      if (index !== -1) {
+    let index = this.impression.findIndex((item) => item.idNew === id);
+    if (index !== -1) {
         this.impression.splice(index, 1);
       }
-      this.uniqueImpressionsData();
-    } else {
-      index = this.impression.findIndex((item) => item.idNew === id);
-      if (index === -1) {
-        index = this.impression.findIndex((item) => item.id === id);
-      }
-      if (index !== -1) {
-        this.impression.splice(index, 1);
-      }
-    }
+    this.uniqueImpressionsData();
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
     });
@@ -318,10 +307,6 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * deleteImpressions();
    */
   deleteImpressions(data, event, index) {
-    // if (objectindex === 'diffuse category') {
-    //   index = this.impression.findIndex((item) => item.name === disease);
-    //   this.impression.filter((item) => item.name === disease);
-    // }
     this.eventEmitterService.OnDeleteDiffuseImpression({
       obj: data,
       title: 'Delete Diffuse Impression',

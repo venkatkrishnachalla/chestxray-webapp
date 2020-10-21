@@ -185,7 +185,7 @@ export class XRayComponent implements OnInit, OnDestroy {
   }
   /**
    * report button click event
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * submitReport();
    */
@@ -195,6 +195,7 @@ export class XRayComponent implements OnInit, OnDestroy {
     let indexValue = 0;
     let indexValueDisease = 0;
     let mainSource = '';
+    // tslint:disable-next-line:no-string-literal
     const annotationData = this.canvas.savedInfo['data'].ndarray[0];
     annotationData.Impression.forEach((element) => {
       element.index = indexValue;
