@@ -310,6 +310,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         mlResponse.data.ndarray[0].diseases.forEach((element) => {
           element.isMlAi = true;
           element.source = 'ML';
+          element.contours = [];
           // tslint:disable-next-line: no-string-literal
           this.savedInfo['data'].ndarray[0].diseases.push(element);
         });
@@ -1115,7 +1116,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     let val1 = 0;
     mLArray.diseases.forEach((disease: any, index: any) => {
       if (disease.ellipses) {
-        if (disease.ellipses.length === 0 || disease.ellipses === []) {
+        if (disease.ellipses.length === 0 && disease.contours.length === 0) {
           const random = Math.floor(Math.random() * 100 + 1);
           const selectedObject = {
             title: 'impression',
@@ -1139,6 +1140,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           disease.isMlAi = true;
         }
         disease.ellipses.forEach((ellipse: any, index) => {
+          if (disease.name === null) {
+            disease.name = 'null';
+          }
           ellipse.color =
             DISEASE_COLOR_MAPPING[disease.name.toLowerCase()] || RANDOM_COLOR;
           ellipse.id = idValue + '' + val2;
@@ -1210,10 +1214,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.coordinateList = [];
 
         const coordinatePath = [];
-        disease.contours[0].coordinates.forEach((data) => {
-          coordinatePath.push(data[0]);
-          coordinatePath.push(data[1]);
-        });
+        if (disease.contours[0] !== undefined) {
+          disease.contours[0].coordinates.forEach((data) => {
+            coordinatePath.push(data[0]);
+            coordinatePath.push(data[1]);
+          });
+        }
+        else {
+          disease.coordinatevalues.forEach((data) => {
+            coordinatePath.push(data[0]);
+            coordinatePath.push(data[1]);
+          });
+        }
         for (let i = 0; i < coordinatePath.length; i++) {
           if (i % 2 === 0) {
             let xPosition: any = coordinatePath[i];
@@ -1241,62 +1253,64 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           })
         );
         this.coordinateList = [];
-      } else if (disease.contours.length !== 0) {
-        this.eventEmitterService.onComponentEllipseDataShared({
-          name: disease.name,
-          index: disease.idx,
-          source: 'DR',
-          isUpdated: false,
-        });
-        const random = Math.floor(Math.random() * 100 + 1);
-        const selectedObject = {
-          title: 'impression',
-          isMLApi: false,
-          idNew: check !== 'session' ? random : disease.idx,
-          name: disease.name,
-          color: disease.color,
-          source: 'DR',
-          isUpdated: false,
-        };
-        this.impressionArray.push(selectedObject);
-        this.eventEmitterService.onComponentDataShared(selectedObject);
-        this.coordinateList = [];
-        if (disease.contours[0] === undefined) {
-          console.log('diffuse category does not contain disease contours');
-        } else {
-          const coordinatePath = [];
-          disease.contours[0].coordinates.forEach((data) => {
-            coordinatePath.push(data[0]);
-            coordinatePath.push(data[1]);
+      } else if (disease.contours) {
+        if (disease.contours.length !== 0) {
+          this.eventEmitterService.onComponentEllipseDataShared({
+            name: disease.name,
+            index: disease.idx,
+            source: 'DR',
+            isUpdated: false,
           });
-          for (let i = 0; i < coordinatePath.length; i++) {
-            if (i % 2 === 0) {
-              let xPosition: any = coordinatePath[i];
-              xPosition = xPosition / this.canvasScaleX;
-              this.coordinateList.push(xPosition);
-            } else {
-              let yPosition: any = coordinatePath[i];
-              yPosition = yPosition / this.canvasScaleY;
-              this.coordinateList.push(yPosition);
-            }
-          }
-          const appendCharacter = 'M' + ' ';
-          this.coordinateList.unshift(appendCharacter);
-          this.canvas.add(
-            new fabric.Path(this.coordinateList.join(' '), {
-              stroke: disease.color,
-              strokeWidth: 2,
-              fill: '',
-              originX: 'center',
-              originY: 'center',
-              opacity: 0.8,
-              id: disease.idx,
-            })
-          );
+          const random = Math.floor(Math.random() * 100 + 1);
+          const selectedObject = {
+            title: 'impression',
+            isMLApi: false,
+            idNew: check !== 'session' ? random : disease.idx,
+            name: disease.name,
+            color: disease.color,
+            source: 'DR',
+            isUpdated: false,
+          };
+          this.impressionArray.push(selectedObject);
+          this.eventEmitterService.onComponentDataShared(selectedObject);
           this.coordinateList = [];
-          this.canvas.renderAll();
+          if (disease.contours[0] === undefined || disease.contours.length === 0) {
+            console.log('diffuse category does not contain disease contours');
+          } else {
+            const coordinatePath = [];
+            disease.contours[0].coordinates.forEach((data) => {
+              coordinatePath.push(data[0]);
+              coordinatePath.push(data[1]);
+            });
+            for (let i = 0; i < coordinatePath.length; i++) {
+              if (i % 2 === 0) {
+                let xPosition: any = coordinatePath[i];
+                xPosition = xPosition / this.canvasScaleX;
+                this.coordinateList.push(xPosition);
+              } else {
+                let yPosition: any = coordinatePath[i];
+                yPosition = yPosition / this.canvasScaleY;
+                this.coordinateList.push(yPosition);
+              }
+            }
+            const appendCharacter = 'M' + ' ';
+            this.coordinateList.unshift(appendCharacter);
+            this.canvas.add(
+              new fabric.Path(this.coordinateList.join(' '), {
+                stroke: disease.color,
+                strokeWidth: 2,
+                fill: '',
+                originX: 'center',
+                originY: 'center',
+                opacity: 0.8,
+                id: disease.idx,
+              })
+            );
+            this.coordinateList = [];
+            this.canvas.renderAll();
+          }
+          this.dialog.closeAll();
         }
-        this.dialog.closeAll();
       }
     });
   }
@@ -1632,7 +1646,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const selectedObject = {
       idNew: random,
       name: this.selectedDisease,
-      source: 'DR',
+      source: 'DRselectedDisease',
       diseaseType: this.diseaseType,
     };
     this.savedObjects.push(selectedObjectPrediction);
@@ -1671,59 +1685,66 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   deletePrediction() {
     sessionStorage.removeItem('x-ray_Data');
-    // tslint:disable-next-line: no-string-literal
-    this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
-      if (
-        this.canvas.getActiveObject() === null ||
-        this.canvas.getActiveObject() === undefined
-      ) {
-        // tslint:disable-next-line:no-string-literal
-        this.savedInfo['data'].ndarray[0].Impression.splice(
-          this.diffuseObject.obj.name,
+    if (
+      this.canvas.getActiveObject() === null ||
+      this.canvas.getActiveObject() === undefined
+    ) {
+      // tslint:disable-next-line:no-string-literal
+      this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
+        const compare = this.diffuseObject.obj.name;
+        if (element.sentence === compare) {
+          // tslint:disable-next-line:no-string-literal
+          this.savedInfo['data'].ndarray[0].Impression.splice(
+          index,
           1
         );
-        // tslint:disable-next-line:no-string-literal
-        this.savedInfo['data'].ndarray[0].diseases.splice(
-          this.diffuseObject.obj.name,
-          1
-        );
-        sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
-        const selectedObject = {
-          id: '',
-          check: 'delete',
-          disease: this.diffuseObject.obj.name,
-          objectindex: 'diffuse category',
-          isMLAi: '',
-        };
-        this.eventEmitterService.onComponentButtonClick(selectedObject);
-      } else {
+          // tslint:disable-next-line:no-string-literal
+          this.savedInfo['data'].ndarray[0].diseases.splice(
+            index,
+            1
+          );
+        }
+      });
+      sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
+      const selectedObject = {
+        id: this.diffuseObject.obj.id,
+        check: 'delete',
+        disease: this.diffuseObject.obj.name,
+        // objectindex: 'diffuse category',
+        objectindex: this.diffuseObject.obj.id,
+        isMLAi: '',
+      };
+      this.eventEmitterService.onComponentButtonClick(selectedObject);
+    }
+    else {
+      this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
         const compare = this.canvas.getActiveObject().index
-          ? this.canvas.getActiveObject().index
-          : this.canvas.getActiveObject().id;
+        ? this.canvas.getActiveObject().index
+        : this.canvas.getActiveObject().id;
         if (element.disease === compare) {
           // tslint:disable-next-line: no-string-literal
-          this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
-          // tslint:disable-next-line: no-string-literal
-          this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
-        } else if (element.sentence === this.canvas.getActiveObject().disease) {
-          // tslint:disable-next-line: no-string-literal
-          this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
-          // tslint:disable-next-line: no-string-literal
-          this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
-        }
+        this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
+        // tslint:disable-next-line: no-string-literal
+        this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
+      } else if (element.sentence === this.canvas.getActiveObject().disease) {
+        // tslint:disable-next-line: no-string-literal
+        this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
+        // tslint:disable-next-line: no-string-literal
+        this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
       }
-    });
-    sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
-    const selectedObject = {
-      id: this.canvas.getActiveObject().idNew
-        ? this.canvas.getActiveObject().idNew
-        : this.canvas.getActiveObject().id,
-      check: 'delete',
-      disease: this.canvas.getActiveObject().disease,
-      objectindex: this.canvas.getActiveObject().index,
-      isMLAi: this.canvas.getActiveObject().isMLAi,
-    };
-    this.eventEmitterService.onComponentButtonClick(selectedObject);
+        sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
+        const selectedObject = {
+        id: this.canvas.getActiveObject().idNew
+          ? this.canvas.getActiveObject().idNew
+          : this.canvas.getActiveObject().id,
+        check: 'delete',
+        disease: this.canvas.getActiveObject().disease,
+        objectindex: this.canvas.getActiveObject().index,
+        isMLAi: this.canvas.getActiveObject().isMLAi,
+      };
+        this.eventEmitterService.onComponentButtonClick(selectedObject);
+      });
+    }
     this.dialog.closeAll();
     if (this.canvas.getActiveObject()) {
       if (this.canvas.getActiveObject().type === 'ellipse') {
