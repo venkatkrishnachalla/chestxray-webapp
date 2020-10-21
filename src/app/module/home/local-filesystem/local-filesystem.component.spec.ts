@@ -12,16 +12,21 @@ describe('LocalFilesystemComponent', () => {
     'markAsDirty',
     'markAsPristine',
     'value',
-    'invalid'
+    'invalid',
   ]);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
+  const dbServiceSpy = jasmine.createSpyObj('NgxIndexedDBService', [
+    'add',
+    'clear',
+  ]);
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(() => {
     component = new LocalFilesystemComponent(
       FormBuilderSpy,
       routerSpy,
-      authServiceSpy
+      authServiceSpy,
+      dbServiceSpy
     );
   });
 
@@ -37,6 +42,8 @@ describe('LocalFilesystemComponent', () => {
         username: 'mohan',
         userroles: ['hospitalradiologist'],
       };
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.clear.and.returnValue(of(imageSpy));
       authServiceSpy.userSubject = of(mockInResponse);
       component.uploadImageForm = formGroupSpy;
       component.ngOnInit();
@@ -137,6 +144,10 @@ describe('LocalFilesystemComponent', () => {
 
   /*** it should call onSubmit method ***/
   describe('#onSubmit', () => {
+    beforeEach(() => {
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.add.and.returnValue(of(imageSpy));
+    });
     it('should call onSubmit function', () => {
       component.uploadImageForm = formGroupSpy;
       component.onSubmit();

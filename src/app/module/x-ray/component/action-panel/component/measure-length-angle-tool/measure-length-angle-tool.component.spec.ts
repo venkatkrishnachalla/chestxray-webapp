@@ -2,9 +2,12 @@ import { MeasureLengthAngleToolComponent } from './measure-length-angle-tool.com
 
 describe('MeasureLengthAngleToolComponent', () => {
   let component: MeasureLengthAngleToolComponent;
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'onComponentButtonClick',
+  ]);
 
   beforeEach(() => {
-    component = new MeasureLengthAngleToolComponent();
+    component = new MeasureLengthAngleToolComponent(eventEmitterServiceSpy);
   });
 
   /*** it should create measure length angle component ***/
@@ -23,19 +26,22 @@ describe('MeasureLengthAngleToolComponent', () => {
     });
   });
 
-  /*** it should call iconAction click event ***/
+  /*** it should call iconAction function ***/
   describe('#iconAction', () => {
     beforeEach(() => {
-      const mockdata = [
+      const data = [
         {
-          name: 'Ellipse',
-          index: 1,
+          active: false,
+          alt: 'Ellipse',
+          image: '../../../../assets/images/ellipse@3x.png',
+          implemented: true,
+          title: 'Measure Length',
         },
       ];
-      component.iconAction(mockdata, '1');
+      component.iconAction(data, 0);
     });
     it('should call iconAction function', () => {
-      expect(component.ngOnInit).toBeDefined();
+      expect(component.iconAction).toBeDefined();
     });
   });
 
