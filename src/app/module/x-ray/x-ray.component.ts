@@ -212,9 +212,11 @@ export class XRayComponent implements OnInit, OnDestroy {
       delete element.index;
       if (element.freeHandDrawing) {
         const coordinatesArray = [];
-        element.coordinatevalues.forEach((data) => {
-          coordinatesArray.push([data.x, data.y]);
-        });
+        if (element.coordinatevalues) {
+          element.coordinatevalues.forEach((data) => {
+            coordinatesArray.push([data.x, data.y]);
+          });
+        }
         element.type = 'freeHandDrawing';
         element.contours = [
           {
