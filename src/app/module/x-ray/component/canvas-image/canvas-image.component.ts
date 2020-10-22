@@ -157,6 +157,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   temp = 0;
   lineLengthInMilliMeter: any;
   showMeasurement: boolean;
+  obj: any;
+  rangeX: any;
 
   /*
    * constructor for CanvasImageComponent class
@@ -2016,6 +2018,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    *  freeHandDrawing(data) ;
    */
   freeHandDrawing(data) {
+    let drawing = true;
+    this.enableFreeHandDrawing = true;
     this.changeSelectableStatus(false);
     this.activeIcon = data;
     if (data.active) {
@@ -2039,12 +2043,28 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.canvas.isDrawingMode = true;
           }
         }
+        if (e.absolutePointer.x < 2 && e.absolutePointer.x > 0) {
+          this.rangeX = e.absolutePointer.x;
+        }
+        else if (e.absolutePointer.x > (this.canvasCorrectedWidth - 2) && e.absolutePointer.x > this.canvasCorrectedWidth) {
+          this.rangeX = e.absolutePointer.x;
+        }
       });
       this.canvas.observe('mouse:out', (e) => {
+        this.obj = e;
         this.canvas.isDrawingMode = false;
       });
       this.canvas.observe('mouse:in', (e) => {
-        this.canvas.isDrawingMode = true;
+        if (drawing) {
+          this.canvas.isDrawingMode = true;
+        }
+      });
+      this.canvas.observe('mouse:up', (e) => {
+        this.canvas.isDrawingMode = false;
+        drawing = false;
+        if (e.absolutePointer.x < 0) {
+          e = this.obj;
+        }
       });
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
@@ -2057,7 +2077,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.isDrawingMode = false;
     }
   }
-
   /**
    * function to open pathology modal
    * @param '{void}' empty - A empty param
