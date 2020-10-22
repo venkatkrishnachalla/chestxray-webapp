@@ -20,6 +20,7 @@ export class EventEmitterService {
   invokeAskAiButtonDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
+  onStatusChangeSubject = new BehaviorSubject(false);
   invokeImpressionFunction = new EventEmitter();
   onStatusChangeFunction = new EventEmitter();
   brightnessValue = new EventEmitter();
