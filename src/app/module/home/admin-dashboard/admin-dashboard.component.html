@@ -1,13 +1,14 @@
-<div class="loaderContainer">
+<!-- <div class="loaderContainer">
   <span class="loader" *ngIf="showloader"></span>
-</div>
+</div> -->
+<ngx-spinner bdColor = "rgba(162,154,154,0.9)" size = "large" color = "#fff" type = "ball-8bits" [fullScreen] = "false"><p style="color: white" > Loading... </p></ngx-spinner>
 
 <div class="search-input">
   <mat-icon matPrefix>search</mat-icon>
   <input type="text" (keyup)="applyFilter($event)" autocomplete="off" placeholder="Search here..." #input>
 </div>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8" >
   <table mat-table [dataSource]="dataSource" matSort>
 
     <!-- Position Column -->

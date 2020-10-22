@@ -7,6 +7,11 @@ export const sideNavConstants = {
     },
     {
       icons: 'person',
+      label: 'HospitalRadiologist',
+      routerLink: '/home/hospital-radiologist',
+    },
+    {
+      icons: 'person',
       label: 'My Account',
       routerLink: '/home/my-account',
     },

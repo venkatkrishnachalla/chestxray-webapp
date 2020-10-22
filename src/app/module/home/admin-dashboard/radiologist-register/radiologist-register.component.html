@@ -1,6 +1,6 @@
 <div class="add-radiologist-container">
   <h1 mat-dialog-title>Radiologist Registration <span [mat-dialog-close]="true" class="close">&times;</span></h1>
-  <div mat-dialog-content>
+  <div mat-dialog-content >
     <form [formGroup]="addRadiologistForm" (ngSubmit)="addRadiologists()">
     
       <div class="container">
@@ -30,7 +30,7 @@
       </div>
 
       <div mat-dialog-actions>
-        <button type="submit" mat-raised-button>Submit</button>
+        <button type="submit" mat-raised-button [disabled]="!addRadiologistForm.valid"  [mat-dialog-close]="true">Submit</button>
       </div>
     </form>
   </div>

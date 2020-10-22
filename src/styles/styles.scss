@@ -10,6 +10,8 @@
 @import '../../node_modules/ag-grid-community/src/styles/ag-grid.scss';
 @import '../../node_modules/ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin.scss';
 @import '../../node_modules/ngx-toastr/toastr.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 .ag-theme-material {
   @include ag-theme-material();
 }

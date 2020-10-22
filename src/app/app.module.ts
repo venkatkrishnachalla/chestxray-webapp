@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, EventEmitter } from '@angular/core';
+import { NgModule, EventEmitter,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,6 +20,12 @@ import { ReportModule } from './module/report/report.module';
 import { NgxPrintModule } from 'ngx-print';
 import { ToastrModule } from 'ngx-toastr';
 import { FormatTimePipe } from './filters/format-time.pipe';
+import { NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown'
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 @NgModule({
   declarations: [AppComponent, FormatTimePipe],
   imports: [
@@ -28,6 +34,9 @@ import { FormatTimePipe } from './filters/format-time.pipe';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
     CoreModule,
     HomeModule,
     AuthModule, // Load AuthModule with the app,
@@ -38,6 +47,7 @@ import { FormatTimePipe } from './filters/format-time.pipe';
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
+    NgxSpinnerModule,
     NgxPrintModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
@@ -46,7 +56,11 @@ import { FormatTimePipe } from './filters/format-time.pipe';
       autoDismiss: true,
       preventDuplicates: true,
     }),
+    NgMultiSelectDropDownModule.forRoot(),
+    NgSelectModule
+
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     EventEmitterService,
     EventEmitterService2,

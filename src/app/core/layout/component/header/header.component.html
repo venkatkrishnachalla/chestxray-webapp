@@ -30,7 +30,7 @@
 
   <button
     class="add-patient"
-    *ngIf="router.url == '/home/dashboard'"
+    *ngIf="router.url == '/home/dashboard' || router.url == '/home/hospital-radiologist'"
     [ngClass]="{
       'icon-styles': userroles == 'Admin',
       'disabled-add-patient': userroles != 'Admin'

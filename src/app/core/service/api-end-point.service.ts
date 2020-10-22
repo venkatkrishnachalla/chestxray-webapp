@@ -95,6 +95,18 @@ export class ApiEndPointService {
     // }
     return environment.patientList;
   }
+  public getRadiologistList(): string {
+    return environment.hospitalRadiologistList;
+  }
+  public putAssign(): string {
+    return environment.XRayIdentifiers;
+  }
+  // public unassignedPatientList(){
+  //   // return environment.unassignedPatientList;
+  // }
+  public postPatientsAssign(): string{
+    return environment.hospitalRadiologistList;
+  }
 
     /**  
 * This is a getPatientInstanceId function.  

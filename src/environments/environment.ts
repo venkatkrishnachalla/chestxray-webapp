@@ -15,6 +15,7 @@ export const environment = {
   RefreshToken: window['refreshToken'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/RefreshToken',
   // tslint:disable-next-line: no-string-literal
   patientList: window['patientList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/Patient/',
+  // unassignedPatientList: window['patientList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/Patient/',
   // tslint:disable-next-line: no-string-literal
   patientInstanceId: window['patientInstanceId'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api/v1/Patient/',
   // tslint:disable-next-line: no-string-literal
@@ -24,7 +25,9 @@ export const environment = {
   // tslint:disable-next-line: no-string-literal
   submitReport: window['submit'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/Annotation',
   // tslint:disable-next-line: no-string-literal
-  addRadiologist: window['addRadiologist'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Register'
+  addRadiologist: window['addRadiologist'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Register',
+  hospitalRadiologistList: window['radiologistList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Users?roletype=HospitalRadiologist',
+  XRayIdentifiers: window['assignPatients'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/XRayIdentifiers',
 };
 
 /*
