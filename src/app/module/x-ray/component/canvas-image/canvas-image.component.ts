@@ -1415,6 +1415,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             const ellipse = new fabric.Ellipse({
               width: 0,
               height: 0,
+              rx: 1,
+              ry: 1,
               left: pointer.x,
               top: pointer.y,
               strokeWidth: 2,
