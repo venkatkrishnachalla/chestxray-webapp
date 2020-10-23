@@ -6,7 +6,7 @@ export const sideNavConstants = {
       routerLink: '/home/dashboard',
     },
     {
-      icons: 'radiologist',
+      icons: 'group',
       label: 'Radiologist',
       routerLink: '/home/radiologist',
     },

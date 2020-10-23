@@ -67,7 +67,7 @@
 
     <mat-option *ngFor = "let language of element.unAssigned" [value]="language" >{{language.name}}</mat-option>
     <!-- <button mat-raised-button type="submit" class="hai" color="primary" (click)="works(i)"  >Submit</button> -->
-    <button color="primary" mat-flat-button  class="hai" (click)="works(i)">Submit</button>
+    <button color="primary" mat-flat-button  class="dropdown-button" (click)="works(i)">Submit</button>
 
   </mat-select>
 </mat-form-field>

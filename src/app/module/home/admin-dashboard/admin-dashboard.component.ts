@@ -21,7 +21,7 @@ import { EventEmitterService } from 'src/app/service/event-emitter.service';
 export class AdminDashboardComponent implements OnInit {
   private userSubscription: Subscription;
   patientList: any = [];
-  displayedColumns: string[] = ['hospitalPatientId', 'name', 'birthDate', 'sex', 'age'];
+  displayedColumns: string[] = ['hospitalPatientId', 'name','radiologist', 'birthDate', 'sex', 'age'];
   dataSource;
   showError: boolean;
   showloader: boolean;
@@ -30,6 +30,7 @@ export class AdminDashboardComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(RadiologistRegisterComponent) radiologist: RadiologistRegisterComponent;
+  xray: any[];
 
   constructor(
     private authService: AuthService,
@@ -37,7 +38,9 @@ export class AdminDashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private eventEmitterService: EventEmitterService,
     // private spinner: NgxSpinnerService
-    ) {}
+    ) {
+      this.authService.addRadiologist.next(false);
+    }
 
   ngOnInit(): void {
     // this.spinner.show();
@@ -79,6 +82,9 @@ export class AdminDashboardComponent implements OnInit {
      
       // tslint:disable-next-line: no-string-literal
       this.patientList = data['data'];
+      // this.patientList.forEach(element => {
+      //   this.xray = element.xRayList;
+      // });
       this.dataSource = new MatTableDataSource(this.patientList);
       console.log(this.dataSource);
       // this.spinner.hide();

@@ -13,13 +13,11 @@ table {
   tr:hover {
     background-color: #f7f7f7;
   }
-  .hai{
-    // color:yellow;
-    bottom: 0px;
-    z-index: 0px;
-    position:sticky;
-    text-align: center;
-  }
+.dropdown-button{
+  left: 65%;
+ bottom: 5px;
+ position: sticky;
+}
   th {
     font-weight: 800;
     font-size: 14px;

@@ -28,7 +28,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * constructor for HeaderComponent class
    */
 
-  constructor(private authService: AuthService, public router: Router) {}
+  constructor(private authService: AuthService, public router: Router) {
+  }
 
   /**
    * This is a class init function.
