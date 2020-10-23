@@ -27,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -45,13 +46,6 @@ import { MatTableModule } from '@angular/material/table';
     HospitalRadiologistComponent,
   ],
   imports: [
-    // MaterialModule,
-    // SharedModule,
-    // FormsModule,
-    // ReactiveFormsModule,
-    // CommonModule,
-    // CoreModule,
-    // AgGridModule.withComponents([]),
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
@@ -59,8 +53,6 @@ import { MatTableModule } from '@angular/material/table';
     CoreModule,
     SharedModule,
     AgGridModule.withComponents([]),
-    // NgMultiSelectDropDownModule.forRoot(),
-    // NgSelectModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -70,7 +62,8 @@ import { MatTableModule } from '@angular/material/table';
     ReactiveFormsModule,
     MatIconModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule
   ],
 })
 // HomeModule class implementation
