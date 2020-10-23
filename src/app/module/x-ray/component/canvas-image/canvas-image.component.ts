@@ -750,7 +750,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const objCenterX = this.canvas.getActiveObject().getCenterPoint().x;
     const objCenterY = this.canvas.getActiveObject().oCoords.tr.y;
 
-    if (
+    if ((obj.getBoundingRect().top < 100 || obj.getBoundingRect().left < 100) && obj.getBoundingRect().height > 150) {
+      this.left = objCenterX + 275;
+      this.top = objCenterY + 325;
+    } else if (
       this.canvas.getActiveObject().top < 140 &&
       this.canvas.getActiveObject().left < 450 &&
       obj.angle > 240
@@ -1219,8 +1222,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             coordinatePath.push(data[0]);
             coordinatePath.push(data[1]);
           });
-        }
-        else {
+        } else {
           disease.coordinatevalues.forEach((data) => {
             coordinatePath.push(data[0]);
             coordinatePath.push(data[1]);
@@ -1274,7 +1276,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           this.impressionArray.push(selectedObject);
           this.eventEmitterService.onComponentDataShared(selectedObject);
           this.coordinateList = [];
-          if (disease.contours[0] === undefined || disease.contours.length === 0) {
+          if (
+            disease.contours[0] === undefined ||
+            disease.contours.length === 0
+          ) {
             console.log('diffuse category does not contain disease contours');
           } else {
             const coordinatePath = [];
@@ -1694,15 +1699,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const compare = this.diffuseObject.obj.name;
         if (element.sentence === compare) {
           // tslint:disable-next-line:no-string-literal
-          this.savedInfo['data'].ndarray[0].Impression.splice(
-          index,
-          1
-        );
+          this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
           // tslint:disable-next-line:no-string-literal
-          this.savedInfo['data'].ndarray[0].diseases.splice(
-            index,
-            1
-          );
+          this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
         }
       });
       sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
@@ -1715,33 +1714,32 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         isMLAi: '',
       };
       this.eventEmitterService.onComponentButtonClick(selectedObject);
-    }
-    else {
+    } else {
       this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
         const compare = this.canvas.getActiveObject().index
-        ? this.canvas.getActiveObject().index
-        : this.canvas.getActiveObject().id;
+          ? this.canvas.getActiveObject().index
+          : this.canvas.getActiveObject().id;
         if (element.disease === compare) {
           // tslint:disable-next-line: no-string-literal
-        this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
-        // tslint:disable-next-line: no-string-literal
-        this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
-      } else if (element.sentence === this.canvas.getActiveObject().disease) {
-        // tslint:disable-next-line: no-string-literal
-        this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
-        // tslint:disable-next-line: no-string-literal
-        this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
-      }
+          this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
+          // tslint:disable-next-line: no-string-literal
+          this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
+        } else if (element.sentence === this.canvas.getActiveObject().disease) {
+          // tslint:disable-next-line: no-string-literal
+          this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
+          // tslint:disable-next-line: no-string-literal
+          this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
+        }
         sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
         const selectedObject = {
-        id: this.canvas.getActiveObject().idNew
-          ? this.canvas.getActiveObject().idNew
-          : this.canvas.getActiveObject().id,
-        check: 'delete',
-        disease: this.canvas.getActiveObject().disease,
-        objectindex: this.canvas.getActiveObject().index,
-        isMLAi: this.canvas.getActiveObject().isMLAi,
-      };
+          id: this.canvas.getActiveObject().idNew
+            ? this.canvas.getActiveObject().idNew
+            : this.canvas.getActiveObject().id,
+          check: 'delete',
+          disease: this.canvas.getActiveObject().disease,
+          objectindex: this.canvas.getActiveObject().index,
+          isMLAi: this.canvas.getActiveObject().isMLAi,
+        };
         this.eventEmitterService.onComponentButtonClick(selectedObject);
       });
     }
