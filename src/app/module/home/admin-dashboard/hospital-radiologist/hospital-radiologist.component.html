@@ -1,0 +1,99 @@
+<!-- <ngx-spinner bdColor = "rgba(162,154,154,0.9)" size = "large" color = "#fff" type = "ball-8bits" [fullScreen] = "false"><p style="color: white" > Loading... </p></ngx-spinner> -->
+<div id="at-id-patientTable">
+<div class="search-input">
+  <mat-icon matPrefix>search</mat-icon>
+  <input type="text" (keyup)="applyFilter($event)" autocomplete="off" placeholder="Search here..." #input>
+</div>
+  
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+  
+ 
+      <ng-container matColumnDef="userName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Radiologist Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+      </ng-container>
+      
+      <!-- Name Column -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+        <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> E-mail </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+      <ng-container matColumnDef="patients">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>patients </th>
+        <td mat-cell *matCellDef="let element">
+          <div class = "worksa"*ngFor = "let patients of element.patient">
+              {{patients.name}}
+          </div>  </td>
+      </ng-container>
+        <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>AssignNew/updatePatients</th>
+                <td mat-cell *matCellDef="let element; let i of index" >
+                    <!-- <ng-select 
+                    [items]="categories"
+                    bindLabel="name"
+                    formControlName="patientsAssign"
+                    placeholder="Select Category"
+                    appendTo="body"
+                    multiple="true"
+                    (selectionChange)="getSelectedOptions($event)"
+                    [(ngModel)]="selected"
+                    >
+     </ng-select> -->
+                <!-- <ng-select [items]="items"
+                bindLabel="name"
+                formControlName="city"
+                placeholder="Assigned Patients"
+                appendTo="body"
+                multiple="true"
+                (onSelectAll)="onSelectAll($event)"
+  (onDeSelect)="onItemDeSelect($event)"
+                [(ngModel)]="selected">
+     </ng-select> -->
+     <!-- <mat-checkbox [(ngModel)]="selectall" (ngModelChange)="selectalllang()" >All</mat-checkbox> 
+<mat-form-field>
+  <mat-select placeholder="Languages" [formControl]="languages" multiple>
+    <mat-option *ngFor="let language of languagesList" [value]="language">{{language}}</mat-option>
+  </mat-select> 
+</mat-form-field> -->
+<mat-form-field>
+    <!-- [(ngModel)]= 'element.xRayList' [formControl]="languages"  -->
+  <mat-select placeholder="Patients"[(ngModel)] ="element.xRayList"  multiple >
+    <!-- <mat-checkbox [(ngModel)]="element.isselectall" (ngModelChange)="selectalllang(i)" >All</mat-checkbox>  -->
+
+    <mat-option *ngFor = "let language of element.unAssigned" [value]="language" >{{language.name}}</mat-option>
+    <!-- <button mat-raised-button type="submit" class="hai" color="primary" (click)="works(i)"  >Submit</button> -->
+    <button color="primary" mat-flat-button  class="hai" (click)="works(i)">Submit</button>
+
+  </mat-select>
+</mat-form-field>
+<!-- <mat-checkbox [(ngModel)]="selectall" (ngModelChange)="selectalllang()" >All</mat-checkbox> 
+<mat-form-field>
+  <mat-select placeholder="Languages" [formControl]="languages" multiple>
+    <mat-option *ngFor="let language of categories" [value]="language">{{language.name}}</mat-option>
+  </mat-select>
+</mat-form-field> -->
+              </td>
+              </ng-container>
+              <!-- <ng-container matColumnDef="save">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> save </th>
+                  <td mat-cell *matCellDef="let element let i of index">  
+                      <button mat-raised-button type="submit" class="hai" color="primary" (ngSubmit) = "works(i)">Submit</button>
+
+                  </td>
+                </ng-container> -->
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+  <ng-container>
+    <cxr-error-message></cxr-error-message>
+  </ng-container>

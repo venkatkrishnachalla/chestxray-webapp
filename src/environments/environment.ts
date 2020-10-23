@@ -23,6 +23,9 @@ export const environment = {
   askAI: window['askAI'] || 'http://52.167.73.54:80/seldon/seldon/cxr-classifier/api/v1.0/predictions',
   // tslint:disable-next-line: no-string-literal
   submitReport: window['submit'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/Annotation',
+  addRadiologist: window['addRadiologist'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Register',
+  hospitalRadiologistList: window['radiologistList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Users?roletype=HospitalRadiologist',
+  XRayIdentifiers: window['assignPatients'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/XRayIdentifiers',
 };
 
 /*

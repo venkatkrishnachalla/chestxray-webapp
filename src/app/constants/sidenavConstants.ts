@@ -6,6 +6,11 @@ export const sideNavConstants = {
       routerLink: '/home/dashboard',
     },
     {
+      icons: 'radiologist',
+      label: 'Radiologist',
+      routerLink: '/home/radiologist',
+    },
+    {
       icons: 'person',
       label: 'My Account',
       routerLink: '/home/my-account',

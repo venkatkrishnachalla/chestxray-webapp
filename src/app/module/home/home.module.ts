@@ -15,6 +15,18 @@ import { LocalFilesystemComponent } from './local-filesystem/local-filesystem.co
 import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.component';
 import { CoreModule } from 'src/app/core/core.module';
 import { PatientInfoComponent } from './patient-info/patient-info.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { RadiologistRegisterComponent } from './admin-dashboard/radiologist-register/radiologist-register.component';
+import { HospitalRadiologistComponent } from './admin-dashboard/hospital-radiologist/hospital-radiologist.component';
+import { SharedModule } from '../shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -28,14 +40,37 @@ import { PatientInfoComponent } from './patient-info/patient-info.component';
     LocalFilesystemComponent,
     DragDropComponent,
     PatientInfoComponent,
+    AdminDashboardComponent,
+    RadiologistRegisterComponent,
+    HospitalRadiologistComponent,
   ],
   imports: [
+    // MaterialModule,
+    // SharedModule,
+    // FormsModule,
+    // ReactiveFormsModule,
+    // CommonModule,
+    // CoreModule,
+    // AgGridModule.withComponents([]),
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
     CoreModule,
+    SharedModule,
     AgGridModule.withComponents([]),
+    // NgMultiSelectDropDownModule.forRoot(),
+    // NgSelectModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
 })
 // HomeModule class implementation
