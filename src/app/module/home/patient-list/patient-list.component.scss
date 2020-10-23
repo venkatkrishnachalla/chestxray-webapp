@@ -23,9 +23,9 @@
 }
 @media only screen and (max-width: 1164px) {
   ag-grid-angular {
-    ::ng-deep .ag-header {
-      margin-top: 80px !important;
-    }
+    // ::ng-deep .ag-header {
+    //   margin-top: 80px !important;
+    // }
     ::ng-deep .ag-paging-panel {
       padding-top: 60px !important;
       padding-bottom: 30px !important;
