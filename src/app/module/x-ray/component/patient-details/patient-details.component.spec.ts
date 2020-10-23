@@ -20,6 +20,15 @@ describe('PatientDetailsComponent', () => {
     sex: 'F',
     status: false,
     studies: ['9cb6a32f-93a4cee8-ee9f0ef3-3cc29b03-f6a0bfe8'],
+    isAnnotated: true,
+    xRayList: [
+      {
+        xRayId: 68,
+        lastUpdate: '2020-10-16T12:39:06.222349',
+        isAnnotated: true,
+        assignedTo: 'mohan',
+      },
+    ],
   };
 
   beforeEach(() => {
@@ -40,6 +49,17 @@ describe('PatientDetailsComponent', () => {
       component.ngOnInit();
     });
     it('should call ngOnInit function', () => {
+      expect(component.PatientName).toEqual('Pallavi');
+    });
+  });
+
+  /*** it should call ngOnInit function */
+  describe('#getPatientDetails', () => {
+    beforeEach(() => {
+      window.history.pushState({ patientDetails: mockPatientDetail }, '', '');
+      component.getPatientDetails();
+    });
+    it('should call getPatientDetails function', () => {
       expect(component.PatientName).toEqual('Pallavi');
     });
   });

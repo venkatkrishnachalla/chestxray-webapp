@@ -76,12 +76,11 @@
 }
 
 .deleteButton {
-  border: none !important;
-  border-radius: 5px !important;
-  width: auto !important;
-  background: lightgray !important;
-  height: auto !important;
-  margin-right: unset !important;
-  padding: 2px !important;
+  margin-right: -2px !important;
+  padding-left: 0px !important;
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 0;
+  cursor: pointer;
 }
 

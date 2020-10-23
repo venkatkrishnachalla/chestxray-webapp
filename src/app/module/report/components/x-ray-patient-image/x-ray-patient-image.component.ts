@@ -145,6 +145,9 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
    */
   printClick() {
     this.printEvent.emit(true);
+    if (!this.isHospitalRadiologist) {
+      this.eventEmitterService.onStatusChangeSubject.next(true);
+    }
   }
 
   /**
