@@ -76,6 +76,11 @@ export class ReportComponent implements OnInit {
       this.pdfFindings = data;
       this.changeDetector.markForCheck();
     });
+    this.eventEmitterService.onStatusChangeSubject.subscribe(
+      (data: boolean) => {
+        this.status = data === true ? 'Completed' : 'Not Started';
+      }
+    );
   }
 
   /**
@@ -105,10 +110,10 @@ export class ReportComponent implements OnInit {
       const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientInfo = patientInfo;
     }
-    if (this.patientInfo.status === false) {
-      this.status = 'Drafted';
+    if (this.patientInfo.xRayList[0].isAnnotated === false) {
+      this.status = 'Not Started';
     } else {
-      this.status = 'Unreported';
+      this.status = 'Completed';
     }
     setTimeout(() => {
       this.spinnerService.hide();
