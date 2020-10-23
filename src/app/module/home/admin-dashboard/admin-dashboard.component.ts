@@ -10,7 +10,8 @@ import { RadiologistRegisterComponent } from './radiologist-register/radiologist
 import { MatDialog } from '@angular/material/dialog';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
-// import { NgxSpinnerService } from "ngx-spinner";
+import { SpinnerService } from '../../shared/UI/spinner/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'cxr-admin-dashboard',
@@ -34,16 +35,18 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private spinnerService: SpinnerService,
+    private toastrService: ToastrService,
     public dialog: MatDialog,
     private dashboardService: DashboardService,
     private eventEmitterService: EventEmitterService,
-    // private spinner: NgxSpinnerService
     ) {
       this.authService.addRadiologist.next(false);
     }
 
   ngOnInit(): void {
-    // this.spinner.show();
+    this.spinnerService.show();
+
   
     // To open addRadiologist pop up modal
     this.authService.addRadiologist.subscribe((status: boolean) => {
@@ -82,12 +85,10 @@ export class AdminDashboardComponent implements OnInit {
      
       // tslint:disable-next-line: no-string-literal
       this.patientList = data['data'];
-      // this.patientList.forEach(element => {
-      //   this.xray = element.xRayList;
-      // });
       this.dataSource = new MatTableDataSource(this.patientList);
       console.log(this.dataSource);
-      // this.spinner.hide();
+      this.spinnerService.hide();
+
       this.showloader = false;
       this.showTable = true;
       this.showError = false;
