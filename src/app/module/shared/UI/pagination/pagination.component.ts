@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { GridApi } from '@ag-grid-community/core';
+import { GridApi } from 'ag-grid-community';
 import { PagerService } from '../../../../service/pager.service';
 import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
 
