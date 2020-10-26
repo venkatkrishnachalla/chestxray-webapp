@@ -94,18 +94,25 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         isMLApi: any;
         color: any;
         Source: any;
-        idNew: any;
+        index: any;
         diseaseType: any;
       }) => {
-        if (obj.idNew !== '00') {
+        if (obj.index !== '00') {
           const index = this.impression.findIndex(
-            (a) => (a.id ? a.id : a.idNew) === obj.idNew
+            (a) => (a.id ? a.id : a.index) === obj.index
           );
           if (index !== -1) {
             this.impression.splice(index, 1);
           } else {
             this.impression.push(obj);
           }
+          const noImpressionIndex = this.impression.findIndex( item => item.index === '00');
+          if (noImpressionIndex !== -1){
+            this.impression.splice(noImpressionIndex, 1);
+          }
+        }
+        else{
+          this.impression.push(obj);
         }
         this.uniqueImpressionsData();
         this.getColorMapping(obj.name, obj.isMLApi, obj.color);
@@ -138,7 +145,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       const i = this.uniqueImpressions.findIndex((x) => x.name === item.name);
       if (i <= -1) {
         this.uniqueImpressions.push({
-          id: item.idNew,
+          id: item.index,
           name: item.name,
           colors: color,
           Source: item.Source,
@@ -162,7 +169,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * deleteImpression(id, disease, objectindex);
    */
   deleteImpression(id: number, disease: string, objectindex: any) {
-    let index = this.impression.findIndex((item) => item.idNew === id);
+    let index = this.impression.findIndex((item) => item.index === id);
     if (index !== -1) {
         this.impression.splice(index, 1);
       }
@@ -189,11 +196,11 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * updateImpression(info);
    */
   updateImpression(info) {
-    let index = this.impression.findIndex((item) => item.idNew === info.id);
+    let index = this.impression.findIndex((item) => item.index === info.id);
     if (index === -1) {
       index = this.impression.findIndex((item) => item.id === info.id);
     }
-    this.impression.splice(index, 1, { idNew: info.id, name: info.name });
+    this.impression.splice(index, 1, { index: info.id, name: info.name });
     this.abnormalityColor = [];
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
