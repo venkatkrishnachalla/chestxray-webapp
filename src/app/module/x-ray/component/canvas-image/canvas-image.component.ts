@@ -157,7 +157,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   temp = 0;
   lineLengthInMilliMeter: any;
   showMeasurement: boolean;
-
+  drawEllipses: boolean;
+  selctedObject: any;
+  obj: any;
+  rangeX: any;
   /*
    * constructor for CanvasImageComponent class
    */
@@ -1139,6 +1142,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             isUpdated: false,
             diseaseType: 'diffuse category',
           };
+          if (disease.source === 'ML') {
+            selectedObject.isMLApi = true;
+            disease.isMlAi = true;
+          }
           this.impressionArray.push(selectedObject);
           this.eventEmitterService.onComponentDataShared(selectedObject);
         }
@@ -1718,7 +1725,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         disease: this.diffuseObject.obj.name,
         // objectindex: 'diffuse category',
         objectindex: this.diffuseObject.obj.id,
-        isMLAi: '',
+        isMLAi: this.diffuseObject.obj.isMLApi,
       };
       this.eventEmitterService.onComponentButtonClick(selectedObject);
     } else {
@@ -2886,5 +2893,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   selectedObject(evt: any) {
     this.objectModified = true;
     this.selctedObjectArray = evt;
+  }
+
+  /**
+   * This is cancelDelete function
+   * @param '{void}' empty - A empty param
+   * @example
+   * cancelDelete();
+   */
+  cancelDelete() {
+    this.dialog.closeAll();
   }
 }
