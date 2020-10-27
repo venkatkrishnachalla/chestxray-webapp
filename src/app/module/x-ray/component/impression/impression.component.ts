@@ -171,9 +171,12 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    */
   deleteImpression(id: number, disease: string, objectindex: any) {
     let index = this.impression.findIndex((item) => item.index === id);
+    if (index === -1) {
+      index = this.impression.findIndex((item) => item.id === id);
+    }
     if (index !== -1) {
-        this.impression.splice(index, 1);
-      }
+      this.impression.splice(index, 1);
+    }
     this.uniqueImpressionsData();
     this.impression.forEach((obj) => {
       this.getColorMapping(obj.name, obj.isMLApi, obj.color);
