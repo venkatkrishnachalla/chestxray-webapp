@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Output,
   EventEmitter,
+  OnDestroy
 } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
@@ -15,13 +16,16 @@ import {
 } from 'src/app/module/auth/interface.modal';
 import { fabric } from 'fabric';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
+import { AuthService } from 'src/app/module/auth/auth.service';
+import User from 'src/app/module/auth/user.modal';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'cxr-x-ray-patient-details',
   templateUrl: './x-ray-patient-details.component.html',
   styleUrls: ['./x-ray-patient-details.component.scss'],
 })
 // XRayPatientDetailsComponent class implementation
-export class XRayPatientDetailsComponent implements OnInit {
+export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
   findings = [];
   patientInfo: PatientDetailData;
   status: string;
@@ -48,6 +52,9 @@ export class XRayPatientDetailsComponent implements OnInit {
     commentsAndRecommendations: string;
   };
   @Output() impressionEvent = new EventEmitter();
+  isHospitalRadiologist: boolean;
+  userSubscription: Subscription;
+  printStatus = 'Completed';
 
   /*
    * constructor for XRayPatientDetailsComponent class
@@ -56,7 +63,8 @@ export class XRayPatientDetailsComponent implements OnInit {
     private eventEmitterService: EventEmitterService,
     private eventEmitterService2: EventEmitterService2,
     private xrayAnnotatedImpression: XRayService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private authService: AuthService
   ) {
     this.eventEmitterService.commentSubject.subscribe((data) => {
       this.pdfComments = data;
@@ -66,6 +74,11 @@ export class XRayPatientDetailsComponent implements OnInit {
       this.pdfFindings = data;
       this.changeDetector.markForCheck();
     });
+    this.eventEmitterService.onStatusChangeSubject.subscribe(
+      (data: boolean) => {
+        this.status = data === true ? 'Completed' : 'Not Started';
+      }
+    );
   }
 
   /**
@@ -139,6 +152,15 @@ export class XRayPatientDetailsComponent implements OnInit {
       this.annotatedFindings = findings;
       this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
     }
+
+    this.userSubscription = this.authService.userSubject.subscribe(
+      (user: User) => {
+        if (user) {
+          this.isHospitalRadiologist =
+            user.userroles[0] === 'HospitalRadiologist' ? true : false;
+        }
+      }
+    );
     this.setCanvasDimension();
   }
 
@@ -248,5 +270,15 @@ export class XRayPatientDetailsComponent implements OnInit {
       this.canvasCorrectedHeight = this.canvasDynamicHeight;
       this.canvasCorrectedWidth = this.canvasCorrectedHeight * imageAspectRatio;
     }
+  }
+
+  /**
+   * This is on unsubscribe user subscription after moving out from this component
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnDestroy();
+   */
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
   }
 }

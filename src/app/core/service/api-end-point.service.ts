@@ -84,6 +84,9 @@ export class ApiEndPointService {
    * @example
    * getRefreshToken();
    */
+  public putAssign(): string {
+    return environment.XRayIdentifiers;
+  }
 
   public getRefreshToken(): string {
     return environment.RefreshToken;
@@ -112,6 +115,9 @@ export class ApiEndPointService {
 
   getPatientInstanceId(xRayId): any {
     return environment.patientInstanceId + xRayId + '/Study';
+  }
+  public getRadiologistList(): string {
+    return environment.hospitalRadiologistList;
   }
 
   /**

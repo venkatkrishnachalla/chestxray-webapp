@@ -1,7 +1,7 @@
-<div class="loaderContainer">
+<!-- <div class="loaderContainer">
   <span class="loader" *ngIf="showloader"></span>
-</div>
-<div id="at-id-patientTable" *ngIf="!showError && showTable">
+</div> -->
+<div id="at-id-patientTable">
   <mat-form-field id="at-input-searchPatient" appearance="outline">
     <mat-icon matPrefix>search</mat-icon>
     <input
@@ -13,6 +13,11 @@
       (keydown.space)="$event.preventDefault()"
     />
   </mat-form-field>
+  <cxr-pagination *ngIf="showPagination"
+    [pageSize]="PaginationPageSize" 
+    [gridApi]="gridApi" 
+    [noOfPages]="totalPages">
+  </cxr-pagination>
   <ag-grid-angular
     id="patientGrid"
     class="ag-theme-material"
@@ -21,15 +26,10 @@
     [columnDefs]="columnDefs"
     [defaultColDef]="defaultColDef"
     [rowData]="rowData"
-    [infiniteInitialRowCount]='pageCount'
-    [infiniteBlockSize]='pageCount'
     (gridReady)="onGridReady($event)"
-    [pagination]="true"
     [quickFilterText]="searchValue"
-    [overlayNoRowsTemplate]="overlayNoRowsTemplate"
-    suppressDragLeaveHidesColumns= true
-    [paginationPageSize]="10"
-    [cacheBlockSize]= "10"
+    [pagination]="true" 
+    [suppressPaginationPanel]="true"
   >
   </ag-grid-angular>
 </div>

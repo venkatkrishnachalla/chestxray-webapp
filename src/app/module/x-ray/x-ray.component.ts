@@ -212,11 +212,10 @@ export class XRayComponent implements OnInit, OnDestroy {
       delete element.index;
       if (element.freeHandDrawing) {
         const coordinatesArray = [];
-        if (element.coordinatevalues) {
-          element.coordinatevalues.forEach((data) => {
-            coordinatesArray.push([data.x, data.y]);
-          });
-        }
+        const newcoordinates = element.coordinatevalues ? element.coordinatevalues : element.contours[0].Coordinates;
+        newcoordinates.forEach((data) => {
+          coordinatesArray.push([data.x, data.y]);
+        });
         element.type = 'freeHandDrawing';
         element.contours = [
           {
@@ -337,16 +336,15 @@ export class XRayComponent implements OnInit, OnDestroy {
           const updatePatientData = history.state.patientDetails;
           if (updatePatientData && updatePatientData.xRayList) {
             updatePatientData.xRayList[0].isAnnotated = true;
-          } else {
-            const patientInfo = JSON.parse(
-              sessionStorage.getItem('patientDetail')
-            );
-            patientInfo.xRayList[0].isAnnotated = true;
-            sessionStorage.setItem(
-              'patientDetail',
-              JSON.stringify(patientInfo)
-            );
           }
+          const patientInfo = JSON.parse(
+            sessionStorage.getItem('patientDetail')
+          );
+          patientInfo.xRayList[0].isAnnotated = true;
+          sessionStorage.setItem(
+            'patientDetail',
+            JSON.stringify(patientInfo)
+          );
           this.toastrService.success('Report submitted successfully');
           this.canvas.patientDetail.xRayList[0].isAnnotated = true;
         },
