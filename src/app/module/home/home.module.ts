@@ -28,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { PaginationComponent} from '../shared/UI/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { MatSortModule } from '@angular/material/sort';
     AdminDashboardComponent,
     RadiologistRegisterComponent,
     HospitalRadiologistComponent,
+    PaginationComponent
   ],
   imports: [
     MaterialModule,

@@ -1,10 +1,10 @@
 @import '../../../../styles/ag-grid.scss';
 #at-id-patientTable {
   height: 100% !important;
+  overflow: hidden !important;
   #at-input-searchPatient {
     width: 40%;
-    z-index: 999;
-    margin-left: 23%;
+    margin-left: 1%;
   }
   .search-patient {
     margin-bottom: 3px !important;
@@ -23,9 +23,9 @@
 }
 @media only screen and (max-width: 1164px) {
   ag-grid-angular {
-    ::ng-deep .ag-header {
-      margin-top: 80px !important;
-    }
+    // ::ng-deep .ag-header {
+    //   margin-top: 80px !important;
+    // }
     ::ng-deep .ag-paging-panel {
       padding-top: 60px !important;
       padding-bottom: 30px !important;
@@ -49,4 +49,12 @@
 /* Ag-grid-body horizontal scroll */
 ::ng-deep .ag-body-horizontal-scroll-viewport {
   overflow-x: hidden !important;
+}
+cxr-pagination{
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+.mat-form-field-wrapper {
+  padding-bottom: 0.5em !important;
 }

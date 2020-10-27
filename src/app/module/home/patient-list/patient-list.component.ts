@@ -10,13 +10,13 @@ import { DashboardService } from 'src/app/service/dashboard.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
 import { Subject } from 'rxjs';
 import User from '../../auth/user.modal';
 import { Subscription } from 'rxjs';
 import { userInfo } from 'os';
-import { IDatasource, IGetRowsParams } from 'ag-grid-community';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-
+import { GridApi, Module } from 'ag-grid-community';
 interface PatientListData {
   data: PatientListData;
   age: number;
@@ -52,8 +52,10 @@ export class PatientListComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     public router: Router,
     private eventEmitterService: EventEmitterService,
-    private dbService: NgxIndexedDBService
-  ) {}
+    private dbService: NgxIndexedDBService,
+    private eventEmitterService2: EventEmitterService2,
+  ) {
+  }
   gridApi;
   gridColumnApi;
   columnDefs;
@@ -70,9 +72,27 @@ export class PatientListComponent implements OnInit, OnDestroy {
   errorMessage: string;
   showPatientInfo: boolean;
   pageCount: string;
+  rowModelType: string;
+  dataSource: object;
+  paginationPageSize: number;
+  cacheBlockSize: number;
+  totalPages: number;
+  showPagination: boolean;
   patientInfoSubject: Subject<any> = new Subject<any>();
   @ViewChild('toggleButton') toggleButton: ElementRef;
   private userSubscription: Subscription;
+  get PaginationPageSize(): number {
+    return this.paginationPageSize;
+  }
+
+  get gridAPI(): GridApi {
+    return this.gridApi;
+  }
+
+  get TotalPages(): number {
+    return this.totalPages;
+  }
+
 
   /**
    * This is a init function, retrieve current user details.
@@ -82,6 +102,10 @@ export class PatientListComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
+    this.showPagination = false;
+    this.rowModelType = 'serverSide';
+    this.paginationPageSize = 10;
+    this.cacheBlockSize = 10;
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
@@ -92,7 +116,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.showError = false;
     this.defaultColDef = { width: 200, lockPosition: true };
     this.columnDefs = this.constants.patientDashboard.headers;
-    this.getPatientList();
+    this.getPatientList(1, 10);
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         const UserInfo = JSON.parse(JSON.stringify(user));
@@ -104,6 +128,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
         sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
       }
     );
+    this.eventEmitterService2.invokePageNumberClick.subscribe((data: any) => {
+      this.getPatientList(data.page, data.size);
+    });
   }
 
   /**
@@ -142,8 +169,10 @@ export class PatientListComponent implements OnInit, OnDestroy {
    * @example
    * getPatientList();
    */
-  getPatientList() {
-    this.showloader = true;
+  getPatientList(page, size) {
+    if (this.gridApi){
+      this.gridApi.showLoadingOverlay();
+    }
     this.showTable = false;
     this.dashboardService.getPatientList().subscribe(
       (patientsList: PatientListData) => {
@@ -151,13 +180,20 @@ export class PatientListComponent implements OnInit, OnDestroy {
         this.showTable = true;
         this.showError = false;
         this.rowData = patientsList.data;
-        this.pageCount = patientsList.count;
+        // tslint:disable-next-line: radix
+        this.totalPages = Math.ceil(parseInt(patientsList.count) / 10);
         const patientRows = patientsList.data;
+        this.showPagination = true;
+        this.gridApi.hideOverlay();
         patientRows.sort(
           (d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId
         );
         patientRows.forEach((value, index) => {
           value.index = index;
+        });
+        let idSequence = 1;
+        this.rowData.forEach((item) => {
+          item.id = idSequence++;
         });
         const sessionRows = JSON.stringify(patientRows);
         sessionStorage.setItem('patientRows', sessionRows);
@@ -224,7 +260,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
   toggleMenu() {
     this.showPatientInfo = !this.showPatientInfo;
   }
-
   /**
    * This is on ngOnDestroy function
    * @param '{void}' empty - A void param

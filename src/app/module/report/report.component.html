@@ -56,7 +56,7 @@
               <td><b>Time</b></td>
               <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}</td>
               <td><b>Ref. Physician</b></td>
-              <td>: {{ patientInfo.xRayList[0].referringPhysicianName || '-' }}</td>
+              <td>: {{ patientInfo.xRayList[0].assignedTo || '-' }}</td>
             </tr>
           </table>
         </div>
