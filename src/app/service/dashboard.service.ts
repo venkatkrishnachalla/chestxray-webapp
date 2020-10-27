@@ -31,8 +31,8 @@ export class DashboardService {
    * @example
    * getPatientList();
    */
-  getPatientList() {
-    return this.http.get<PatientData>(this.endpoint.getPatientList()).pipe(
+  getPatientList(page, size) {
+    return this.http.get<PatientData>(this.endpoint.getPatientList(page, size)).pipe(
       catchError(this.handleError),
       tap((responseData) => {
         return responseData;

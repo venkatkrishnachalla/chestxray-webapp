@@ -15,6 +15,7 @@ import { LocalFilesystemComponent } from './local-filesystem/local-filesystem.co
 import { DragDropComponent } from './local-filesystem/drag-drop/drag-drop.component';
 import { CoreModule } from 'src/app/core/core.module';
 import { PatientInfoComponent } from './patient-info/patient-info.component';
+import { PaginationComponent} from '../shared/UI/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { PatientInfoComponent } from './patient-info/patient-info.component';
     LocalFilesystemComponent,
     DragDropComponent,
     PatientInfoComponent,
+    PaginationComponent
   ],
   imports: [
     MaterialModule,
