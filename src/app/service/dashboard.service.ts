@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 
 interface PatientData {
   age: number;
@@ -31,8 +31,8 @@ export class DashboardService {
    * @example
    * getPatientList();
    */
-  getPatientList(page, size) {
-    return this.http.get<PatientData>(this.endpoint.getPatientList(page, size)).pipe(
+  getPatientList() {
+    return this.http.get<PatientData>(this.endpoint.getPatientList()).pipe(
       catchError(this.handleError),
       tap((responseData) => {
         return responseData;
@@ -40,6 +40,40 @@ export class DashboardService {
     );
   }
 
+  getAdminPatientList(status: string) {
+    return this.http.get<PatientData>(this.endpoint.getPatientList(),{ params: {status: status } }).pipe(
+      catchError(this.handleError),
+      tap((responseData) => {
+        return responseData;
+      })
+    );
+  }
+  // unassignedPatientList() {
+  //   return this.http.get<unassign>(this.endpoint.unassignedPatientList()).pipe(
+  //     catchError(this.handleError),
+  //     tap((responseData) => {
+  //       return responseData;
+  //     })
+  //   );
+  // }
+  isSubmit(assignPatients,assignedTo):Observable<any> {
+    let url = this.endpoint.putAssign()
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }),
+    };
+
+    console.log(`${url}?assignTo=${assignedTo}`)
+    return this.http.put(`http://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/XRayIdentifiers?assignTo=${assignedTo}`,assignPatients, httpOptions)
+    // .pipe(
+    //   catchError(this.handleError),
+    //   tap((responseData) => {
+    //     console.log(responseData)
+    //     return responseData;
+    //   })
+    // );
+    }
   /**
    * handle error messages
    * @param '{HttpErrorResponse}' HttpErrorResponse - A HttpErrorResponse param

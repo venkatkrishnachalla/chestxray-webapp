@@ -3,6 +3,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { sideNavConstants } from '../../../constants/sidenavConstants';
 import { environment } from '../../../../environments/environment';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
+import { AuthService } from 'src/app/module/auth/auth.service';
+import User from 'src/app/module/auth/user.modal';
 
 @Component({
   selector: 'cxr-main-layout',
@@ -36,11 +38,12 @@ export class MainLayoutComponent implements OnInit {
     copyRightDisplayText: string;
   };
   bottomContent: string[];
+  isAdmin: boolean;
   /*
    * constructor for MainLayoutComponent class
    */
 
-  constructor() {}
+  constructor(private authService:AuthService) {}
 
   /**
    * This is a init function.
@@ -54,6 +57,15 @@ export class MainLayoutComponent implements OnInit {
     this.sidenavLabels = this.staticContents.dashboardPage;
     this.socialMediaImages = this.staticContents.socialMedia;
     this.copyRightText = this.staticContents.copyRight;
+this.authService.userSubject.subscribe(
+ (user: User) => {​​​​​​​​
+if (user) {​​​​​​​​
+this.isAdmin = user.userroles[0] === 'Admin' ? true : false;
+ }​​​​​​​​
+ }​​​​​​​​
+ );
+
+
   }
 
   /**

@@ -174,7 +174,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
       this.gridApi.showLoadingOverlay();
     }
     this.showTable = false;
-    this.dashboardService.getPatientList(page, size).subscribe(
+    this.dashboardService.getPatientList().subscribe(
       (patientsList: PatientListData) => {
         this.showloader = false;
         this.showTable = true;

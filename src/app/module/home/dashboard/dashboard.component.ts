@@ -11,6 +11,8 @@ import User from '../../auth/user.modal';
 export class DashboardComponent implements OnInit, OnDestroy {
   userSubscription: Subscription;
   isHospitalRadiologist: boolean;
+  isAdmin: boolean;
+
   /*
    * constructor for DashboardComponent class
    */
@@ -30,6 +32,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (user) {
           this.isHospitalRadiologist =
             user.userroles[0] === 'HospitalRadiologist' ? true : false;
+            this.isAdmin = user.userroles[0] === 'Admin' ? true : false;
+
         }
       }
     );

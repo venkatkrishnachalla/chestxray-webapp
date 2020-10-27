@@ -1,0 +1,54 @@
+table {
+    width: 100%;
+  }
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  
+  td, th {
+    width: 25%;
+  }
+  
+  tr:hover {
+    background-color: #f7f7f7;
+  }
+.dropdown-button{
+  left: 65%;
+ bottom: 5px;
+ position: sticky;
+}
+  th {
+    font-weight: 800;
+    font-size: 14px;
+    font-style: bold;
+  }
+  
+  tr.mat-header-row {
+    height: 56px;
+    background-color: #add8e6;
+  }
+  
+  mat-icon {
+    position: absolute;
+    margin: 28px 30.5%;
+  }
+  
+  .search-input {
+    background: #add8e6;
+    input {
+      width: 40%;
+      height: 40px;
+      margin: 20px 30%;
+      text-indent: 30px;
+      border: 0px;
+      border-radius: 6px;
+    }
+    input:hover, input:focus {
+      border: 2px solid #626262;
+      border-color: #626262;
+      border-radius: 6px;
+      outline: none;
+    }
+  }

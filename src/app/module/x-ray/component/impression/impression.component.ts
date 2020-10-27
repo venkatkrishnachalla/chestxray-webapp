@@ -148,8 +148,9 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           id: item.index,
           name: item.name,
           colors: color,
-          Source: item.Source,
+          Source: item.source,
           checked: true,
+          isMLApi: item.isMLApi,
           diseaseType: item.diseaseType,
         });
       }
