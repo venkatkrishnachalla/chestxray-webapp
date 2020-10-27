@@ -1063,7 +1063,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     if (mLArray.Impression.length === 0) {
       const impressionObject = {
         title: 'impression',
-        idNew: '00',
+        index: '00',
         name: 'No significant abnormality detected',
         isMLApi: true,
       };
@@ -1127,7 +1127,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           const selectedObject = {
             title: 'impression',
             isMLApi: false,
-            idNew: random,
+            index: random,
             name: disease.name,
             color: disease.color,
             source: disease.source,
@@ -1186,7 +1186,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               title: 'impression',
               isMLApi: ellipse.source === 'DR' ? false : true,
               id: disease.idx,
-              idNew: ellipse.id,
+              index: ellipse.id,
               name: disease.name,
               color: ellipse.color,
               source: ellipse.source,
@@ -1648,18 +1648,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       };
       this.selectedObjectPrediction = emptyObject;
       selectedObjectPrediction = emptyObject;
-      selectedObjectPrediction.idNew = random;
+      selectedObjectPrediction.index = random;
       this.diseaseType = 'diffuse category';
     } else {
       this.canvas.getActiveObject().index = random;
       this.canvas.getActiveObject().diseaseType = 'normal category';
       this.selectedObjectPrediction = this.canvas.getActiveObject();
       selectedObjectPrediction = this.canvas.getActiveObject();
-      selectedObjectPrediction.idNew = random;
+      selectedObjectPrediction.index = random;
       this.diseaseType = 'normal category';
     }
     const selectedObject = {
-      idNew: random,
+      index: random,
       name: this.selectedDisease,
       source: 'DRselectedDisease',
       diseaseType: this.diseaseType,
@@ -1879,8 +1879,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   updatePrediction() {
     const savedInfo = cloneDeep(this.savedInfo);
     const selectedObject = {
-      id: this.canvas.getActiveObject().idNew
-        ? this.canvas.getActiveObject().idNew
+      id: this.canvas.getActiveObject().index
+        ? this.canvas.getActiveObject().index
         : this.canvas.getActiveObject().id,
       check: 'update',
       name: this.selectedDisease,
@@ -1911,7 +1911,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       savedInfo['data'].ndarray[0].diseases.forEach(
         (element: any, index: number) => {
           element.ellipses.forEach((ellipse: any, indexId: number) => {
-            if (activeObj.idNew === ellipse.id) {
+            if (activeObj.index === ellipse.id) {
               if (element.ellipses.length > 1) {
                 // tslint:disable-next-line: no-string-literal
                 savedInfo['data'].ndarray[0].diseases[index].ellipses[
