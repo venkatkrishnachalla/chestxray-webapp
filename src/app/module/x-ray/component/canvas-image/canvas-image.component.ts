@@ -157,6 +157,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   temp = 0;
   lineLengthInMilliMeter: any;
   showMeasurement: boolean;
+  dotEllipse: boolean;
 
   /*
    * constructor for CanvasImageComponent class
@@ -1407,6 +1408,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       } else {
         this.canvas.observe('mouse:down', (e) => {
           if (this.enableDrawEllipseMode === true) {
+            this.dotEllipse = true;
             this.isDown = true;
             const pointer = this.canvas.getPointer(e.e);
             this.origX = pointer.x;
@@ -1415,8 +1417,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             const ellipse = new fabric.Ellipse({
               width: 0,
               height: 0,
-              rx: 1,
-              ry: 1,
               left: pointer.x,
               top: pointer.y,
               strokeWidth: 2,
@@ -1431,6 +1431,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
         });
         this.canvas.observe('mouse:move', (e) => {
+          this.dotEllipse = false;
           if (!this.isDown) {
             return;
           }
@@ -1466,6 +1467,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
 
         this.canvas.observe('mouse:up', (e) => {
+          if (this.dotEllipse === true) {
+            const obj = this.canvas.getActiveObject();
+            obj.set({
+              ry: 1,
+              rx: 1
+            });
+          }
           this.isDown = false;
           if (this.enableDrawEllipseMode) {
             this.openPathologyModal();
