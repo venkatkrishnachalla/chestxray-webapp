@@ -84,6 +84,9 @@ export class ApiEndPointService {
    * @example
    * getRefreshToken();
    */
+  public putAssign(): string {
+    return environment.XRayIdentifiers;
+  }
 
   public getRefreshToken(): string {
     return environment.RefreshToken;
@@ -96,11 +99,11 @@ export class ApiEndPointService {
    * getPatientList();
    */
 
-  public getPatientList(page, size): string {
+  public getPatientList(): string {
     // if (environment.isMockAPI) {
     //   return environment.mockApiEndPoint + '/patients';
     // }
-    return environment.patientList + '?page=' + page + '&size=' + size;
+    return environment.patientList;
   }
 
   /**
@@ -112,6 +115,9 @@ export class ApiEndPointService {
 
   getPatientInstanceId(xRayId): any {
     return environment.patientInstanceId + xRayId + '/Study';
+  }
+  public getRadiologistList(): string {
+    return environment.hospitalRadiologistList;
   }
 
   /**

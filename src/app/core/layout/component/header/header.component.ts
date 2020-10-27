@@ -21,13 +21,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuth = false;
   doctorName: string;
   toggleActive: boolean;
-
+  userroles: string;
+  disabled: boolean;
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
   /*
    * constructor for HeaderComponent class
    */
 
-  constructor(private authService: AuthService, public router: Router) {}
+  constructor(private authService: AuthService, public router: Router) {
+  }
 
   /**
    * This is a class init function.
@@ -41,6 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       (user: User) => {
         if (user) {
           this.doctorName = user.username;
+          this.userroles = user.userroles[0];
         }
       }
     );
@@ -81,6 +84,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleSidenav() {
     this.buttonClicked.emit('clicked');
   }
+  addRadiologists() {
+    this.authService.addRadiologist.next(true);
+  }
 
   /**
    * This is a unsubscribe user subscription event.
@@ -90,6 +96,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
 
   ngOnDestroy() {
+    this.authService.addRadiologist.next(false);
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }

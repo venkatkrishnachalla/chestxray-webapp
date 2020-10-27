@@ -33,6 +33,7 @@ export class AuthService {
   public userSubject: BehaviorSubject<User>;
   private tokenExpirationTimer: any;
   private refreshTokenTimer: any;
+  public addRadiologist = new BehaviorSubject(false);
 
   /*
    * constructor for AuthService class
@@ -331,4 +332,5 @@ export class AuthService {
     }
     return throwError(errorMessage);
   }
+  
 }
