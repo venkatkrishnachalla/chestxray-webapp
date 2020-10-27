@@ -4,18 +4,20 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav opened mode="side" class="sidenav" #sidenavbar>
     <div class="sidenav-content">
+      <ng-container *ngFor="let sidenavButtons of sidenavButton">
       <button
-        mat-button
-        *ngFor="let sidenavButtons of sidenavButton"
-        [routerLink]="sidenavButtons.routerLink"
-        routerLinkActive="is-active"
+      mat-button
+      *ngIf="!isAdmin ? sidenavButtons.icons !== 'group' : true"
+      [routerLink]="sidenavButtons.routerLink"
+      routerLinkActive="is-active"
       >
-        <span class="material-icons sidenav-icons">{{
-          sidenavButtons.icons
-        }}</span
-        >{{ sidenavButtons.label }}
+      <span class="material-icons sidenav-icons">{{
+      sidenavButtons.icons
+      }}</span
+      >{{ sidenavButtons.label }}
       </button>
-    </div>
+      </ng-container>
+      </div>
     <mat-card class="social-media-card">
       <p>
         <span

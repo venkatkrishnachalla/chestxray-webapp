@@ -16,6 +16,7 @@ import { AskAiComponent } from './module/x-ray/component/ask-ai/ask-ai.component
 import { ReportComponent } from './module/report/report.component';
 import { PatientInfoComponent } from './module/home/patient-info/patient-info.component';
 import { AboutComponent } from './core/layout/about/about.component';
+import { HospitalRadiologistComponent } from './module/home/admin-dashboard/hospital-radiologist/hospital-radiologist.component';
 
 const routes: Routes = [
   {
@@ -64,6 +65,8 @@ const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      // {path:'hospital-radiologist',component:HospitalRadiologistComponent},
+      {path:'radiologist',component:HospitalRadiologistComponent},
       { path: 'my-account', component: MyAccountComponent },
       { path: 'chat-room', component: ChatRoomComponent },
       { path: 'calendar', component: CalendarComponent },
