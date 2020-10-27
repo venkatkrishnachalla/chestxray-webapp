@@ -1718,11 +1718,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line:no-string-literal
       this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
         const compare = this.diffuseObject.obj.id;
-<<<<<<< HEAD
         if (element.index === compare) {
-=======
-          if (element.index === compare) {
->>>>>>> sprint-9
           // tslint:disable-next-line:no-string-literal
           this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
           // tslint:disable-next-line:no-string-literal
