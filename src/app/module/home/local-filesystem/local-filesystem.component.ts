@@ -24,6 +24,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   radiologistName: string;
   emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   @ViewChild(DragDropComponent) dragAndDrop: DragDropComponent;
+  isOtherPhysician: boolean;
 
   /*
    * constructor for LocalFilesystemComponent class
@@ -51,6 +52,8 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       ],
       dateOfBirth: ['', Validators.required],
       gender: ['MALE', Validators.required],
+      referringPhysician: ['SELF', Validators.required],
+      referringPhysicianName: [''],
       email: [
         '',
         [
@@ -109,13 +112,28 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * This is on refPhysicianChange event.
+   * @param '{string}' value - A string param
+   * @example
+   * refPhysicianChange(value);
+   */
+  refPhysicianChange(value: string) {
+    this.uploadImageForm.patchValue({
+      referringPhysicianName: '',
+    });
+    this.isOtherPhysician = false;
+    if (value === 'OTHERS') {
+      this.isOtherPhysician = true;
+    }
+  }
+
+  /**
    * This is on image file changing event.
    * @param '{string}' value - A string param
    * @example
    * onFileChange(event);
    */
-
-  onFileChange(event) {
+  onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name.toString();
       const filesAmount = event.target.files.length;
@@ -143,7 +161,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
    * dragDropEvent(event);
    */
 
-  dragDropEvent(event) {
+  dragDropEvent(event: any) {
     this.imageSource = event;
   }
 
@@ -154,7 +172,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
    * dragDropFile(event);
    */
 
-  dragDropFile(event) {
+  dragDropFile(event: any) {
     this.fileName = event.name.toString();
     this.uploadImageForm.patchValue({
       fileSource: this.images,
@@ -174,6 +192,9 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     if (this.uploadImageForm.invalid) {
       return;
     }
+    this.doctorName = this.uploadImageForm.value.referringPhysicianName
+      ? this.uploadImageForm.value.referringPhysicianName
+      : this.doctorName;
     this.uploadImageForm.value.sex = this.uploadImageForm.value.gender;
     this.uploadImageForm.value.lastUpdate = new Date();
     this.uploadImageForm.value.assignedTo = this.doctorName;
@@ -183,7 +204,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     this.uploadImageForm.value.status = false;
     this.uploadImageForm.value.xRayList = [
       {
-        assignedTo: this.radiologistName,
+        assignedTo: this.doctorName,
         isAnnotated: false,
         lastUpdate: new Date(),
         xRayId: 0,
@@ -197,7 +218,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     const imageResponse = {
       base64Image: this.imageSource,
       filename: '',
-      id: 1
+      id: 1,
     };
     const patientDetail = {
       name: this.uploadImageForm.value.name,
@@ -215,7 +236,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       age: this.uploadImageForm.value.age,
       xRayList: [
         {
-          assignedTo: this.radiologistName,
+          assignedTo: this.doctorName,
           isAnnotated: false,
           lastUpdate: new Date(),
           xRayId: 0,
@@ -223,8 +244,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       ],
     };
     sessionStorage.setItem('patientRows', JSON.stringify([]));
-    this.dbService.add('PatientImage', imageResponse).subscribe((key) => {
-   });
+    this.dbService.add('PatientImage', imageResponse).subscribe((key) => {});
     sessionStorage.setItem('patientDetail', JSON.stringify(patientDetail));
     sessionStorage.setItem('askAiSelection', 'false');
     sessionStorage.removeItem('x-ray_Data');

@@ -122,7 +122,8 @@
       </tr>
       <tr>
         <td><b>Status</b></td>
-        <td>: {{ status }}</td>
+        <td *ngIf="isHospitalRadiologist">: {{ status }}</td>
+        <td *ngIf="!isHospitalRadiologist">: {{ printStatus }}</td>
         <td><b>Age</b></td>
         <td>: {{ patientInfo.age }}</td>
         <td><b>Date of creation</b></td>
