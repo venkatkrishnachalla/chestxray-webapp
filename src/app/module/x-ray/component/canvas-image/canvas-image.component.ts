@@ -157,6 +157,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   temp = 0;
   lineLengthInMilliMeter: any;
   showMeasurement: boolean;
+  dotEllipse: boolean;
   drawEllipses: boolean;
   selctedObject: any;
   obj: any;
