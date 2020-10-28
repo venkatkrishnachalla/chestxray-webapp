@@ -81,7 +81,7 @@ export class AdminDashboardComponent implements OnInit {
   getPatientList() {
     this.showloader = true;
     this.showTable = false;
-    this.dashboardService.getPatientList().subscribe( data => {
+    this.dashboardService.getAdminPatientList('NotAnnotated').subscribe( data => {
      
       // tslint:disable-next-line: no-string-literal
       this.patientList = data['data'];

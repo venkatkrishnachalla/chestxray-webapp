@@ -99,7 +99,20 @@ export class ApiEndPointService {
    * getPatientList();
    */
 
-  public getPatientList(): string {
+  public getPatientList(page, size): string {
+    // if (environment.isMockAPI) {
+    //   return environment.mockApiEndPoint + '/patients';
+    // }
+    return environment.patientList + '?page=' + page + '&size=' + size;
+  }
+  /**
+   * This is a getPatientList function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * getPatientList();
+   */
+
+  public getAdminPatientList(): string {
     // if (environment.isMockAPI) {
     //   return environment.mockApiEndPoint + '/patients';
     // }
@@ -140,7 +153,8 @@ export class ApiEndPointService {
 
   public getAskAi(): string {
     // return 'https://cxraks.eastus2.cloudapp.azure.com/seldon/seldon/cxr-classifier/api/v1.0/predictions';
-    return 'https://cxrml.eastus2.cloudapp.azure.com/seldon/default/cxr-classifier/api/v1.0/predictions';
+    // return 'https://cxrml.eastus2.cloudapp.azure.com/seldon/default/cxr-classifier/api/v1.0/predictions';
+    return 'https://cxrmlstaging.eastus2.cloudapp.azure.com/seldon/default/cxr-classifier/api/v1.0/predictions'
   }
   /**
    * This is a getAskAi function.

@@ -163,7 +163,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   obj: any;
   rangeX: any;
   diffuseObjects: any;
-  dotEllipse: boolean;
   /*
    * constructor for CanvasImageComponent class
    */
@@ -1063,7 +1062,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         diseaseType: impression.diseaseType,
       };
     });
-    if (mLArray.Impression.length === 0) {
+    if (mLArray.Impression.length === 0 && mLArray.source === 'ML') {
       const impressionObject = {
         title: 'impression',
         index: '00',
