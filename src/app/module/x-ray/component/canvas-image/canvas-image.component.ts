@@ -161,6 +161,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   selctedObject: any;
   obj: any;
   rangeX: any;
+  diffuseObjects: any;
+  dotEllipse: boolean;
   /*
    * constructor for CanvasImageComponent class
    */
@@ -1127,7 +1129,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           const selectedObject = {
             title: 'impression',
             isMLApi: false,
-            index: random,
+            index: disease.idx,
             name: disease.name,
             color: disease.color,
             source: disease.source,
@@ -1422,6 +1424,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       } else {
         this.canvas.observe('mouse:down', (e) => {
           if (this.enableDrawEllipseMode === true) {
+            this.dotEllipse = true;
             this.isDown = true;
             const pointer = this.canvas.getPointer(e.e);
             this.origX = pointer.x;
@@ -1444,6 +1447,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
         });
         this.canvas.observe('mouse:move', (e) => {
+          this.dotEllipse = false;
           if (!this.isDown) {
             return;
           }
@@ -1479,6 +1483,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
 
         this.canvas.observe('mouse:up', (e) => {
+          if (this.dotEllipse === true) {
+            const obj = this.canvas.getActiveObject();
+            obj.set({
+              ry: 1,
+              rx: 1
+            });
+          }
           this.isDown = false;
           if (this.enableDrawEllipseMode) {
             this.openPathologyModal();
@@ -1706,11 +1717,17 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     ) {
       // tslint:disable-next-line:no-string-literal
       this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
-        const compare = this.diffuseObject.obj.name;
-        if (element.sentence === compare) {
+        const compare = this.diffuseObject.obj.id;
+        if (element.index === compare) {
           // tslint:disable-next-line:no-string-literal
           this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
           // tslint:disable-next-line:no-string-literal
+          this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
+        }
+        else if (element.sentence === this.diffuseObject.obj.name) {
+          // tslint:disable-next-line: no-string-literal
+          this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
+          // tslint:disable-next-line: no-string-literal
           this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
         }
       });
