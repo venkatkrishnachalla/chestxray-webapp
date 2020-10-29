@@ -1460,7 +1460,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             pointer.y <= 0 ||
             pointer.y >= this.canvasCorrectedHeight
           ) {
-            this.stopDragging(e.target);
+            this.restrictionToBoundaryLimit(e.target);
           }
           if (this.origX > pointer.x) {
             activeObj.set({
