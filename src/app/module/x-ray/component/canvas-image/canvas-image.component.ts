@@ -108,7 +108,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   selectedDiseases = false;
   selectedMainDisease = false;
   selectedSubDisease = false;
-  type = '';
+  type = ''; 
   left;
   top;
   _subscription: Subscription;
@@ -133,6 +133,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   brightness: any;
   contrast: any;
   scalingProperties: any;
+  inBoundObject: any;
+  draggable: boolean;
 
   /*
    * constructor for CanvasImageComponent class
@@ -296,14 +298,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
     // Zoom-In Zoom-Out in part starts
     this.canvas.on('mouse:down', (options) => {
+      this.changeSelectableStatus(true);
       const pointer = this.canvas.getPointer(options.e, true);
       this.mouseDownPoint = new fabric.Point(pointer.x, pointer.y);
     });
     this.canvas.on('mouse:up', (options) => {
+      this.changeSelectableStatus(true);
       this.mouseDownPoint = null;
     });
     this.canvas.on('mouse:move', (options) => {
-      if (this.shiftKeyDown && this.mouseDownPoint) {
+      if (this.shiftKeyDown && this.mouseDownPoint && this.draggable) {
         const pointer = this.canvas.getPointer(options.e, true);
         const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);
         this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));
@@ -480,39 +484,52 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
 
   restrictionToBoundaryLimit(obj) {
+    obj.setCoords();
     if (
       obj.currentHeight > obj.canvas.height ||
       obj.currentWidth > obj.canvas.width
     ) {
       return;
     }
-    obj.setCoords();
-    // top-left  corner
-    if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
-      obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
-      obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
+    if (this.canvas.getZoom() > 1) {
+      if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0 ||
+          obj.getBoundingRect().top + obj.getBoundingRect().height >
+          obj.canvas.height ||
+          obj.getBoundingRect().left + obj.getBoundingRect().width >
+          obj.canvas.width) {
+        this.draggable = false;
+        this.changeSelectableStatus(false);
+        this.canvas.renderAll();
+      }
     }
-    // bot-right corner
-    if (
-      obj.getBoundingRect().top + obj.getBoundingRect().height >
-        obj.canvas.height ||
-      obj.getBoundingRect().left + obj.getBoundingRect().width >
-        obj.canvas.width
-    ) {
-      obj.top = Math.min(
-        obj.top,
-        obj.canvas.height -
-          obj.getBoundingRect().height +
-          obj.top -
-          obj.getBoundingRect().top
-      );
-      obj.left = Math.min(
-        obj.left,
-        obj.canvas.width -
-          obj.getBoundingRect().width +
-          obj.left -
-          obj.getBoundingRect().left
-      );
+    else {
+      // top-left  corner
+      if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
+        obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
+        obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
+      }
+      // bot-right corner
+      if (
+        obj.getBoundingRect().top + obj.getBoundingRect().height >
+          obj.canvas.height ||
+        obj.getBoundingRect().left + obj.getBoundingRect().width >
+          obj.canvas.width
+      ) {
+        obj.top = Math.min(
+          obj.top,
+          obj.canvas.height -
+            obj.getBoundingRect().height +
+            obj.top -
+            obj.getBoundingRect().top
+        );
+        obj.left = Math.min(
+          obj.left,
+          obj.canvas.width -
+            obj.getBoundingRect().width +
+            obj.left -
+            obj.getBoundingRect().left
+        );
+      }
     }
   }
 
@@ -1123,6 +1140,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   changeSelectableStatus(val) {
     this.canvas.forEachObject((obj) => {
       obj.selectable = val;
+      obj.lockMovementX = !val;
+      obj.lockMovementY = !val;
     });
     this.canvas.renderAll();
   }
