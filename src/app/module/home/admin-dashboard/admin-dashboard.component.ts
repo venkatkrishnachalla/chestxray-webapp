@@ -86,7 +86,6 @@ export class AdminDashboardComponent implements OnInit {
       // tslint:disable-next-line: no-string-literal
       this.patientList = data['data'];
       this.dataSource = new MatTableDataSource(this.patientList);
-      console.log(this.dataSource);
       this.spinnerService.hide();
 
       this.showloader = false;

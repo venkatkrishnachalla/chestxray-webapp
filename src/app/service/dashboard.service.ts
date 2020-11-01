@@ -48,14 +48,7 @@ export class DashboardService {
       })
     );
   }
-  // unassignedPatientList() {
-  //   return this.http.get<unassign>(this.endpoint.unassignedPatientList()).pipe(
-  //     catchError(this.handleError),
-  //     tap((responseData) => {
-  //       return responseData;
-  //     })
-  //   );
-  // }
+  
   isSubmit(assignPatients,assignedTo):Observable<any> {
     let url = this.endpoint.putAssign()
     const httpOptions = {
@@ -64,15 +57,7 @@ export class DashboardService {
       }),
     };
 
-    console.log(`${url}?assignTo=${assignedTo}`)
     return this.http.put(`http://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/XRayIdentifiers?assignTo=${assignedTo}`,assignPatients, httpOptions)
-    // .pipe(
-    //   catchError(this.handleError),
-    //   tap((responseData) => {
-    //     console.log(responseData)
-    //     return responseData;
-    //   })
-    // );
     }
   /**
    * handle error messages
