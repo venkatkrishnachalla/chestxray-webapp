@@ -42,6 +42,14 @@ describe('CanvasImageComponent', () => {
   const sanitizerspy = jasmine.createSpyObj('DomSanitizer', [
     'bypassSecurityTrustStyle',
   ]);
+  const eventEmitterService2Spy = jasmine.createSpyObj('EventEmitterService2', [
+    'onEyeIconClick',
+  ]);
+  const dbServiceSpy = jasmine.createSpyObj('NgxIndexedDBService', [
+    'getByKey',
+    'add',
+    '',
+  ]);
 
   beforeEach(() => {
     eventEmitterServiceSpy.invokePrevNextButtonDataFunction = of(undefined);
@@ -55,7 +63,9 @@ describe('CanvasImageComponent', () => {
       annotatedXrayServiceSpy,
       routerSpy,
       toastrServiceSpy,
-      sanitizerspy
+      sanitizerspy,
+      eventEmitterService2Spy,
+      dbServiceSpy
     );
   });
 
@@ -134,6 +144,74 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call measureTool function ***/
+  describe('#measureTool', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        add: () => {},
+        renderAll: () => {},
+        setActiveObject: () => {},
+        isDrawingMode: true,
+        forEachObject: () => {},
+        clear: () => {},
+        observe: () => {},
+        on: () => {}
+      };
+      const mockdata = {
+        active: true
+      };
+      component.measureTool(mockdata);
+    });
+    it('should call measureTool function', () => {
+       expect(component.measureTool).toBeDefined();
+    });
+  });
+
+  /*** it should call measureTool function, when active is false ***/
+  describe('#measureTool', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        add: () => {},
+        renderAll: () => {},
+        setActiveObject: () => {},
+        isDrawingMode: true,
+        forEachObject: () => {},
+        clear: () => {},
+        observe: () => {},
+        on: () => {}
+      };
+      const mockdata = {
+        active: false
+      };
+      component.measureTool(mockdata);
+    });
+    it('should call measureTool function, when active is false', () => {
+       expect(component.measureTool).toBeDefined();
+    });
+  });
+
+  /*** it should call calculateMeasurement function ***/
+  describe('#calculateMeasurement', () => {
+    beforeEach(() => {
+      component.canvas = {
+        getActiveObject: () => {},
+        add: () => {},
+        renderAll: () => {}
+      };
+      component.startx = ['234'];
+      component.startx = ['434'];
+      component.endx = ['334'];
+      component.endy = ['134'];
+      component.temp = 0;
+      component.calculateMeasurement();
+    });
+    it('should call calculateMeasurement function', () => {
+       expect(component.calculateMeasurement).toBeDefined();
+    });
+  });
+
   /*** it should call setCanvasDimension function ***/
   describe('#setCanvasDimension', () => {
     beforeEach(() => {
@@ -190,6 +268,8 @@ describe('CanvasImageComponent', () => {
       };
       const mock = JSON.stringify(PatientImageMock);
       xRayServiceSpy.getPatientImage.and.returnValue(of(mock));
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.add.and.returnValue(of(imageSpy));
       spyOn(document, 'getElementById').and.returnValue(controlCheckbox);
       spyOn(component, 'setCanvasDimension');
       spyOn(component, 'generateCanvas');
@@ -292,7 +372,6 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getPatientInstanceId function', () => {
       expect(component.getPatientInstanceId).toBeDefined();
-      expect(component.getPatientImage).toHaveBeenCalled();
     });
   });
 
@@ -788,7 +867,7 @@ describe('CanvasImageComponent', () => {
             },
             set: () => {},
             isMLAi: true,
-            type: 'ellipse'
+            type: 'ellipse',
           };
         },
         _activeObject: {
@@ -830,7 +909,7 @@ describe('CanvasImageComponent', () => {
         rx: 56,
         ry: 59,
         angle: 0,
-        id: 4
+        id: 4,
       };
       component.selectedDisease = 'Bulla';
       component.ellipseModifiedEvent('Bulla', activateObject);
@@ -852,7 +931,7 @@ describe('CanvasImageComponent', () => {
             },
             set: () => {},
             isMLAi: true,
-            type: 'ellipse'
+            type: 'ellipse',
           };
         },
         _activeObject: {
@@ -874,7 +953,7 @@ describe('CanvasImageComponent', () => {
                   confidence: 0.6665520191192627,
                   contours: [],
                   ellipses: [
-                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 1 }
+                    { a: 442, b: 363, r: 0, x: 1811, y: 1413, idvalue: 1 },
                   ],
                   idx: 0,
                   isMlAi: true,
@@ -893,7 +972,7 @@ describe('CanvasImageComponent', () => {
         rx: 56,
         ry: 59,
         angle: 0,
-        id: 4
+        id: 4,
       };
       component.selectedDisease = 'Bulla';
       component.ellipseModifiedEvent('Bulla', activateObject);
@@ -908,11 +987,6 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return {
             id: 1,
-            canvas: {
-              freeDrawingBrush: {
-                _points: ['2345'],
-              },
-            },
             set: () => {},
           };
         },
@@ -921,6 +995,9 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -935,9 +1012,13 @@ describe('CanvasImageComponent', () => {
         },
         meta: {},
       };
+      spyOn(component, 'getColorMapping');
+      spyOn(component, 'updateFreeHandDrawingIntoSession');
       component.selectedDisease = 'Bulla';
       component.updatePrediction();
       expect(component.updatePrediction).toBeDefined();
+      expect(component.getColorMapping).toHaveBeenCalled();
+      expect(component.updateFreeHandDrawingIntoSession).toHaveBeenCalled();
     });
   });
 
@@ -949,19 +1030,20 @@ describe('CanvasImageComponent', () => {
           return {
             id: 1,
             type: 'ellipse',
-            canvas: {
-              freeDrawingBrush: {
-                _points: ['2345'],
-              },
-            },
             set: () => {},
           };
+        },
+        freeDrawingBrush: {
+          _points: ['2345'],
         },
         _activeObject: {
           path: '/x-ray',
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -995,19 +1077,20 @@ describe('CanvasImageComponent', () => {
             id: 1,
             type: 'ellipse',
             isMLAi: true,
-            canvas: {
-              freeDrawingBrush: {
-                _points: ['2345'],
-              },
-            },
             set: () => {},
           };
+        },
+        freeDrawingBrush: {
+          _points: ['2345'],
         },
         _activeObject: {
           path: '/x-ray',
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -1053,19 +1136,23 @@ describe('CanvasImageComponent', () => {
             id: 1,
             type: 'ellipse',
             isMLAi: true,
-            canvas: {
-              freeDrawingBrush: {
-                _points: ['2345'],
-              },
+            freeDrawingBrush: {
+              _points: ['2345'],
             },
             set: () => {},
           };
+        },
+        freeDrawingBrush: {
+          _points: ['2345'],
         },
         _activeObject: {
           path: '/x-ray',
         },
         renderAll: () => {},
         discardActiveObject: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -1151,7 +1238,12 @@ describe('CanvasImageComponent', () => {
       component.canvas = {
         toDataURL: () => {},
         renderAll: () => {},
-        getObjects: () => {},
+        getObjects: () => [
+          {
+            type: 'circle',
+            setVisible: true,
+          },
+        ],
         getActiveObject: () => {},
         forEachObject: () => {},
       };
@@ -1172,6 +1264,27 @@ describe('CanvasImageComponent', () => {
     });
   });
 
+  /*** it should call removeMeasurementLines function ***/
+  describe('#removeMeasurementLines', () => {
+    beforeEach(() => {
+      component.canvas = {
+        add: () => {},
+        renderAll: () => {},
+        clear: () => {},
+        getObjects: () => [
+          {
+            type: 'circle',
+            setVisible: true,
+          },
+        ],
+      };
+      component.removeMeasurementLines();
+    });
+    it('should call removeMeasurementLines function', () => {
+      expect(component.removeMeasurementLines).toBeDefined();
+    });
+  });
+
   /*** it should call getColorMapping function ***/
   describe('#getColorMapping', () => {
     it('it should call getColorMapping', () => {
@@ -1179,11 +1292,17 @@ describe('CanvasImageComponent', () => {
         getActiveObject: () => {
           return { id: 1, set: () => {} };
         },
+        freeDrawingBrush: {
+          _points: ['12345'],
+        },
         _activeObject: {
           path: '/x-ray',
         },
         renderAll: () => {},
         clear: () => {},
+        freeDrawingBrush: {
+          _points: ['2345'],
+        },
       };
       component.savedInfo = {
         data: {
@@ -1198,7 +1317,7 @@ describe('CanvasImageComponent', () => {
         },
         meta: {},
       };
-      component.getColorMapping('Bulla', 'update');
+      component.getColorMapping('Bulla', 'update', '');
       expect(component.getColorMapping).toBeDefined();
     });
   });
@@ -1290,7 +1409,6 @@ describe('CanvasImageComponent', () => {
     });
     it('should call getSessionFreeHandDrawing function if freeHandDrawing is in session, with no valuee', () => {
       expect(component.getSessionFreeHandDrawing).toBeDefined();
-      expect(dialogSpy.closeAll).toHaveBeenCalled();
     });
   });
 
@@ -1700,7 +1818,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
       };
-      component.ellipseLists(true);
+      component.ellipseLists(true, '');
     });
     it('should hide/show annotations based on clickin of eye icon on x-ray image with true condition', () => {
       expect(component.ellipseLists).toBeDefined();
@@ -1723,7 +1841,7 @@ describe('CanvasImageComponent', () => {
         },
         renderAll: () => {},
       };
-      component.ellipseLists(false);
+      component.ellipseLists(false, '');
     });
     it('should hide/show annotations based on clickin of eye icon on x-ray image with false condition', () => {
       expect(component.ellipseLists).toBeDefined();
@@ -1786,6 +1904,30 @@ describe('CanvasImageComponent', () => {
     });
     it('it should call getContrast function', () => {
       expect(component.getContrast).toBeDefined();
+    });
+  });
+
+    /*** it should call diffusePathology function***/
+  describe('#diffusePathology', () => {
+      beforeEach(() => {
+        const data = {};
+        spyOn(component, 'openPathologyModal');
+        component.diffusePathology(data);
+      });
+      it('it should call diffusePathology function', () => {
+        expect(component.diffusePathology).toBeDefined();
+        expect(dialogSpy.closeAll).toHaveBeenCalled();
+      });
+    });
+  /*** it should call selectedObject function***/
+  describe('#selectedObject', () => {
+    beforeEach(() => {
+      component.selectedObject('abc');
+    });
+    it('it should call selectedObject function', () => {
+      expect(component.selectedObject).toBeDefined();
+      expect(component.objectModified).toBeTruthy();
+      expect(component.selctedObjectArray).toBe('abc');
     });
   });
 });

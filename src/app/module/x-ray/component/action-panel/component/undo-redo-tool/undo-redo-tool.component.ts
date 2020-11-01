@@ -23,7 +23,12 @@ export class UndoRedoToolComponent implements OnInit {
    */
   constructor() {}
 
-  /*** UndoRedoToolComponent class on init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty- A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     this.undoRedoPanel = JSON.parse(
       JSON.stringify(this.constants.actionPanelUndoRedo)
@@ -32,8 +37,10 @@ export class UndoRedoToolComponent implements OnInit {
 
   /**
    * This is a iconAction click function.
+   * @param '{any}' array- A any param
+   * @param '{number}' index- A number param
    * @example
-   * iconAction([ellipse] , 1);
+   * iconAction([ellipse], 1);
    */
   iconAction(data, index) {
     return null;

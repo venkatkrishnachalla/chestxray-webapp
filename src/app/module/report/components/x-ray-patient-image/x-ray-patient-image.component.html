@@ -5,6 +5,7 @@
       mat-flat-button
       *ngIf="!isHospitalRadiologist"
       (click)="shareButtonEvent()"
+      [ngClass]="{ 'share-button-hide': !isHospitalRadiologist }"
     >
       SHARE
       <mat-icon aria-hidden="false" aria-label="Example share icon"
@@ -20,7 +21,9 @@
       printTitle="{{ pdfTitle }}"
       ngxPrint
       styleSheetFile="assets/css/patient-details.css"
-      [ngClass]="{ 'share-button-hide': isHospitalRadiologist }"
+      [ngClass]="{
+        'share-button-hide': isHospitalRadiologist || !isHospitalRadiologist
+      }"
     >
       PRINT
       <mat-icon aria-hidden="false" aria-label="Example print icon"
@@ -31,7 +34,7 @@
     <button
       type="button"
       mat-flat-button
-      [ngClass]="{ 'share-button-hide': isHospitalRadiologist }"
+      [ngClass]="{ 'share-button-hide': isHospitalRadiologist || !isHospitalRadiologist }"
     >
       SIGNATURE
       <mat-icon aria-hidden="false" aria-label="Example gesture icon"
@@ -42,7 +45,8 @@
       type="button"
       mat-flat-button
       [ngClass]="{ 'share-button-hide': isHospitalRadiologist }"
-      (click)='submitReport()'
+      (click)="submitReport()"
+      *ngIf="isHospitalRadiologist"
     >
       SUBMIT
       <mat-icon aria-hidden="false" aria-label="Example save icon"

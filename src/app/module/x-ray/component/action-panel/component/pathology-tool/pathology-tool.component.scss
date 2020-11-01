@@ -19,3 +19,7 @@ img {
   opacity: 0.5;
   color: #434343 !important;
 }
+
+::ng-deep .mat-button-focus-overlay {
+  background-color: transparent!important;
+}

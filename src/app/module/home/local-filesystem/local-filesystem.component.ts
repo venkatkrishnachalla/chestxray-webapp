@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { DragDropComponent } from './drag-drop/drag-drop.component';
 import User from '../../auth/user.modal';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 @Component({
   selector: 'cxr-local-filesystem',
@@ -20,8 +21,10 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   fileName = 'Choose file';
   imageSource: string;
   doctorName: string;
+  radiologistName: string;
   emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   @ViewChild(DragDropComponent) dragAndDrop: DragDropComponent;
+  isOtherPhysician: boolean;
 
   /*
    * constructor for LocalFilesystemComponent class
@@ -30,12 +33,13 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private dbService: NgxIndexedDBService
   ) {}
 
   /**
    * This is a init function, retrieve current user details.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
@@ -48,6 +52,8 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       ],
       dateOfBirth: ['', Validators.required],
       gender: ['MALE', Validators.required],
+      referringPhysician: ['SELF', Validators.required],
+      referringPhysicianName: [''],
       email: [
         '',
         [
@@ -76,14 +82,16 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
           UserInfo._token = tokenNew;
           sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
           this.doctorName = 'Dr ' + user.username;
+          this.radiologistName = user.username;
         }
       }
     );
+    this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
   }
 
   /**
    * This is a f function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * f();
    */
@@ -94,7 +102,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is a get today date to disable future dates in date picker.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * getToday();
    */
@@ -104,13 +112,28 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * This is on refPhysicianChange event.
+   * @param '{string}' value - A string param
+   * @example
+   * refPhysicianChange(value);
+   */
+  refPhysicianChange(value: string) {
+    this.uploadImageForm.patchValue({
+      referringPhysicianName: '',
+    });
+    this.isOtherPhysician = false;
+    if (value === 'OTHERS') {
+      this.isOtherPhysician = true;
+    }
+  }
+
+  /**
    * This is on image file changing event.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * onFileChange(event);
    */
-
-  onFileChange(event) {
+  onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name.toString();
       const filesAmount = event.target.files.length;
@@ -133,23 +156,23 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is on capture drag and drop of image.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * dragDropEvent(event);
    */
 
-  dragDropEvent(event) {
+  dragDropEvent(event: any) {
     this.imageSource = event;
   }
 
   /**
    * This is on capture drag and drop of image file event.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * dragDropFile(event);
    */
 
-  dragDropFile(event) {
+  dragDropFile(event: any) {
     this.fileName = event.name.toString();
     this.uploadImageForm.patchValue({
       fileSource: this.images,
@@ -159,7 +182,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is on new patient form submit.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * onSubmit();
    */
@@ -169,13 +192,24 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     if (this.uploadImageForm.invalid) {
       return;
     }
+    this.doctorName = this.uploadImageForm.value.referringPhysicianName
+      ? this.uploadImageForm.value.referringPhysicianName
+      : this.doctorName;
     this.uploadImageForm.value.sex = this.uploadImageForm.value.gender;
     this.uploadImageForm.value.lastUpdate = new Date();
-    this.uploadImageForm.value.referringPhysicianName = this.doctorName;
+    this.uploadImageForm.value.assignedTo = this.doctorName;
     this.uploadImageForm.value.imageSource = this.imageSource;
     this.uploadImageForm.value.hospitalPatientId = '';
     this.uploadImageForm.value.isIndividualRadiologist = true;
     this.uploadImageForm.value.status = false;
+    this.uploadImageForm.value.xRayList = [
+      {
+        assignedTo: this.doctorName,
+        isAnnotated: false,
+        lastUpdate: new Date(),
+        xRayId: 0,
+      },
+    ];
     const date = new Date(this.uploadImageForm.value.dateOfBirth);
     const timeDiff = Math.abs(Date.now() - date.getTime());
     this.uploadImageForm.value.age = Math.floor(
@@ -184,6 +218,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     const imageResponse = {
       base64Image: this.imageSource,
       filename: '',
+      id: 1,
     };
     const patientDetail = {
       name: this.uploadImageForm.value.name,
@@ -194,14 +229,22 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       gender: this.uploadImageForm.value.gender,
       sex: this.uploadImageForm.value.sex,
       lastUpdate: new Date(),
-      referringPhysicianName: this.doctorName,
+      assignedTo: this.doctorName,
       hospitalPatientId: '',
       isIndividualRadiologist: true,
       status: false,
       age: this.uploadImageForm.value.age,
+      xRayList: [
+        {
+          assignedTo: this.doctorName,
+          isAnnotated: false,
+          lastUpdate: new Date(),
+          xRayId: 0,
+        },
+      ],
     };
     sessionStorage.setItem('patientRows', JSON.stringify([]));
-    sessionStorage.setItem('PatientImage', JSON.stringify(imageResponse));
+    this.dbService.add('PatientImage', imageResponse).subscribe((key) => {});
     sessionStorage.setItem('patientDetail', JSON.stringify(patientDetail));
     sessionStorage.setItem('askAiSelection', 'false');
     sessionStorage.removeItem('x-ray_Data');
@@ -214,7 +257,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
 
   /**
    * This is on unsubscribe user subscription after moving out from this component
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnDestroy();
    */

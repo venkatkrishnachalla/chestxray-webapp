@@ -18,7 +18,7 @@ export const DISEASE_COLOR_MAPPING = {
   'thyroid calcification': '#304FFE',
   fibrosis: '#763100',
   'hilar enlargement': '#8b4513',
-  honeycombing: ' #7E5233',
+  'honey combing': ' #7E5233',
   hydropneumothorax: '#855618',
   hyperinflation: '#d2691e',
   mass: '#f4a460',
@@ -29,7 +29,7 @@ export const DISEASE_COLOR_MAPPING = {
   pneumomediastinum: '#00bfff',
   pneumopericardium: '#20b2aa',
   pneumoperitoneum: '#3FE0D0',
-  'reticulonodular pattern': '#b0c4de',
+  'reticulo nodular pattern': '#92c0fc',
   'pleural thickening': '#ff0000',
   'calcified nodule': '#FFFF00',
   'physiological calcification': '#FFD740',
@@ -49,7 +49,7 @@ export const DISEASE_COLOR_MAPPING = {
   thymus: '#FFD700',
   covid: '#780650',
   'bone cement': '#2e8b57',
-  'mammary prosthesis/breast implant': '#808000',
+  'mammary prosthesis/breast implant': '#e2e200',
   'surgical sutures': '#64DD17',
   mastectomy: '#dc143c',
   pneumonectomy: '#FF0055',
@@ -58,11 +58,11 @@ export const DISEASE_COLOR_MAPPING = {
   bronchitis: '#0000ff',
   lytic: '#3D0782',
   sclerotic: '#7D0700',
-  implants: '#868686',
+  implants: '#ae5e5e',
   scoliosis: '#3E3258',
   kyphosis: '#333B57',
-  fracture: '#5F6768',
-  'support devices': '#52808A'
+  fracture: '#12a3b5',
+  'support devices': '#06b1d6'
 };
 
 export const RANDOM_COLOR = '#FFFF00';

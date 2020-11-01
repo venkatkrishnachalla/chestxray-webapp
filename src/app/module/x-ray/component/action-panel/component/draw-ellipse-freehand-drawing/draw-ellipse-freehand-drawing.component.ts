@@ -24,7 +24,12 @@ export class DrawEllipseFreehandDrawingComponent implements OnInit {
    */
   constructor(private eventEmitterService: EventEmitterService) {}
 
-  /*** DrawEllipseFreehandDrawingComponent class init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty- A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     this.ellipseFreeHandPanel = JSON.parse(
       JSON.stringify(this.constants.actionPanelEllipseFreeHand)
@@ -33,6 +38,7 @@ export class DrawEllipseFreehandDrawingComponent implements OnInit {
 
   /**
    * This is a iconAction click function.
+   * @param '{void}' empty- A empty param
    * @example
    * iconAction([ellipse] , 1);
    */

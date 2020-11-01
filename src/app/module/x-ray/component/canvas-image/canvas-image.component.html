@@ -28,6 +28,7 @@
         {{ displayScaleFactor + 'x' }}
       </span>
     </p>
+    <p class="measure-length" *ngIf="showMeasurement"><span>{{ lineLengthInMilliMeter + ' mm' }}</span></p>
   </div>
 
   <div
@@ -43,6 +44,7 @@
     </div>
   </div>
 </div>
+
 <ng-template #pathologyModal>
   <h2 mat-dialog-title align="center">SELECT PATHOLOGY</h2>
   <mat-form-field id="at-input-disease" appearance="outline">
@@ -172,7 +174,7 @@
     >
       DELETE
     </button>
-    <button class="cancelDisease" mat-raised-button mat-dialog-close>
+    <button (click)="cancelDelete()" class="cancelDisease" mat-raised-button mat-dialog-close>
       CANCEL
     </button>
   </mat-dialog-actions>

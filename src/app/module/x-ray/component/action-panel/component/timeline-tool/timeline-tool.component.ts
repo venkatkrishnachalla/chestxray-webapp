@@ -15,6 +15,11 @@ export class TimelineToolComponent implements OnInit {
    */
   constructor() {}
 
-  /*** TimelineToolComponent class on init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty- A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {}
 }

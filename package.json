@@ -1,6 +1,6 @@
 {
   "name": "cxr-web-app",
-  "version": "0.0.8",
+  "version": "0.0.12",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
@@ -22,6 +22,9 @@
   },
   "private": true,
   "dependencies": {
+    "@ag-grid-enterprise/column-tool-panel": "^24.1.0",
+    "@ag-grid-enterprise/menu": "^24.1.0",
+    "@ag-grid-enterprise/server-side-row-model": "^24.1.0",
     "@angular/animations": "~9.1.7",
     "@angular/cdk": "^9.2.4",
     "@angular/common": "~9.1.7",
@@ -37,10 +40,11 @@
     "ag-grid-angular": "^23.1.1",
     "ag-grid-community": "^23.1.1",
     "fabric": "^3.6.3",
-    "idle-session-timeout": "^1.0.1",
     "html2pdf.js": "^0.9.2",
+    "idle-session-timeout": "^1.0.1",
     "lodash": "^4.17.15",
     "ng5-slider": "^1.2.4",
+    "ngx-indexed-db": "^6.0.5",
     "ngx-print": "^1.2.0-beta.5",
     "ngx-toastr": "^13.0.0",
     "perfect-scrollbar": "^1.5.0",

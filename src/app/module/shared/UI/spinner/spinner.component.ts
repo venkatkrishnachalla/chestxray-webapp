@@ -5,18 +5,20 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
 })
-// SpinnerComponent class implementation  
+// SpinnerComponent class implementation
 export class SpinnerComponent implements OnInit {
-  /*  
-* constructor for SpinnerComponent class  
-*/ 
+  /*
+   * constructor for SpinnerComponent class
+   */
+
   constructor() {}
 
-  /**  
-* This is a init function.  
-* @param {void} empty - A empty param  
-* @example  
-* ngOnInit();
-*/  
+  /**
+   * This is a init function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
+
   ngOnInit(): void {}
 }

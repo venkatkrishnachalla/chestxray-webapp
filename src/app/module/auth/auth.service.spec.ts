@@ -1,6 +1,7 @@
 import { AuthService } from './auth.service';
 import { throwError, Observable, of } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -10,16 +11,22 @@ describe('AuthService', () => {
     'getRefreshToken',
   ]);
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const dbServiceSpy = jasmine.createSpyObj('NgxIndexedDBService', ['clear']);
 
   beforeEach(() => {
-    authService = new AuthService(mockHttpClient, endpointSpy, routerSpy);
+    authService = new AuthService(
+      mockHttpClient,
+      endpointSpy,
+      routerSpy,
+      dbServiceSpy
+    );
   });
   /*** it should create service ***/
   it('should create', () => {
     expect(authService).toBeTruthy();
   });
 
-    /*** it should call signIn function ***/
+  /*** it should call signIn function ***/
   describe('#signIn', () => {
     let responsePromise;
     beforeEach(() => {
@@ -39,7 +46,7 @@ describe('AuthService', () => {
     });
   });
 
-      /*** it should call signIn function ***/
+  /*** it should call signIn function ***/
   describe('#signIn', () => {
     beforeEach(() => {
       endpointSpy.getSingInURL.and.returnValue('http://localhost:4200/auth');
@@ -56,8 +63,12 @@ describe('AuthService', () => {
     });
   });
 
-        /*** it should call logOut function ***/
+  /*** it should call logOut function ***/
   describe('#logOut', () => {
+    beforeEach(() => {
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.clear.and.returnValue(of(imageSpy));
+    });
     it('should call logout function, when tokenExpirationTimer is exist', () => {
       (authService as any).tokenExpirationTimer = '3000';
       authService.logOut();
@@ -70,7 +81,7 @@ describe('AuthService', () => {
     });
   });
 
-        /*** it should call autoLoginOnRefresh function ***/
+  /*** it should call autoLoginOnRefresh function ***/
   describe('#autoLoginOnRefresh', () => {
     it('should call autoLoginOnRefresh function', () => {
       const authMock = {
@@ -79,8 +90,8 @@ describe('AuthService', () => {
         _token: 'etuaWqerll',
         _tokenExpirationDate: '2020-08-17T10:11:36.000Z',
         username: 'Ashwini',
-        userroles: ['HospitalRadiologist']
-      }
+        userroles: ['HospitalRadiologist'],
+      };
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(authMock);
       });
@@ -89,30 +100,45 @@ describe('AuthService', () => {
     });
   });
 
-        /*** it should call refreshToken function ***/
+  /*** it should call refreshToken function ***/
   describe('#refreshToken', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 204 });
       endpointSpy.getRefreshToken.and.returnValue('http://localhost:3000/auth');
       mockHttpClient.post.and.returnValue(of(response));
-      (authService as any).refreshToken();
+      (authService as any).refreshToken('', '', '', '', '');
     });
     it('should call refreshToken function', () => {
       expect((authService as any).refreshToken).toBeDefined();
     });
   });
 
- /*** it should call autoSessionTimeOut function ***/ 
+  /*** it should call autoSessionTimeOut function ***/
+
   describe('#autoSessionTimeOut', () => {
     beforeEach(() => {
+      const authMock = {
+        email: 'abc@123',
+        id: 1010,
+        _token: 'etuaWqerll',
+        _tokenExpirationDate: '2020-08-17T10:11:36.000Z',
+        username: 'Ashwini',
+        userroles: ['HospitalRadiologist'],
+      };
+      spyOn(sessionStorage, 'getItem').and.callFake(() => {
+        return JSON.stringify(authMock);
+      });
+      spyOn(authService, 'refreshToken');
       authService.autoSessionTimeOut(4563);
     });
     it('should call autoSessionTimeOut function', () => {
       expect(authService.autoSessionTimeOut).toBeDefined();
+      expect(authService.refreshToken).toBeDefined();
     });
   });
 
- /*** it should call refreshTokenTimeOut function ***/ 
+  /*** it should call refreshTokenTimeOut function ***/
+
   describe('#refreshTokenTimeOut', () => {
     beforeEach(() => {
       const response = new HttpResponse({ status: 204 });
@@ -126,7 +152,7 @@ describe('AuthService', () => {
     });
   });
 
-/*** it should call handleAuthentication function ***/
+  /*** it should call handleAuthentication function ***/
   describe('#handleAuthentication', () => {
     beforeEach(() => {
       (authService as any).handleAuthentication(

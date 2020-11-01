@@ -7,7 +7,7 @@ describe('ApiEndPointService', () => {
     apiEndPointService = new ApiEndPointService();
   });
 
-/*** it should create service ***/
+  /*** it should create service ***/
   it('should create', () => {
     expect(apiEndPointService).toBeTruthy();
   });
@@ -15,7 +15,7 @@ describe('ApiEndPointService', () => {
   /*** it should getUrl function ***/
   describe('#getUrl', () => {
     beforeEach(() => {});
-    it('should call getUrl function', () => { 
+    it('should call getUrl function', () => {
       (apiEndPointService as any).getUrl('abcd', ['a', 'b', 'c']);
       expect((apiEndPointService as any).getUrl).toBeDefined();
     });
@@ -25,7 +25,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
-    /*** it should getHttpQueryParams function ***/
+  /*** it should getHttpQueryParams function ***/
   describe('#getHttpQueryParams', () => {
     beforeEach(() => {
       (apiEndPointService as any).getHttpQueryParams('abcd');
@@ -35,18 +35,18 @@ describe('ApiEndPointService', () => {
     });
   });
 
-      /*** it should getSingInURL function ***/
+  /*** it should getSingInURL function ***/
   describe('#getSingInURL', () => {
     it('should call getSingInURL function', () => {
       apiEndPointService.getSingInURL();
       const result = apiEndPointService.getSingInURL();
       expect(result).toEqual(
-        'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login/'
+        'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Login/'
       );
     });
   });
 
-      /*** it should getRefreshToken function ***/
+  /*** it should getRefreshToken function ***/
   describe('#getRefreshToken', () => {
     beforeEach(() => {
       apiEndPointService.getRefreshToken();
@@ -56,7 +56,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
-        /*** it should getPatientInstanceId function ***/
+  /*** it should getPatientInstanceId function ***/
   describe('#getPatientInstanceId', () => {
     beforeEach(() => {
       apiEndPointService.getPatientInstanceId(
@@ -68,7 +68,7 @@ describe('ApiEndPointService', () => {
     });
   });
 
-/*** it should getPatientImage function ***/
+  /*** it should getPatientImage function ***/
   describe('#getPatientImage', () => {
     beforeEach(() => {
       apiEndPointService.getPatientImage(
@@ -79,7 +79,7 @@ describe('ApiEndPointService', () => {
       expect(apiEndPointService.getPatientImage).toBeDefined();
     });
   });
-/*** it should getPatientList function ***/
+  /*** it should getPatientList function ***/
   describe('#getPatientList', () => {
     beforeEach(() => {
       apiEndPointService.getPatientList();

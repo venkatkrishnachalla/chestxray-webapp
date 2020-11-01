@@ -18,11 +18,11 @@
             class="status"
             [ngStyle]="{
               'background-color':
-                patientDetail.isAnnotated === false ? '#ff0000' : '#26b526'
+                patientDetail.xRayList[0].isAnnotated === false ? '#ff0000' : '#26b526'
             }"
           ></button
         ></span>
-        {{ patientDetail.isAnnotated === false ? 'Not Started' : 'Completed' }}
+        {{ patientDetail.xRayList[0].isAnnotated === false ? 'Not Started' : 'Completed' }}
       </div>
     </div>
 
@@ -35,16 +35,16 @@
     <div class="row">
       <div class="col-md-6">
         <span>Date of creation:</span>
-        {{ patientDetail.lastUpdate | date: 'dd-MM-yyyy' }}
+        {{ patientDetail.xRayList[0].lastUpdate | date: 'dd-MM-yyyy' }}
       </div>
       <div class="col-md-6">
-        <span>Time:</span> {{ patientDetail.lastUpdate | date: 'HH:mm:ss' }}
+        <span>Time:</span> {{ patientDetail.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        <span>Ref. Physician:</span> {{ patientDetail.assignedTo }}
+        <span>Ref. Physician:</span> {{ patientDetail.xRayList[0].assignedTo }}
       </div>
     </div>
 

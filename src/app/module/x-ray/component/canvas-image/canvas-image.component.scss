@@ -90,6 +90,7 @@
     margin: 0px;
     padding: 0px;
     max-height: 42vh;
+    min-height: 42vh;
     width: 100% !important;
     background-color: black;
     border-radius: 1rem;
@@ -262,4 +263,11 @@
   top: 20%;
   position: relative;
   cursor: pointer;
+}
+
+p.measure-length {
+  margin-left: -15px;
+  margin-top: 50px;
+  color: white;
+  font-size: 13px;
 }

@@ -23,7 +23,12 @@ export class SettingsDeleteToolComponent implements OnInit {
    */
   constructor() {}
 
-  /*** SettingsDeleteToolComponent class on init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty- A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     this.settingDeletePanel = JSON.parse(
       JSON.stringify(this.constants.actionPanelSettingsDelete)
@@ -32,6 +37,8 @@ export class SettingsDeleteToolComponent implements OnInit {
 
   /**
    * This is a iconAction click function.
+   * @param '{any}' array- A any param
+   * @param '{number}' index- A number param
    * @example
    * iconAction([ellipse], 1);
    */

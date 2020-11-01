@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
+// EventEmitterService class implementation
 export class EventEmitterService {
   invokeComponentFunction = new EventEmitter();
   invokeComponentData = new EventEmitter();
@@ -18,12 +20,13 @@ export class EventEmitterService {
   invokeAskAiButtonDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
+  onStatusChangeSubject = new BehaviorSubject(false);
   invokeImpressionFunction = new EventEmitter();
   onStatusChangeFunction = new EventEmitter();
   brightnessValue = new EventEmitter();
   contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
-
+  deleteDiffuseImpression = new EventEmitter();
 
   constructor() {}
 
@@ -86,11 +89,11 @@ export class EventEmitterService {
     this.invokeImpressionFunction.emit(data);
   }
 
-  onStatusChange(data){
+  onStatusChange(data) {
     this.onStatusChangeFunction.emit(data);
   }
-  
-  /*** onComponentButtonClick event emit function ***/
+
+  /*** onBrightnessChange event emit function ***/
   onBrightnessChange(title) {
     this.brightnessValue.emit(title);
   }
@@ -99,9 +102,13 @@ export class EventEmitterService {
   onContrastChange(title: number) {
     this.contrastValue.emit(title);
   }
-  
-  /*** onContrastChange event emit function ***/
+
+  /*** OnDefaultRanges event emit function ***/
   OnDefaultRanges(title: number) {
     this.defaultRange.emit(title);
+  }
+
+  OnDeleteDiffuseImpression(title: any) {
+    this.deleteDiffuseImpression.emit(title);
   }
 }

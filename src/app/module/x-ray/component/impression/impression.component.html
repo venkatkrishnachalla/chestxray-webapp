@@ -6,9 +6,19 @@
   <mat-card-content
     class="impression-content"
     *ngFor="let impressions of uniqueImpressions; let i = index">
-
     <button [style.background-color]="impressions.colors"></button>
     <span class="impression-text-width">{{ impressions.name }}</span>
-    <input class='impression-checkbox' (click)='displayFun(impressions, $event, i)' type='checkbox' [checked]='impressions.checked'/>
+    <mat-icon class="deleteButton"
+    [ngStyle]="{
+      'display':
+      impressions.diseaseType === 'diffuse category' ? 'block' : 'none'
+    }" (click)="deleteImpressions(impressions, $event, i)"
+    >delete_forever</mat-icon
+  >
+    <input [ngStyle]="{
+  'display':
+  impressions.diseaseType === 'diffuse category' ? 'none' : 'block'
+}"
+ class='impression-checkbox' (click)='displayFun(impressions, $event, i)' type='checkbox' [checked]='impressions.checked'/>
   </mat-card-content>
 </mat-card>

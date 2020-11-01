@@ -26,7 +26,7 @@ export class DragDropComponent implements OnInit {
 
   /**
    * This is a init function, retrieve current user details.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
@@ -35,7 +35,7 @@ export class DragDropComponent implements OnInit {
 
   /**
    * This is a  handleDragEnter function, when handle drag .
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * handleDragEnter();
    */
@@ -46,7 +46,7 @@ export class DragDropComponent implements OnInit {
 
   /**
    * This is a handleDragLeave function, when handle leave.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * handleDragLeave();
    */
@@ -57,7 +57,7 @@ export class DragDropComponent implements OnInit {
 
   /**
    * This is a handleDrop function, when handle drop.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * handleDrop(e);
    */
@@ -70,7 +70,7 @@ export class DragDropComponent implements OnInit {
 
   /**
    * This is a handleImageLoad function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * handleImageLoad();
    */
@@ -81,7 +81,7 @@ export class DragDropComponent implements OnInit {
 
   /**
    * This is a handleInputChange function, to detect input change.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * handleInputChange(e);
    */
@@ -105,7 +105,7 @@ export class DragDropComponent implements OnInit {
 
   /**
    * This is a _handleReaderLoaded function, to detect reader change.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * _handleReaderLoaded(e);
    */
@@ -121,7 +121,7 @@ export class DragDropComponent implements OnInit {
   /*** getLocalImageSrc function, to store image source ***/
   /**
    * This is a getLocalImageSrc function, to store image source.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * getLocalImageSrc(event);
    */
