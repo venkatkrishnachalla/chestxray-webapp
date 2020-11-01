@@ -353,7 +353,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.mouseDownPoint = null;
     });
     this.canvas.on('mouse:move', (options) => {
-      if (this.shiftKeyDown && this.mouseDownPoint && this.draggable) {
+      if (this.shiftKeyDown && this.mouseDownPoint) {
         const pointer = this.canvas.getPointer(options.e, true);
         const mouseMovePoint = new fabric.Point(pointer.x, pointer.y);
         this.canvas.relativePan(mouseMovePoint.subtract(this.mouseDownPoint));
