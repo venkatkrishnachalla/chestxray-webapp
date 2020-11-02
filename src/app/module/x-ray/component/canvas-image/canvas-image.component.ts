@@ -231,6 +231,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     if (patientInfo.xRayList[0].isAnnotated) {
       this.getStoredAnnotations(patientInfo.xRayList[0].xRayId);
     }
+    const findingsDataNew = JSON.parse(sessionStorage.getItem('findingsData'));
+    if (findingsDataNew){
+      findingsDataNew.forEach(element => {
+        this.eventEmitterService.onComponentFindingsDataShared(element);
+      });
+    }
     this.savedInfo = {
       data: {
         names: [],
@@ -1248,15 +1254,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.coordinateList = [];
 
         const coordinatePath = [];
-        if (disease.contours[0] !== undefined) {
+        if (disease.contours !== undefined) {
           disease.contours[0].coordinates.forEach((data) => {
             coordinatePath.push(data[0]);
             coordinatePath.push(data[1]);
           });
         } else {
           disease.coordinatevalues.forEach((data) => {
-            coordinatePath.push(data[0]);
-            coordinatePath.push(data[1]);
+            coordinatePath.push(data.x);
+            coordinatePath.push(data.y);
           });
         }
         for (let i = 0; i < coordinatePath.length; i++) {
@@ -1397,28 +1403,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     if (isMlAi) {
       this.canvasScaleX = this.xRayImage.width / this.canvas.width;
       this.canvasScaleY = this.xRayImage.height / this.canvas.height;
+      const xCenter = diseaseItem.x / this.canvasScaleX;
+      const yCenter = diseaseItem.y / this.canvasScaleY;
+      const width = diseaseItem.a / this.canvasScaleX;
+      const height = diseaseItem.b / this.canvasScaleY;
       const ellipse = new fabric.Ellipse({
         width: 0,
         height: 0,
         disease: diseaseItem.name,
-        originX: diseaseItem.type === 'ellipse' ? 'left' : 'center',
-        originY: diseaseItem.type === 'ellipse' ? 'top' : 'center',
-        left:
-          diseaseItem.type === 'ellipse'
-            ? diseaseItem.x
-            : (diseaseItem.x as any) / this.canvasScaleX,
-        top:
-          diseaseItem.type === 'ellipse'
-            ? diseaseItem.y
-            : (diseaseItem.y as any) / this.canvasScaleY,
-        rx:
-          diseaseItem.type === 'ellipse'
-            ? diseaseItem.a
-            : (diseaseItem.a as any) / this.canvasScaleX / 2,
-        ry:
-          diseaseItem.type === 'ellipse'
-            ? diseaseItem.b
-            : (diseaseItem.b as any) / this.canvasScaleY / 2,
+        originX: 'center',
+        originY: 'center',
+        left: xCenter,
+        top: yCenter,
+        rx: width / 2,
+        ry: height / 2,
         angle: diseaseItem.r,
         stroke: diseaseItem.color,
         strokeDashArray: diseaseItem.strokeDashArray,
@@ -1688,6 +1686,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     } else {
       this.canvas.getActiveObject().index = random;
       this.canvas.getActiveObject().diseaseType = 'normal category';
+      this.canvas.getActiveObject().disease = this.selectedDisease;
       this.selectedObjectPrediction = this.canvas.getActiveObject();
       selectedObjectPrediction = this.canvas.getActiveObject();
       selectedObjectPrediction.index = random;
@@ -1697,8 +1696,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       index: random,
       name: this.selectedDisease,
       source: 'DRselectedDisease',
-      diseaseType: this.diseaseType,
-      index: random,
+      diseaseType: this.diseaseType
     };
     this.savedObjects.push(selectedObjectPrediction);
     this.storeDataInSession(
@@ -1811,7 +1809,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   ellipseModifiedEvent(disease: string, activeObject: any) {
     const savedInfo = cloneDeep(this.savedInfo);
     const selectedObject = {
-      id: this.canvas.getActiveObject().id,
+      id: this.canvas.getActiveObject().index,
       check: 'update',
       name: disease,
     };
@@ -1828,69 +1826,21 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         (element: any, index: number) => {
           if (element.ellipses) {
             element.ellipses.forEach((ellipse: any, indexId: number) => {
-              activeObj.idNew = activeObj.isMLAi
-                ? activeObj.id
-                : activeObj.idNew;
-              if (ellipse.source === 'DR') {
-                // tslint:disable-next-line: no-string-literal
-                savedInfo['data'].ndarray[0].diseases[index].ellipses[
-                  indexId
-                ].strokeDashArray = [15, 3];
-                const obj = {
-                  // tslint:disable-next-line: no-string-literal
-                  color: savedInfo['data'].ndarray[0].diseases[index].color,
-                  ellipses: [
-                    {
-                      x: activeObject.left,
-                      y: activeObject.top,
-                      a: activeObject.rx,
-                      b: activeObject.ry,
-                      r: activeObject.angle,
-                      index: activeObject.id,
-                      type: 'ellipse',
-                      strokeDashArray: [0, 0],
-                      source: activeObj.isMLAi ? 'ML' : 'DR',
-                      isUpdated: activeObj.isMLAi ? true : false,
-                    },
-                  ],
-                  index: this.canvas._activeObject.id,
-                  name: disease,
-                  isMlAi: true,
-                  source: activeObj.isMLAi ? 'ML' : 'DR',
-                };
-                // tslint:disable-next-line: no-string-literal
-                savedInfo['data'].ndarray[0].diseases.splice(index, 1, obj);
-                this.savedInfo = savedInfo;
-                sessionStorage.removeItem('x-ray_Data');
-                sessionStorage.setItem('x-ray_Data', JSON.stringify(savedInfo));
-                this.updateEllipseIntoSession();
-              } else if (activeObj.idNew === ellipse.index) {
+              if (activeObj.index === ellipse.index) {
                 this.canvasScaleX = this.xRayImage.width / this.canvas.width;
                 this.canvasScaleY = this.xRayImage.height / this.canvas.height;
+                const xCenter = this.canvas._activeObject.left;
+                const yCenter = this.canvas._activeObject.top;            
                 if (element.ellipses.length > 1) {
-                  // tslint:disable-next-line: no-string-literal
-                  savedInfo['data'].ndarray[0].diseases[index].ellipses[
-                    indexId
-                  ].strokeDashArray = [15, 3];
                   const obj = {
-                    // x: activeObj.isMLAi
-                    //   ? activeObject.left * this.canvasScaleX
-                    //   : activeObject.left,
-                    // y: activeObj.isMLAi
-                    //   ? activeObject.top * this.canvasScaleY
-                    //   : activeObject.top,
-                    x: activeObject.left,
-                    y: activeObject.top,
-                    a: activeObj.isMLAi
-                      ? activeObject.rx * this.canvasScaleX * 2
-                      : activeObject.rx,
-                    b: activeObj.isMLAi
-                      ? activeObject.ry * this.canvasScaleY * 2
-                      : activeObject.ry,
+                    x: xCenter * this.canvasScaleX,
+                    y: yCenter * this.canvasScaleY,
+                    a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
+                    b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
                     r: activeObject.angle,
-                    index: activeObject.id,
+                    index: activeObject.index,
                     type: 'ellipse',
-                    strokeDashArray: [15, 3],
+                    strokeDashArray: activeObj.isMLAi ? [15, 3] : [0, 0],
                     source: activeObj.isMLAi ? 'ML' : 'DR',
                     isUpdated: activeObj.isMLAi ? true : false,
                   };
@@ -1910,26 +1860,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                     color: savedInfo['data'].ndarray[0].diseases[index].color,
                     ellipses: [
                       {
-                        x: activeObject.left,
-                        y: activeObject.top,
-                        // x: activeObj.isMLAi
-                        //   ? activeObject.left * this.canvasScaleX
-                        //   : activeObject.left,
-                        // y: activeObj.isMLAi
-                        //   ? activeObject.top * this.canvasScaleY
-                        //   : activeObject.top,
-                        // a: activeObj.isMLAi
-                        //   ? activeObject.rx * this.canvasScaleX * 2
-                        //   : activeObject.rx,
-                        // b: activeObj.isMLAi
-                        //   ? activeObject.ry * this.canvasScaleY * 2
-                        //   : activeObject.ry,
-                        a: activeObject.rx,
-                        b: activeObject.ry,
+                        x: xCenter * this.canvasScaleX,
+                        y: yCenter * this.canvasScaleY,
+                        a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
+                        b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
                         r: activeObject.angle,
-                        index: activeObject.id,
+                        index: activeObject.index,
                         type: 'ellipse',
-                        strokeDashArray: [15, 3],
+                        strokeDashArray: activeObj.isMLAi ? [15, 3] : [0, 0],
                         source: activeObj.isMLAi ? 'ML' : 'DR',
                         isUpdated: activeObj.isMLAi ? true : false,
                       },
@@ -2262,22 +2200,26 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.canvas._activeObject.path) {
+      this.canvasScaleX = this.xRayImage.width / this.canvas.width;
+      this.canvasScaleY = this.xRayImage.height / this.canvas.height;
+      const xCenter = this.canvas._activeObject.left + (this.canvas._activeObject.width / 2);
+      const yCenter = this.canvas._activeObject.top + (this.canvas._activeObject.height / 2);
       const obj = {
         color: colorName,
         diseaseType: this.diseaseType,
         ellipses: [
           {
-            x: this.canvas._activeObject.left,
-            y: this.canvas._activeObject.top,
-            a: this.canvas._activeObject.rx,
-            b: this.canvas._activeObject.ry,
+            x: xCenter * this.canvasScaleX,
+            y: yCenter * this.canvasScaleY,
+            a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
+            b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
             r: this.canvas._activeObject.angle,
-            index: this.canvas._activeObject.id,
+            index: this.canvas._activeObject.index,
             type: 'ellipse',
             source: src,
           },
         ],
-        index: this.canvas._activeObject.id,
+        index: this.canvas._activeObject.index,
         name: diseases,
         source: src,
       };
@@ -2543,8 +2485,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           angle: element.angle,
           stroke: element.color,
           id: element.id,
-          originX: 'left',
-          originY: 'top',
+          originX: 'center',
+          originY: 'center',
           strokeWidth: 2,
           fill: '',
           selectable: true,
