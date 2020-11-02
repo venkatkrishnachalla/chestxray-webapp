@@ -1698,7 +1698,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       name: this.selectedDisease,
       source: 'DRselectedDisease',
       diseaseType: this.diseaseType,
-      index: random,
     };
     this.savedObjects.push(selectedObjectPrediction);
     this.storeDataInSession(
@@ -2250,6 +2249,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const obj = {
         color: colorName,
         ellipses: [],
+        contours: [],
         index: this.selectedObjectPrediction.id,
         name: diseases,
         source: src,
@@ -2277,6 +2277,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             source: src,
           },
         ],
+        contours: [],
         index: this.canvas._activeObject.id,
         name: diseases,
         source: src,
