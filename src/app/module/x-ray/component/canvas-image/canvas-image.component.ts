@@ -547,6 +547,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     };
     this.resetZoom();
     this.keepPositionInBounds(this.canvas);
+    this.isChangeable = true;
+    this.lineLengthInMilliMeter = '';
     this.canvas.clear();
     this.spinnerService.show();
     this.eventEmitterService.OnDefaultRanges(50);
@@ -1057,7 +1059,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * mlApiEllipseLoop(mlList, check);
    */
-  mlApiEllipseLoop(mlList: any, check) {
+  mlApiEllipseLoop(mlList: any, check: string) {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
@@ -1093,6 +1095,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         findingsOrdered.push(element);
       }
     });
+    if (check === 'session') {
+      const sessionFindings = JSON.parse(sessionStorage.getItem('findings'));
+      sessionFindings.forEach((finding: any) => {
+          this.eventEmitterService.onComponentFindingsDataShared(finding);
+      });
+    } else {
     findingsOrdered.forEach((info) => {
       if (
         mLArray.Findings[info.Name].length === 0 &&
@@ -1135,6 +1143,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         }
       }
     });
+    }
     let val1 = 0;
     mLArray.diseases.forEach((disease: any, index: any) => {
       if (!disease.contours) {
@@ -1697,8 +1706,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       index: random,
       name: this.selectedDisease,
       source: 'DRselectedDisease',
-      diseaseType: this.diseaseType,
-      index: random,
+      diseaseType: this.diseaseType
     };
     this.savedObjects.push(selectedObjectPrediction);
     this.storeDataInSession(
@@ -1873,12 +1881,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                     indexId
                   ].strokeDashArray = [15, 3];
                   const obj = {
-                    // x: activeObj.isMLAi
-                    //   ? activeObject.left * this.canvasScaleX
-                    //   : activeObject.left,
-                    // y: activeObj.isMLAi
-                    //   ? activeObject.top * this.canvasScaleY
-                    //   : activeObject.top,
                     x: activeObject.left,
                     y: activeObject.top,
                     a: activeObj.isMLAi
@@ -1912,20 +1914,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                       {
                         x: activeObject.left,
                         y: activeObject.top,
-                        // x: activeObj.isMLAi
-                        //   ? activeObject.left * this.canvasScaleX
-                        //   : activeObject.left,
-                        // y: activeObj.isMLAi
-                        //   ? activeObject.top * this.canvasScaleY
-                        //   : activeObject.top,
-                        // a: activeObj.isMLAi
-                        //   ? activeObject.rx * this.canvasScaleX * 2
-                        //   : activeObject.rx,
-                        // b: activeObj.isMLAi
-                        //   ? activeObject.ry * this.canvasScaleY * 2
-                        //   : activeObject.ry,
-                        a: activeObject.rx,
-                        b: activeObject.ry,
+                        a: activeObj.isMLAi
+                          ? activeObject.rx * this.canvasScaleX * 2
+                          : activeObject.rx,
+                        b: activeObj.isMLAi
+                          ? activeObject.ry * this.canvasScaleY * 2
+                          : activeObject.ry,
                         r: activeObject.angle,
                         index: activeObject.id,
                         type: 'ellipse',

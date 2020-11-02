@@ -119,6 +119,12 @@ h4 {
 .signature-right-side {
   float: right;
 }
+
+.footer-label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
 .cxr-radiological-header {
   text-align: center;
   margin-top: 1rem;
