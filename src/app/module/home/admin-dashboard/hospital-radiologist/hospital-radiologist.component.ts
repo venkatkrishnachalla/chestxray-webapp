@@ -111,7 +111,7 @@ this.setForm();
       }
     );
     this.getradiologistList();
-    this.getPatientList();
+    this.getPatientList(1,10);
 
   }
 
@@ -163,9 +163,9 @@ get f() { return this.form.controls; }
     
   selected = [];
  
-  getPatientList() {
+  getPatientList(page,size) {
     this.showloader = true;
-    this.dashboardService.getAdminPatientList('NotAnnotated').subscribe( data => {
+    this.dashboardService.getAdminPatientList('NotAnnotated',page,size).subscribe( data => {
       this.loading = false;
       this.spinnerService.hide();
 

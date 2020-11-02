@@ -181,6 +181,7 @@ export class XRayComponent implements OnInit, OnDestroy {
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
+    sessionStorage.setItem('findingsData', JSON.stringify(this.findings.findings));
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
   }
   /**

@@ -112,11 +112,11 @@ export class ApiEndPointService {
    * getPatientList();
    */
 
-  public getAdminPatientList(): string {
+  public getAdminPatientList(page, size): string {
     // if (environment.isMockAPI) {
     //   return environment.mockApiEndPoint + '/patients';
     // }
-    return environment.patientList;
+    return environment.patientList + '?page=' + page + '&size=' + size;
   }
 
   /**

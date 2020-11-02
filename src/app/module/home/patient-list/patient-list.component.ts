@@ -106,6 +106,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.rowModelType = 'serverSide';
     this.paginationPageSize = 10;
     this.cacheBlockSize = 10;
+    sessionStorage.removeItem('findingsData');
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
@@ -176,6 +177,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.showTable = false;
     this.dashboardService.getPatientList(page, size).subscribe(
       (patientsList: PatientListData) => {
+        console.log(patientsList)
         this.showloader = false;
         this.showTable = true;
         this.showError = false;

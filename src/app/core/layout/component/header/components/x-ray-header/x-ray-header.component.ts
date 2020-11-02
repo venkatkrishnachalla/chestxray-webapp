@@ -127,6 +127,7 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     const currIndex = this.currentIndex + 1;
     const filterData = this.patientRows[currIndex];
     const patientDetail = JSON.stringify(filterData);
+    sessionStorage.removeItem('findingsData');
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
