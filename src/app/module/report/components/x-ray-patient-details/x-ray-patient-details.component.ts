@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Output,
   EventEmitter,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
@@ -72,6 +72,8 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
     });
     this.eventEmitterService.findingsSubject.subscribe((data) => {
       this.pdfFindings = data;
+      const findings = JSON.stringify(this.pdfFindings);
+      sessionStorage.setItem('findings', findings);
       this.changeDetector.markForCheck();
     });
     this.eventEmitterService.onStatusChangeSubject.subscribe(

@@ -553,6 +553,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     };
     this.resetZoom();
     this.keepPositionInBounds(this.canvas);
+    this.isChangeable = true;
+    this.lineLengthInMilliMeter = '';
     this.canvas.clear();
     this.spinnerService.show();
     this.eventEmitterService.OnDefaultRanges(50);
@@ -1063,7 +1065,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * mlApiEllipseLoop(mlList, check);
    */
-  mlApiEllipseLoop(mlList: any, check) {
+  mlApiEllipseLoop(mlList: any, check: string) {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
     this.ellipseList = [];
@@ -1099,6 +1101,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         findingsOrdered.push(element);
       }
     });
+    if (check === 'session') {
+      const sessionFindings = JSON.parse(sessionStorage.getItem('findings'));
+      sessionFindings.forEach((finding: any) => {
+          this.eventEmitterService.onComponentFindingsDataShared(finding);
+      });
+    } else {
     findingsOrdered.forEach((info) => {
       if (
         mLArray.Findings[info.Name].length === 0 &&
@@ -1141,6 +1149,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         }
       }
     });
+    }
     let val1 = 0;
     mLArray.diseases.forEach((disease: any, index: any) => {
       if (!disease.contours) {

@@ -39,6 +39,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       (patientId: string) => {
         this.impression = [];
         this.uniqueImpressions = [];
+        this.hideShowAll = true;
       }
     );
   }
