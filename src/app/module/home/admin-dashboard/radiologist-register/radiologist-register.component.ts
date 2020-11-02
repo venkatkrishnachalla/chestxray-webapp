@@ -68,13 +68,10 @@ export class RadiologistRegisterComponent implements OnInit {
             this.matdialougeref.close(this.isClose);
 
           this.toastrService.error(errorResponse.error.Email);
-          } else if (errorResponse.error) {
+          } 
+          else if (errorResponse.error) {
             if(errorResponse.error !== "Username is already taken."){
               this.matdialougeref.close(this.isClose);
-              // console.log(document.getElementById('isSubmit'));
-              // document.getElementById('isSubmit').removeAttribute('ng-reflect-dialog-result')
-              // document.getElementById('isSubmit').removeAttribute('mat-dialog-close')
-              // console.log(document.getElementById('isSubmit'));
             }
 
           this.toastrService.error(errorResponse.error);

@@ -40,8 +40,8 @@ export class DashboardService {
     );
   }
 
-  getAdminPatientList(status: string) {
-    return this.http.get<PatientData>(this.endpoint.getAdminPatientList(),{ params: {status: status } }).pipe(
+  getAdminPatientList(status: string, page, size) {
+    return this.http.get<PatientData>(this.endpoint.getAdminPatientList(page, size),{ params: {status: status } }).pipe(
       catchError(this.handleError),
       tap((responseData) => {
         return responseData;
