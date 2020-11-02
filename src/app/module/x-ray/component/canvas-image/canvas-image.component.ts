@@ -2188,6 +2188,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const obj = {
         color: colorName,
         ellipses: [],
+        contours: [],
         index: this.selectedObjectPrediction.id,
         name: diseases,
         source: src,
@@ -2219,6 +2220,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             source: src,
           },
         ],
+        contours: [],
         index: this.canvas._activeObject.index,
         name: diseases,
         source: src,
