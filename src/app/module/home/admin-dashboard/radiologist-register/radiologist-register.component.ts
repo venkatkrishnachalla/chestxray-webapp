@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AdminManagementService } from '../admin-management.service';
-
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
 @Component({
   selector: 'cxr-radiologist-register',
   templateUrl: './radiologist-register.component.html',
@@ -14,10 +14,13 @@ export class RadiologistRegisterComponent implements OnInit {
   addRadiologistForm: FormGroup;
   typeOfRadiologist = ['Hospitalradiologist', 'Individualradiologist'];
   isFormSubmit = false;
+  isClose:boolean= true;
   constructor(
     private formBuilder: FormBuilder, 
     private adminManagment: AdminManagementService,
     private toastrService: ToastrService,
+    private matdialouge:MatDialog,
+    private matdialougeref:MatDialogRef<any>
     ) {}
   ngOnInit(): void {
     this.addRadiologistForm = this.formBuilder.group(
@@ -35,7 +38,7 @@ export class RadiologistRegisterComponent implements OnInit {
   }
 
   addRadiologists() {
-    this.isFormSubmit = true;
+
     if (this.addRadiologistForm.invalid) {
       return;
     }
@@ -51,15 +54,30 @@ export class RadiologistRegisterComponent implements OnInit {
     this.adminManagment.addRadiologist(request).subscribe(
       (response) => {
         this.toastrService.success(`${request.userName} is Registered Succesfully`);
+        this.isFormSubmit = true;
+        this.matdialougeref.close(this.isClose);
       },
       (errorResponse: HttpErrorResponse) => {
+       
+        console.log("hai", errorResponse)
         if (errorResponse.error.ConfirmPassword) {
+          this.matdialougeref.close(this.isClose);
+
           this.toastrService.error(errorResponse.error.ConfirmPassword[0]);
           } else if (errorResponse.error.Email) {
+            this.matdialougeref.close(this.isClose);
+
           this.toastrService.error(errorResponse.error.Email);
-          } else if (errorResponse.error) {
+          } 
+          else if (errorResponse.error) {
+            if(errorResponse.error !== "Username is already taken."){
+              this.matdialougeref.close(this.isClose);
+            }
+
           this.toastrService.error(errorResponse.error);
           } else {
+            this.matdialougeref.close(this.isClose);
+
             return;
           }
       });
@@ -69,7 +87,10 @@ export class RadiologistRegisterComponent implements OnInit {
     this.addRadiologistForm.reset();
     this.addRadiologistForm.markAsUntouched();
   }
-
+  close(){
+    this.matdialougeref.close(this.isClose);
+    this.matdialouge.closeAll()
+  }
 }
 
 // custom validator to check that two fields match
