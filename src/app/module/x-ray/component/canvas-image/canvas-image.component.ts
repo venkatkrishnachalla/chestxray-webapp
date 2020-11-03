@@ -1586,6 +1586,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         height: '240px',
         width: '320px',
         disableClose: true,
+        closeOnNavigation: true,
+        backdropClass: 'backdropClass'
       });
     } else {
       alert('Please select object first');
@@ -1607,7 +1609,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       height: '500px',
       width: '320px',
       disableClose: true,
-      hasBackdrop: false
+      closeOnNavigation: true,
+      backdropClass: 'backdropClass'
     });
   }
 
@@ -2123,6 +2126,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         height: '500px',
         width: '320px',
         disableClose: true,
+        closeOnNavigation: true,
+        backdropClass: 'backdropClass'
       });
       this.canvas.isDrawingMode = false;
     }
@@ -2141,6 +2146,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       height: '500px',
       width: '320px',
       disableClose: true,
+      closeOnNavigation: true,
+      backdropClass: 'backdropClass'
     });
   }
 
