@@ -111,8 +111,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           if (noImpressionIndex !== -1){
             this.impression.splice(noImpressionIndex, 1);
           }
-        }
-        else{
+        } else {
           this.impression.push(obj);
         }
         this.uniqueImpressionsData();

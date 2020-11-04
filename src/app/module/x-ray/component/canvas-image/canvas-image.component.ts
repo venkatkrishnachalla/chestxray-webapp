@@ -776,10 +776,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
     if (
       (obj.getBoundingRect().top < 100 || obj.getBoundingRect().left < 100) &&
-      obj.getBoundingRect().height > 150
+      obj.getBoundingRect().height > 150 && obj.getBoundingRect().top < 225
     ) {
       this.left = objCenterX + 275;
       this.top = objCenterY + 325;
+    } else if (obj.getBoundingRect().left < 100 &&
+    obj.getBoundingRect().height > 150 && obj.getBoundingRect().top > 225) {
+      this.left = objCenterX + 275;
+      this.top = objCenterY;
     } else if (
       this.canvas.getActiveObject().top < 140 &&
       this.canvas.getActiveObject().left < 450 &&
@@ -1187,6 +1191,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         if (disease.source === 'ML') {
           disease.isMlAi = true;
         }
+        // tslint:disable-next-line: no-shadowed-variable
         disease.ellipses.forEach((ellipse: any, index: number) => {
           if (disease.name === null) {
             disease.name = 'null';
@@ -1251,7 +1256,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           title: 'impression',
           isMLApi: false,
           id: disease.idx,
-          index: disease.idx,
+          index: disease.index,
           // index: check !== 'session' ? random : disease.idx,
           name: disease.name,
           color: disease.color,
@@ -1263,7 +1268,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.coordinateList = [];
 
         const coordinatePath = [];
-        if (disease.contours !== undefined) {
+        if (disease.contours !== undefined && disease.contours.length < 0) {
           disease.contours[0].coordinates.forEach((data) => {
             coordinatePath.push(data[0]);
             coordinatePath.push(data[1]);
@@ -1328,7 +1333,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             disease.contours[0] === undefined ||
             disease.contours.length === 0
           ) {
-            console.log('diffuse category does not contain disease contours');
+            return;
           } else {
             const coordinatePath = [];
             disease.contours[0].coordinates.forEach((data) => {
