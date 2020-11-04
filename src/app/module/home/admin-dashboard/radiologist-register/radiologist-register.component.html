@@ -30,7 +30,7 @@
       </div>
 
       <div mat-dialog-actions>
-        <button type="submit" mat-raised-button [disabled]="!addRadiologistForm.valid" id="isSubmit">Submit</button>
+        <button type="submit" mat-raised-button [disabled]="!addRadiologistForm.valid" [ngClass] = "{'my-color': !addRadiologistForm.valid}" id="isSubmit">Submit</button>
       </div>
     </form>
   </div>
