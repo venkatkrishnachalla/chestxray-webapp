@@ -1177,6 +1177,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             selectedObject.isMLApi = true;
             disease.isMlAi = true;
           }
+          if (disease.idx === undefined) {	
+            selectedObject.index = index;	
+          }
           this.impressionArray.push(selectedObject);
           this.eventEmitterService.onComponentDataShared(selectedObject);
         }
@@ -1240,6 +1243,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
         val1++;
       } else if (disease.freeHandDrawing) {
+        if (disease.idx === undefined) {	
+          disease.idx = index;	
+        }
         this.eventEmitterService.onComponentEllipseDataShared({
           name: disease.name,
           index: disease.idx,
@@ -1263,11 +1269,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.coordinateList = [];
 
         const coordinatePath = [];
-        if (disease.contours !== undefined) {
-          disease.contours[0].coordinates.forEach((data) => {
-            coordinatePath.push(data[0]);
-            coordinatePath.push(data[1]);
-          });
+        if (disease.contours !== undefined && disease.contours.length !== 0) {	
+          if (disease.contours[0].coordinates) {	
+            disease.contours[0].coordinates.forEach((data) => {	
+              coordinatePath.push(data[0]);	
+              coordinatePath.push(data[1]);	
+            });	
+          }	
         } else {
           disease.coordinatevalues.forEach((data) => {
             coordinatePath.push(data.x);
