@@ -1113,9 +1113,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
     if (check === 'session') {
       const sessionFindings = JSON.parse(sessionStorage.getItem('findings'));
-      sessionFindings.forEach((finding: any) => {
-        this.eventEmitterService.onComponentFindingsDataShared(finding);
-      });
+      if (sessionFindings !== null) {
+        sessionFindings.forEach((finding: any) => {
+          this.eventEmitterService.onComponentFindingsDataShared(finding);
+        });
+      }
     } else {
       findingsOrdered.forEach((info) => {
         if (
