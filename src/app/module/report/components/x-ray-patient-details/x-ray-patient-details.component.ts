@@ -123,7 +123,14 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
         this.status = 'Completed';
       }
     );
-
+    this.userSubscription = this.authService.userSubject.subscribe(
+      (user: User) => {
+        if (user) {
+          this.isHospitalRadiologist =
+            user.userroles[0] === 'HospitalRadiologist' ? true : false;
+        }
+      }
+    );
     this.xrayAnnotatedImpression
       .xrayAnnotatedImpressionsService()
       .subscribe((impression: ImpressionData) => {
@@ -154,15 +161,6 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
       this.annotatedFindings = findings;
       this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
     }
-
-    this.userSubscription = this.authService.userSubject.subscribe(
-      (user: User) => {
-        if (user) {
-          this.isHospitalRadiologist =
-            user.userroles[0] === 'HospitalRadiologist' ? true : false;
-        }
-      }
-    );
     this.setCanvasDimension();
   }
 
