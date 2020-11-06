@@ -163,6 +163,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   obj: any;
   rangeX: any;
   diffuseObjects: any;
+  impression: any[];
   /*
    * constructor for CanvasImageComponent class
    */
@@ -259,6 +260,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.eventEmitterService.contrastValue.subscribe((data: number) => {
       this.getContrast(data);
     });
+
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
         switch (data.title) {
@@ -334,6 +336,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.eventEmitterService.onErrorMessage({
           data: errorMessage,
         });
+      }
+    );
+    this.eventEmitterService.invokeFindingsDataFunction.subscribe(
+      (impression: any) => {
+        this.impression = impression;
       }
     );
     this.canvas = new fabric.Canvas('at-id-x-ray-Canvas', {
@@ -1113,9 +1120,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     });
     if (check === 'session') {
       const sessionFindings = JSON.parse(sessionStorage.getItem('findings'));
-      sessionFindings.forEach((finding: any) => {
-        this.eventEmitterService.onComponentFindingsDataShared(finding);
-      });
+      if (sessionFindings !== null) {
+        sessionFindings.forEach((finding: any) => {
+          this.eventEmitterService.onComponentFindingsDataShared(finding);
+        });
+      }
     } else {
       findingsOrdered.forEach((info) => {
         if (
@@ -1704,19 +1713,56 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const random = Math.floor(Math.random() * 100 + 1);
     let emptyObject;
     let selectedObjectPrediction;
+    let repeatedAnnotation;
     if (
       this.canvas.getActiveObject() === undefined ||
       this.canvas.getActiveObject() === null
     ) {
-      emptyObject = {
-        index: random,
-        diseaseType: 'diffuse category',
-      };
-      this.selectedObjectPrediction = emptyObject;
-      selectedObjectPrediction = emptyObject;
-      selectedObjectPrediction.index = random;
-      this.diseaseType = 'diffuse category';
-    } else {
+      this.impression.forEach(element => {
+        if (element.diseaseType !== undefined ) {
+          if (this.selectedDisease === element.name) {
+            repeatedAnnotation = true;
+            alert('Already saved Annotation');
+            // this.dialog.closeAll();
+            this.toastrService.error('Already saved Annotation');
+            return;
+          }
+          else {
+            repeatedAnnotation = false;
+          }
+        }
+      });
+      if (!repeatedAnnotation) {
+        emptyObject = {
+          index: random,
+          diseaseType: 'diffuse category',
+        };
+        this.selectedObjectPrediction = emptyObject;
+        selectedObjectPrediction = emptyObject;
+        selectedObjectPrediction.index = random;
+        this.diseaseType = 'diffuse category';
+  
+        const selectedObject = {
+          index: random,
+          name: this.selectedDisease,
+          source: 'DRselectedDisease',
+          diseaseType: this.diseaseType,
+        };
+        this.savedObjects.push(selectedObjectPrediction);
+        this.storeDataInSession(
+         {
+           index: random,
+             sentence: this.selectedDisease,
+             source: 'DR',
+             diseaseType: this.diseaseType,
+           },
+           'impression'
+        );
+        this.eventEmitterService.onComponentDataShared(selectedObject);
+        this.getColorMapping(this.selectedDisease, 'save', 'DR');
+      }
+    } 
+    else {
       this.canvas.getActiveObject().index = random;
       this.canvas.getActiveObject().diseaseType = 'normal category';
       this.canvas.getActiveObject().disease = this.selectedDisease;
@@ -1724,37 +1770,37 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       selectedObjectPrediction = this.canvas.getActiveObject();
       selectedObjectPrediction.index = random;
       this.diseaseType = 'normal category';
-    }
-    const selectedObject = {
-      index: random,
-      name: this.selectedDisease,
-      source: 'DRselectedDisease',
-      diseaseType: this.diseaseType,
-    };
-    this.savedObjects.push(selectedObjectPrediction);
-    this.storeDataInSession(
-      {
+      const selectedObject = {
         index: random,
-        sentence: this.selectedDisease,
-        source: 'DR',
+        name: this.selectedDisease,
+        source: 'DRselectedDisease',
         diseaseType: this.diseaseType,
-      },
-      'impression'
-    );
-    this.eventEmitterService.onComponentDataShared(selectedObject);
-
-    this.getColorMapping(this.selectedDisease, 'save', 'DR');
+      };
+      this.savedObjects.push(selectedObjectPrediction);
+      this.storeDataInSession(
+       {
+         index: random,
+           sentence: this.selectedDisease,
+           source: 'DR',
+           diseaseType: this.diseaseType,
+         },
+         'impression'
+       );
+      this.eventEmitterService.onComponentDataShared(selectedObject);
+      this.getColorMapping(this.selectedDisease, 'save', 'DR');
+      this.activeIcon.active = false;
+      if (this.selectedObjectPrediction.type === 'ellipse') {
+         this.saveEllipseIntoSession();
+       }
+      if (this.selectedObjectPrediction.type === 'path') {
+         this.saveFreeHandDrawingIntoSession();
+       }
+      this.toastrService.success('Annotation saved successfully');
+    }
     this.clear();
-    this.activeIcon.active = false;
     this.dialog.closeAll();
-    if (this.selectedObjectPrediction.type === 'ellipse') {
-      this.saveEllipseIntoSession();
-    }
-    if (this.selectedObjectPrediction.type === 'path') {
-      this.saveFreeHandDrawingIntoSession();
-    }
+    this.activeIcon.active = false;
     this.pathologyNames = this.constants.diseases;
-    this.toastrService.success('Annotation saved successfully');
     this.canvas.discardActiveObject();
     this.canvas.renderAll();
   }
@@ -2223,6 +2269,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas._activeObject === null ||
       this.canvas._activeObject === undefined
     ) {
+      console.log('diseases', diseases)
       const obj = {
         color: colorName,
         ellipses: [],
