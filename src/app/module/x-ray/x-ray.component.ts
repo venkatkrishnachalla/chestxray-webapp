@@ -173,7 +173,9 @@ export class XRayComponent implements OnInit, OnDestroy {
               annotationData.Findings[outputMain].push(impressionIndex + 1);
             }
           } else if (index !== -1) {
-            annotationData.Findings[outputMain].push(index);
+            if (annotationData.Findings[outputMain]) {
+              annotationData.Findings[outputMain].push(index);
+            }
           }
         });
       }
@@ -181,7 +183,10 @@ export class XRayComponent implements OnInit, OnDestroy {
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
-    sessionStorage.setItem('findingsData', JSON.stringify(this.findings.findings));
+    sessionStorage.setItem(
+      'findingsData',
+      JSON.stringify(this.findings.findings)
+    );
     this.eventEmitterService.onComponentReportButtonClick({ check: 'report' });
   }
   /**
@@ -213,7 +218,9 @@ export class XRayComponent implements OnInit, OnDestroy {
       delete element.index;
       if (element.freeHandDrawing) {
         const coordinatesArray = [];
-        const newcoordinates = element.coordinatevalues ? element.coordinatevalues : element.contours[0].Coordinates;
+        const newcoordinates = element.coordinatevalues
+          ? element.coordinatevalues
+          : element.contours[0].Coordinates;
         newcoordinates.forEach((data) => {
           coordinatesArray.push([data.x, data.y]);
         });
@@ -342,10 +349,7 @@ export class XRayComponent implements OnInit, OnDestroy {
             sessionStorage.getItem('patientDetail')
           );
           patientInfo.xRayList[0].isAnnotated = true;
-          sessionStorage.setItem(
-            'patientDetail',
-            JSON.stringify(patientInfo)
-          );
+          sessionStorage.setItem('patientDetail', JSON.stringify(patientInfo));
           this.toastrService.success('Report submitted successfully');
           this.canvas.patientDetail.xRayList[0].isAnnotated = true;
         },

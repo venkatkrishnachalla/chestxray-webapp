@@ -32,7 +32,7 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
   xrayAnnotatedImpression: string;
   patientInfo: any;
   pdfTitle: string;
-  annotatedFindings: any;
+  annotatedFindings: any = [];
   isHospitalRadiologist: boolean;
   userSubscription: Subscription;
   mailText: string;
@@ -85,11 +85,13 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
     this.annotatedXrayService
       .xrayAnnotatedFindingsService()
       .subscribe((findings: any[]) => {
-        if (findings.indexOf(' ') !== -1) {
-          findings.splice(findings.indexOf(' '), 1);
+        if (findings.length > 0) {
+          if (findings.indexOf(' ') !== -1) {
+            findings.splice(findings.indexOf(' '), 1);
+          }
+          this.annotatedFindings = findings;
+          this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
         }
-        this.annotatedFindings = findings;
-        this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
       });
     if (Object.keys(this.annotatedFindings).length === 0) {
       const findings = JSON.parse(sessionStorage.getItem('findings'));
@@ -184,7 +186,9 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
         delete element.index;
         if (element.freeHandDrawing) {
           const coordinatesArray = [];
-          const newcoordinates = element.coordinatevalues ? element.coordinatevalues : element.contours[0].Coordinates;
+          const newcoordinates = element.coordinatevalues
+            ? element.coordinatevalues
+            : element.contours[0].Coordinates;
           newcoordinates.forEach((data) => {
             coordinatesArray.push([data.x, data.y]);
           });
@@ -334,16 +338,16 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
             this.eventEmitterService2.patientInfoStatusChange(true);
             this.patientInfo.xRayList[0].isAnnotated = true;
             const patientInfo = JSON.parse(
-                sessionStorage.getItem('patientDetail')
-              );
+              sessionStorage.getItem('patientDetail')
+            );
             patientInfo.xRayList[0].isAnnotated = true;
             sessionStorage.setItem(
-                'patientDetail',
-                JSON.stringify(patientInfo)
+              'patientDetail',
+              JSON.stringify(patientInfo)
             );
             this.toastrService.success('Report submitted successfully');
           },
-            (errorMessage: string) => {
+          (errorMessage: string) => {
             this.spinnerService.hide();
             this.toastrService.error('Failed to submit annotated data');
           }
