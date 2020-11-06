@@ -53,7 +53,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       dateOfBirth: ['', Validators.required],
       gender: ['MALE', Validators.required],
       referringPhysician: ['SELF', Validators.required],
-      referringPhysicianName: [''],
+      referringPhysicianName: ['', Validators.required],
       email: [
         '',
         [
@@ -83,6 +83,9 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
           sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
           this.doctorName = 'Dr ' + user.username;
           this.radiologistName = user.username;
+          this.uploadImageForm.patchValue({
+            referringPhysicianName: this.doctorName,
+          });
         }
       }
     );
@@ -118,12 +121,16 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
    * refPhysicianChange(value);
    */
   refPhysicianChange(value: string) {
-    this.uploadImageForm.patchValue({
-      referringPhysicianName: '',
-    });
     this.isOtherPhysician = false;
     if (value === 'OTHERS') {
       this.isOtherPhysician = true;
+      this.uploadImageForm.patchValue({
+        referringPhysicianName: '',
+      });
+    } else {
+      this.uploadImageForm.patchValue({
+        referringPhysicianName: this.doctorName,
+      });
     }
   }
 
