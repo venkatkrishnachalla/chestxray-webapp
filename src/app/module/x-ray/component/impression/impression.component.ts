@@ -107,8 +107,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           } else {
             this.impression.push(obj);
           }
-          const noImpressionIndex = this.impression.findIndex( item => item.index === '00');
-          if (noImpressionIndex !== -1){
+          const noImpressionIndex = this.impression.findIndex(
+            (item) => item.index === '00'
+          );
+          if (noImpressionIndex !== -1) {
             this.impression.splice(noImpressionIndex, 1);
           }
         } else {

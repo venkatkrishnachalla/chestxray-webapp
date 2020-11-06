@@ -8,7 +8,7 @@
       <span> {{ reportPageText.patientDetails | uppercase }}</span>
     </div>
     <div class="patient-info">
-      <table mat-table class="mat-elevation-z0"> 
+      <table mat-table class="mat-elevation-z0">
         <tr>
           <td><mat-label>Patient ID</mat-label></td>
           <td>{{ patientInfo.hospitalPatientId }}</td>
@@ -29,7 +29,7 @@
         </tr>
         <tr>
           <td><mat-label>Gender</mat-label></td>
-          <td>{{ patientInfo.sex  }}</td>
+          <td>{{ patientInfo.sex }}</td>
           <td><mat-label>Ref. Physician</mat-label></td>
           <td>{{ patientInfo.xRayList[0].assignedTo || '-' }}</td>
         </tr>
@@ -114,14 +114,14 @@
     <cxr-report-header></cxr-report-header>
   </div>
   <div class="patient-grid-container">
-    <table mat-table class="mat-elevation-z0"> 
+    <table mat-table class="mat-elevation-z0">
       <tr>
         <td><b>Patient ID</b></td>
-        <td class='pdf-padding-r-70'>: {{ patientInfo.hospitalPatientId }}</td>
+        <td class="pdf-padding-r-70">: {{ patientInfo.hospitalPatientId }}</td>
         <td><b>Name</b></td>
-        <td class='pdf-padding-r-70'>: {{ patientInfo.name }}</td>
+        <td class="pdf-padding-r-70">: {{ patientInfo.name }}</td>
         <td><b>Gender</b></td>
-        <td>: {{ patientInfo.sex  }}</td>
+        <td>: {{ patientInfo.sex }}</td>
       </tr>
       <tr>
         <td><b>Status</b></td>
