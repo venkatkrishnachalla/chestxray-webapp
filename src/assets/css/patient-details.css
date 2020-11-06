@@ -64,6 +64,7 @@
   border: 1px solid black;
   min-height: 50px;
   height: auto;
+  word-wrap: break-word;
 }
 
 .cxr-x-ray-patient-details {
