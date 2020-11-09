@@ -30,7 +30,7 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
   patientInfo: PatientDetailData;
   status: string;
   annotatedImpression: ImpressionData;
-  annotatedFindings: any;
+  annotatedFindings: any = [];
   impressions = [];
   abnormalityColor = [];
   comments: string;
@@ -66,14 +66,12 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private authService: AuthService
   ) {
-    this.eventEmitterService.commentSubject.subscribe((data) => {
+    this.eventEmitterService.commentSubject.subscribe((data: string) => {
       this.pdfComments = data;
       this.changeDetector.markForCheck();
     });
-    this.eventEmitterService.findingsSubject.subscribe((data) => {
+    this.eventEmitterService.findingsSubject.subscribe((data: any) => {
       this.pdfFindings = data;
-      const findings = JSON.stringify(this.pdfFindings);
-      sessionStorage.setItem('findings', findings);
       this.changeDetector.markForCheck();
     });
     this.eventEmitterService.onStatusChangeSubject.subscribe(
@@ -92,7 +90,13 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.reportPageText = this.constants.reportPage;
     this.patientInfo = history.state.patientDetails;
-    this.eventEmitterService.commentSubject.next('');
+    const sessionReportComments = sessionStorage.getItem('reportComments');
+    if (sessionReportComments) {
+      this.eventEmitterService.commentSubject.next(sessionReportComments);
+      this.comments = sessionReportComments;
+    } else {
+      this.eventEmitterService.commentSubject.next('');
+    }
     this.annotatedImage = sessionStorage.getItem('annotatedImage');
     if (this.patientInfo === undefined) {
       const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
@@ -151,11 +155,13 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
     this.xrayAnnotatedImpression
       .xrayAnnotatedFindingsService()
       .subscribe((findings: any[]) => {
-        if (findings.indexOf(' ') !== -1) {
-          findings.splice(findings.indexOf(' '), 1);
+        if (findings.length > 0) {
+          if (findings.indexOf(' ') !== -1) {
+            findings.splice(findings.indexOf(' '), 1);
+          }
+          this.annotatedFindings = findings;
+          this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
         }
-        this.annotatedFindings = findings;
-        this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
       });
     if (Object.keys(this.annotatedFindings).length === 0) {
       const findings = JSON.parse(sessionStorage.getItem('findings'));
@@ -199,6 +205,7 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
    */
   commentsChange(data) {
     this.eventEmitterService.commentSubject.next(data);
+    sessionStorage.setItem('reportComments', data);
   }
 
   /**
@@ -209,8 +216,10 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
    * updateFindings(evt, index);
    */
   updateFindings(evt, index) {
-    this.annotatedFindings.splice(index, 1, evt.target.textContent.slice(2));
+    this.annotatedFindings.splice(index, 1, evt.target.textContent.slice(2).trim());
     this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
+    sessionStorage.setItem('findings', JSON.stringify(this.annotatedFindings));
+    sessionStorage.setItem('findingsData', JSON.stringify(this.annotatedFindings));
   }
 
   /**
