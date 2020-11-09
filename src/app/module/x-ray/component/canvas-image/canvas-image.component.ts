@@ -2787,6 +2787,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   diffusePathology(data) {
     this.dialog.closeAll();
     this.activeIcon = data;
+    this.updateDisease = false;
     this.pathologyNames = this.constants.diffusePathology;
     this.openPathologyModal();
   }
