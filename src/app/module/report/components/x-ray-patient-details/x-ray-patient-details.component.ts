@@ -127,7 +127,6 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
         this.status = 'Completed';
       }
     );
-
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         if (user) {

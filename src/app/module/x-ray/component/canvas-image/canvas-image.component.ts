@@ -1154,8 +1154,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       if (sessionFindings !== null) {
         sessionFindings.forEach((finding: any) => {
           this.eventEmitterService.onComponentFindingsDataShared(finding);
-      });
-    }
+        });
+      }
     } else {
     findingsOrdered.forEach((info) => {
       if (
