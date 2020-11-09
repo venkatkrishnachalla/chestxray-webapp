@@ -1719,17 +1719,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.getActiveObject() === null
     ) {
       this.impression.forEach(element => {
-        if (element.diseaseType !== undefined ) {
-          if (this.selectedDisease === element.name) {
+        if (repeatedAnnotation !== undefined && repeatedAnnotation === true) {
+          return;
+        }
+        if (element.diseaseType !== undefined && this.selectedDisease === element.name) {
             repeatedAnnotation = true;
-            alert('Already saved Annotation');
-            // this.dialog.closeAll();
-            this.toastrService.error('Already saved Annotation');
+            alert('Selected diffuse category already exist, please select other to continue');
+            this.clear();
+            this.openPathologyModal();
             return;
-          }
-          else {
-            repeatedAnnotation = false;
-          }
+        }
+        else {
+          repeatedAnnotation = false;
         }
       });
       if (!repeatedAnnotation) {
@@ -1760,6 +1761,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         );
         this.eventEmitterService.onComponentDataShared(selectedObject);
         this.getColorMapping(this.selectedDisease, 'save', 'DR');
+        this.dialog.closeAll();
+        this.activeIcon.active = false;
+        this.pathologyNames = this.constants.diseases;
+        this.clear();
+      }
+      else {
+        return;
       }
     } 
     else {
@@ -1796,13 +1804,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
          this.saveFreeHandDrawingIntoSession();
        }
       this.toastrService.success('Annotation saved successfully');
+      this.clear();
+      this.dialog.closeAll();
+      this.activeIcon.active = false;
+      this.pathologyNames = this.constants.diseases;
     }
-    this.clear();
-    this.dialog.closeAll();
-    this.activeIcon.active = false;
-    this.pathologyNames = this.constants.diseases;
     this.canvas.discardActiveObject();
     this.canvas.renderAll();
+    console.log('saved data', this.savedInfo);
   }
 
   /**
@@ -2269,7 +2278,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas._activeObject === null ||
       this.canvas._activeObject === undefined
     ) {
-      console.log('diseases', diseases)
       const obj = {
         color: colorName,
         ellipses: [],
