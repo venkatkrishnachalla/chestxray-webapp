@@ -1746,21 +1746,26 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.getActiveObject() === undefined ||
       this.canvas.getActiveObject() === null
     ) {
-      this.impression.forEach(element => {
-        if (repeatedAnnotation !== undefined && repeatedAnnotation === true) {
-          return;
-        }
-        if (element.diseaseType !== undefined && this.selectedDisease === element.name) {
-            repeatedAnnotation = true;
-            alert('Selected diffuse category already exist, please select other to continue');
-            this.clear();
-            this.openPathologyModal();
+      if (this.impression === undefined) {
+        repeatedAnnotation = false;
+      }
+      else {
+        this.impression.forEach(element => {
+          if (repeatedAnnotation !== undefined && repeatedAnnotation === true) {
             return;
-        }
-        else {
-          repeatedAnnotation = false;
-        }
-      });
+          }
+          if (element.diseaseType !== undefined && this.selectedDisease === element.name) {
+              repeatedAnnotation = true;
+              alert('Selected diffuse category already exist, please select other to continue');
+              this.clear();
+              this.openPathologyModal();
+              return;
+          }
+          else {
+            repeatedAnnotation = false;
+          }
+        });
+      }
       if (!repeatedAnnotation) {
         emptyObject = {
           index: random,
@@ -2167,7 +2172,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.enableDrawEllipseMode = false;
       this.canvas.isDrawingMode = true;
       this.canvas.freeDrawingBrush.color = '#ffff00';
-      this.canvas.freeDrawingBrush.width = 2;
+      this.canvas.freeDrawingBrush.width = 4;
       this.canvas.freeDrawingBrush.strokeUniform = true;
       this.canvas.observe('mouse:move', (e) => {
         const pointer = this.canvas.getPointer(e.e);
