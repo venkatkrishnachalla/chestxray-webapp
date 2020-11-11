@@ -53,9 +53,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
     public router: Router,
     private eventEmitterService: EventEmitterService,
     private dbService: NgxIndexedDBService,
-    private eventEmitterService2: EventEmitterService2,
-  ) {
-  }
+    private eventEmitterService2: EventEmitterService2
+  ) {}
   gridApi;
   gridColumnApi;
   columnDefs;
@@ -93,7 +92,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
     return this.totalPages;
   }
 
-
   /**
    * This is a init function, retrieve current user details.
    * @param '{void}' empty - A empty param
@@ -111,6 +109,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
     sessionStorage.removeItem('ellipse');
+    sessionStorage.removeItem('reportComments');
     this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.setItem('reportPageSelection', 'false');
     this.overlayNoRowsTemplate = 'No Data Available';
@@ -171,7 +170,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
    * getPatientList();
    */
   getPatientList(page, size) {
-    if (this.gridApi){
+    if (this.gridApi) {
       this.gridApi.showLoadingOverlay();
     }
     this.showTable = false;
