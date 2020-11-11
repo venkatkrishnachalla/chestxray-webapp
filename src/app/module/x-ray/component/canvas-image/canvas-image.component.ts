@@ -164,6 +164,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   rangeX: any;
   diffuseObjects: any;
   currentSelectedDesease: string;
+  isAlreadyAnnotated: boolean;
   impression: any[];
   /*
    * constructor for CanvasImageComponent class
@@ -1173,6 +1174,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       ) {
         const finalFinding = info.Name + ': ' + info.Desc;
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
+      } else if ( mLArray.Findings[info.Name].length === 0 &&
+        info.Name !== 'ADDITIONAL' && this.isAlreadyAnnotated) {
+          const finalFinding = info.Name + ': ' + info.Desc;
+          this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
       } else {
         let finalFinding = '';
         mLArray.Findings[info.Name].forEach((finding: any, index) => {
@@ -2875,6 +2880,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.savedAnnotations = response;
         if (this.savedAnnotations.data.ndarray[0].Source !== 'DR') {
           this.eventEmitterService.onAskAiButtonClick('success');
+          this.isAlreadyAnnotated = true;
         }
       },
       (errorMessage: string) => {

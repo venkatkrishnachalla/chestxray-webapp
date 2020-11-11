@@ -10,7 +10,10 @@
   </mat-card-title>
   <mat-card-content
     class="impression-content"
-    *ngFor="let impressions of uniqueImpressions | sort:'asc':'name'; let i = index"
+    *ngFor="
+      let impressions of uniqueImpressions | sort: 'asc':'name';
+      let i = index
+    "
   >
     <button [style.background-color]="impressions.colors"></button>
     <span class="impression-text-width">{{ impressions.name }}</span>
@@ -33,5 +36,10 @@
       type="checkbox"
       [checked]="impressions.checked"
     />
+  </mat-card-content>
+  <mat-card-content *ngIf="!uniqueImpressions||uniqueImpressions.length === 0">
+    <div align="center">
+      No Impressions Found.
+    </div>
   </mat-card-content>
 </mat-card>
