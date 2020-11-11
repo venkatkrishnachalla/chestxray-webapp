@@ -1,3 +1,22 @@
+// HELPER FOR DATE COMPARISON
+function _monthToNum(date) {
+  if (date === undefined || date === null || date.length !== 19) {
+    return null;
+  }
+
+  const yearNumber = date.substring(6, 10);
+  const monthNumber = date.substring(3, 5);
+  const dayNumber = date.substring(0, 2);
+
+  const hours = date.substring(11, 13);
+  const minutes = date.substring(14, 16);
+  const seconds = date.substring(17, 19);
+
+  const result = yearNumber * 10000 + monthNumber * 100 + dayNumber;
+  // 29/08/2004 => 20040829
+  return result;
+}
+
 export const homeConstants = {
   patientDashboard: {
     headers: [
@@ -46,19 +65,12 @@ export const homeConstants = {
             );
           }
         },
-        comparator: (number1, number2) => {
-          if (number1 === null && number2 === null) {
-          return 0;
-          }
-          if (isNaN(number1)){ return -1; }
-          if (isNaN(number2)){ return 1; }
-          if (number1 === null) {
-          return -1;
-          }
-          if (number2 === null) {
-          return 1;
-          }
-          return number1 - number2;
+        comparator: (valueA, valueB, nodeA, nodeB, isInverted) => {
+            if (valueA[0].isAnnotated === valueB[0].isAnnotated) {
+                return 0;
+            } else {
+                return (valueA[0].isAnnotated > valueB[0].isAnnotated) ? 1 : -1;
+            }
         }
       },
       {
@@ -92,19 +104,20 @@ export const homeConstants = {
         cellRenderer: (data) => {
           return data.value[0].lastUpdate ? new Date(data.value[0].lastUpdate).toLocaleString('es-CL') : '';
         },
-        comparator: (number1, number2) => {
-          if (number1 === null && number2 === null) {
-          return 0;
+        comparator: (valueA, valueB) => {
+          const date1Number = _monthToNum(new Date(valueA[0].lastUpdate).toLocaleString('es-CL'));
+          const date2Number = _monthToNum(new Date(valueB[0].lastUpdate).toLocaleString('es-CL'));
+          if (date1Number === null && date2Number === null) {
+            return 0;
           }
-          if (isNaN(number1)){ return -1; }
-          if (isNaN(number2)){ return 1; }
-          if (number1 === null) {
-          return -1;
+          if (date1Number === null) {
+            return -1;
           }
-          if (number2 === null) {
-          return 1;
+          if (date2Number === null) {
+            return 1;
           }
-          return number1 - number2;
+
+          return date1Number - date2Number;
         }
       },
       {

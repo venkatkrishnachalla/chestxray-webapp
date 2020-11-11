@@ -1495,6 +1495,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         isMLAi: diseaseItem.source === 'ML' ? true : false,
         index: diseaseItem.index,
         type: 'ellipse',
+        name: diseaseItem.name
       });
       this.canvas.add(ellipse);
       this.canvas.renderAll();
@@ -1885,6 +1886,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       };
       this.eventEmitterService.onComponentButtonClick(selectedObject);
     } else {
+      // tslint:disable-next-line: no-string-literal
       this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
         const compare = this.canvas.getActiveObject().index;
         if (element.index === compare) {
@@ -1946,11 +1948,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         (element: any, index: number) => {
           if (element.ellipses) {
             element.ellipses.forEach((ellipse: any, indexId: number) => {
-              if (activeObj.index === ellipse.index) {
+              if (activeObj.index === ellipse.index && ellipse.name === disease) {
                 this.canvasScaleX = this.xRayImage.width / this.canvas.width;
                 this.canvasScaleY = this.xRayImage.height / this.canvas.height;
-                const xCenter = this.canvas._activeObject.left;
-                const yCenter = this.canvas._activeObject.top;            
+                let xCenter = this.canvas._activeObject.left + this.canvas._activeObject.width / 2;
+                let yCenter = this.canvas._activeObject.top + this.canvas._activeObject.height / 2;
+                if (ellipse.positionUpdated || activeObj.isMLAi){
+                  xCenter = this.canvas._activeObject.left;
+                  yCenter = this.canvas._activeObject.top;
+                }
                 if (element.ellipses.length > 1) {
                   const obj = {
                     x: xCenter * this.canvasScaleX,
@@ -1960,6 +1966,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                     r: activeObject.angle,
                     index: activeObject.index,
                     type: 'ellipse',
+                    name: ellipse.name,
+                    positionUpdated: true,
                     strokeDashArray: activeObj.isMLAi ? [15, 3] : [0, 0],
                     source: activeObj.isMLAi ? 'ML' : 'DR',
                     isUpdated: activeObj.isMLAi ? true : false,
@@ -1987,6 +1995,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                         r: activeObject.angle,
                         index: activeObject.index,
                         type: 'ellipse',
+                        name: ellipse.name,
+                        positionUpdated: true,
                         strokeDashArray: activeObj.isMLAi ? [15, 3] : [0, 0],
                         source: activeObj.isMLAi ? 'ML' : 'DR',
                         isUpdated: activeObj.isMLAi ? true : false,
@@ -2341,6 +2351,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             r: this.canvas._activeObject.angle,
             index: this.canvas._activeObject.index,
             type: 'ellipse',
+            name: this.canvas._activeObject.disease,
             source: src,
           },
         ],
@@ -2412,6 +2423,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               });
               if (obj.coordinatevalues.length === 0) {
                 const getArrayValues = [];
+                // tslint:disable-next-line: no-string-literal
                 this.savedInfo['data'].ndarray[0].diseases[
                   index
                 ].contours[0].coordinates.forEach((pathElement) => {
