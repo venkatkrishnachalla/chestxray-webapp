@@ -26,6 +26,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   impressionsText = 'Impressions';
   hideShowAll: boolean;
   enableDelete: boolean;
+  order = 'name';
+  reverse = false;
 
   /*
    * constructor for ImpressionComponent class
