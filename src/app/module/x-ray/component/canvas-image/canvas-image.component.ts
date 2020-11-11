@@ -1351,7 +1351,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             // @ts-ignore
             disease: disease.disease,
             stroke: disease.color,
-            strokeWidth: 2,
+            strokeWidth: 3,
             fill: '',
             originX: 'center',
             originY: 'center',
@@ -1410,7 +1410,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.canvas.add(
               new fabric.Path(this.coordinateList.join(' '), {
                 stroke: disease.color,
-                strokeWidth: 2,
+                strokeWidth: 3,
                 fill: '',
                 originX: 'center',
                 originY: 'center',
@@ -1488,7 +1488,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         angle: diseaseItem.r,
         stroke: diseaseItem.color,
         strokeDashArray: diseaseItem.strokeDashArray,
-        strokeWidth: 2,
+        strokeWidth: 3,
         fill: '',
         selectable: true,
         strokeUniform: true,
@@ -1523,7 +1523,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               height: 0,
               left: pointer.x,
               top: pointer.y,
-              strokeWidth: 2,
+              strokeWidth: 3,
               stroke: '#ffff00',
               fill: '',
               selectable: true,
@@ -2192,7 +2192,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.enableDrawEllipseMode = false;
       this.canvas.isDrawingMode = true;
       this.canvas.freeDrawingBrush.color = '#ffff00';
-      this.canvas.freeDrawingBrush.width = 4;
+      this.canvas.freeDrawingBrush.width = 3;
       this.canvas.freeDrawingBrush.strokeUniform = true;
       this.canvas.observe('mouse:move', (e) => {
         const pointer = this.canvas.getPointer(e.e);
@@ -2635,7 +2635,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           id: element.id,
           originX: 'center',
           originY: 'center',
-          strokeWidth: 2,
+          strokeWidth: 3,
           fill: '',
           selectable: true,
           strokeDashArray: element.strokeDashArray,
@@ -2680,7 +2680,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           new fabric.Path(this.coordinateList.join(' '), {
             // @ts-ignore
             stroke: element.color,
-            strokeWidth: 2,
+            strokeWidth: 3,
             fill: '',
             originX: 'center',
             originY: 'center',
