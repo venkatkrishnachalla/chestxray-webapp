@@ -1257,7 +1257,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
           ellipse.color =
             DISEASE_COLOR_MAPPING[disease.name.toLowerCase()] || RANDOM_COLOR;
-          ellipse.index = ellipse.source === 'DR' ? ellipse.index : idValue + '' + val2;
+          ellipse.index = ellipse.source === 'DR' ? ellipse.index ? ellipse.index : disease.idx : idValue + '' + val2;
           // ellipse.color = disease.color;
           ellipse.source =
             ellipse.source === 'ML' || ellipse.source === undefined
