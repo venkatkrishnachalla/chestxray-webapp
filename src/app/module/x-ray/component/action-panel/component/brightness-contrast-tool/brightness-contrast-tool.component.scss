@@ -1,3 +1,4 @@
+
 .sliderItems {
   display: flex;
   flex-wrap: wrap;
@@ -9,8 +10,40 @@
     margin-top: 10px;
     width: calc(50% - 10px);
 
-    span {
-      margin-left: 16px;
+    @media (max-width: 1200px){
+      span {
+        margin-left: 14px;
+      }
+    }
+
+    @media (max-width: 1674px) and (min-width: 1201px){
+      span {
+        margin-left: 16px;
+      }
+    }
+    @media (min-width: 1675px) and (max-width: 1899px){
+      span {
+        margin-left: 22px;
+      }
+    }
+    
+    @media (min-width: 1900px){
+      span {
+        margin-left: 30px;
+      }
+    }
+    
+
+    @media (max-width: 2500px) and (min-width: 1970px){
+      span {
+        margin-left: 40px;
+      }
+    }
+
+    @media (max-width: 2600px) and (min-width: 2501px) {
+      span {
+        margin-left: 50px;
+      }
     }
 
     ::ng-deep .ng5-slider .ng5-slider-pointer {
@@ -52,7 +85,22 @@
     }
 
     // Media queries based on screen width and height
-    @media (max-width: 1999px) and (min-width: 1441px) {
+    @media (max-width: 1999px) and (min-width: 1556px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 22px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: 0px !important;
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 1555px) and (min-width: 1441px) {
       ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
         bottom: 0;
         left: 19px;
@@ -91,7 +139,217 @@
       }
 
       ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
-        left: -6px !important;
+        left: -7px !important;
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 2600px) and (min-width: 2501px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 48px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: 25px !important;
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 2500px) and (min-width: 2220px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 45px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: 23px !important;
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 2219px) and (min-width: 2050px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 40px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: 18px !important;
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 2049px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 32px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: 10px !important;
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 1934px){
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 24px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: 2px !important;
+        top: auto;
+        bottom: 0;
+      }
+      ::ng-deep .slider {   
+          span {
+            margin-left: 25px !important;
+          }
+      }
+    }
+
+    @media (max-width: 1934px) and (min-width: 1801px){
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 28px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: 6px !important;
+        top: auto;
+        bottom: 0;
+      }
+      ::ng-deep .slider {   
+          span {
+            margin-left: 25px !important;
+          }
+      }
+    }
+
+    @media (max-width: 1800px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 24px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: 2px !important;
+        top: auto;
+        bottom: 0;
+      }
+      ::ng-deep .slider {   
+          span {
+            margin-left: 25px !important;
+          }
+      }
+    }
+
+    @media (max-width: 1675px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 21px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: -1px !important;
+        top: auto;
+        bottom: 0;
+      }
+        .slider {   
+          span {
+            margin-left: 22px !important;
+          }
+      }
+    }
+
+    @media (max-width: 1240px) {
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 18px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: -4px !important;
+        top: auto;
+        bottom: 0;
+      }
+      //   .slider {   
+      //     span {
+      //       margin-left: 22px !important;
+      //     }
+      // }
+    }
+
+    @media (max-width: 1330px) and (min-width: 1241px){
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 13px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: -9px !important;
+        top: auto;
+        bottom: 0;
+      }
+      //   .slider {   
+      //     span {
+      //       margin-left: 22px !important;
+      //     }
+      // }
+    }
+
+    @media (max-width: 1430px) and (min-width: 1331px){
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 15px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: -7px !important;
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 1530px) and (min-width: 1431px){
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 18px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: -4px !important;
         top: auto;
         bottom: 0;
       }
@@ -109,12 +367,6 @@
         left: -8px !important;
         top: auto;
         bottom: 0;
-      }
-
-      .slider {   
-        span {
-          margin-left: 5px;
-        }
       }
     }
 
@@ -134,7 +386,22 @@
     }
 
     
-    @media (max-width: 1039px) {
+    @media (max-width: 1039px) and (min-width: 831px){
+      ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
+        bottom: 0;
+        left: 15px;
+        width: 8px;
+        height: 100%;
+      }
+
+      ::ng-deep .ng5-slider.vertical .ng5-slider-pointer {
+        left: -7px !important;
+        top: auto;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 830px){
       ::ng-deep .ng5-slider.vertical .ng5-slider-bar {
         bottom: 0;
         left: 15px;
