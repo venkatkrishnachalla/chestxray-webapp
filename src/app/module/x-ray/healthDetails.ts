@@ -4,7 +4,7 @@ export interface StateGroup {
 }
 
 export type SaveEllipse = {
-  id: number;
+  index: number;
   width: number;
   height: number;
   top: number;
@@ -19,7 +19,7 @@ export type SaveEllipse = {
   isMLAi: boolean;
 };
 export class UpdateEllipse {
-  id: number;
+  index: number;
   width: number;
   height: number;
   top: number;
