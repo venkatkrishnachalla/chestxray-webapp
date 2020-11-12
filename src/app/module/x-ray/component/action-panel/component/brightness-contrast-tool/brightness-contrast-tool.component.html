@@ -1,6 +1,8 @@
 <div class="sliderItems">
   <div class="slider">
-    <span>{{brightnessRangeValue}}</span>
+    <div>
+      <span>{{brightnessRangeValue}}</span>
+    </div>
     <ng5-slider
       [(ngModel)]="brightnessRangeValue"
       [options]="options"
@@ -8,7 +10,9 @@
     ></ng5-slider>
   </div>
   <div class="slider">
-    <span>{{contrastRangeValue}}</span>
+    <div>
+      <span>{{contrastRangeValue}}</span>
+    </div>
     <ng5-slider
       [(ngModel)]="contrastRangeValue"
       [options]="option"
