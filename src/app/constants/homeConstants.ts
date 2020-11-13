@@ -65,11 +65,11 @@ export const homeConstants = {
             );
           }
         },
-        comparator: (valueA, valueB, nodeA, nodeB, isInverted) => {
+        comparator: (valueA, valueB) => {
             if (valueA[0].isAnnotated === valueB[0].isAnnotated) {
                 return 0;
             } else {
-                return (valueA[0].isAnnotated > valueB[0].isAnnotated) ? 1 : -1;
+                return (valueA[0].isAnnotated < valueB[0].isAnnotated) ? 1 : -1;
             }
         }
       },

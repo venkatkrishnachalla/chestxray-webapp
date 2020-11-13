@@ -10,7 +10,10 @@
   </mat-card-title>
   <mat-card-content
     class="impression-content"
-    *ngFor="let impressions of uniqueImpressions; let i = index"
+    *ngFor="
+      let impressions of uniqueImpressions;
+      let i = index
+    "
   >
     <button [style.background-color]="impressions.colors"></button>
     <span class="impression-text-width">{{ impressions.name }}</span>
