@@ -37,9 +37,15 @@
       [checked]="impressions.checked"
     />
   </mat-card-content>
-  <mat-card-content *ngIf="!uniqueImpressions||uniqueImpressions.length === 0">
+  <mat-card-content
+    *ngIf="
+      (!uniqueImpressions || uniqueImpressions.length === 0) &&
+      isAlreadyAskAiClicked &&
+      hideNoAbnormalityText
+    "
+  >
     <div align="center">
-      No Impressions Found.
+      No significant abnormality detected.
     </div>
   </mat-card-content>
 </mat-card>

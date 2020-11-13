@@ -18,6 +18,7 @@ export class EventEmitterService {
   invokeFindingsDataFunction = new EventEmitter();
   invokePrevNextButtonDataFunction = new EventEmitter();
   invokeAskAiButtonDataFunction = new EventEmitter();
+  invokeNoAbnormalitiesDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
   onStatusChangeSubject = new BehaviorSubject(false);
@@ -84,6 +85,12 @@ export class EventEmitterService {
   onAskAiButtonClick(data) {
     this.invokeAskAiButtonDataFunction.emit(data);
   }
+
+  /*** event to display no abnormalities found text ***/
+  onNoAbnormalitiesClick(data) {
+    this.invokeNoAbnormalitiesDataFunction.emit(data);
+  }
+
   /*** onImpressionCheckboxClick event emit function  ***/
   onImpressionCheckboxClick(data) {
     this.invokeImpressionFunction.emit(data);

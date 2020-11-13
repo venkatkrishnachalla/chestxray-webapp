@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Output,
   EventEmitter,
-  OnDestroy,
+  OnDestroy
 } from '@angular/core';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
@@ -159,12 +159,14 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
             findings.splice(findings.indexOf(' '), 1);
           }
           this.annotatedFindings = findings;
+          // console.log('this.annotatedFindings', this.annotatedFindings);
           this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
         }
       });
     if (Object.keys(this.annotatedFindings).length === 0) {
       const findings = JSON.parse(sessionStorage.getItem('findings'));
       this.annotatedFindings = findings;
+      // console.log('this.annotatedFindings===session', this.annotatedFindings);
       this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
     }
     this.setCanvasDimension();
@@ -215,10 +217,17 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
    * updateFindings(evt, index);
    */
   updateFindings(evt, index) {
-    this.annotatedFindings.splice(index, 1, evt.target.textContent.slice(2).trim());
+    this.annotatedFindings.splice(
+      index,
+      1,
+      evt.target.textContent.slice(2).trim()
+    );
     this.eventEmitterService.findingsSubject.next(this.annotatedFindings);
     sessionStorage.setItem('findings', JSON.stringify(this.annotatedFindings));
-    sessionStorage.setItem('findingsData', JSON.stringify(this.annotatedFindings));
+    sessionStorage.setItem(
+      'findingsData',
+      JSON.stringify(this.annotatedFindings)
+    );
   }
 
   /**
