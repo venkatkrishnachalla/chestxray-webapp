@@ -1150,6 +1150,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       };
       this.eventEmitterService.onComponentDataShared(impressionObject);
     }
+    if (mLArray.Impression.length === 0 && this.isAlreadyAnnotated) {
+      this.eventEmitterService.onNoAbnormalitiesClick('success');
+    }
     const findingsData = mLArray.Findings ? Object.keys(mLArray.Findings) : [];
     const findingsOrdered = [];
     const order = this.constants.findings;

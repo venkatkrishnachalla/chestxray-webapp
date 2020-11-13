@@ -103,6 +103,7 @@ export class XRayComponent implements OnInit, OnDestroy {
             const mLArray = this.mLResponse.data.ndarray[0].diseases;
             this.eventsSubject.next(mLResponse);
             this.eventEmitterService.onAskAiButtonClick('success');
+            this.eventEmitterService.onNoAbnormalitiesClick('success');
             this.spinnerService.hide();
             if (mLArray.length === 0 || mLArray === undefined) {
               this.toastrService.info('No significant abnormality detected');

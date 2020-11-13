@@ -28,6 +28,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   enableDelete: boolean;
   order = 'name';
   reverse = false;
+  isAlreadyAskAiClicked: boolean;
+  hideNoAbnormalityText: boolean;
 
   /*
    * constructor for ImpressionComponent class
@@ -42,6 +44,22 @@ export class ImpressionComponent implements OnInit, OnDestroy {
         this.impression = [];
         this.uniqueImpressions = [];
         this.hideShowAll = true;
+        this.isAlreadyAskAiClicked = false;
+        this.hideNoAbnormalityText = false;
+      }
+    );
+    this.eventEmitterService.invokeAskAiButtonDataFunction.subscribe(
+      (askAiEvent: string) => {
+        if (askAiEvent === 'success') {
+          this.isAlreadyAskAiClicked = true;
+        }
+      }
+    );
+    this.eventEmitterService.invokeNoAbnormalitiesDataFunction.subscribe(
+      (impressionEvent: string) => {
+        if (impressionEvent === 'success') {
+          this.hideNoAbnormalityText = true;
+        }
       }
     );
   }
