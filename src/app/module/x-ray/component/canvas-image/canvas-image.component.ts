@@ -1161,7 +1161,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         findingsOrdered.push(element);
       }
     });
-    if (check === 'session') {
+    const findingsSection = sessionStorage.getItem('findings');
+    if (check === 'session' && findingsSection) {
       const sessionFindings = JSON.parse(sessionStorage.getItem('findings'));
       if (sessionFindings !== null) {
         sessionFindings.forEach((finding: any) => {
@@ -1177,7 +1178,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       ) {
         const finalFinding = info.Name + ': ' + info.Desc;
         this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
-      } else if ( mLArray.Findings[info.Name].length === 0 &&
+      } else if (mLArray.Findings[info.Name].length === 0 &&
         info.Name !== 'ADDITIONAL' && this.isAlreadyAnnotated) {
           const finalFinding = info.Name + ': ' + info.Desc;
           this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
