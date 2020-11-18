@@ -22,7 +22,16 @@ export class MeasureLengthAngleToolComponent implements OnInit {
   /*
    * Constructor for MeasureLengthAngleToolComponent class
    */
-  constructor(private eventEmitterService: EventEmitterService) {}
+  constructor(private eventEmitterService: EventEmitterService) {
+    this.eventEmitterService.onInActiveIconFunction.subscribe(
+      (data: string) => {
+      if (data === 'Draw Ellipse' || data === 'Free Hand Drawing') {
+        this.lengthAnglePanel.forEach((element: any) => {
+          element.active = false;
+        });
+      }
+    });
+  }
 
   /**
    * This is a ngOnInit function
