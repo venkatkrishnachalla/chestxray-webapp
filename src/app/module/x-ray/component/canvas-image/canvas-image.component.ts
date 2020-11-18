@@ -268,7 +268,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       (data: InvokeComponentData) => {
         switch (data.title) {
           case 'Draw Ellipse':
-            if (this.activeIcon && this.activeIcon.title === 'Measure Length' && this.activeIcon.point1 === false
+            if (
+              this.activeIcon &&
+              this.activeIcon.title === 'Measure Length' &&
+              this.activeIcon.point1 === false
             ) {
               this.activeIcon.active = true;
               this.eventEmitterService.onInActiveIconClick('Measure Length');
@@ -280,7 +283,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             }
             break;
           case 'Free Hand Drawing':
-            if (this.activeIcon && this.activeIcon.title === 'Measure Length' && this.activeIcon.point1 === false) {
+            if (
+              this.activeIcon &&
+              this.activeIcon.title === 'Measure Length' &&
+              this.activeIcon.point1 === false
+            ) {
               this.eventEmitterService.onInActiveIconClick('Measure Length');
               this.activeIcon.active = true;
               this.toastrService.error('Please select measure tool end point');
@@ -487,18 +494,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     this.canvas.on('object:moving', (evt) => {
-      if (evt.target.type === 'circle' || evt.target.type === 'line') {
-        this.stopDragging(evt.target);
-      } else {
-        this.objectSelected = true;
-        document.getElementById('target').style.display = 'none';
-        const obj = evt.target;
-        this.objectAngle = obj.angle;
-        this.restrictObjectOnRotate(evt);
-        this.restrictionToBoundaryLimit(obj);
-        if (!this.enableDrawEllipseMode) {
-          this.dialog.closeAll();
-        }
+      this.objectSelected = true;
+      document.getElementById('target').style.display = 'none';
+      const obj = evt.target;
+      this.objectAngle = obj.angle;
+      this.restrictObjectOnRotate(evt);
+      this.restrictionToBoundaryLimit(obj);
+      if (!this.enableDrawEllipseMode) {
+        this.dialog.closeAll();
       }
     });
     let left1 = 0;
@@ -739,57 +742,63 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.canvas.getZoom() > 1) {
-      if (obj.getBoundingRect().top > 0 || obj.getBoundingRect().left > 0 ||	
-        obj.getBoundingRect().top + obj.getBoundingRect().height <	
-        obj.canvas.height ||	
-        obj.getBoundingRect().left + obj.getBoundingRect().width <	
-        obj.canvas.width) {	
-        this.innerObject = obj;	
+      if (
+        obj.getBoundingRect().top > 0 ||
+        obj.getBoundingRect().left > 0 ||
+        obj.getBoundingRect().top + obj.getBoundingRect().height <
+          obj.canvas.height ||
+        obj.getBoundingRect().left + obj.getBoundingRect().width <
+          obj.canvas.width
+      ) {
+        this.innerObject = obj;
       }
-      if (obj.getBoundingRect().top < 0 ) {	
-        obj.left = this.innerObject.left;	
-        obj.top = this.innerObject.top + 5;	
-        obj.scaleX = this.innerObject.scaleX;	
-        obj.scaleY = this.innerObject.scaleY;	
-        obj.width = this.innerObject.width;	
-        obj.height = this.innerObject.height;	
-        this.changeSelectableStatus(false);	
-        this.canvas.renderAll();	
-      }	
-      if (obj.getBoundingRect().left < 0) {	
-        obj.left = this.innerObject.left + 5;	
-        obj.top = this.innerObject.top;	
-        obj.scaleX = this.innerObject.scaleX;	
-        obj.scaleY = this.innerObject.scaleY;	
-        obj.width = this.innerObject.width;	
-        obj.height = this.innerObject.height;	
-        this.changeSelectableStatus(false);	
-        this.canvas.renderAll();	
-    }	
-      if (obj.getBoundingRect().top + obj.getBoundingRect().height >	
-      obj.canvas.height) {	
-        obj.left = this.innerObject.left;	
-        obj.top = this.innerObject.top - 5;	
-        obj.scaleX = this.innerObject.scaleX;	
-        obj.scaleY = this.innerObject.scaleY;	
-        obj.width = this.innerObject.width;	
-        obj.height = this.innerObject.height;	
-        this.changeSelectableStatus(false);	
-        this.canvas.renderAll();    	
-    }	
-      if (obj.getBoundingRect().left + obj.getBoundingRect().width >	
-      obj.canvas.width) {	
-        obj.left = this.innerObject.left - 5;	
-        obj.top = this.innerObject.top;	
-        obj.scaleX = this.innerObject.scaleX;	
-        obj.scaleY = this.innerObject.scaleY;	
-        obj.width = this.innerObject.width;	
-        obj.height = this.innerObject.height;	
-        this.changeSelectableStatus(false);	
-        this.canvas.renderAll();    	
-      }	
-    }
-    else {
+      if (obj.getBoundingRect().top < 0) {
+        obj.left = this.innerObject.left;
+        obj.top = this.innerObject.top + 5;
+        obj.scaleX = this.innerObject.scaleX;
+        obj.scaleY = this.innerObject.scaleY;
+        obj.width = this.innerObject.width;
+        obj.height = this.innerObject.height;
+        this.changeSelectableStatus(false);
+        this.canvas.renderAll();
+      }
+      if (obj.getBoundingRect().left < 0) {
+        obj.left = this.innerObject.left + 5;
+        obj.top = this.innerObject.top;
+        obj.scaleX = this.innerObject.scaleX;
+        obj.scaleY = this.innerObject.scaleY;
+        obj.width = this.innerObject.width;
+        obj.height = this.innerObject.height;
+        this.changeSelectableStatus(false);
+        this.canvas.renderAll();
+      }
+      if (
+        obj.getBoundingRect().top + obj.getBoundingRect().height >
+        obj.canvas.height
+      ) {
+        obj.left = this.innerObject.left;
+        obj.top = this.innerObject.top - 5;
+        obj.scaleX = this.innerObject.scaleX;
+        obj.scaleY = this.innerObject.scaleY;
+        obj.width = this.innerObject.width;
+        obj.height = this.innerObject.height;
+        this.changeSelectableStatus(false);
+        this.canvas.renderAll();
+      }
+      if (
+        obj.getBoundingRect().left + obj.getBoundingRect().width >
+        obj.canvas.width
+      ) {
+        obj.left = this.innerObject.left - 5;
+        obj.top = this.innerObject.top;
+        obj.scaleX = this.innerObject.scaleX;
+        obj.scaleY = this.innerObject.scaleY;
+        obj.width = this.innerObject.width;
+        obj.height = this.innerObject.height;
+        this.changeSelectableStatus(false);
+        this.canvas.renderAll();
+      }
+    } else {
       // top-left  corner
       if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
         obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
@@ -1299,7 +1308,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
           ellipse.color =
             DISEASE_COLOR_MAPPING[disease.name.toLowerCase()] || RANDOM_COLOR;
-          ellipse.index = ellipse.source === 'DR' ? ellipse.index !== undefined ? ellipse.index : disease.idx : idValue + '' + val2;
+          ellipse.index =
+            ellipse.source === 'DR'
+              ? ellipse.index !== undefined
+                ? ellipse.index
+                : disease.idx
+              : idValue + '' + val2;
           // ellipse.color = disease.color;
           ellipse.source =
             ellipse.source === 'ML' || ellipse.source === undefined
@@ -1539,9 +1553,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         fill: '',
         selectable: true,
         strokeUniform: true,
-        id: diseaseItem.index !== undefined ? diseaseItem.index : diseaseItem.id,
+        id:
+          diseaseItem.index !== undefined ? diseaseItem.index : diseaseItem.id,
         isMLAi: diseaseItem.source === 'ML' ? true : false,
-        index: diseaseItem.index !== undefined ? diseaseItem.index : diseaseItem.id,
+        index:
+          diseaseItem.index !== undefined ? diseaseItem.index : diseaseItem.id,
         type: 'ellipse',
         name: diseaseItem.name,
       });
@@ -1672,9 +1688,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    */
   changeSelectableStatus(val) {
     this.canvas.forEachObject((obj) => {
-      obj.selectable = val;
-      obj.lockMovementX = !val;
-      obj.lockMovementY = !val;
+      if (obj.type === 'circle' || obj.type === 'line') {
+        obj.selectable = false;
+        obj.lockMovementX = true;
+        obj.lockMovementY = true;
+      } else {
+        obj.selectable = val;
+        obj.lockMovementX = !val;
+        obj.lockMovementY = !val;
+      }
     });
     this.canvas.renderAll();
   }
@@ -1802,14 +1824,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           if (repeatedAnnotation !== undefined && repeatedAnnotation === true) {
             return;
           }
-          if (element.diseaseType !== undefined && this.selectedDisease === element.name) {
-              repeatedAnnotation = true;
-              this.toastrService.error('Selected diffuse category already exist, please select other to continue');
-              this.clear();
-              this.openPathologyModal();
-              return;
-          }
-          else {
+          if (
+            element.diseaseType !== undefined &&
+            this.selectedDisease === element.name
+          ) {
+            repeatedAnnotation = true;
+            this.toastrService.error(
+              'Selected diffuse category already exist, please select other to continue'
+            );
+            this.clear();
+            this.openPathologyModal();
+            return;
+          } else {
             repeatedAnnotation = false;
           }
         });
@@ -1934,8 +1960,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line: no-string-literal
       this.savedInfo['data'].ndarray[0].diseases.forEach((element, index) => {
         const compare1 = this.canvas.getActiveObject().index;
-        let compare2 = element.index !== undefined ? element.index : element.idx;
-        if (element.source === 'ML' && element.ellipses.length === 1){
+        let compare2 =
+          element.index !== undefined ? element.index : element.idx;
+        if (element.source === 'ML' && element.ellipses.length === 1) {
           compare2 = element.ellipses[0].index;
           if (compare2 === compare1) {
             // tslint:disable-next-line: no-string-literal
@@ -2968,11 +2995,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   stopDragging(element) {
     element.lockMovementX = true;
     element.lockMovementY = true;
-    element.lockScalingX = true;
-    element.lockScalingY = true;
-    element.lockUniScaling = true;
-    element.lockRotation = true;
-    element.selectable = false;
   }
 
   /**
