@@ -1302,12 +1302,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           }
           ellipse.color =
             DISEASE_COLOR_MAPPING[disease.name.toLowerCase()] || RANDOM_COLOR;
-          ellipse.index =
-            ellipse.source === 'DR'
-              ? ellipse.index
-                ? ellipse.index
-                : disease.idx
-              : idValue + '' + val2;
+          ellipse.index = ellipse.source === 'DR' ? ellipse.index !== undefined ? ellipse.index : disease.idx : idValue + '' + val2;
           // ellipse.color = disease.color;
           ellipse.source =
             ellipse.source === 'ML' || ellipse.source === undefined
@@ -1547,9 +1542,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         fill: '',
         selectable: true,
         strokeUniform: true,
-        id: diseaseItem.index ? diseaseItem.index : diseaseItem.id,
+        id: diseaseItem.index !== undefined ? diseaseItem.index : diseaseItem.id,
         isMLAi: diseaseItem.source === 'ML' ? true : false,
-        index: diseaseItem.index ? diseaseItem.index : diseaseItem.id,
+        index: diseaseItem.index !== undefined ? diseaseItem.index : diseaseItem.id,
         type: 'ellipse',
         name: diseaseItem.name,
       });
@@ -1945,8 +1940,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line: no-string-literal
       this.savedInfo['data'].ndarray[0].diseases.forEach((element, index) => {
         const compare1 = this.canvas.getActiveObject().index;
-        let compare2 = element.index ? element.index : element.idx;
-        if (element.source === 'ML' && element.ellipses.length === 1) {
+        let compare2 = element.index !== undefined ? element.index : element.idx;
+        if (element.source === 'ML' && element.ellipses.length === 1){
           compare2 = element.ellipses[0].index;
           if (compare2 === compare1) {
             // tslint:disable-next-line: no-string-literal
@@ -2188,7 +2183,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         savedInfo['data'].ndarray[0].diseases.forEach(
           (element: any, index: number) => {
             element.ellipses.forEach((ellipse: any, indexId: number) => {
-              if (activeObj.index === ellipse.id) {
+              if (activeObj.index === ellipse.index) {
                 if (element.ellipses.length > 1) {
                   // tslint:disable-next-line: no-string-literal
                   savedInfo['data'].ndarray[0].diseases[index].ellipses[
@@ -2601,7 +2596,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   updateEllipseIntoSession() {
     const object = this.canvas.getActiveObject();
     const index = this.sessionSelectedEllipseObject.findIndex(
-      (item) => item.id === object.id
+      (item) => item.index === object.index
     );
     this.sessionSelectedEllipseObject.splice(index, 1);
     const updateEllipse = {} as UpdateEllipse;

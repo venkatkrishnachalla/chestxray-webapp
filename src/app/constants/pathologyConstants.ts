@@ -3,9 +3,9 @@ export const pathology = {
     {
       abnormality: 'Anatomical variants',
       Names: [
-        'Cervical rib',
-        'Azygos fissure',
         'Aortic Arch variants',
+        'Azygos fissure',
+        'Cervical rib',
         'Thymus',
       ],
     },
@@ -24,10 +24,10 @@ export const pathology = {
     {
       abnormality: 'Calcification',
       Names: [
-        'Calcified nodule',
-        'Physiological calcification',
         'Calcified pleural plaques',
         'Calcified nodes',
+        'Calcified nodule',
+        'Physiological calcification',
       ],
     },
     {
@@ -69,9 +69,9 @@ export const pathology = {
     {
       abnormality: 'External Densities',
       Names: [
-        'Radiopaque foreign body',
         'bone cement',
         'mammary prosthesis/breast implant',
+        'Radiopaque foreign body',
         'Surgical sutures',
       ],
     },
@@ -79,8 +79,8 @@ export const pathology = {
       abnormality: 'Extrapulmonary extrapleural conditions radiopaedia',
       Names: [
         'Subcutaneous emphysema',
-        'Thyroid enlargement/mass',
         'Thyroid calcification',
+        'Thyroid enlargement/mass',
       ],
     },
     {
@@ -118,12 +118,13 @@ export const pathology = {
     {
       abnormality: 'Osseous Lesions',
       Names: [
-        'Lytic',
-        'sclerotic',
+        'Fracture',
         'Implants',
         'kyphosis',
+        'Lytic',
+        'sclerotic',
         'scoliosis',
-        'Fracture',
+        
       ],
     },
     // {
@@ -190,18 +191,18 @@ export const pathology = {
 
   diffusePathology: [
      {
-      abnormality: 'Lungs',
-      Names: [
-        'Bronchitis',
-        'Reticulo Nodular Pattern',
-        'Hyperinflation',
-        'Honey Combing',
-      ],
-    },
-    {
       abnormality: 'Bony Thorax',
       Names: [
         'Osteopenia',
+      ],
+     },
+     {
+      abnormality: 'Lungs',
+      Names: [
+        'Bronchitis',
+        'Honey Combing',
+        'Hyperinflation',
+        'Reticulo Nodular Pattern',
       ],
     }
   ]
