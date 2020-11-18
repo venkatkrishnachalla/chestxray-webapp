@@ -28,6 +28,7 @@ export class EventEmitterService {
   contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
   deleteDiffuseImpression = new EventEmitter();
+  onInActiveIconFunction = new EventEmitter();
 
   constructor() {}
 
@@ -115,7 +116,13 @@ export class EventEmitterService {
     this.defaultRange.emit(title);
   }
 
+  /*** OnDeleteDiffuseImpression event emit function ***/
   OnDeleteDiffuseImpression(title: any) {
     this.deleteDiffuseImpression.emit(title);
+  }
+
+  /*** onInActiveIconClick event emit function ***/
+  onInActiveIconClick(data: string) {
+    this.onInActiveIconFunction.emit(data);
   }
 }

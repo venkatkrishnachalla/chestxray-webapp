@@ -22,7 +22,16 @@ export class DrawEllipseFreehandDrawingComponent implements OnInit {
   /*
    * Constructor for DrawEllipseFreehandDrawingComponent class
    */
-  constructor(private eventEmitterService: EventEmitterService) {}
+  constructor(private eventEmitterService: EventEmitterService) {
+    this.eventEmitterService.onInActiveIconFunction.subscribe(
+      (data: string) => {
+      if (data === 'Measure Length') {
+        this.ellipseFreeHandPanel.forEach((element: any) => {
+          element.active = false;
+        });
+      }
+    });
+  }
 
   /**
    * This is a ngOnInit function
