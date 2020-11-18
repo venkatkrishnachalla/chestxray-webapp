@@ -166,7 +166,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   currentSelectedDesease: string;
   isAlreadyAnnotated: boolean;
   impression: any[];
-
+  innerObject: any;
   /*
    * constructor for CanvasImageComponent class
    */
@@ -595,6 +595,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('ellipse');
     sessionStorage.removeItem('freeHandDrawing');
     this.impressionArray = [];
+    this.impression = [];
     this.savedInfo = {
       data: {
         names: [],
@@ -738,61 +739,57 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.canvas.getZoom() > 1) {
-      // if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0 ||
-      //     obj.getBoundingRect().top + obj.getBoundingRect().height >
-      //     obj.canvas.height ||
-      //     obj.getBoundingRect().left + obj.getBoundingRect().width >
-      //     obj.canvas.width) {
-      //   this.changeSelectableStatus(false);
-      //   this.canvas.renderAll();
-      // }
-      if (obj.getBoundingRect().top < 0) {
-        obj.left = this.selctedObjectArray.target.left + 1;
-        obj.top = this.selctedObjectArray.target.top + 1;
-        obj.scaleX = this.selctedObjectArray.target.scaleX;
-        obj.scaleY = this.selctedObjectArray.target.scaleY;
-        obj.width = this.selctedObjectArray.target.width;
-        obj.height = this.selctedObjectArray.target.height;
-        this.changeSelectableStatus(false);
-        this.canvas.renderAll();
+      if (obj.getBoundingRect().top > 0 || obj.getBoundingRect().left > 0 ||	
+        obj.getBoundingRect().top + obj.getBoundingRect().height <	
+        obj.canvas.height ||	
+        obj.getBoundingRect().left + obj.getBoundingRect().width <	
+        obj.canvas.width) {	
+        this.innerObject = obj;	
       }
-      if (obj.getBoundingRect().left < 0) {
-        obj.left = this.selctedObjectArray.target.left + 1;
-        obj.top = this.selctedObjectArray.target.top;
-        obj.scaleX = this.selctedObjectArray.target.scaleX;
-        obj.scaleY = this.selctedObjectArray.target.scaleY;
-        obj.width = this.selctedObjectArray.target.width;
-        obj.height = this.selctedObjectArray.target.height;
-        this.changeSelectableStatus(false);
-        this.canvas.renderAll();
-      }
-      if (
-        obj.getBoundingRect().top + obj.getBoundingRect().height >
-        obj.canvas.height
-      ) {
-        obj.left = this.selctedObjectArray.target.left;
-        obj.top = this.selctedObjectArray.target.top - 1;
-        obj.scaleX = this.selctedObjectArray.target.scaleX;
-        obj.scaleY = this.selctedObjectArray.target.scaleY;
-        obj.width = this.selctedObjectArray.target.width;
-        obj.height = this.selctedObjectArray.target.height;
-        this.changeSelectableStatus(false);
-        this.canvas.renderAll();
-      }
-      if (
-        obj.getBoundingRect().left + obj.getBoundingRect().width >
-        obj.canvas.width
-      ) {
-        obj.left = this.selctedObjectArray.target.left - 1;
-        obj.top = this.selctedObjectArray.target.top;
-        obj.scaleX = this.selctedObjectArray.target.scaleX;
-        obj.scaleY = this.selctedObjectArray.target.scaleY;
-        obj.width = this.selctedObjectArray.target.width;
-        obj.height = this.selctedObjectArray.target.height;
-        this.changeSelectableStatus(false);
-        this.canvas.renderAll();
-      }
-    } else {
+      if (obj.getBoundingRect().top < 0 ) {	
+        obj.left = this.innerObject.left;	
+        obj.top = this.innerObject.top + 5;	
+        obj.scaleX = this.innerObject.scaleX;	
+        obj.scaleY = this.innerObject.scaleY;	
+        obj.width = this.innerObject.width;	
+        obj.height = this.innerObject.height;	
+        this.changeSelectableStatus(false);	
+        this.canvas.renderAll();	
+      }	
+      if (obj.getBoundingRect().left < 0) {	
+        obj.left = this.innerObject.left + 5;	
+        obj.top = this.innerObject.top;	
+        obj.scaleX = this.innerObject.scaleX;	
+        obj.scaleY = this.innerObject.scaleY;	
+        obj.width = this.innerObject.width;	
+        obj.height = this.innerObject.height;	
+        this.changeSelectableStatus(false);	
+        this.canvas.renderAll();	
+    }	
+      if (obj.getBoundingRect().top + obj.getBoundingRect().height >	
+      obj.canvas.height) {	
+        obj.left = this.innerObject.left;	
+        obj.top = this.innerObject.top - 5;	
+        obj.scaleX = this.innerObject.scaleX;	
+        obj.scaleY = this.innerObject.scaleY;	
+        obj.width = this.innerObject.width;	
+        obj.height = this.innerObject.height;	
+        this.changeSelectableStatus(false);	
+        this.canvas.renderAll();    	
+    }	
+      if (obj.getBoundingRect().left + obj.getBoundingRect().width >	
+      obj.canvas.width) {	
+        obj.left = this.innerObject.left - 5;	
+        obj.top = this.innerObject.top;	
+        obj.scaleX = this.innerObject.scaleX;	
+        obj.scaleY = this.innerObject.scaleY;	
+        obj.width = this.innerObject.width;	
+        obj.height = this.innerObject.height;	
+        this.changeSelectableStatus(false);	
+        this.canvas.renderAll();    	
+      }	
+    }
+    else {
       // top-left  corner
       if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
         obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
@@ -1805,18 +1802,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           if (repeatedAnnotation !== undefined && repeatedAnnotation === true) {
             return;
           }
-          if (
-            element.diseaseType !== undefined &&
-            this.selectedDisease === element.name
-          ) {
-            repeatedAnnotation = true;
-            alert(
-              'Selected diffuse category already exist, please select other to continue'
-            );
-            this.clear();
-            this.openPathologyModal();
-            return;
-          } else {
+          if (element.diseaseType !== undefined && this.selectedDisease === element.name) {
+              repeatedAnnotation = true;
+              this.toastrService.error('Selected diffuse category already exist, please select other to continue');
+              this.clear();
+              this.openPathologyModal();
+              return;
+          }
+          else {
             repeatedAnnotation = false;
           }
         });
@@ -1850,6 +1843,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.eventEmitterService.onComponentDataShared(selectedObject);
         this.getColorMapping(this.selectedDisease, 'save', 'DR');
         this.dialog.closeAll();
+        this.toastrService.success('Annotation saved successfully');
         this.activeIcon.active = false;
         this.pathologyNames = this.constants.diseases;
         this.clear();
@@ -3011,6 +3005,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * diffusePathology(data);
    */
   diffusePathology(data) {
+    this.canvas.discardActiveObject();
+    this.canvas.renderAll();
     this.dialog.closeAll();
     this.activeIcon = data;
     this.updateDisease = false;
