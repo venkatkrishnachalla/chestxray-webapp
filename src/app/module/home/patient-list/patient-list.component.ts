@@ -195,8 +195,28 @@ export class PatientListComponent implements OnInit, OnDestroy {
         this.rowData.forEach((item) => {
           item.id = idSequence++;
         });
-        const sessionRows = JSON.stringify(patientRows);
-        sessionStorage.setItem('patientRows', sessionRows);
+        if (page === 1) {
+          const sessionRows = JSON.stringify(patientRows);
+          sessionStorage.setItem('patientRows', sessionRows);
+        } else {
+          const sessionPatientRows = JSON.parse(
+            sessionStorage.getItem('patientRows')
+          );
+          const concatArray = sessionPatientRows.concat(patientRows);
+          const concatUniqueArray = concatArray.filter(
+            (test, index, array) =>
+              index ===
+              array.findIndex((findTest) => findTest.hospitalPatientId === test.hospitalPatientId)
+          );
+          concatUniqueArray.sort(
+            (d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId
+          );
+          concatUniqueArray.forEach((value, index) => {
+            value.index = index;
+          });
+          const sessionRows = JSON.stringify(concatUniqueArray);
+          sessionStorage.setItem('patientRows', sessionRows);
+        }
       },
       (errorMessage: string) => {
         this.showloader = false;
