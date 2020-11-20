@@ -1692,7 +1692,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         obj.selectable = false;
         obj.lockMovementX = true;
         obj.lockMovementY = true;
-      } else {
+      } else if (obj.type === 'path') {
+        obj.lockScalingX = true;
+        obj.lockScalingY = true;
+        obj.selectable = true;
+        obj.lockMovementX = true;
+        obj.lockMovementY = true;
+      }else {
         obj.selectable = val;
         obj.lockMovementX = !val;
         obj.lockMovementY = !val;
