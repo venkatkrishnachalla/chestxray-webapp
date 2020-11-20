@@ -165,6 +165,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   diffuseObjects: any;
   currentSelectedDesease: string;
   isAlreadyAnnotated: boolean;
+  isAlreadySubmitted: boolean;
   impression: any[];
   innerObject: any;
   /*
@@ -1204,7 +1205,22 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     });
     const findingsSection = sessionStorage.getItem('findings');
+    const isManualFindingsAdded = sessionStorage.getItem(
+      'isManualFindingsAdded'
+    );
     if (check === 'session' && findingsSection) {
+      const sessionFindings = JSON.parse(sessionStorage.getItem('findings'));
+      if (sessionFindings !== null) {
+        sessionFindings.forEach((finding: any) => {
+          this.eventEmitterService.onComponentFindingsDataShared(finding);
+        });
+      }
+    } else if (
+      check === 'savedAnnotations' &&
+      this.isAlreadySubmitted &&
+      isManualFindingsAdded === 'true' &&
+      !this.isAlreadyAnnotated
+    ) {
       const sessionFindings = JSON.parse(sessionStorage.getItem('findings'));
       if (sessionFindings !== null) {
         sessionFindings.forEach((finding: any) => {
@@ -1223,7 +1239,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         } else if (
           mLArray.Findings[info.Name].length === 0 &&
           info.Name !== 'ADDITIONAL' &&
-          this.isAlreadyAnnotated
+          this.isAlreadySubmitted
         ) {
           const finalFinding = info.Name + ': ' + info.Desc;
           this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
@@ -3008,9 +3024,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.annotatedXrayService.getAnnotatedData(xRayId).subscribe(
       (response) => {
         this.savedAnnotations = response;
-        if (this.savedAnnotations.data.ndarray[0].Source !== 'DR') {
+        if (this.savedAnnotations.data.ndarray[0].source !== 'DR') {
           this.eventEmitterService.onAskAiButtonClick('success');
           this.isAlreadyAnnotated = true;
+        }
+        if (this.savedAnnotations) {
+          this.isAlreadySubmitted = true;
         }
       },
       (errorMessage: string) => {

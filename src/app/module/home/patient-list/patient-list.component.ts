@@ -112,6 +112,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('reportComments');
     this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.setItem('reportPageSelection', 'false');
+    sessionStorage.setItem('isManualFindingsAdded', 'false');
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200, lockPosition: true };

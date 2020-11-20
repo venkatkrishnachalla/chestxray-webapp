@@ -53,7 +53,10 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       dateOfBirth: ['', Validators.required],
       gender: ['MALE', Validators.required],
       referringPhysician: ['SELF', Validators.required],
-      referringPhysicianName: ['', Validators.required],
+      referringPhysicianName: [
+        '',
+        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]*$/)],
+      ],
       email: [
         '',
         [

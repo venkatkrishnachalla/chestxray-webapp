@@ -175,8 +175,30 @@
           "
           class="alert-danger validation-messages"
         >
-          <div *ngIf="uploadImageForm.controls['referringPhysicianName'].errors.required && isOtherPhysician">
+          <div
+            *ngIf="
+              uploadImageForm.controls['referringPhysicianName'].errors
+                .required && isOtherPhysician
+            "
+          >
             Referring physician name is required.
+          </div>
+        </div>
+        <div
+          *ngIf="
+            uploadImageForm.controls['referringPhysicianName'].errors &&
+            uploadImageForm.controls['referringPhysicianName'].touched &&
+            !uploadImageForm.controls['referringPhysicianName'].errors.required
+          "
+        >
+          <div
+            class="alert-danger validation-messages"
+            *ngIf="
+              uploadImageForm.controls['referringPhysicianName'].errors &&
+              uploadImageForm.controls['referringPhysicianName'].touched
+            "
+          >
+            Referring physician name is not a valid format.
           </div>
         </div>
         <br />

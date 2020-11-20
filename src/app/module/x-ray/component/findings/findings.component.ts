@@ -159,6 +159,8 @@ export class FindingsComponent implements OnInit, OnDestroy {
       this.findings.splice(index, 1, evt.target.textContent);
       const findings = JSON.stringify(this.findings);
       sessionStorage.setItem('findings', findings);
+      sessionStorage.setItem('findingsData', findings);
+      sessionStorage.setItem('isManualFindingsAdded', 'true');
     }
   }
 
