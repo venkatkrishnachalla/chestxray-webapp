@@ -79,7 +79,7 @@ export class SignInComponent implements OnInit {
    */
   onSignIn(form: NgForm) {
     const networkStatus = navigator.onLine;
-    if (form.valid) {
+    if (form.valid && form.value.username && form.value.password) {
       this.spinnerService.show();
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
         (authResponse: SignInResponse) => {
@@ -107,6 +107,8 @@ export class SignInComponent implements OnInit {
         this.toastrService.error(
           'Please check your network connections and try again.'
         );
+      } else if (form.value.username && form.value.password) {
+        this.toastrService.error('Enter valid username or password');
       } else {
         this.toastrService.error('Enter all the required fields');
       }

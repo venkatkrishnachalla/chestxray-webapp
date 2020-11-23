@@ -106,6 +106,7 @@ export class AuthService {
     sessionStorage.removeItem('accessToken');
     sessionStorage.removeItem('findingsData');
     sessionStorage.removeItem('reportComments');
+    sessionStorage.removeItem('isManualFindingsAdded');
     sessionStorage.clear();
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
