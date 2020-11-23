@@ -753,51 +753,47 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       ) {
         this.innerObject = obj;
       }
-      if (obj.getBoundingRect().top < 0) {
-        obj.left = this.innerObject.left;
-        obj.top = this.innerObject.top + 5;
-        obj.scaleX = this.innerObject.scaleX;
-        obj.scaleY = this.innerObject.scaleY;
-        obj.width = this.innerObject.width;
-        obj.height = this.innerObject.height;
-        this.changeSelectableStatus(false);
-        this.canvas.renderAll();
-      }
-      if (obj.getBoundingRect().left < 0) {
-        obj.left = this.innerObject.left + 5;
-        obj.top = this.innerObject.top;
-        obj.scaleX = this.innerObject.scaleX;
-        obj.scaleY = this.innerObject.scaleY;
-        obj.width = this.innerObject.width;
-        obj.height = this.innerObject.height;
-        this.changeSelectableStatus(false);
-        this.canvas.renderAll();
-      }
-      if (
-        obj.getBoundingRect().top + obj.getBoundingRect().height >
-        obj.canvas.height
-      ) {
-        obj.left = this.innerObject.left;
-        obj.top = this.innerObject.top - 5;
-        obj.scaleX = this.innerObject.scaleX;
-        obj.scaleY = this.innerObject.scaleY;
-        obj.width = this.innerObject.width;
-        obj.height = this.innerObject.height;
-        this.changeSelectableStatus(false);
-        this.canvas.renderAll();
-      }
-      if (
-        obj.getBoundingRect().left + obj.getBoundingRect().width >
-        obj.canvas.width
-      ) {
-        obj.left = this.innerObject.left - 5;
-        obj.top = this.innerObject.top;
-        obj.scaleX = this.innerObject.scaleX;
-        obj.scaleY = this.innerObject.scaleY;
-        obj.width = this.innerObject.width;
-        obj.height = this.innerObject.height;
-        this.changeSelectableStatus(false);
-        this.canvas.renderAll();
+      if (obj.getBoundingRect().top < 0 ) {		
+        obj.left = this.innerObject.left;		
+        obj.top = this.innerObject.top + 5;		
+        obj.scaleX = this.innerObject.scaleX;		
+        obj.scaleY = this.innerObject.scaleY;		
+        obj.width = this.innerObject.width;		
+        obj.height = this.innerObject.height;		
+        obj.lockMovementY = true;        	
+        this.canvas.renderAll();		
+      }		
+      if (obj.getBoundingRect().left < 0) {		
+        obj.left = this.innerObject.left + 5;		
+        obj.top = this.innerObject.top;		
+        obj.scaleX = this.innerObject.scaleX;		
+        obj.scaleY = this.innerObject.scaleY;		
+        obj.width = this.innerObject.width;		
+        obj.height = this.innerObject.height;		
+        obj.lockMovementX = true;        	
+        this.canvas.renderAll();		
+    }		
+      if (obj.getBoundingRect().top + obj.getBoundingRect().height >		
+      obj.canvas.height) {		
+        obj.left = this.innerObject.left;		
+        obj.top = this.innerObject.top - 5;		
+        obj.scaleX = this.innerObject.scaleX;		
+        obj.scaleY = this.innerObject.scaleY;		
+        obj.width = this.innerObject.width;		
+        obj.height = this.innerObject.height;		
+        obj.lockMovementY = true;        	
+        this.canvas.renderAll();    		
+    }		
+      if (obj.getBoundingRect().left + obj.getBoundingRect().width >		
+      obj.canvas.width) {		
+        obj.left = this.innerObject.left - 5;		
+        obj.top = this.innerObject.top;		
+        obj.scaleX = this.innerObject.scaleX;		
+        obj.scaleY = this.innerObject.scaleY;		
+        obj.width = this.innerObject.width;		
+        obj.height = this.innerObject.height;		
+        obj.lockMovementX = true;        		
+        this.canvas.renderAll();    		
       }
     } else {
       // top-left  corner
@@ -1292,10 +1288,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           disease.contours.length === 0
         ) {
           const random = Math.floor(Math.random() * 100 + 1);
+          const idValue = 1000 + val1;
+          const value2 = 0;
           const selectedObject = {
             title: 'impression',
             isMLApi: false,
-            index: disease.idx,
+            // index: disease.idx,
+            index: disease.source === 'DR' ? disease.index !== undefined ? disease.index : disease.idx : idValue + '' + value2,
             name: disease.name,
             color: disease.color,
             source: disease.source,
@@ -2488,7 +2487,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         color: colorName,
         ellipses: [],
         contours: [],
-        index: this.selectedObjectPrediction.id,
+        // index: this.selectedObjectPrediction.id,
+        index: this.selectedObjectPrediction.index,
         name: diseases,
         source: src,
         diseaseType: this.diseaseType,
