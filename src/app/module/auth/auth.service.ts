@@ -104,6 +104,9 @@ export class AuthService {
     sessionStorage.removeItem('findings');
     sessionStorage.removeItem('patientRows');
     sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('findingsData');
+    sessionStorage.removeItem('reportComments');
+    sessionStorage.removeItem('isManualFindingsAdded');
     sessionStorage.clear();
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);

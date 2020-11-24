@@ -6,7 +6,6 @@
   </section>
 
   <div class="hide-print-section" id="print-section">
-    <cxr-report-header></cxr-report-header>
     <cxr-x-ray-patient-details></cxr-x-ray-patient-details>
   </div>
 
@@ -50,11 +49,15 @@
               <td><b>Age</b></td>
               <td>: {{ patientInfo.age }}</td>
               <td><b>Date of creation</b></td>
-              <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'dd-MM-yyyy' }}</td>
+              <td>
+                : {{ patientInfo.xRayList[0].lastUpdate | date: 'dd-MM-yyyy' }}
+              </td>
             </tr>
             <tr>
               <td><b>Time</b></td>
-              <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}</td>
+              <td>
+                : {{ patientInfo.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}
+              </td>
               <td><b>Ref. Physician</b></td>
               <td>: {{ patientInfo.xRayList[0].assignedTo || '-' }}</td>
             </tr>
@@ -66,7 +69,7 @@
             {{ reportPageText.clinicalHistory | uppercase }}</span
           >
         </h4>
-        <p class="history">
+        <p class="pdf-history">
           {{ clinicalHistory }}
         </p>
 
@@ -119,16 +122,16 @@
           }}</span>
         </h4>
 
-        <p class="history">
+        <p class="pdf-history">
           {{ pdfComments }}
         </p>
-          <div class="footer-left-content">
-            <label>Dr. Name </label><br />
-            <label>M.B.B.S </label><br />
-            <label>XYZ Radiology Centre </label><br />
-            <label>Radiologist</label>
-            <label class="signature-right-side">SIGNATURE </label>
-          </div>
+        <div class="footer-left-content">
+          <label>Dr. Name </label><br />
+          <label>M.B.B.S </label><br />
+          <label>XYZ Radiology Centre </label><br />
+          <label>Radiologist</label>
+          <label class="signature-right-side">SIGNATURE </label>
+        </div>
       </div>
     </div>
   </div>

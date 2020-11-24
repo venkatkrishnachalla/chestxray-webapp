@@ -26,6 +26,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   impressionsText = 'Impressions';
   hideShowAll: boolean;
   enableDelete: boolean;
+  order = 'name';
+  reverse = false;
+  isAlreadyAskAiClicked: boolean;
+  hideNoAbnormalityText: boolean;
 
   /*
    * constructor for ImpressionComponent class
@@ -39,6 +43,23 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       (patientId: string) => {
         this.impression = [];
         this.uniqueImpressions = [];
+        this.hideShowAll = true;
+        this.isAlreadyAskAiClicked = false;
+        this.hideNoAbnormalityText = false;
+      }
+    );
+    this.eventEmitterService.invokeAskAiButtonDataFunction.subscribe(
+      (askAiEvent: string) => {
+        if (askAiEvent === 'success') {
+          this.isAlreadyAskAiClicked = true;
+        }
+      }
+    );
+    this.eventEmitterService.invokeNoAbnormalitiesDataFunction.subscribe(
+      (impressionEvent: string) => {
+        if (impressionEvent === 'success') {
+          this.hideNoAbnormalityText = true;
+        }
       }
     );
   }
@@ -106,12 +127,13 @@ export class ImpressionComponent implements OnInit, OnDestroy {
           } else {
             this.impression.push(obj);
           }
-          const noImpressionIndex = this.impression.findIndex( item => item.index === '00');
-          if (noImpressionIndex !== -1){
+          const noImpressionIndex = this.impression.findIndex(
+            (item) => item.index === '00'
+          );
+          if (noImpressionIndex !== -1) {
             this.impression.splice(noImpressionIndex, 1);
           }
-        }
-        else{
+        } else {
           this.impression.push(obj);
         }
         this.uniqueImpressionsData();
@@ -170,7 +192,6 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * deleteImpression(id, disease, objectindex);
    */
   deleteImpression(id: number, disease: string, objectindex: any) {
-    debugger;
     let index = this.impression.findIndex((item) => item.index === id);
     if (index === -1) {
       index = this.impression.findIndex((item) => item.id === id);

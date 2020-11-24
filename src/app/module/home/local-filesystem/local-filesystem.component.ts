@@ -53,7 +53,10 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       dateOfBirth: ['', Validators.required],
       gender: ['MALE', Validators.required],
       referringPhysician: ['SELF', Validators.required],
-      referringPhysicianName: [''],
+      referringPhysicianName: [
+        '',
+        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]*$/)],
+      ],
       email: [
         '',
         [
@@ -83,6 +86,9 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
           sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
           this.doctorName = 'Dr ' + user.username;
           this.radiologistName = user.username;
+          this.uploadImageForm.patchValue({
+            referringPhysicianName: this.doctorName,
+          });
         }
       }
     );
@@ -118,12 +124,16 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
    * refPhysicianChange(value);
    */
   refPhysicianChange(value: string) {
-    this.uploadImageForm.patchValue({
-      referringPhysicianName: '',
-    });
     this.isOtherPhysician = false;
     if (value === 'OTHERS') {
       this.isOtherPhysician = true;
+      this.uploadImageForm.patchValue({
+        referringPhysicianName: '',
+      });
+    } else {
+      this.uploadImageForm.patchValue({
+        referringPhysicianName: this.doctorName,
+      });
     }
   }
 
@@ -250,6 +260,8 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
+    sessionStorage.removeItem('findingsData');
+    sessionStorage.removeItem('reportComments');
     this.router.navigate(['/x-ray'], {
       state: { patientDetails: this.uploadImageForm.value },
     });

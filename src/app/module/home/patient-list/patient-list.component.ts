@@ -53,9 +53,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
     public router: Router,
     private eventEmitterService: EventEmitterService,
     private dbService: NgxIndexedDBService,
-    private eventEmitterService2: EventEmitterService2,
-  ) {
-  }
+    private eventEmitterService2: EventEmitterService2
+  ) {}
   gridApi;
   gridColumnApi;
   columnDefs;
@@ -93,7 +92,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
     return this.totalPages;
   }
 
-
   /**
    * This is a init function, retrieve current user details.
    * @param '{void}' empty - A empty param
@@ -106,12 +104,15 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.rowModelType = 'serverSide';
     this.paginationPageSize = 10;
     this.cacheBlockSize = 10;
+    sessionStorage.removeItem('findingsData');
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
     sessionStorage.removeItem('ellipse');
+    sessionStorage.removeItem('reportComments');
     this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.setItem('reportPageSelection', 'false');
+    sessionStorage.setItem('isManualFindingsAdded', 'false');
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200, lockPosition: true };
@@ -170,13 +171,12 @@ export class PatientListComponent implements OnInit, OnDestroy {
    * getPatientList();
    */
   getPatientList(page, size) {
-    if (this.gridApi){
+    if (this.gridApi) {
       this.gridApi.showLoadingOverlay();
     }
     this.showTable = false;
     this.dashboardService.getPatientList(page, size).subscribe(
       (patientsList: PatientListData) => {
-        console.log(patientsList)
         this.showloader = false;
         this.showTable = true;
         this.showError = false;
@@ -196,8 +196,28 @@ export class PatientListComponent implements OnInit, OnDestroy {
         this.rowData.forEach((item) => {
           item.id = idSequence++;
         });
-        const sessionRows = JSON.stringify(patientRows);
-        sessionStorage.setItem('patientRows', sessionRows);
+        if (page === 1) {
+          const sessionRows = JSON.stringify(patientRows);
+          sessionStorage.setItem('patientRows', sessionRows);
+        } else {
+          const sessionPatientRows = JSON.parse(
+            sessionStorage.getItem('patientRows')
+          );
+          const concatArray = sessionPatientRows.concat(patientRows);
+          const concatUniqueArray = concatArray.filter(
+            (test, index, array) =>
+              index ===
+              array.findIndex((findTest) => findTest.hospitalPatientId === test.hospitalPatientId)
+          );
+          concatUniqueArray.sort(
+            (d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId
+          );
+          concatUniqueArray.forEach((value, index) => {
+            value.index = index;
+          });
+          const sessionRows = JSON.stringify(concatUniqueArray);
+          sessionStorage.setItem('patientRows', sessionRows);
+        }
       },
       (errorMessage: string) => {
         this.showloader = false;
