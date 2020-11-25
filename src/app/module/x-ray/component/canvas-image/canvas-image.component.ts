@@ -528,35 +528,25 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         brNew.left < 0 ||
         brNew.top < 0
       ) {
-        obj.left = this.selctedObjectArray.target.getBoundingRect().left + 1;
-        obj.top = this.selctedObjectArray.target.getBoundingRect().top + 1;
+        obj.left = this.selctedObjectArray.target.left + 1;
+        obj.top = this.selctedObjectArray.target.top + 1;
         obj.scaleX = this.selctedObjectArray.target.scaleX;
         obj.scaleY = this.selctedObjectArray.target.scaleY;
-        obj.width = this.selctedObjectArray.target.getBoundingRect().width;
-        obj.height = this.selctedObjectArray.target.getBoundingRect().height;
+        obj.width = this.selctedObjectArray.target.width;
+        obj.height = this.selctedObjectArray.target.height;
       } else {
-        left1 = obj.getBoundingRect().left;
-        top1 = obj.getBoundingRect().top;
+        left1 = obj.left;
+        top1 = obj.top;
         scale1x = obj.scaleX;
         scale1y = obj.scaleY;
-        width1 = obj.getBoundingRect().width;
-        height1 = obj.getBoundingRect().height;
+        width1 = obj.width;
+        height1 = obj.height;
       }
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
-      if (this.canvas.getActiveObject().type === 'ellipse') {
-        this.canvas.getActiveObject().set({	
-          rx: (e.target.getBoundingRect().width / 2),	
-          ry: (e.target.getBoundingRect().height / 2),	
-          width: e.target.getBoundingRect().width,	
-          heigth: e.target.getBoundingRect().height	
-        });
-      }
-      this.canvas.renderAll();
       this.canvas.getActiveObject().set('strokeUniform', true);
       this.canvas.requestRenderAll();
-      this.selectedObject(e);
     });
     this.canvas.on('object:scaled', (e) => {
       document.getElementById('target').style.display = 'none';
