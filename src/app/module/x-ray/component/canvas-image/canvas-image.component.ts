@@ -545,7 +545,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
-      this.canvas.renderAll();
       this.canvas.getActiveObject().set('strokeUniform', true);
       this.canvas.requestRenderAll();
     });

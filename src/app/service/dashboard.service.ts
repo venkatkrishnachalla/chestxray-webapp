@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { ApiEndPointService } from 'src/app/core/service/api-end-point.service';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
@@ -32,33 +36,43 @@ export class DashboardService {
    * getPatientList();
    */
   getPatientList(page, size) {
-    return this.http.get<PatientData>(this.endpoint.getPatientList(page, size)).pipe(
-      catchError(this.handleError),
-      tap((responseData) => {
-        return responseData;
-      })
-    );
+    return this.http
+      .get<PatientData>(this.endpoint.getPatientList(page, size))
+      .pipe(
+        catchError(this.handleError),
+        tap((responseData) => {
+          return responseData;
+        })
+      );
   }
 
   getAdminPatientList(status: string, page, size) {
-    return this.http.get<PatientData>(this.endpoint.getAdminPatientList(page, size),{ params: {status: status } }).pipe(
-      catchError(this.handleError),
-      tap((responseData) => {
-        return responseData;
+    return this.http
+      .get<PatientData>(this.endpoint.getAdminPatientList(page, size), {
+        params: { status: status },
       })
-    );
+      .pipe(
+        catchError(this.handleError),
+        tap((responseData) => {
+          return responseData;
+        })
+      );
   }
-  
-  isSubmit(assignPatients,assignedTo):Observable<any> {
-    let url = this.endpoint.putAssign()
+
+  isSubmit(assignPatients, assignedTo): Observable<any> {
+    let url = this.endpoint.putAssign();
     const httpOptions = {
       headers: new HttpHeaders({
         'content-type': 'application/json',
       }),
     };
 
-    return this.http.put(`http://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/XRayIdentifiers?assignTo=${assignedTo}`,assignPatients, httpOptions)
-    }
+    return this.http.put(
+      `https://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/XRayIdentifiers?assignTo=${assignedTo}`,
+      assignPatients,
+      httpOptions
+    );
+  }
   /**
    * handle error messages
    * @param '{HttpErrorResponse}' HttpErrorResponse - A HttpErrorResponse param
