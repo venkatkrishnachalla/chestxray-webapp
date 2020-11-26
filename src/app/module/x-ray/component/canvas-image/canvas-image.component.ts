@@ -528,8 +528,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         brNew.left < 0 ||
         brNew.top < 0
       ) {
-        obj.left = this.selctedObjectArray.target.left + 1;
-        obj.top = this.selctedObjectArray.target.top + 1;
+        obj.left = this.selctedObjectArray.target.left;
+        obj.top = this.selctedObjectArray.target.top;
         obj.scaleX = this.selctedObjectArray.target.scaleX;
         obj.scaleY = this.selctedObjectArray.target.scaleY;
         obj.width = this.selctedObjectArray.target.width;
@@ -2089,6 +2089,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       savedInfo['data'].ndarray[0].diseases.forEach(
         (element: any, index: number) => {
           if (element.ellipses) {
+            let selectedObect = this.canvas.getActiveObject();
             element.ellipses.forEach((ellipse: any, indexId: number) => {
               if (
                 activeObj.index === ellipse.index &&
@@ -2114,8 +2115,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   const obj = {
                     x: xCenter * this.canvasScaleX,
                     y: yCenter * this.canvasScaleY,
-                    a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
-                    b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
+                    a: selectedObect.width * selectedObect.scaleX * this.canvasScaleX,
+                    b: selectedObect.height * selectedObect.scaleY * this.canvasScaleY,
                     r: activeObject.angle,
                     index: activeObject.index,
                     type: 'ellipse',
@@ -2143,8 +2144,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                       {
                         x: xCenter * this.canvasScaleX,
                         y: yCenter * this.canvasScaleY,
-                        a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
-                        b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
+                        a: selectedObect.width * selectedObect.scaleX * this.canvasScaleX,
+                        b: selectedObect.height * selectedObect.scaleY * this.canvasScaleY,
                         r: activeObject.angle,
                         index: activeObject.index,
                         type: 'ellipse',
