@@ -528,35 +528,26 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         brNew.left < 0 ||
         brNew.top < 0
       ) {
-        obj.left = this.selctedObjectArray.target.getBoundingRect().left + 1;
-        obj.top = this.selctedObjectArray.target.getBoundingRect().top + 1;
+        obj.left = this.selctedObjectArray.target.left;
+        obj.top = this.selctedObjectArray.target.top;
         obj.scaleX = this.selctedObjectArray.target.scaleX;
         obj.scaleY = this.selctedObjectArray.target.scaleY;
-        obj.width = this.selctedObjectArray.target.getBoundingRect().width;
-        obj.height = this.selctedObjectArray.target.getBoundingRect().height;
+        obj.width = this.selctedObjectArray.target.width;
+        obj.height = this.selctedObjectArray.target.height;
       } else {
-        left1 = obj.getBoundingRect().left;
-        top1 = obj.getBoundingRect().top;
+        left1 = obj.left;
+        top1 = obj.top;
         scale1x = obj.scaleX;
         scale1y = obj.scaleY;
-        width1 = obj.getBoundingRect().width;
-        height1 = obj.getBoundingRect().height;
+        width1 = obj.width;
+        height1 = obj.height;
       }
       if (!this.enableDrawEllipseMode) {
         this.dialog.closeAll();
       }
-      if (this.canvas.getActiveObject().type === 'ellipse') {
-        this.canvas.getActiveObject().set({	
-          rx: (e.target.getBoundingRect().width / 2),	
-          ry: (e.target.getBoundingRect().height / 2),	
-          width: e.target.getBoundingRect().width,	
-          heigth: e.target.getBoundingRect().height	
-        });
-      }
       this.canvas.renderAll();
       this.canvas.getActiveObject().set('strokeUniform', true);
       this.canvas.requestRenderAll();
-      this.selectedObject(e);
     });
     this.canvas.on('object:scaled', (e) => {
       document.getElementById('target').style.display = 'none';
@@ -2099,6 +2090,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       savedInfo['data'].ndarray[0].diseases.forEach(
         (element: any, index: number) => {
           if (element.ellipses) {
+            let selectedObect = this.canvas.getActiveObject();
             element.ellipses.forEach((ellipse: any, indexId: number) => {
               if (
                 activeObj.index === ellipse.index &&
@@ -2124,8 +2116,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   const obj = {
                     x: xCenter * this.canvasScaleX,
                     y: yCenter * this.canvasScaleY,
-                    a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
-                    b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
+                    a: selectedObect.width * selectedObect.scaleX * this.canvasScaleX,
+                    b: selectedObect.height * selectedObect.scaleY * this.canvasScaleY,
                     r: activeObject.angle,
                     index: activeObject.index,
                     type: 'ellipse',
@@ -2153,8 +2145,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                       {
                         x: xCenter * this.canvasScaleX,
                         y: yCenter * this.canvasScaleY,
-                        a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
-                        b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
+                        a: selectedObect.width * selectedObect.scaleX * this.canvasScaleX,
+                        b: selectedObect.height * selectedObect.scaleY * this.canvasScaleY,
                         r: activeObject.angle,
                         index: activeObject.index,
                         type: 'ellipse',
