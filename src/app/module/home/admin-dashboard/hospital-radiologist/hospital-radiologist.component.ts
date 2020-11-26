@@ -111,8 +111,6 @@ this.setForm();
       }
     );
     this.getradiologistList();
-    this.getPatientList(1,10);
-
   }
 
   applyFilter(event: Event) {
@@ -138,6 +136,7 @@ this.setForm();
 
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.getPatientList(1, 10);
     },
     (errorMessage: string) => {
       this.eventEmitterService.onErrorMessage({
