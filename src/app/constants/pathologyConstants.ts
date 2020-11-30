@@ -200,9 +200,9 @@ export const pathology = {
       abnormality: 'Lungs',
       Names: [
         'Bronchitis',
-        'Honey Combing',
+        'Honeycombing',
         'Hyperinflation',
-        'Reticulo Nodular Pattern',
+        'Reticulonodular Pattern',
       ],
     }
   ]
