@@ -68,7 +68,7 @@ export class DashboardService {
     };
 
     return this.http.put(
-      `https://chestxrayqa.southindia.cloudapp.azure.com/api-dev/v1/XRayIdentifiers?assignTo=${assignedTo}`,
+      `https://chestxrayqa.southindia.cloudapp.azure.com/api-test/v1/XRayIdentifiers?assignTo=${assignedTo}`,
       assignPatients,
       httpOptions
     );
