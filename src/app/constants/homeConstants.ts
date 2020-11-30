@@ -1,22 +1,3 @@
-// HELPER FOR DATE COMPARISON
-function _monthToNum(date) {
-  if (date === undefined || date === null || date.length !== 19) {
-    return null;
-  }
-
-  const yearNumber = date.substring(6, 10);
-  const monthNumber = date.substring(3, 5);
-  const dayNumber = date.substring(0, 2);
-
-  const hours = date.substring(11, 13);
-  const minutes = date.substring(14, 16);
-  const seconds = date.substring(17, 19);
-
-  const result = yearNumber * 10000 + monthNumber * 100 + dayNumber;
-  // 29/08/2004 => 20040829
-  return result;
-}
-
 export const homeConstants = {
   patientDashboard: {
     headers: [
@@ -105,8 +86,8 @@ export const homeConstants = {
           return data.value[0].lastUpdate ? new Date(data.value[0].lastUpdate).toLocaleString('es-CL') : '';
         },
         comparator: (valueA, valueB) => {
-          const date1Number = _monthToNum(new Date(valueA[0].lastUpdate).toLocaleString('es-CL'));
-          const date2Number = _monthToNum(new Date(valueB[0].lastUpdate).toLocaleString('es-CL'));
+          const date1Number = new Date(valueA[0].lastUpdate).getTime();
+          const date2Number = new Date(valueB[0].lastUpdate).getTime();
           if (date1Number === null && date2Number === null) {
             return 0;
           }
