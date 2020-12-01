@@ -1293,12 +1293,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         ) {
           if (disease.source !== 'DR') {
             this.savedInfo['data'].ndarray[0].Impression.forEach((element, indexes) => {
-              if (disease.name === element.sentence) {
+              if (disease.name === element.sentence && element.source !== 'ML') {
                 this.savedInfo['data'].ndarray[0].Impression.splice(indexes, 1);
               }
             });
             this.savedInfo['data'].ndarray[0].diseases.forEach((element, indexs) => {
-              if (disease.name === element.name) {
+              if (disease.name === element.name && element.source !== 'ML') {
                 this.savedInfo['data'].ndarray[0].diseases.splice(indexs, 1);
                 sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
                 const selectedObject = {
