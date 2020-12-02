@@ -325,6 +325,14 @@ export class XRayComponent implements OnInit, OnDestroy {
     if (this.canvas.patientDetail.xRayList[0].isAnnotated) {
       this.xrayService.updateSubmitReport(FinalData).subscribe(
         (response) => {
+          const currentPatient = JSON.parse(sessionStorage.getItem('patientDetail'));
+          const patientList = JSON.parse(sessionStorage.getItem('patientRows'));
+          patientList.forEach(element => {
+            if (element.id === currentPatient.id){
+              element.xRayList[0].isAnnotated = true;
+            }
+          });
+          sessionStorage.setItem('patientRows', JSON.stringify(patientList));
           this.spinnerService.hide();
           this.disableSubmitBtn = false;
           this.eventEmitterService.onStatusChange(true);
@@ -339,6 +347,14 @@ export class XRayComponent implements OnInit, OnDestroy {
     } else {
       this.xrayService.submitReport(FinalData).subscribe(
         (response) => {
+          const currentPatient = JSON.parse(sessionStorage.getItem('patientDetail'));
+          const patientList = JSON.parse(sessionStorage.getItem('patientRows'));
+          patientList.forEach(element => {
+            if (element.id === currentPatient.id){
+              element.xRayList[0].isAnnotated = true;
+            }
+          });
+          sessionStorage.setItem('patientRows', JSON.stringify(patientList));
           this.spinnerService.hide();
           this.disableSubmitBtn = false;
           this.eventEmitterService.onStatusChange(true);
