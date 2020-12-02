@@ -859,14 +859,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       !this.enableDrawEllipseMode &&
       this.canvas.isDrawingMode === false &&
       data.target.type !== 'circle' &&
-      data.target.type !== 'line'
+      data.target.type !== 'line' &&
+      data.target.type !== 'measuretext'
     ) {
       this.dialog.open(this.controlsModel, {
         panelClass: 'my-class',
         hasBackdrop: false,
         position: { left: this.left + 'px', top: this.top + 'px' },
       });
-    } else if (data.target.type === 'line') {
+    } else if (data.target.type && data.target.type === 'line') {
       this.dialog.open(this.measureToolControlsModel, {
         panelClass: 'my-class',
         hasBackdrop: false,
@@ -1807,7 +1808,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   deleteEllipse(obj?) {
     this.diffuseObject = obj;
     const activeObject = this.canvas.getActiveObject();
-    if (activeObject.type === 'line') {
+    if (activeObject && activeObject.type === 'line') {
       this.dialog.open(this.measureToolDeleteObjectModel, {
         height: '240px',
         width: '320px',
@@ -2599,7 +2600,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const objects = this.canvas.getObjects();
     objects.forEach((object) => {
       this.isChangeable = true;
-      if (object.type === 'circle' || object.type === 'line') {
+      if (object.type === 'circle' || object.type === 'line' || object.type === 'measuretext') {
         this.canvas.setVisible = object.visible = false;
       }
       this.canvas.renderAll();
@@ -3303,7 +3304,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const object = obj.target;
       if (object === null) {
         return;
-      } else if (object.type === 'line') {
+      } else if (object.type && object.type === 'line') {
         return;
       } else {
         const coords = object.calcCoords();
