@@ -28,7 +28,7 @@
         {{ displayScaleFactor + 'x' }}
       </span>
     </p>
-    <p class="measure-length" *ngIf="showMeasurement"><span>{{ lineLengthInMilliMeter + ' mm' }}</span></p>
+    <p class="measure-length" *ngIf="false"><span>{{ lineLengthInMilliMeter + ' mm' }}</span></p>
   </div>
 
   <div
@@ -180,6 +180,30 @@
   </mat-dialog-actions>
 </ng-template>
 
+<ng-template #MeasureToolDeleteObject>
+  <h2 class="deleteImpression"></h2>
+  <mat-dialog-content id="deleteImpression" align="center">
+    <h2>Are you sure ?</h2>
+    <div class="sub-delete-title">
+      Do you really want to delete this measure tool?
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions id="deleteImpression" align="center">
+    <button
+      class="deleteDisease"
+      mat-raised-button
+      (click)="deleteMeasureTool()"
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+    >
+      DELETE
+    </button>
+    <button (click)="cancelDelete()" class="cancelDisease" mat-raised-button mat-dialog-close>
+      CANCEL
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
 <ng-template #controls>
   <div id="controls">
     <span
@@ -191,6 +215,17 @@
     <span class="material-icons pointer" title="Content Copy"
       >content_copy</span
     >
+    <span
+      class="material-icons pointer"
+      (click)="deleteEllipse()"
+      title="Delete"
+      >highlight_off</span
+    >
+  </div>
+</ng-template>
+
+<ng-template #measureToolControls>
+  <div id="controls">
     <span
       class="material-icons pointer"
       (click)="deleteEllipse()"
