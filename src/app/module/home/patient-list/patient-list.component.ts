@@ -185,7 +185,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
         this.totalPages = Math.ceil(parseInt(patientsList.count) / 10);
         const patientRows = patientsList.data;
         this.showPagination = true;
-        this.gridApi.hideOverlay();
+        if (this.gridApi) {
+          this.gridApi.hideOverlay();
+        }
         patientRows.sort(
           (d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId
         );
@@ -207,7 +209,10 @@ export class PatientListComponent implements OnInit, OnDestroy {
           const concatUniqueArray = concatArray.filter(
             (test, index, array) =>
               index ===
-              array.findIndex((findTest) => findTest.hospitalPatientId === test.hospitalPatientId)
+              array.findIndex(
+                (findTest) =>
+                  findTest.hospitalPatientId === test.hospitalPatientId
+              )
           );
           concatUniqueArray.sort(
             (d1, d2) => d1.hospitalPatientId - d2.hospitalPatientId
