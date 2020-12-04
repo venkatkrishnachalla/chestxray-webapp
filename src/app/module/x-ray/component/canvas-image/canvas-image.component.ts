@@ -2222,7 +2222,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       savedInfo['data'].ndarray[0].diseases.forEach(
         (element: any, index: number) => {
           if (element.ellipses) {
-            let selectedObect = this.canvas.getActiveObject();
+            const selectedObect = this.canvas.getActiveObject();
+            const check = sessionStorage.getItem('ellipsePositionCheck');
             element.ellipses.forEach((ellipse: any, indexId: number) => {
               if (
                 activeObj.index === ellipse.index &&
@@ -2239,7 +2240,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 if (
                   ellipse.positionUpdated ||
                   activeObj.isMLAi ||
-                  this.patientDetail.xRayList[0].isAnnotated
+                  check === 'true' || this.patientDetail.xRayList[0].isAnnotated
                 ) {
                   xCenter = this.canvas._activeObject.left;
                   yCenter = this.canvas._activeObject.top;
@@ -2248,10 +2249,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   const obj = {
                     x: xCenter * this.canvasScaleX,
                     y: yCenter * this.canvasScaleY,
-                    // a: selectedObect.width * selectedObect.scaleX * this.canvasScaleX,
-                    // b: selectedObect.height * selectedObect.scaleY * this.canvasScaleY,
-                    a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
-                    b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
+                    a: selectedObect.width * selectedObect.scaleX * this.canvasScaleX,
+                    b: selectedObect.height * selectedObect.scaleY * this.canvasScaleY,
+                    // a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
+                    // b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
                     r: activeObject.angle,
                     index: activeObject.index,
                     type: 'ellipse',
@@ -2279,10 +2280,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                       {
                         x: xCenter * this.canvasScaleX,
                         y: yCenter * this.canvasScaleY,
-                        // a: selectedObect.width * selectedObect.scaleX * this.canvasScaleX,
-                        // b: selectedObect.height * selectedObect.scaleY * this.canvasScaleY,
-                        a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
-                        b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
+                        a: selectedObect.width * selectedObect.scaleX * this.canvasScaleX,
+                        b: selectedObect.height * selectedObect.scaleY * this.canvasScaleY,
+                        // a: this.canvas._activeObject.rx * this.canvasScaleX * 2,
+                        // b: this.canvas._activeObject.ry * this.canvasScaleY * 2,
                         r: activeObject.angle,
                         index: activeObject.index,
                         type: 'ellipse',
@@ -2529,6 +2530,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.save();
         this.canvas.isDrawingMode = false;
         this.enableFreeHandDrawing = false;
+        sessionStorage.setItem('ellipsePositionCheck', 'true');
       });
     } else {
       this.canvas.isDrawingMode = false;
