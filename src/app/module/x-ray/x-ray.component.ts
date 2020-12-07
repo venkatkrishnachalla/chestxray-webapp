@@ -132,6 +132,7 @@ export class XRayComponent implements OnInit, OnDestroy {
 
   generateReport() {
     this.disableReportBtn = true;
+    // tslint:disable-next-line: no-string-literal
     const annotationData = this.canvas.savedInfo['data'].ndarray[0];
     this.findings.findings.forEach((input) => {
       const output = input.split(':');
@@ -181,6 +182,7 @@ export class XRayComponent implements OnInit, OnDestroy {
         });
       }
     });
+    sessionStorage.setItem('ellipsePositionCheck', 'false');
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();
     this.findings.getFindingsToReport();
