@@ -686,9 +686,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             );
             point1 = undefined;
             this.activeIcon.point1 = true;
+            this.calculateMeasurement();
             this.canvas.renderAll();
             this.canvas.discardActiveObject();
-            this.calculateMeasurement();
           }
         }
       });
@@ -730,18 +730,30 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     ys = ys * ys;
     const px = 0.264583333;
     this.lineLengthInMilliMeter = (Math.sqrt(xs + ys) * px).toFixed(2);
-    if (this.lineLengthInMilliMeter && !isNaN(this.lineLengthInMilliMeter)) {
+    if (
+      this.lineLengthInMilliMeter &&
+      !isNaN(this.lineLengthInMilliMeter) &&
+      this.lineLengthInMilliMeter > 0
+    ) {
       this.showMeasurement = true;
-      const text = new fabric.Text(this.lineLengthInMilliMeter + ' mm', {
+      const text = new fabric.IText(this.lineLengthInMilliMeter + ' mm', {
         left: this.startx[this.temp] + 4,
         top: this.starty[this.temp] + 4,
+        leftx: this.startx[this.temp],
         topx: this.starty[this.temp],
-        fontSize: 14,
-        type: 'measuretext'
+        fontSize: 12,
+        fontWeight: 'bold',
+        hasControls: false,
+        hasBorders: false,
+        lockMovementX: true,
+        lockMovementY: true,
+        selectable: false,
+        cache: false,
+        type: 'measuretext',
       });
       this.canvas.add(text);
+      this.canvas.renderAll();
     }
-    this.canvas.renderAll();
   }
 
   /**
@@ -2170,7 +2182,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         book.top === activeObj.top ||
         book.left === activeObj.x1 ||
         book.left === activeObj.x2 ||
-        book.topx === activeObj.y2
+        book.topx - (book.topx % 1) === activeObj.y2 - (activeObj.y2 % 1) ||
+        book.leftx - (book.leftx % 1) === activeObj.x2 - (activeObj.x2 % 1)
     );
     const concatUniqueArray = concatPoint1Array.filter(
       (test, index, array) =>
@@ -2602,7 +2615,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     const objects = this.canvas.getObjects();
     objects.forEach((object) => {
       this.isChangeable = true;
-      if (object.type === 'circle' || object.type === 'line' || object.type === 'measuretext') {
+      if (
+        object.type === 'circle' ||
+        object.type === 'line' ||
+        object.type === 'measuretext'
+      ) {
         this.canvas.setVisible = object.visible = false;
       }
       this.canvas.renderAll();
