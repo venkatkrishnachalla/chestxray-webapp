@@ -227,6 +227,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit() {
+    sessionStorage.setItem('ellipseResize', 'false');
     this.random = Math.floor(Math.random() * 100 + 1);
     this.isChangeable = true;
     this.shiftKeyDown = false;
@@ -1637,8 +1638,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         width: 0,
         height: 0,
         disease: diseaseItem.name,
-        originX: 'center',
-        originY: 'center',
+        originX: diseaseItem.source === 'ML' ? 'center' : 'left',
+        originY: diseaseItem.source === 'ML' ? 'center' : 'top',
         left: xCenter,
         top: yCenter,
         rx: width / 2,
@@ -1694,6 +1695,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.canvas.setActiveObject(ellipse);
           }
         });
+        this.canvas.observe('object:scaling', (e) => {
+          // const obj = this.canvas.getActiveObject();
+          // obj.set({
+          //   originX: 'center',
+          //   originY: 'center',
+          // });
+          sessionStorage.setItem('ellipseResize', 'true');
+        });
         this.canvas.observe('mouse:move', (e) => {
           this.dotEllipse = false;
           if (!this.isDown) {
@@ -1731,8 +1740,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
 
         this.canvas.observe('mouse:up', (e) => {
+          const obj = this.canvas.getActiveObject();
           if (this.dotEllipse === true) {
-            const obj = this.canvas.getActiveObject();
             obj.set({
               ry: 1,
               rx: 1,
@@ -1802,6 +1811,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         obj.selectable = true;
         obj.lockMovementX = true;
         obj.lockMovementY = true;
+        obj.lockRotation = true;
       } else {
         obj.selectable = val;
         obj.lockMovementX = !val;
@@ -2237,6 +2247,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           if (element.ellipses) {
             const selectedObect = this.canvas.getActiveObject();
             const check = sessionStorage.getItem('ellipsePositionCheck');
+            const check2 = sessionStorage.getItem('ellipseResize');
             element.ellipses.forEach((ellipse: any, indexId: number) => {
               if (
                 activeObj.index === ellipse.index &&
@@ -2251,7 +2262,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   this.canvas._activeObject.top +
                   this.canvas._activeObject.height / 2;
                 if (
-                  ellipse.positionUpdated ||
+                  ellipse.positionUpdated || check2 === 'true' || 
                   activeObj.isMLAi ||
                   check === 'true' || this.patientDetail.xRayList[0].isAnnotated
                 ) {
@@ -2660,9 +2671,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvasScaleX = this.xRayImage.width / this.canvas.width;
       this.canvasScaleY = this.xRayImage.height / this.canvas.height;
       const xCenter =
-        this.canvas._activeObject.left + this.canvas._activeObject.width / 2;
+        this.canvas._activeObject.left;
       const yCenter =
-        this.canvas._activeObject.top + this.canvas._activeObject.height / 2;
+        this.canvas._activeObject.top;
       const obj = {
         color: colorName,
         diseaseType: this.diseaseType,
@@ -2947,8 +2958,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           angle: element.angle,
           stroke: element.color,
           id: element.id,
-          originX: 'center',
-          originY: 'center',
+          originX: 'left',
+          originY: 'top',
           strokeWidth: 3,
           fill: '',
           selectable: true,
@@ -3323,7 +3334,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const object = obj.target;
       if (object === null) {
         return;
-      } else if (object.type && object.type === 'line') {
+      } else if (object.type === 'line' || object.type === 'path') {
         return;
       } else {
         const coords = object.calcCoords();
