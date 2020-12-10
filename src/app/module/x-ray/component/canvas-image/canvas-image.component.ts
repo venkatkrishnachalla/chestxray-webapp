@@ -742,6 +742,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         leftx: this.startx[this.temp],
         topx: this.starty[this.temp],
         fontSize: 12,
+        fill: '#1E90FF',
         fontWeight: 'bold',
         hasControls: false,
         hasBorders: false,
@@ -2244,20 +2245,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
               ) {
                 this.canvasScaleX = this.xRayImage.width / this.canvas.width;
                 this.canvasScaleY = this.xRayImage.height / this.canvas.height;
-                let xCenter =
-                  this.canvas._activeObject.left +
-                  this.canvas._activeObject.width / 2;
-                let yCenter =
-                  this.canvas._activeObject.top +
-                  this.canvas._activeObject.height / 2;
-                if (
-                  ellipse.positionUpdated ||
-                  activeObj.isMLAi ||
-                  check === 'true' || this.patientDetail.xRayList[0].isAnnotated
-                ) {
-                  xCenter = this.canvas._activeObject.left;
-                  yCenter = this.canvas._activeObject.top;
-                }
+                // let xCenter =
+                //   this.canvas._activeObject.left +
+                //   this.canvas._activeObject.width / 2;
+                // let yCenter =
+                //   this.canvas._activeObject.top +
+                //   this.canvas._activeObject.height / 2;
+                // if (
+                //   ellipse.positionUpdated ||
+                //   activeObj.isMLAi ||
+                //   check === 'true' || this.patientDetail.xRayList[0].isAnnotated
+                // ) {
+                const xCenter = this.canvas._activeObject.getCenterPoint().x;
+                const yCenter = this.canvas._activeObject.getCenterPoint().y;
+                // }
                 if (element.ellipses.length > 1) {
                   const obj = {
                     x: xCenter * this.canvasScaleX,
@@ -2659,10 +2660,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     if (!this.canvas._activeObject.path) {
       this.canvasScaleX = this.xRayImage.width / this.canvas.width;
       this.canvasScaleY = this.xRayImage.height / this.canvas.height;
-      const xCenter =
-        this.canvas._activeObject.left + this.canvas._activeObject.width / 2;
-      const yCenter =
-        this.canvas._activeObject.top + this.canvas._activeObject.height / 2;
+      const xCenter = this.canvas._activeObject.getCenterPoint().x;
+      const yCenter = this.canvas._activeObject.getCenterPoint().y;
       const obj = {
         color: colorName,
         diseaseType: this.diseaseType,
