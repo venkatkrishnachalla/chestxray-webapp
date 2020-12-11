@@ -741,7 +741,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         top: this.starty[this.temp] + 4,
         leftx: this.startx[this.temp],
         topx: this.starty[this.temp],
-        fontSize: 12,
+        fontSize: 15,
         fill: '#1E90FF',
         fontWeight: 'bold',
         hasControls: false,
