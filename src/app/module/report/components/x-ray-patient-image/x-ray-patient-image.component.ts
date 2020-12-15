@@ -243,18 +243,18 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
           outputSub.forEach((finalOutput) => {
             finalOutput = finalOutput.replace(/\//g, '').trim();
             let index = annotationData.Impression.findIndex(
-              (x) => x.sentence === finalOutput
+              (x) => finalOutput.toLowerCase().indexOf(x.sentence.toLowerCase()) !== -1
             );
             if (index === -1) {
               index = annotationData.diseases.findIndex(
-                (x) => x.name === finalOutput
+                (x) => finalOutput.toLowerCase().indexOf(x.name.toLowerCase()) !== -1
               );
             }
             if (index === -1) {
               if (
                 finalOutput !== '' &&
                 annotationData.diseases.findIndex(
-                  (x) => x.name === finalOutput
+                  (x) => finalOutput.toLowerCase().indexOf(x.name.toLowerCase()) !== -1
                 ) !== -1
               ) {
                 const impressionIndex =
@@ -297,6 +297,7 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
               annotationData.Findings[outputMain].push(impressionIndex + 1);
             }
           } else if (index !== -1) {
+            annotationData.Impression[index].sentence = output[1];
             annotationData.Findings[outputMain].push(index);
           }
         }

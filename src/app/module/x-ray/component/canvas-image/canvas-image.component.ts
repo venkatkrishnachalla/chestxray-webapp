@@ -172,6 +172,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   impression: any[];
   innerObject: any;
   random: number;
+  point1: any;
+  point2: any;
   /*
    * constructor for CanvasImageComponent class
    */
@@ -635,7 +637,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * measureTool(data);
    */
   measureTool(data: any) {
-    let point1;
+    let points = [];
+    let lines = [];
     this.isMeasureTool = true;
     this.activeIcon = data;
     if (!this.activeIcon.active) {
@@ -643,17 +646,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     } else {
       this.canvas.observe('mouse:down', (options) => {
         if (this.isMeasureTool && this.activeIcon.active) {
-          const x = options.e.clientX - this.canvas._offset.left;
-          const y = options.e.clientY - this.canvas._offset.top;
-          this.isDownMeasure = true;
           const pointer = this.canvas.getPointer(options.e);
-          const points = [pointer.x, pointer.y, pointer.x, pointer.y];
-          this.startx[this.temp] = pointer.x;
-          this.starty[this.temp] = pointer.y;
-
+          let positionX = pointer.x;
+          let positionY = pointer.y;
           const circle = new fabric.Circle({
-            left: x,
-            top: y,
+            left: positionX,
+            top: positionY,
             fill: 'red',
             originX: 'center',
             originY: 'center',
@@ -666,44 +664,45 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             hoverCursor: 'default',
             type: 'circle',
           });
+          points.push(circle);
+          if (points[0].left === this.point1){
+            points.shift();
+          }
+          this.activeIcon.point1 = false;
           this.canvas.add(circle);
-          this.canvas.selectable = false;
-
-          if (point1 === undefined) {
-            point1 = new fabric.Point(x, y);
-            this.activeIcon.point1 = false;
-          } else {
-            this.canvas.add(
-              new fabric.Line([point1.x, point1.y, x, y], {
-                stroke: '#00ffff',
+          if (points.length > 1) {
+            this.point1 = points[0].left;
+            this.activeIcon.point1 = true;
+            var startPoint = points[points.length - 2];
+            var endPoint = points[points.length - 1];
+        
+            const line = new fabric.Line(
+              [
+                startPoint.get("left"),
+                startPoint.get("top"),
+                endPoint.get("left"),
+                endPoint.get("top")
+              ],
+              {
+                stroke: "#00ffff",
+                selectable: true,
                 lockMovementX: true,
                 lockMovementY: true,
-                type: 'line',
-                selectable: true,
+                hoverCursor: "default",
+                originX: "center",
+                originY: "center",
                 strokeUniform: true,
-                fill: '',
-              })
+              }
             );
-            point1 = undefined;
-            this.activeIcon.point1 = true;
-            this.calculateMeasurement();
-            this.canvas.renderAll();
-            this.canvas.discardActiveObject();
-          }
-        }
-      });
-
-      this.canvas.on('mouse:up', (o) => {
-        if (this.isMeasureTool && this.activeIcon.active) {
-          const pointer = this.canvas.getPointer(o.e);
-          this.endx[this.temp] = pointer.x;
-          this.endy[this.temp] = pointer.y;
-          this.isDownMeasure = false;
-          if (point1 === undefined) {
+            lines.push(line);
+            this.canvas.add(line);
             this.activeIcon.active = false;
+            this.calculateMeasurement(points);
+            this.canvas.renderAll();
+            points = [];
           }
         }
-      });
+        });  
     }
   }
 
@@ -713,14 +712,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * @example
    * calculateMeasurement();
    */
-  calculateMeasurement() {
+  calculateMeasurement(input) {
     const startPoint = {
-      x: this.startx[this.temp],
-      y: this.starty[this.temp],
+      x: input[0].left,
+      y: input[0].top,
     };
     const endPoint = {
-      x: this.endx[this.temp],
-      y: this.endy[this.temp],
+      x: input[1].left,
+      y: input[1].top,
     };
     let xs = 0;
     let ys = 0;
@@ -737,10 +736,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     ) {
       this.showMeasurement = true;
       const text = new fabric.IText(this.lineLengthInMilliMeter + ' mm', {
-        left: this.startx[this.temp] + 4,
-        top: this.starty[this.temp] + 4,
-        leftx: this.startx[this.temp],
-        topx: this.starty[this.temp],
+        left: input[1].left + 4,
+        top: input[1].top + 4,
+        leftx: input[1].left,
+        topx: input[1].top,
         fontSize: 15,
         fill: '#1E90FF',
         fontWeight: 'bold',
