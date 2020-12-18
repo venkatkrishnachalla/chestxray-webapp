@@ -41,7 +41,7 @@ describe('ApiEndPointService', () => {
       apiEndPointService.getSingInURL();
       const result = apiEndPointService.getSingInURL();
       expect(result).toEqual(
-        'https://chestxrayqa.southindia.cloudapp.azure.com/identity/v1/Account/Login/'
+        'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Login/'
       );
     });
   });
