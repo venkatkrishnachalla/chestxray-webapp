@@ -11,6 +11,15 @@ export const patientMock: any[] = [
     status: 'in-process',
     instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
     hospitalPatientId: '1010',
+    isAnnotated: true,
+    xRayList: [
+      {
+        xRayId: 68,
+        lastUpdate: '2020-10-16T12:39:06.222349',
+        isAnnotated: true,
+        assignedTo: 'mohan',
+      },
+    ],
   },
   {
     patientId: 14,
@@ -24,8 +33,66 @@ export const patientMock: any[] = [
     status: 'in-process',
     instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8gd08',
     hospitalPatientId: '1011',
+    isAnnotated: true,
+    xRayList: [
+      {
+        xRayId: 68,
+        lastUpdate: '2020-10-16T12:39:06.222349',
+        isAnnotated: true,
+        assignedTo: 'mohan',
+      },
+    ],
   },
 ];
+
+export const patientObjectMock: any = {
+   data: [
+    {
+      patientId: 12,
+      name: 'Krishna',
+      gender: 'M',
+      age: 56,
+      priority: 'Minor',
+      referenceDoctor: 'Corkery, Charley DDS',
+      date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
+      desc: 'Testing',
+      status: 'in-process',
+      instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8f08',
+      hospitalPatientId: '1010',
+      isAnnotated: true,
+      xRayList: [
+        {
+          xRayId: 68,
+          lastUpdate: '2020-10-16T12:39:06.222349',
+          isAnnotated: true,
+          assignedTo: 'mohan',
+        },
+      ],
+    },
+    {
+      patientId: 14,
+      name: 'Pramoda',
+      gender: 'M',
+      age: 26,
+      priority: 'Major',
+      referenceDoctor: 'Corkery, Charley DDS',
+      date: 'Tue Aug 20 2019 17:49:53 GMT+0530 (India Standard Time)',
+      desc: 'Testing',
+      status: 'in-process',
+      instanceID: '4df09ebb-adb7-4d81-a7e0-7d108ceb8gd08',
+      hospitalPatientId: '1011',
+      isAnnotated: true,
+      xRayList: [
+        {
+          xRayId: 68,
+          lastUpdate: '2020-10-16T12:39:06.222349',
+          isAnnotated: true,
+          assignedTo: 'mohan',
+        },
+      ],
+    },
+  ],
+};
 
 export const canvasMock: any = {
   getActiveObject: () => {

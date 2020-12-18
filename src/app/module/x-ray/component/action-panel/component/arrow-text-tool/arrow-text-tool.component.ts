@@ -23,7 +23,12 @@ export class ArrowTextToolComponent implements OnInit {
    */
   constructor() {}
 
-  /*** ArrowTextToolComponent class init function ***/
+  /**
+   * This is a init function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     this.arrowTextPanel = JSON.parse(
       JSON.stringify(this.constants.actionPanelArrowText)
@@ -31,7 +36,11 @@ export class ArrowTextToolComponent implements OnInit {
   }
 
   /**
-   * This is a iconAction click function.
+   * This is a iconAction function.
+   * @param '{any}' array - A any param
+   * @param '{number}' value - A empty param
+   * @example
+   * iconAction(data, index);
    */
   iconAction(data, index) {
     return null;

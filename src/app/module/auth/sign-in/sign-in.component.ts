@@ -55,11 +55,10 @@ export class SignInComponent implements OnInit {
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
-
   ngOnInit(): void {
     this.usernameElementRef.nativeElement.focus();
     this.signInText = this.constants.loginPage;
@@ -74,14 +73,13 @@ export class SignInComponent implements OnInit {
 
   /**
    * This is on sign in function.
-   * @param {NgForm} data - A array param
+   * @param '{NgForm}' data - A array param
    * @example
    * onSignIn(form);
    */
-
   onSignIn(form: NgForm) {
     const networkStatus = navigator.onLine;
-    if (form.valid) {
+    if (form.valid && form.value.username && form.value.password) {
       this.spinnerService.show();
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
         (authResponse: SignInResponse) => {
@@ -109,6 +107,8 @@ export class SignInComponent implements OnInit {
         this.toastrService.error(
           'Please check your network connections and try again.'
         );
+      } else if (form.value.username && form.value.password) {
+        this.toastrService.error('Enter valid username or password');
       } else {
         this.toastrService.error('Enter all the required fields');
       }

@@ -17,7 +17,12 @@ export class RotateToolComponent implements OnInit {
    */
   constructor() {}
 
-  /*** RotateToolComponent class init function ***/
+  /**
+   * This is a ngOnInit function
+   * @param '{void}' empty- A empty param
+   * @example
+   * ngOnInit();
+   */
   ngOnInit(): void {
     this.actionPanelRotate = JSON.parse(
       JSON.stringify(this.constants.actionPanelRotate)

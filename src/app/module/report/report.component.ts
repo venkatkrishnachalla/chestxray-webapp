@@ -76,15 +76,19 @@ export class ReportComponent implements OnInit {
       this.pdfFindings = data;
       this.changeDetector.markForCheck();
     });
+    this.eventEmitterService.onStatusChangeSubject.subscribe(
+      (data: boolean) => {
+        this.status = data === true ? 'Completed' : 'Not Started';
+      }
+    );
   }
 
   /**
    * This is a init function.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * ngOnInit();
    */
-
   ngOnInit(): void {
     this.spinnerService.show();
     this.showPrintForm = false;
@@ -106,27 +110,33 @@ export class ReportComponent implements OnInit {
       const patientInfo = JSON.parse(sessionStorage.getItem('patientDetail'));
       this.patientInfo = patientInfo;
     }
-    if (this.patientInfo.status === false) {
-      this.status = 'Drafted';
+    if (this.patientInfo.xRayList[0].isAnnotated === false) {
+      this.status = 'Not Started';
     } else {
-      this.status = 'Unreported';
+      this.status = 'Completed';
     }
     setTimeout(() => {
       this.spinnerService.hide();
     }, 2500);
+    sessionStorage.setItem('reportPageSelection', 'true');
   }
 
+  /**
+   * This is a  impressionData function.
+   * @param '{any}' any - A any param
+   * @example
+   * impressionData(event);
+   */
   impressionData(event: any) {
     this.annotatedImpression = event;
   }
 
   /**
    * This is a  event to go back to xray page .
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * goBackToXray();
    */
-
   goBackToXray() {
     this.eventEmitterService.onComponentButtonClick({
       data: [],
@@ -139,22 +149,20 @@ export class ReportComponent implements OnInit {
 
   /**
    * This is a event to enable print preview selector.
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
    * @example
    * enablePrint(event);
    */
-
   enablePrint(event) {
     this.showPrintForm = event;
   }
 
   /**
    * This is to get the dimensions for image container.
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * setCanvasDimension();
    */
-
   setCanvasDimension() {
     this.canvasDynamicWidth = 367;
     this.canvasDynamicHeight = 367;
@@ -163,11 +171,10 @@ export class ReportComponent implements OnInit {
 
   /**
    * This is to generate a canvas using fabric.js .
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * generateCanvas();
    */
-
   generateCanvas() {
     fabric.Image.fromURL(this.annotatedImage, (img) => {
       this.xRayImage = img;
@@ -177,23 +184,21 @@ export class ReportComponent implements OnInit {
 
   /**
    * function to compare image vs container aspect ratio width .
-   * @param {string} value - A string param
-   * @param {string} value - A string param
+   * @param '{string}' value - A string param
+   * @param '{string}' value - A string param
    * @example
    * getWidthFirst(imageAspectRatio, containerAspectRatio);
    */
-
   getWidthFirst(imageAspectRatio, containerAspectRatio) {
     return imageAspectRatio > containerAspectRatio;
   }
 
   /**
    * This is to setting BackgroundImage for canvas block .
-   * @param {void} empty - A empty param
+   * @param '{void}' empty - A empty param
    * @example
    * setCanvasBackground();
    */
-
   setCanvasBackground() {
     const imageAspectRatio = this.xRayImage.width / this.xRayImage.height;
     const containerAspectRatio =

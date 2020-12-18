@@ -1,9 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'formatTime'
+  name: 'formatTime',
 })
+
+// FormatTimePipe class implementation
 export class FormatTimePipe implements PipeTransform {
+  /**
+   * This is a transform function.
+   * @param '{number}' index - A number param
+   * @example
+   * transform(value);
+   */
 
   transform(value: number): string {
     const hours: number = Math.floor(value / 3600);
@@ -16,5 +24,4 @@ export class FormatTimePipe implements PipeTransform {
       ('00' + Math.floor(value - minutes * 60)).slice(-2)
     );
   }
-
 }

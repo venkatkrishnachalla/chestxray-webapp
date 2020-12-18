@@ -42,7 +42,7 @@ describe('XRayService', () => {
     });
   });
 
-  /** it should call handleError event ***/
+  /*** it should call handleError event ***/
   describe('#handleError', () => {
     beforeEach(() => {
       const mock = {

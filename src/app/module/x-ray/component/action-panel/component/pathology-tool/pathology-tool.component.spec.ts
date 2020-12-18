@@ -2,9 +2,12 @@ import { PathologyToolComponent } from './pathology-tool.component';
 
 describe('PathologyToolComponent', () => {
   let component: PathologyToolComponent;
+  const eventEmitterServiceSpy = jasmine.createSpyObj('EventEmitterService', [
+    'onComponentButtonClick',
+  ]);
 
   beforeEach(() => {
-    component = new PathologyToolComponent();
+    component = new PathologyToolComponent(eventEmitterServiceSpy);
   });
 
   /*** it should create pathology tool component ***/

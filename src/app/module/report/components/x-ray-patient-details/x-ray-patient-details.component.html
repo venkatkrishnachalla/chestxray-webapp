@@ -8,7 +8,7 @@
       <span> {{ reportPageText.patientDetails | uppercase }}</span>
     </div>
     <div class="patient-info">
-      <table mat-table class="mat-elevation-z0"> 
+      <table mat-table class="mat-elevation-z0">
         <tr>
           <td><mat-label>Patient ID</mat-label></td>
           <td>{{ patientInfo.hospitalPatientId }}</td>
@@ -17,7 +17,7 @@
         </tr>
         <tr>
           <td><mat-label>Date of creation</mat-label></td>
-          <td>{{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
+          <td>{{ patientInfo.xRayList[0].lastUpdate | date: 'dd-MM-yyyy' }}</td>
           <td><mat-label>Age</mat-label></td>
           <td>{{ patientInfo.age }}</td>
         </tr>
@@ -25,13 +25,13 @@
           <td><mat-label>Name</mat-label></td>
           <td>{{ patientInfo.name }}</td>
           <td><mat-label>Time</mat-label></td>
-          <td>{{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
+          <td>{{ patientInfo.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}</td>
         </tr>
         <tr>
           <td><mat-label>Gender</mat-label></td>
-          <td>{{ patientInfo.sex  }}</td>
+          <td>{{ patientInfo.sex }}</td>
           <td><mat-label>Ref. Physician</mat-label></td>
-          <td>{{ patientInfo.referringPhysicianName || '-' }}</td>
+          <td>{{ patientInfo.xRayList[0].assignedTo || '-' }}</td>
         </tr>
       </table>
     </div>
@@ -110,29 +110,33 @@
 
 <!-- Print option -->
 <div class="print-patient-details">
+  <div>
+    <cxr-report-header></cxr-report-header>
+  </div>
   <div class="patient-grid-container">
-    <table mat-table class="mat-elevation-z0"> 
+    <table mat-table class="mat-elevation-z0">
       <tr>
         <td><b>Patient ID</b></td>
-        <td class='pdf-padding-r-70'>: {{ patientInfo.hospitalPatientId }}</td>
+        <td class="pdf-padding-r-70">: {{ patientInfo.hospitalPatientId }}</td>
         <td><b>Name</b></td>
-        <td class='pdf-padding-r-70'>: {{ patientInfo.name }}</td>
+        <td class="pdf-padding-r-70">: {{ patientInfo.name }}</td>
         <td><b>Gender</b></td>
-        <td>: {{ patientInfo.sex  }}</td>
+        <td>: {{ patientInfo.sex }}</td>
       </tr>
       <tr>
         <td><b>Status</b></td>
-        <td>: {{ status }}</td>
+        <td *ngIf="isHospitalRadiologist">: {{ status }}</td>
+        <td *ngIf="!isHospitalRadiologist">: {{ printStatus }}</td>
         <td><b>Age</b></td>
         <td>: {{ patientInfo.age }}</td>
         <td><b>Date of creation</b></td>
-        <td>: {{ patientInfo.lastUpdate | date: 'dd-MM-yyyy' }}</td>
+        <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'dd-MM-yyyy' }}</td>
       </tr>
       <tr>
         <td><b>Time</b></td>
-        <td>: {{ patientInfo.lastUpdate | date: 'HH:mm:ss' }}</td>
+        <td>: {{ patientInfo.xRayList[0].lastUpdate | date: 'HH:mm:ss' }}</td>
         <td><b>Ref. Physician</b></td>
-        <td>: {{ patientInfo.referringPhysicianName || '-' }}</td>
+        <td>: {{ patientInfo.xRayList[0].assignedTo || '-' }}</td>
       </tr>
     </table>
   </div>

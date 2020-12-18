@@ -23,12 +23,12 @@
               <mat-label>Username</mat-label>
               <input
                 matInput
-                name="text"
+                name="username"
                 autocomplete="off"
                 #usernameRef
-                required
                 [(ngModel)]="auth.email"
                 value=""
+                pattern="^[a-zA-Z0-9]+$"
               />
             </mat-form-field>
             <mat-form-field>
@@ -38,11 +38,9 @@
                 name="password"
                 [type]="hide ? 'password' : 'text'"
                 autocomplete="off"
-                required
                 [(ngModel)]="auth.password"
                 placeholder=""
                 value=""
-                minlength="5"
               />
               <mat-icon matSuffix (click)="hide = !hide">{{
                 hide ? 'visibility_off' : 'visibility'

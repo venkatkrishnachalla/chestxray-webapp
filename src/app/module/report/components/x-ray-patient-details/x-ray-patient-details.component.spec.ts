@@ -19,12 +19,16 @@ describe('XRayPatientDetailsComponent', () => {
     'tick',
     'markForCheck',
   ]);
+  const eventEmitterService2Spy = jasmine.createSpyObj('EventEmitterService2', [
+    'invokePatientInfoStatusChange',
+  ]);
 
   beforeEach(() => {
     eventEmitterServiceSpy.findingsSubject = of('calcification');
     eventEmitterServiceSpy.commentSubject = of('abcde');
     component = new XRayPatientDetailsComponent(
       eventEmitterServiceSpy,
+      eventEmitterService2Spy,
       xrayAnnotatedImpressionSpy,
       changeDetectorSpy
     );
@@ -53,7 +57,7 @@ describe('XRayPatientDetailsComponent', () => {
       xrayAnnotatedImpressionSpy.xrayAnnotatedFindingsService.and.returnValue(
         of(impressionsMock)
       );
-
+      eventEmitterService2Spy.invokePatientInfoStatusChange = of(true);
       eventEmitterServiceSpy.commentSubject = new BehaviorSubject<any>('');
       const value = '';
       eventEmitterServiceSpy.commentSubject
@@ -69,10 +73,12 @@ describe('XRayPatientDetailsComponent', () => {
       eventEmitterServiceSpy.findingsSubject.next([
         { name: 'Bulla', index: 0 },
       ]);
+      spyOn(component, 'setCanvasDimension');
     });
     it('should call ngOnIit function', () => {
       component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
+      expect(component.setCanvasDimension).toHaveBeenCalled();
     });
   });
 
@@ -97,7 +103,7 @@ describe('XRayPatientDetailsComponent', () => {
       spyOn(sessionStorage, 'getItem').and.callFake(() => {
         return JSON.stringify(patientMockData);
       });
-
+      eventEmitterService2Spy.invokePatientInfoStatusChange = of(false);
       eventEmitterServiceSpy.commentSubject = new BehaviorSubject<any>('');
       const value = '';
       eventEmitterServiceSpy.commentSubject
@@ -113,10 +119,12 @@ describe('XRayPatientDetailsComponent', () => {
       eventEmitterServiceSpy.findingsSubject.next([
         { name: 'Bulla', index: 0 },
       ]);
+      spyOn(component, 'setCanvasDimension');
     });
     it('should call ngOnIit function, when title is impression', () => {
       component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
+      expect(component.setCanvasDimension).toHaveBeenCalled();
     });
   });
 

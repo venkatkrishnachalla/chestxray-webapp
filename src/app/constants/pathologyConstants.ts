@@ -3,9 +3,9 @@ export const pathology = {
     {
       abnormality: 'Anatomical variants',
       Names: [
-        'Cervical rib',
-        'Azygos fissure',
         'Aortic Arch variants',
+        'Azygos fissure',
+        'Cervical rib',
         'Thymus',
       ],
     },
@@ -13,10 +13,10 @@ export const pathology = {
       abnormality: 'Bronchiectasis',
       Names: [],
     },
-    {
-      abnormality: 'Bronchitis',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Bronchitis',
+    //   Names: [],
+    // },
     {
       abnormality: 'Bulla',
       Names: [],
@@ -24,10 +24,10 @@ export const pathology = {
     {
       abnormality: 'Calcification',
       Names: [
-        'Calcified nodule',
-        'Physiological calcification',
         'Calcified pleural plaques',
         'Calcified nodes',
+        'Calcified nodule',
+        'Physiological calcification',
       ],
     },
     {
@@ -69,9 +69,9 @@ export const pathology = {
     {
       abnormality: 'External Densities',
       Names: [
-        'Radiopaque foreign body',
         'bone cement',
         'mammary prosthesis/breast implant',
+        'Radiopaque foreign body',
         'Surgical sutures',
       ],
     },
@@ -79,8 +79,8 @@ export const pathology = {
       abnormality: 'Extrapulmonary extrapleural conditions radiopaedia',
       Names: [
         'Subcutaneous emphysema',
-        'Thyroid enlargement/mass',
         'Thyroid calcification',
+        'Thyroid enlargement/mass',
       ],
     },
     {
@@ -91,18 +91,18 @@ export const pathology = {
       abnormality: 'Hilar Enlargement',
       Names: [],
     },
-    {
-      abnormality: 'Honeycombing',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Honeycombing',
+    //   Names: [],
+    // },
     {
       abnormality: 'Hydropneumothorax',
       Names: [],
     },
-    {
-      abnormality: 'Hyperinflation',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Hyperinflation',
+    //   Names: [],
+    // },
     {
       abnormality: 'Mass',
       Names: [],
@@ -118,18 +118,19 @@ export const pathology = {
     {
       abnormality: 'Osseous Lesions',
       Names: [
-        'Lytic',
-        'sclerotic',
+        'Fracture',
         'Implants',
         'kyphosis',
+        'Lytic',
+        'sclerotic',
         'scoliosis',
-        'Fracture',
+        
       ],
     },
-    {
-      abnormality: 'Osteopenia',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Osteopenia',
+    //   Names: [],
+    // },
     {
       abnormality: 'Pleural  Effusion',
       Names: ['Pleural Effusion', 'Pleural Thickening'],
@@ -150,10 +151,10 @@ export const pathology = {
       abnormality: 'Pneumothorax',
       Names: [],
     },
-    {
-      abnormality: 'Reticulonodular Pattern',
-      Names: [],
-    },
+    // {
+    //   abnormality: 'Reticulonodular Pattern',
+    //   Names: [],
+    // },
     {
       abnormality: 'Support Devices',
       Names: [
@@ -187,4 +188,22 @@ export const pathology = {
     { Name: 'BONY THORAX', Desc: 'Visualised bony thorax is normal.' },
     { Name: 'ADDITIONAL', Desc: '' },
   ],
+
+  diffusePathology: [
+     {
+      abnormality: 'Bony Thorax',
+      Names: [
+        'Osteopenia',
+      ],
+     },
+     {
+      abnormality: 'Lungs',
+      Names: [
+        'Bronchitis',
+        'Honeycombing',
+        'Hyperinflation',
+        'Reticulonodular Pattern',
+      ],
+    }
+  ]
 };

@@ -5,18 +5,20 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-// CalendarComponent class implementation  
+// CalendarComponent class implementation
 export class CalendarComponent implements OnInit {
-  /*  
-* constructor for CalendarComponent class  
-*/ 
+  /*
+   * constructor for CalendarComponent class
+   */
+
   constructor() {}
 
-   /**  
- * This is a init function.  
- * @param {void} empty - A empty param  
- * @example  
- * ngOnInit();
- */  
+  /**
+   * This is a init function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * ngOnInit();
+   */
+
   ngOnInit(): void {}
 }

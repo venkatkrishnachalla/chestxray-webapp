@@ -28,6 +28,7 @@ import { SelectFitscreenToolComponent } from './component/action-panel/component
 import { ZoominZoomoutToolComponent } from './component/action-panel/component/zoomin-zoomout-tool/zoomin-zoomout-tool.component';
 import { RotateToolComponent } from './component/action-panel/component/rotate-tool/rotate-tool.component';
 import { FlipToolComponent } from './component/action-panel/component/flip-tool/flip-tool.component';
+import { SortPipe } from 'src/app/filters/sort.pipe';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { FlipToolComponent } from './component/action-panel/component/flip-tool/
     SelectFitscreenToolComponent,
     ZoominZoomoutToolComponent,
     RotateToolComponent,
-    FlipToolComponent
+    FlipToolComponent,
+    SortPipe
   ],
   imports: [
     CommonModule,
@@ -62,6 +64,9 @@ import { FlipToolComponent } from './component/action-panel/component/flip-tool/
     FormsModule,
     ToastrModule,
     CoreModule,
+  ],
+   providers: [
+    SortPipe
   ],
   exports: [SearchFilterPipe],
 })

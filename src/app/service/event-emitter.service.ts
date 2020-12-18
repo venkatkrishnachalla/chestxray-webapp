@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
+// EventEmitterService class implementation
 export class EventEmitterService {
   invokeComponentFunction = new EventEmitter();
   invokeComponentData = new EventEmitter();
@@ -16,14 +18,17 @@ export class EventEmitterService {
   invokeFindingsDataFunction = new EventEmitter();
   invokePrevNextButtonDataFunction = new EventEmitter();
   invokeAskAiButtonDataFunction = new EventEmitter();
+  invokeNoAbnormalitiesDataFunction = new EventEmitter();
   commentSubject = new BehaviorSubject('');
   findingsSubject = new BehaviorSubject('');
+  onStatusChangeSubject = new BehaviorSubject(false);
   invokeImpressionFunction = new EventEmitter();
   onStatusChangeFunction = new EventEmitter();
   brightnessValue = new EventEmitter();
   contrastValue = new EventEmitter();
   defaultRange = new EventEmitter();
-
+  deleteDiffuseImpression = new EventEmitter();
+  onInActiveIconFunction = new EventEmitter();
 
   constructor() {}
 
@@ -81,16 +86,22 @@ export class EventEmitterService {
   onAskAiButtonClick(data) {
     this.invokeAskAiButtonDataFunction.emit(data);
   }
+
+  /*** event to display no abnormalities found text ***/
+  onNoAbnormalitiesClick(data) {
+    this.invokeNoAbnormalitiesDataFunction.emit(data);
+  }
+
   /*** onImpressionCheckboxClick event emit function  ***/
   onImpressionCheckboxClick(data) {
     this.invokeImpressionFunction.emit(data);
   }
 
-  onStatusChange(data){
+  onStatusChange(data) {
     this.onStatusChangeFunction.emit(data);
   }
-  
-  /*** onComponentButtonClick event emit function ***/
+
+  /*** onBrightnessChange event emit function ***/
   onBrightnessChange(title) {
     this.brightnessValue.emit(title);
   }
@@ -99,9 +110,19 @@ export class EventEmitterService {
   onContrastChange(title: number) {
     this.contrastValue.emit(title);
   }
-  
-  /*** onContrastChange event emit function ***/
+
+  /*** OnDefaultRanges event emit function ***/
   OnDefaultRanges(title: number) {
     this.defaultRange.emit(title);
+  }
+
+  /*** OnDeleteDiffuseImpression event emit function ***/
+  OnDeleteDiffuseImpression(title: any) {
+    this.deleteDiffuseImpression.emit(title);
+  }
+
+  /*** onInActiveIconClick event emit function ***/
+  onInActiveIconClick(data: string) {
+    this.onInActiveIconFunction.emit(data);
   }
 }

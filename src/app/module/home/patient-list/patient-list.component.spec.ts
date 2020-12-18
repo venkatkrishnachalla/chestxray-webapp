@@ -7,7 +7,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { AgGridModule } from '../../../../../node_modules/ag-grid-angular';
 import { of, throwError } from 'rxjs';
 import { GridApi, ColumnApi } from 'ag-grid-community';
-import { patientMock } from '../../auth/patient-mock';
+import { patientMock, patientObjectMock } from '../../auth/patient-mock';
 
 describe('PatientListComponent', () => {
   let component: PatientListComponent;
@@ -21,6 +21,9 @@ describe('PatientListComponent', () => {
     'onErrorMessage',
   ]);
   const authServiceSpy = jasmine.createSpyObj('AuthService', ['userSubject']);
+  const dbServiceSpy = jasmine.createSpyObj('NgxIndexedDBService', [
+    'clear',
+  ]);
   const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
   beforeEach(async(() => {
@@ -41,7 +44,8 @@ describe('PatientListComponent', () => {
       dashboardServiceSpy,
       authServiceSpy,
       routerSpy,
-      eventEmitterServiceSpy
+      eventEmitterServiceSpy,
+      dbServiceSpy
     );
   });
 
@@ -60,18 +64,22 @@ describe('PatientListComponent', () => {
     beforeEach(() => {
       component.defaultColDef = { width: 200 };
       component.columnDefs = component.constants.patientDashboard.headers;
+      const imageSpy = { base64Image: 'test', filename: 'abcd' };
+      dbServiceSpy.clear.and.returnValue(of(imageSpy));
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
+      spyOn(component, 'getPatientList');
     });
     it('should call ngOnIit function', () => {
       authServiceSpy.userSubject = of(mockInResponse);
       component.ngOnInit();
       expect(component.ngOnInit).toBeDefined();
+      expect(component.getPatientList).toHaveBeenCalled();
     });
   });
 
   /*** it should call getPatientList function ***/
   describe('#getPatientList', () => {
-    const samplePatient = patientMock;
+    const samplePatient = patientObjectMock;
     beforeEach(() => {
       dashboardServiceSpy.getPatientList.and.returnValue(of(samplePatient));
       component.getPatientList();

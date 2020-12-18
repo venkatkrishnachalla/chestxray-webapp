@@ -9,9 +9,14 @@ describe('AuthLayoutComponent', () => {
   const breakpointObserverSpy = jasmine.createSpyObj('BreakpointObserver', [
     'observe',
   ]);
+  const routerSpy = jasmine.createSpyObj('Router', ['']);
 
   beforeEach(() => {
-    component = new AuthLayoutComponent(authServiceSpy, breakpointObserverSpy);
+    component = new AuthLayoutComponent(
+      authServiceSpy,
+      breakpointObserverSpy,
+      routerSpy
+    );
   });
 
   /*** expects auth component to be truthy ***/

@@ -1,0 +1,31 @@
+<div id="at-id-patientTable">
+  <mat-form-field id="at-input-searchPatient" appearance="outline">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      type="search"
+      [(ngModel)]="searchValue"
+      placeholder="Search Patient"
+      class="search-patient"
+      (keydown.space)="$event.preventDefault()"
+    />
+  </mat-form-field>
+  <cxr-pagination *ngIf="showPagination"
+    [pageSize]="PaginationPageSize" 
+    [gridApi]="gridApi" 
+    [noOfPages]="totalPages">
+  </cxr-pagination>
+  <ag-grid-angular
+    id="patientGrid"
+    class="ag-theme-material"
+    [enableSorting]="true"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [rowData]="rowData"
+    (gridReady)="onGridReady($event)"
+    [quickFilterText]="searchValue"
+    [pagination]="true" 
+    [suppressPaginationPanel]="true"
+  >
+  </ag-grid-angular>
+</div>
