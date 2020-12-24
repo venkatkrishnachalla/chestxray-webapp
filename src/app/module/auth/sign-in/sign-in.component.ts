@@ -95,6 +95,8 @@ export class SignInComponent implements OnInit {
             );
           } else if (this.errorMessage === 'Server not reachable') {
             this.toastrService.error('Server not reachable');
+          } else if (this.errorMessage === 'Unknown error occurred') {
+            this.toastrService.error('Please, Log out from other instance!');
           } else {
             this.toastrService.error('Invalid Username or Password');
           }

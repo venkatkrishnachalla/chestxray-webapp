@@ -96,6 +96,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
 
   onLogout() {
+    const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
+    const token = sessionStorage.getItem('accessToken');
+    this.authService.refreshToken(
+      token,
+      accessToken.refreshToken,
+      accessToken.username,
+      accessToken.userroles,
+      accessToken._tokenExpirationDate
+    );
     sessionStorage.clear();
     this.authService.logOut();
   }

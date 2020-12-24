@@ -350,6 +350,16 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.spinnerService.show();
     this.eventsSubscription = this.events.subscribe(
       (mlResponse: any) => {
+        // mlResponse.data.ndarray[0]["poorImageQuality"] = false;
+        // mlResponse.data.ndarray[0]["nonChestXRay"] = true;
+        // if ( mlResponse.data.ndarray[0]["nonChestXRay"] === true){
+        //   this.toastrService.warning('Reported Image is not a chest X-Ray');
+        //   return false;
+        // }
+        // if ( mlResponse.data.ndarray[0]["poorImageQuality"] === true){
+        //   this.toastrService.warning('Requested Image is a poor quality chest X-Ray, unable to predict the impressions');
+        //   return false;
+        // }
         // tslint:disable-next-line: no-string-literal
         this.savedInfo['data'].ndarray[0].Findings =
           mlResponse.data.ndarray[0].Findings;
@@ -2531,6 +2541,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         }
       });
       this.canvas.observe('mouse:up', (e) => {
+        console.log(e.target);
         this.canvas.isDrawingMode = false;
         drawing = false;
         if (e.absolutePointer.x < 0) {
@@ -2540,10 +2551,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
         this.canvas.setActiveObject(object);
-        this.save();
-        this.canvas.isDrawingMode = false;
-        this.enableFreeHandDrawing = false;
-        sessionStorage.setItem('ellipsePositionCheck', 'true');
+        if (this.canvas._activeObject.height > 20 && this.canvas._activeObject.width > 20 ){
+          this.save();
+          this.canvas.isDrawingMode = false;
+          this.enableFreeHandDrawing = false;
+          sessionStorage.setItem('ellipsePositionCheck', 'true');
+        }
+        else{
+          this.canvas.remove(this.canvas.getActiveObject())
+        }
       });
     } else {
       this.canvas.isDrawingMode = false;
