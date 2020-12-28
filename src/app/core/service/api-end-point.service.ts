@@ -177,4 +177,14 @@ export class ApiEndPointService {
   public getAnnotations(xRayId): string {
     return environment.submitReport + '?xrayid=' + xRayId;
   }
+
+  public saveSignature(): string {
+    return environment.signatureAPI;
+  }
+  public deleteSignature(): string {
+    return environment.signatureAPI;
+  }
+  public getSignature(): string {
+    return environment.signatureAPI;
+  }
 }

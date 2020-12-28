@@ -199,6 +199,18 @@
   </p>
 
   <div>
-    <cxr-report-footer></cxr-report-footer>
+    <table mat-table class="mat-elevation-z0">
+      <tr style="width: 100%;">
+        <td style="width: 50%;" class="footer-left-content"><label class="footer-label">Dr. Name </label><br />
+            <label class="footer-label">M.B.B.S </label><br />
+            <label class="footer-label">XYZ Radiology Centre </label><br />
+            <label class="footer-label">Radiologist</label>
+        </td>
+        <td style="width: 50%;">
+            <img style="margin-left: 150px" [src]="signature" [ngStyle]="{'width.px': 300}" alt="" class="signature-right-side"/>
+            <label style="margin-left: 300px;">SIGNATURE </label>
+        </td>
+      </tr>
+    </table>
   </div>
 </div>

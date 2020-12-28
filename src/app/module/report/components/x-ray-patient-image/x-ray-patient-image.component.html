@@ -17,10 +17,6 @@
       type="button"
       mat-flat-button
       (click)="printClick()"
-      printSectionId="print-section"
-      printTitle="{{ pdfTitle }}"
-      ngxPrint
-      styleSheetFile="assets/css/patient-details.css"
       [ngClass]="{
         'share-button-hide': isHospitalRadiologist || !isHospitalRadiologist
       }"
@@ -35,6 +31,7 @@
       type="button"
       mat-flat-button
       [ngClass]="{ 'share-button-hide': isHospitalRadiologist || !isHospitalRadiologist }"
+      (click)="signatureEvent()"
     >
       SIGNATURE
       <mat-icon aria-hidden="false" aria-label="Example gesture icon"
@@ -62,3 +59,13 @@
 <img class="hide-xray" [src]="xrayAnnotatedImage" alt="" />
 
 <input type="file" class="input-file" (change)="handle($event)" />
+
+<div *ngIf="showSignatureInfo" class="signatureInfoContainer">
+  <div class="signature-card-header">
+    <h1>Signature Pad</h1>
+    <span class="cross-icon" title="Cancel" (click)="featureHide()"> X </span>
+  </div>
+  <div class="signature-card-body">
+    <cxr-signature [printBtnClicked]='printBtn'></cxr-signature>
+  </div>
+</div>

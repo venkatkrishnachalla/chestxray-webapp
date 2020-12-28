@@ -28,6 +28,8 @@ export const environment = {
   addRadiologist: window['addRadiologist'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Register',
   hospitalRadiologistList: window['radiologistList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/Users?roletype=HospitalRadiologist',
   XRayIdentifiers: window['assignPatients'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/XRayIdentifiers',
+  // tslint:disable-next-line: no-string-literal
+  signatureAPI : window['signature'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/DigitalSignature/',
 };
 
 /*

@@ -20,6 +20,8 @@ import { staticContentHTML } from 'src/app/constants/staticContentHTML';
 import { fabric } from 'fabric';
 import html2pdf from 'html2pdf.js';
 import { ToastrService } from 'ngx-toastr';
+import { EventEmitterService2 } from '../../service/event-emitter.service2';
+import { XRayService } from 'src/app/service/x-ray.service';
 
 @Component({
   selector: 'cxr-report',
@@ -56,6 +58,7 @@ export class ReportComponent implements OnInit {
   @ViewChild(FindingsComponent) findings: FindingsComponent;
   @ViewChild('content', { static: false }) content: ElementRef;
   readonly constants = staticContentHTML;
+  signature:any;
 
   /*
    * constructor for ReportComponent class
@@ -64,9 +67,11 @@ export class ReportComponent implements OnInit {
   constructor(
     private router: Router,
     private eventEmitterService: EventEmitterService,
+    private eventEmitterService2: EventEmitterService2,
     private spinnerService: SpinnerService,
     private changeDetector: ChangeDetectorRef,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private annotatedXrayService: XRayService,
   ) {
     this.eventEmitterService.commentSubject.subscribe((data) => {
       this.pdfComments = data;
@@ -91,6 +96,7 @@ export class ReportComponent implements OnInit {
    */
   ngOnInit(): void {
     this.spinnerService.show();
+    this.getSignature();
     this.showPrintForm = false;
     this.eventEmitterService.invokeReportDataFunction.subscribe(
       (data: InvokeReportData) => {
@@ -119,6 +125,17 @@ export class ReportComponent implements OnInit {
       this.spinnerService.hide();
     }, 2500);
     sessionStorage.setItem('reportPageSelection', 'true');
+  }
+
+  getSignature(){
+    this.annotatedXrayService.getSignature().subscribe(
+      (response:any) => {
+        sessionStorage.setItem('signatureFromDB', JSON.stringify(response.digitalSignature));
+      },
+      (errorMessage) => {
+        // this.toastrService.error(errorMessage.error);
+      }
+    );
   }
 
   /**

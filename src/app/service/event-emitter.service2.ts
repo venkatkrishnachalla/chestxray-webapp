@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -8,6 +8,8 @@ export class EventEmitterService2 {
   invokeEyeIconFunction = new EventEmitter();
   invokePatientInfoStatusChange = new EventEmitter();
   invokePageNumberClick = new EventEmitter();
+  invokeDialogClose = new EventEmitter();
+  oneSignatureChanges = new BehaviorSubject(false);
 
   constructor() {}
 
@@ -24,5 +26,10 @@ export class EventEmitterService2 {
   /*** onPaginationNumberClick event emit function  ***/
   onPageNumberClick(page, size) {
     this.invokePageNumberClick.emit({page, size});
+  }
+
+  /*** OnSignatureDialogClose event emit function  ***/
+  OnSignatureDialogClose() {
+    this.invokeDialogClose.emit();
   }
 }

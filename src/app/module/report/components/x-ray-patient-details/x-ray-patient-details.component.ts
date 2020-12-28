@@ -43,6 +43,7 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
   canvasCorrectedHeight: number;
   xRayImage: any;
   pdfFindings: string;
+  signature:any;
   readonly constants = staticContentHTML;
   reportPageText: {
     patientDetails: string;
@@ -79,6 +80,10 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
         this.status = data === true ? 'Completed' : 'Not Started';
       }
     );
+    this.eventEmitterService2.oneSignatureChanges.subscribe((data) => {
+      this.signature = data;
+      this.changeDetector.markForCheck();
+    });
   }
 
   /**

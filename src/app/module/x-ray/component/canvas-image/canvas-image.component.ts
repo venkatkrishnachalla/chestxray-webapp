@@ -356,13 +356,14 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         //   this.toastrService.warning('Reported Image is not a chest X-Ray');
         //   return false;
         // }
-        // if ( mlResponse.data.ndarray[0]["poorImageQuality"] === true){
+        // else if ( mlResponse.data.ndarray[0]["poorImageQuality"] === true){
         //   this.toastrService.warning('Requested Image is a poor quality chest X-Ray, unable to predict the impressions');
         //   return false;
         // }
-        // tslint:disable-next-line: no-string-literal
+        // else{
+          // tslint:disable-next-line: no-string-literal
         this.savedInfo['data'].ndarray[0].Findings =
-          mlResponse.data.ndarray[0].Findings;
+        mlResponse.data.ndarray[0].Findings;
 
         mlResponse.data.ndarray[0].Impression.forEach((element) => {
           element.source = 'ML';
@@ -378,6 +379,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
         sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
         this.mlApiEllipseLoop(mlResponse, '');
+        // }
       },
       (errorMessage: any) => {
         this.showError = true;
