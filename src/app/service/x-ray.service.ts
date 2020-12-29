@@ -114,4 +114,39 @@ export class XRayService {
   xrayAnnotatedFindingsService() {
     return this.annotatedXrayFindingsSubject.asObservable();
   }
+  /*** submitReport rest api call ***/
+  saveSignature(postData: object) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }),
+    };
+    return this.http.post(
+      this.endpoint.saveSignature(),
+      JSON.stringify(postData),
+      httpOptions
+    );
+  }
+  /*** deleteSignature rest api call ***/
+  deleteSignature() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }),
+    };
+    return this.http.delete(
+      this.endpoint.deleteSignature()
+    );
+  }
+  /*** submitReport rest api call ***/
+  getSignature() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }),
+    };
+    return this.http.get(
+      this.endpoint.getSignature()
+    );
+  }
 }

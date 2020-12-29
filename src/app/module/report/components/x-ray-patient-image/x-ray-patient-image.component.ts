@@ -39,6 +39,8 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
   emailBody: string;
   @Output() printEvent = new EventEmitter();
   @Output() shareEvent = new EventEmitter();
+  showSignatureInfo: boolean;
+  printBtn: boolean;
 
   /*
    * constructor for XRayPatientImageComponent class
@@ -53,6 +55,9 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
   ) {
     this.eventEmitterService.findingsSubject.subscribe((data) => {
       this.annotatedFindings = data;
+    });
+    this.eventEmitterService2.invokeDialogClose.subscribe(() => {
+      this.featureHide();
     });
   }
 
@@ -146,10 +151,29 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
    * printClick();
    */
   printClick() {
-    this.printEvent.emit(true);
-    if (!this.isHospitalRadiologist) {
-      this.eventEmitterService.onStatusChangeSubject.next(true);
-    }
+    this.printBtn = true;
+    this.showSignatureInfo = true;
+  }
+  /**
+   * This is a featureHide function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * featureHide();
+   */
+  signatureEvent(){
+    this.printBtn = false;
+    this.showSignatureInfo = true;
+  }
+
+  /**
+   * This is a featureHide function.
+   * @param '{void}' empty - A empty param
+   * @example
+   * featureHide();
+   */
+
+  featureHide(): void {
+    this.showSignatureInfo = false;
   }
 
   /**

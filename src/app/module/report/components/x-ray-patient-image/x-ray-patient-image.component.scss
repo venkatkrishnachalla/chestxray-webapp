@@ -109,3 +109,43 @@
 .input-file {
   display: none;
 }
+
+.signatureInfoContainer {
+  z-index: 999;
+  width: 785px;
+  min-height: 400px;
+  height: auto;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 1px rgba(255, 253, 253, 0.3),
+    0 1px 25px 8px rgba(0, 0, 0, 0.22);
+  background-color: #ffffff;
+  position: absolute;
+  top: 1%;
+  left: 22%;
+
+  .signature-card-header {
+    text-align: center;
+    margin: 1.5rem;
+
+    .signature-info-icon {
+      font-size: 2.5rem;
+      color: white;
+      border-radius: 2px;
+      background-color: #7ca5ae;
+    }
+    .cross-icon {
+      border: 1px solid #dbdbdb;
+      padding: 5px;
+      font-size: 2rem;
+      position: absolute;
+      color: #848484;
+      background-color: #dbdbdb;
+      border-radius: 5px;
+      top: 12px;
+      right: 10px;
+      cursor: pointer;
+    }
+  }
+}
+

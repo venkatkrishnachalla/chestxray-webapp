@@ -8,13 +8,15 @@ import { NgxPrintModule } from 'ngx-print';
 import { ReportFooterComponent } from './components/report-footer/report-footer.component';
 import { ReportHeaderComponent } from './components/report-header/report-header.component';
 import { FormsModule } from '@angular/forms';
+import { SignatureComponent } from './components/signature/signature.component';
 @NgModule({
   declarations: [
     ReportComponent,
     XRayPatientDetailsComponent,
     XRayPatientImageComponent,
     ReportFooterComponent,
-    ReportHeaderComponent
+    ReportHeaderComponent,
+    SignatureComponent
   ],
   imports: [CommonModule, MaterialModule, NgxPrintModule, FormsModule],
 })

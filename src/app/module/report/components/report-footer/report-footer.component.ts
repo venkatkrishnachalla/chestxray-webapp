@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
 @Component({
   selector: 'cxr-report-footer',
   templateUrl: './report-footer.component.html',
@@ -7,10 +7,21 @@ import { Component, OnInit } from '@angular/core';
 })
 // ReportFooterComponent class implementation
 export class ReportFooterComponent implements OnInit {
+  signature: any;
+  @Output() printEvent = new EventEmitter();
   /*
    * constructor for ReportFooterComponent class
    */
-  constructor() {}
+  constructor(
+    private eventEmitterService2 : EventEmitterService2,
+    private changeDetector: ChangeDetectorRef,
+  ) {
+    this.eventEmitterService2.oneSignatureChanges.subscribe((data) => {
+      this.signature = data;
+      this.changeDetector.markForCheck();
+      this.printEvent.emit(true);
+    });
+  }
 
   /**
    * This is a init function.
@@ -19,5 +30,6 @@ export class ReportFooterComponent implements OnInit {
    * ngOnInit();
    */
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }
