@@ -28,7 +28,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
       printSectionId="print-section"
       printTitle="{{ pdfTitle }}"
       ngxPrint
-      styleSheetFile="assets/css/patient-details.css">Use this signature</button>
+      styleSheetFile="assets/css/patient-details.css" [disabled]='disableSave'>Use this signature</button>
   <button mat-button class="primary" *ngIf="displayBtn1 && !printBtnClicked" (click)="delete()">Delete signature</button>
   <button mat-button class="primary" *ngIf="displayBtn2 && !printBtnClicked" (click)="save()" [disabled]='disableSave'>save</button>
   <button mat-button class="primary" *ngIf="displayBtn3" (click)="clear()">clear</button>
@@ -207,6 +207,9 @@ export class SignatureComponent implements OnInit {
         this.eventEmitterService.onStatusChangeSubject.next(true);
       }
       this.eventEmitterService2.oneSignatureChanges.next(this.img);
+      if (this.printBtnClicked){
+        this.disableSave = false;
+      }
     }
     else{
       if (this.savedImage && !this.printBtnClicked && this.showSignature){
@@ -220,30 +223,19 @@ export class SignatureComponent implements OnInit {
       this.displayBtn2 = true;
       if (this.printBtnClicked){
         this.displayBtn3 = true;
+        this.disableSave = true;
       }
     }
   }
 
   useInReport(){
-    // if (!this.showSignature){
-    //   this.img = this.sigPadElement.toDataURL("image/png");
-    //   this.printEvent.emit(true);
-    //   if (!this.isHospitalRadiologist) {
-    //     this.eventEmitterService.onStatusChangeSubject.next(true);
-    //   }
-    //   this.eventEmitterService2.oneSignatureChanges.next(this.img);
-    // }
-    // else{
-    //   this.img = JSON.parse(sessionStorage.getItem('signatureFromDB'));
-    //   this.printEvent.emit(true);
-    //   if (!this.isHospitalRadiologist) {
-    //     this.eventEmitterService.onStatusChangeSubject.next(true);
-    //   }
-    //   this.eventEmitterService2.oneSignatureChanges.next(this.img);
-    // }
+    this.eventEmitterService2.OnSignatureDialogClose();
   }
 
   ngAfterViewInit(){
+    if (this.printBtnClicked){
+      this.disableSave = false;
+    }
     this.sigPadElement = this.elementRef.nativeElement;
     this.context = this.sigPadElement.getContext('2d');
     this.context.strokeStyle = '#3742fa';
@@ -297,6 +289,11 @@ export class SignatureComponent implements OnInit {
     this.context.clearRect(0, 0, this.sigPadElement.width, this.sigPadElement.height);
     this.context.beginPath();
     this.disableSave = true;
+    if (this.printBtnClicked){
+      this.img = this.sigPadElement.toDataURL("image/png");
+      this.eventEmitterService.onStatusChangeSubject.next(true);
+      this.eventEmitterService2.oneSignatureChanges.next(this.img);
+    }
   }
 
   deleteSignature(){
