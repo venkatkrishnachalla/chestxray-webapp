@@ -2553,7 +2553,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
         this.canvas.setActiveObject(object);
-        if (this.canvas._activeObject.height > 20 && this.canvas._activeObject.width > 20 ){
+        if (this.canvas._activeObject.path.length > 8){
           this.save();
           this.canvas.isDrawingMode = false;
           this.enableFreeHandDrawing = false;
