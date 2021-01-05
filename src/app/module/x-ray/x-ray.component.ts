@@ -100,16 +100,9 @@ export class XRayComponent implements OnInit, OnDestroy {
         .subscribe(
           (mLResponse: MlApiData) => {
             this.mLResponse = mLResponse;
-            // this.mLResponse.data.ndarray[0]["poorImageQuality"] = false;
-            // this.mLResponse.data.ndarray[0]["nonChestXRay"] = true;
-            if ( this.mLResponse.data.ndarray[0]["nonChestXRay"] === true){
+            if (this.mLResponse.data.ndarray[0].rejected){
               this.spinnerService.hide();
-              this.toastrService.warning('Requested Image is not an chest X-Ray');
-              return false;
-            }
-            else if ( this.mLResponse.data.ndarray[0]["poorImageQuality"] === true){
-              this.spinnerService.hide();
-              this.toastrService.warning('Requested Image is a poor quality chest X-Ray, unable to predict the impressions');
+              this.toastrService.warning(this.mLResponse.data.ndarray[0]['rejection-reason']);
               return false;
             }
             const mLArray = this.mLResponse.data.ndarray[0].diseases;

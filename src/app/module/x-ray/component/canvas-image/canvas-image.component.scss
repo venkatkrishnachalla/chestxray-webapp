@@ -3,8 +3,12 @@
   width: 100%;
 }
 
+::ng-deep .cdk-overlay-pane{
+  height: auto !important;
+}
+
 .my-class .mat-dialog-container {
-  height: 375px !important;
+  height: 600px !important;
   width: 600px !important;
   border-radius: 10px;
   background: lightcyan;
