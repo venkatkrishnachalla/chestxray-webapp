@@ -2553,14 +2553,22 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.observe('object:added', (e) => {
         const object = e.target;
         this.canvas.setActiveObject(object);
-        if (this.canvas._activeObject.path.length > 8){
-          this.save();
-          this.canvas.isDrawingMode = false;
-          this.enableFreeHandDrawing = false;
-          sessionStorage.setItem('ellipsePositionCheck', 'true');
+        if (this.isMeasureTool){
+            this.save();
+            this.canvas.isDrawingMode = false;
+            this.enableFreeHandDrawing = false;
+            sessionStorage.setItem('ellipsePositionCheck', 'true');
         }
         else{
-          this.canvas.remove(this.canvas.getActiveObject())
+          if (this.canvas._activeObject.path.length > 8){
+            this.save();
+            this.canvas.isDrawingMode = false;
+            this.enableFreeHandDrawing = false;
+            sessionStorage.setItem('ellipsePositionCheck', 'true');
+          }
+          else{
+            this.canvas.remove(this.canvas.getActiveObject())
+          }
         }
       });
     } else {
