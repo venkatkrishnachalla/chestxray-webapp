@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AdminManagementService } from '../admin-management.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
 @Component({
   selector: 'cxr-radiologist-register',
   templateUrl: './radiologist-register.component.html',
@@ -20,7 +21,8 @@ export class RadiologistRegisterComponent implements OnInit {
     private adminManagment: AdminManagementService,
     private toastrService: ToastrService,
     private matdialouge:MatDialog,
-    private matdialougeref:MatDialogRef<any>
+    private matdialougeref:MatDialogRef<any>,
+    private EventEmitterService2: EventEmitterService2
     ) {}
   ngOnInit(): void {
     this.addRadiologistForm = this.formBuilder.group(
@@ -29,7 +31,9 @@ export class RadiologistRegisterComponent implements OnInit {
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{6,}')]],
       confirmPassword: ['', [Validators.required]],
-      roles: ['', Validators.required]
+      roles: ['', Validators.required],
+      confirmExpiry: [],
+      confirmDob: []
     },
     {
       validator: MustMatch('password', 'confirmPassword')
@@ -38,7 +42,6 @@ export class RadiologistRegisterComponent implements OnInit {
   }
 
   addRadiologists() {
-
     if (this.addRadiologistForm.invalid) {
       return;
     }
@@ -49,20 +52,21 @@ export class RadiologistRegisterComponent implements OnInit {
       confirmPassword: this.addRadiologistForm.value.confirmPassword,
       roles: [
         this.addRadiologistForm.value.roles
-      ]
+      ],
+      expiryDate: this.addRadiologistForm.value.confirmExpiry,
+      dateOfBirth: this.addRadiologistForm.value.confirmDob,
     };
     this.adminManagment.addRadiologist(request).subscribe(
       (response) => {
+        this.EventEmitterService2.refreshRadiologistList();
         this.toastrService.success(`${request.userName} is Registered Succesfully`);
         this.isFormSubmit = true;
         this.matdialougeref.close(this.isClose);
+        this.matdialouge.closeAll();
       },
       (errorResponse: HttpErrorResponse) => {
-       
-        console.log("hai", errorResponse)
         if (errorResponse.error.ConfirmPassword) {
           this.matdialougeref.close(this.isClose);
-
           this.toastrService.error(errorResponse.error.ConfirmPassword[0]);
           } else if (errorResponse.error.Email) {
             this.matdialougeref.close(this.isClose);
@@ -73,11 +77,9 @@ export class RadiologistRegisterComponent implements OnInit {
             if(errorResponse.error !== "Username is already taken."){
               this.matdialougeref.close(this.isClose);
             }
-
           this.toastrService.error(errorResponse.error);
           } else {
             this.matdialougeref.close(this.isClose);
-
             return;
           }
       });
@@ -89,7 +91,7 @@ export class RadiologistRegisterComponent implements OnInit {
   }
   close(){
     this.matdialougeref.close(this.isClose);
-    this.matdialouge.closeAll()
+    this.matdialouge.closeAll();
   }
 }
 

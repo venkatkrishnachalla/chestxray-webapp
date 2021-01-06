@@ -2559,7 +2559,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.enableFreeHandDrawing = false;
             sessionStorage.setItem('ellipsePositionCheck', 'true');
         }
-        else{
+        else if (this.canvas._activeObject.path){
           if (this.canvas._activeObject.path.length > 8){
             this.save();
             this.canvas.isDrawingMode = false;
@@ -2569,6 +2569,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           else{
             this.canvas.remove(this.canvas.getActiveObject())
           }
+        }
+        else{
+          this.save();
+          this.canvas.isDrawingMode = false;
+          this.enableFreeHandDrawing = false;
+          sessionStorage.setItem('ellipsePositionCheck', 'true');
         }
       });
     } else {

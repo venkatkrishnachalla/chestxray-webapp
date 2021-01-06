@@ -10,6 +10,7 @@ export class EventEmitterService2 {
   invokePageNumberClick = new EventEmitter();
   invokeDialogClose = new EventEmitter();
   oneSignatureChanges = new BehaviorSubject(false);
+  invokerefreshRadiologistList = new EventEmitter();
 
   constructor() {}
 
@@ -31,5 +32,9 @@ export class EventEmitterService2 {
   /*** OnSignatureDialogClose event emit function  ***/
   OnSignatureDialogClose() {
     this.invokeDialogClose.emit();
+  }
+
+  refreshRadiologistList(){
+    this.invokerefreshRadiologistList.emit();
   }
 }
