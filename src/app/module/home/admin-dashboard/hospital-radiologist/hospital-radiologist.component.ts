@@ -11,6 +11,7 @@ import User from 'src/app/module/auth/user.modal';
 import { HospitalRadiologistService } from 'src/app/service/hospital-radiologist.service';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import { SpinnerService } from 'src/app/module/shared/UI/spinner/spinner.service';
+import { EventEmitterService2 } from '../../../../service/event-emitter.service2'
 
 interface PatientListData {
   data: PatientListData;
@@ -75,12 +76,15 @@ myControl = new FormControl();
     private eventEmitterService: EventEmitterService,
     private fb: FormBuilder,
     private dashboardService: DashboardService,
-
+    private EventEmitterService2 : EventEmitterService2
     ) {
       this.selectall = false;
     }
 
   ngOnInit(): void {
+    this.EventEmitterService2.invokerefreshRadiologistList.subscribe(() => {
+      this.getradiologistList();
+    });
     this.spinnerService.show();
 
     this.loading = true;
