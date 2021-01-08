@@ -11,6 +11,8 @@ export class EventEmitterService2 {
   invokeDialogClose = new EventEmitter();
   oneSignatureChanges = new BehaviorSubject(false);
   invokerefreshRadiologistList = new EventEmitter();
+  invokeshareEvent = new EventEmitter();
+
 
   constructor() {}
 
@@ -36,5 +38,8 @@ export class EventEmitterService2 {
 
   refreshRadiologistList(){
     this.invokerefreshRadiologistList.emit();
+  }
+  shareEvent(filename, sign){
+    this.invokeshareEvent.emit({filename, sign});
   }
 }

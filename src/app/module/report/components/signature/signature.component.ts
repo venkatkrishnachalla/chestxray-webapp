@@ -13,6 +13,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 @Component({
   selector: 'cxr-signature',
   template: `
+  <input type="file" class="input-file" (change)="handle($event)" />
   <mat-radio-group aria-label="Select an option">
     <mat-radio-button *ngIf="showSignatureRadio" value="exist" (click)="radioFun('exist')" [checked]='showSignatureRadio'>Do you want to use existing signature?</mat-radio-button><br />
     <img alt="No Image" [src]="savedImage" *ngIf="showSignature"><br />
@@ -24,13 +25,14 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
       </mat-card-content>
   </mat-card>
   </mat-radio-group>
+  <button mat-button class="primary" *ngIf="shareButtonClicked" (click)="shareReport()">Share Report</button>
   <button mat-button class="primary" *ngIf="printBtnClicked" (click)="useInReport()"
       printSectionId="print-section"
       printTitle="{{ pdfTitle }}"
       ngxPrint
       styleSheetFile="assets/css/patient-details.css" [disabled]='disableSave'>Use this signature</button>
-  <button mat-button class="primary" *ngIf="displayBtn1 && !printBtnClicked" (click)="delete()">Delete signature</button>
-  <button mat-button class="primary" *ngIf="displayBtn2 && !printBtnClicked" (click)="save()" [disabled]='disableSave'>save</button>
+  <button mat-button class="primary" *ngIf="displayBtn1 && !printBtnClicked && !shareButtonClicked" (click)="delete()">Delete signature</button>
+  <button mat-button class="primary" *ngIf="displayBtn2 && !printBtnClicked && !shareButtonClicked" (click)="save()" [disabled]='disableSave'>save</button>
   <button mat-button class="primary" *ngIf="displayBtn3" (click)="clear()">clear</button>
   <ng-template #deleteObject>
     <div class="container">
@@ -63,6 +65,9 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
       margin: 2%;
       border: 1px solid;
 
+    }
+    .input-file {
+      display: none;
     }
     button.primary{
       margin: 10px;
@@ -120,6 +125,8 @@ export class SignatureComponent implements OnInit {
   @Output() printEvent = new EventEmitter();
   @Input() name: string;
   @Input() printBtnClicked: boolean;
+  @Input() shareButtonClicked: boolean;
+  @Output() shareEvent = new EventEmitter();
   private elementRef: ElementRef;
   @ViewChild('sigPad') set controlElRef(elementRef: ElementRef) {
     this.elementRef = elementRef;
@@ -143,6 +150,16 @@ export class SignatureComponent implements OnInit {
   userSubscription: Subscription;
   clickedPrintBtn:boolean = true;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
+  showPrintFormPdf: boolean = false;
+  // showPrintForm: boolean = false;
+  cxrPrintHeaderName = 'CXR Radiological Report';
+  reportPageText: {
+    patientDetails: string;
+    clinicalHistory: string;
+    impressions: string;
+    findings: string;
+    commentsAndRecommendations: string;
+  };
 
   constructor(
     private annotatedXrayService: XRayService,
@@ -212,7 +229,7 @@ export class SignatureComponent implements OnInit {
       }
     }
     else{
-      if (this.savedImage && !this.printBtnClicked && this.showSignature){
+      if (this.savedImage && !this.printBtnClicked && this.showSignature && !this.shareButtonClicked){
         alert('Please delete existing signature before drawing new one');
         event.preventDefault();
         return;
@@ -229,6 +246,47 @@ export class SignatureComponent implements OnInit {
   }
 
   useInReport(){
+    this.eventEmitterService2.OnSignatureDialogClose();
+  }
+
+  /**
+   * This is on handle event to capture file details
+   * @param '{any}' any - A any param
+   * @example
+   * handle(e);
+   */
+  handle(e) {
+    const fileEvent = e;
+  }
+  
+  shareReport(){
+    if (this.showSignature === true){
+      this.img = JSON.parse(sessionStorage.getItem('signatureFromDB'));
+    } else{
+      this.img = this.sigPadElement.toDataURL("image/png");
+    }
+    document.querySelector('input').click();
+    const timestamp = Number(new Date());
+    const hospitalPatientId = this.patientInfo.hospitalPatientId
+      ? this.patientInfo.hospitalPatientId
+      : this.patientInfo.name;
+    const fileName = hospitalPatientId + '_' + timestamp + '.pdf';
+    this.eventEmitterService2.shareEvent(fileName, this.img);
+    const formattedBody =
+      'X-ray Report for patient: ' +
+      this.patientInfo.name +
+      '\n\n\n' +
+      '*** This is an automatically generated text...' +
+      '\n' +
+      'please attach the x-ray report from downloads folder.' +
+      '\n' +
+      'filename: ' +
+      fileName +
+      '\n\n';
+    const mailToLink =
+      'mailto:?subject=Chest-rAi-Report&body=' +
+      encodeURIComponent(formattedBody);
+    location.href = mailToLink;
     this.eventEmitterService2.OnSignatureDialogClose();
   }
 

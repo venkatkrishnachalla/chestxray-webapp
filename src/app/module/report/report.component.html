@@ -12,7 +12,6 @@
   <section class="x-ray-patient-image">
     <cxr-x-ray-patient-image
       (printEvent)="enablePrint($event)"
-      (shareEvent)="makePdf($event)"
     ></cxr-x-ray-patient-image>
   </section>
 
@@ -125,13 +124,19 @@
         <p class="pdf-history">
           {{ pdfComments }}
         </p>
-        <div class="footer-left-content">
-          <label>Dr. Name </label><br />
-          <label>M.B.B.S </label><br />
-          <label>XYZ Radiology Centre </label><br />
-          <label>Radiologist</label>
-          <label class="signature-right-side">SIGNATURE </label>
-        </div>
+        <table mat-table class="mat-elevation-z0">
+          <tr style="width: 100%;">
+            <td style="width: 50%;" class="footer-left-content"><label class="footer-label">Dr. Name </label><br />
+                <label class="footer-label">M.B.B.S </label><br />
+                <label class="footer-label">XYZ Radiology Centre </label><br />
+                <label class="footer-label">Radiologist</label>
+            </td>
+            <td style="width: 50%;">
+                <img style="margin-left: 150px" [src]="signature" [ngStyle]="{'width.px': 300}" alt="" class="signature-right-side"/>
+                <label style="margin-left: 300px;">SIGNATURE </label>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
