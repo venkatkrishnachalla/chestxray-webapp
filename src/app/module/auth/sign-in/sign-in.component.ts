@@ -86,20 +86,23 @@ export class SignInComponent implements OnInit {
           this.spinnerService.hide();
           this.router.navigate(['/home/dashboard']);
         },
-        (errorMessage: string) => {
+        (errorMessage: any) => {
           this.spinnerService.hide();
-          this.errorMessage = errorMessage;
           if (networkStatus === false) {
             this.toastrService.error(
               'Please check your network connections and try again.'
             );
-          } else if (this.errorMessage === 'Server not reachable') {
-            this.toastrService.error('Server not reachable');
-          } else if (this.errorMessage === 'Unknown error occurred') {
-            this.toastrService.error('Please, Log out from other instance!');
-          } else {
-            this.toastrService.error('Invalid Username or Password');
+          } 
+          else{
+            this.toastrService.error(errorMessage.message);
           }
+          // else if (this.errorMessage === 'Server not reachable') {
+          //   this.toastrService.error('Server not reachable');
+          // } else if (this.errorMessage === 'Unknown error occurred') {
+          //   this.toastrService.error('Please, Log out from other instance!');
+          // } else {
+          //   this.toastrService.error('Invalid Username or Password');
+          // }
           form.reset();
         }
       );

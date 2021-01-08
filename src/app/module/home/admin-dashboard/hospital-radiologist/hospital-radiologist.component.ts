@@ -39,7 +39,7 @@ export class HospitalRadiologistComponent implements OnInit {
   private userSubscription: Subscription;
   radiologistList: any = [];
   unAssignedPAtients:any =[];
-  displayedColumns: string[] = ['userName','role','email','patients','actions'];
+  displayedColumns: string[] = ['userName','role','email', 'expiryDate','patients','actions'];
   dataSource;
   rowData: PatientListData;
   loading:boolean;

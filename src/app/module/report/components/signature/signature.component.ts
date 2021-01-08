@@ -246,6 +246,7 @@ export class SignatureComponent implements OnInit {
   }
 
   useInReport(){
+    this.printBtnClicked = false;
     this.eventEmitterService2.OnSignatureDialogClose();
   }
 
@@ -260,6 +261,7 @@ export class SignatureComponent implements OnInit {
   }
   
   shareReport(){
+    this.shareButtonClicked = false;
     if (this.showSignature === true){
       this.img = JSON.parse(sessionStorage.getItem('signatureFromDB'));
     } else{
