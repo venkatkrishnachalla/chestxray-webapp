@@ -86,6 +86,11 @@ export class ReportComponent implements OnInit {
         this.status = data === true ? 'Completed' : 'Not Started';
       }
     );
+    this.eventEmitterService2.invokeshareEvent.subscribe((data) => {
+      this.signature = data.sign
+      this.changeDetector.markForCheck();
+      this.makePdf(data.filename);
+    });
   }
 
   /**
@@ -240,15 +245,15 @@ export class ReportComponent implements OnInit {
    * @example
    * makePdf();
    */
-  makePdf(event) {
+  makePdf(data) {
     this.spinnerService.show();
     this.showPrintFormPdf = true;
-    this.pdfTitle = event;
+    this.pdfTitle = data;
     setTimeout(() => {
       const element = document.getElementById('element-to-print');
       html2pdf(element, {
         margin: 0,
-        filename: this.pdfTitle + '.pdf',
+        filename: this.pdfTitle,
         image: { type: 'jpeg', quality: 1 },
         html2canvas: { scale: 2, logging: true },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
@@ -256,7 +261,7 @@ export class ReportComponent implements OnInit {
         this.showPrintFormPdf = false;
         this.spinnerService.hide();
         this.toastrService.success(
-          'filename: ' + this.pdfTitle + '.pdf',
+          'filename: ' + this.pdfTitle,
           'X-ray report saved to downloads folder',
           {
             timeOut: 3000,

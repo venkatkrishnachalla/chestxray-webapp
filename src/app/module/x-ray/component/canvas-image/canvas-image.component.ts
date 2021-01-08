@@ -1814,6 +1814,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         obj.selectable = true;
         obj.lockMovementX = true;
         obj.lockMovementY = true;
+        obj.lockRotation = true;
       } else {
         obj.selectable = val;
         obj.lockMovementX = !val;
@@ -3353,7 +3354,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       const object = obj.target;
       if (object === null) {
         return;
-      } else if (object.type && object.type === 'line') {
+      } else if (object.type && object.type === 'line' || object.type && object.type === 'path') {
         return;
       } else {
         const coords = object.calcCoords();

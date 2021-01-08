@@ -58,7 +58,7 @@
 
 <img class="hide-xray" [src]="xrayAnnotatedImage" alt="" />
 
-<input type="file" class="input-file" (change)="handle($event)" />
+<!-- <input type="file" class="input-file" (change)="handle($event)" /> -->
 
 <div *ngIf="showSignatureInfo" class="signatureInfoContainer">
   <div class="signature-card-header">
@@ -66,6 +66,6 @@
     <span class="cross-icon" title="Cancel" (click)="featureHide()"> X </span>
   </div>
   <div class="signature-card-body">
-    <cxr-signature [printBtnClicked]='printBtn'></cxr-signature>
+    <cxr-signature [printBtnClicked]='printBtn' [shareButtonClicked]='shareBtnClicked'></cxr-signature>
   </div>
 </div>
