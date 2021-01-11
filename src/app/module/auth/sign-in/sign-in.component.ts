@@ -16,6 +16,7 @@ import { SignInResponse } from '../interface.modal';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
 import { EventEmitter } from 'protractor';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'cxr-sign-in',
@@ -86,7 +87,7 @@ export class SignInComponent implements OnInit {
           this.spinnerService.hide();
           this.router.navigate(['/home/dashboard']);
         },
-        (errorMessage: any) => {
+        (errorMessage: HttpErrorResponse) => {
           this.spinnerService.hide();
           if (networkStatus === false) {
             this.toastrService.error(
@@ -94,7 +95,7 @@ export class SignInComponent implements OnInit {
             );
           } 
           else{
-            this.toastrService.error(errorMessage.message);
+            this.toastrService.error(errorMessage.error);
           }
           // else if (this.errorMessage === 'Server not reachable') {
           //   this.toastrService.error('Server not reachable');

@@ -9,7 +9,7 @@ export class EventEmitterService2 {
   invokePatientInfoStatusChange = new EventEmitter();
   invokePageNumberClick = new EventEmitter();
   invokeDialogClose = new EventEmitter();
-  oneSignatureChanges = new BehaviorSubject(false);
+  oneSignatureChanges = new BehaviorSubject({img: '', date: ''});
   invokerefreshRadiologistList = new EventEmitter();
   invokeshareEvent = new EventEmitter();
 
@@ -39,7 +39,7 @@ export class EventEmitterService2 {
   refreshRadiologistList(){
     this.invokerefreshRadiologistList.emit();
   }
-  shareEvent(filename, sign){
-    this.invokeshareEvent.emit({filename, sign});
+  shareEvent(filename, sign, signedDate){
+    this.invokeshareEvent.emit({filename, sign, signedDate});
   }
 }

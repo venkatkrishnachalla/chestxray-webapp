@@ -53,6 +53,7 @@ export class ReportComponent implements OnInit {
   canvasCorrectedWidth: number;
   canvasCorrectedHeight: number;
   xRayImage: any;
+  signedDate: any;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
@@ -87,7 +88,8 @@ export class ReportComponent implements OnInit {
       }
     );
     this.eventEmitterService2.invokeshareEvent.subscribe((data) => {
-      this.signature = data.sign
+      this.signature = data.sign;
+      this.signedDate = data.signedDate;
       this.changeDetector.markForCheck();
       this.makePdf(data.filename);
     });
@@ -135,6 +137,8 @@ export class ReportComponent implements OnInit {
   getSignature(){
     this.annotatedXrayService.getSignature().subscribe(
       (response:any) => {
+        const date = new Date(response.date).toLocaleString('es-CL')
+        sessionStorage.setItem('signatureDateFromDB', JSON.stringify(date));
         sessionStorage.setItem('signatureFromDB', JSON.stringify(response.digitalSignature));
       },
       (errorMessage) => {
