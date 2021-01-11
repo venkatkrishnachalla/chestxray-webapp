@@ -122,6 +122,7 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
    */
   shareButtonEvent() {
     this.shareBtnClicked = true;
+    this.printBtn = false;
     this.showSignatureInfo = true;
     // document.querySelector('input').click();
     // const timestamp = Number(new Date());
@@ -155,6 +156,7 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
    */
   printClick() {
     this.printBtn = true;
+    this.shareBtnClicked = false;
     this.showSignatureInfo = true;
   }
   /**
@@ -165,6 +167,7 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
    */
   signatureEvent(){
     this.printBtn = false;
+    this.shareBtnClicked = false;
     this.showSignatureInfo = true;
   }
 

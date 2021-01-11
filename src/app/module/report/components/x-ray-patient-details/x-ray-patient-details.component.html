@@ -207,7 +207,10 @@
             <label class="footer-label">Radiologist</label>
         </td>
         <td style="width: 50%;">
-            <img style="margin-left: 150px" [src]="signature" [ngStyle]="{'width.px': 300}" alt="" class="signature-right-side"/>
+            <figure>
+              <img style="margin-left: 150px" [src]="signature" [ngStyle]="{'width.px': 300}" alt="" class="signature-right-side"/>
+              <figcaption style="margin-left: 230px">Signed On: {{signedDate}}</figcaption>
+            </figure>
             <label style="margin-left: 300px;">SIGNATURE </label>
         </td>
       </tr>

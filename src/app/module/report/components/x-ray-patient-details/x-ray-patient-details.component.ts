@@ -56,6 +56,7 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
   isHospitalRadiologist: boolean;
   userSubscription: Subscription;
   printStatus = 'Completed';
+  signedDate: any;
 
   /*
    * constructor for XRayPatientDetailsComponent class
@@ -81,7 +82,8 @@ export class XRayPatientDetailsComponent implements OnInit, OnDestroy {
       }
     );
     this.eventEmitterService2.oneSignatureChanges.subscribe((data) => {
-      this.signature = data;
+      this.signature = data.img;
+      this.signedDate = data.date;
       this.changeDetector.markForCheck();
     });
   }

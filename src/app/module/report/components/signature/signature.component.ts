@@ -149,6 +149,7 @@ export class SignatureComponent implements OnInit {
   isHospitalRadiologist: boolean;
   userSubscription: Subscription;
   clickedPrintBtn:boolean = true;
+  signedDate: any;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
   showPrintFormPdf: boolean = false;
   // showPrintForm: boolean = false;
@@ -186,12 +187,13 @@ export class SignatureComponent implements OnInit {
       this.savedImage = JSON.parse(sessionStorage.getItem('signatureFromDB'));
       if (this.savedImage){
         this.showSignature = true;
+        this.signedDate = JSON.parse(sessionStorage.getItem('signatureDateFromDB'));
         this.img = JSON.parse(sessionStorage.getItem('signatureFromDB'));
         this.printEvent.emit(true);
         if (!this.isHospitalRadiologist) {
           this.eventEmitterService.onStatusChangeSubject.next(true);
         }
-        this.eventEmitterService2.oneSignatureChanges.next(this.img);
+        this.eventEmitterService2.oneSignatureChanges.next({img: this.img, date: this.signedDate});
       }
       else{
         this.showSignatureCard = true;
@@ -200,6 +202,7 @@ export class SignatureComponent implements OnInit {
         this.displayBtn2 = true;
         this.displayBtn3 = true;
         this.showSignatureRadio = false;
+        this.signedDate = this.getCurrentDate();
       }
       this.userSubscription = this.authService.userSubject.subscribe(
         (user: User) => {
@@ -218,12 +221,13 @@ export class SignatureComponent implements OnInit {
       this.displayBtn2 = false;
       this.displayBtn3 = false;
       this.clear();
+      this.signedDate = JSON.parse(sessionStorage.getItem('signatureDateFromDB'));
       this.img = JSON.parse(sessionStorage.getItem('signatureFromDB'));
       this.printEvent.emit(true);
       if (!this.isHospitalRadiologist) {
         this.eventEmitterService.onStatusChangeSubject.next(true);
       }
-      this.eventEmitterService2.oneSignatureChanges.next(this.img);
+      this.eventEmitterService2.oneSignatureChanges.next({img: this.img, date: this.signedDate});
       if (this.printBtnClicked){
         this.disableSave = false;
       }
@@ -234,6 +238,7 @@ export class SignatureComponent implements OnInit {
         event.preventDefault();
         return;
       }
+      this.signedDate = this.getCurrentDate();
       this.showSignatureCard = true;
       this.showSignature = false;
       this.displayBtn1 = false;
@@ -246,6 +251,7 @@ export class SignatureComponent implements OnInit {
   }
 
   useInReport(){
+    this.printBtnClicked = false;
     this.eventEmitterService2.OnSignatureDialogClose();
   }
 
@@ -260,9 +266,12 @@ export class SignatureComponent implements OnInit {
   }
   
   shareReport(){
+    this.shareButtonClicked = false;
     if (this.showSignature === true){
+      this.signedDate = JSON.parse(sessionStorage.getItem('signatureDateFromDB'));
       this.img = JSON.parse(sessionStorage.getItem('signatureFromDB'));
     } else{
+      this.signedDate = this.getCurrentDate();
       this.img = this.sigPadElement.toDataURL("image/png");
     }
     document.querySelector('input').click();
@@ -271,7 +280,7 @@ export class SignatureComponent implements OnInit {
       ? this.patientInfo.hospitalPatientId
       : this.patientInfo.name;
     const fileName = hospitalPatientId + '_' + timestamp + '.pdf';
-    this.eventEmitterService2.shareEvent(fileName, this.img);
+    this.eventEmitterService2.shareEvent(fileName, this.img, this.signedDate);
     const formattedBody =
       'X-ray Report for patient: ' +
       this.patientInfo.name +
@@ -332,7 +341,7 @@ export class SignatureComponent implements OnInit {
       if (!this.isHospitalRadiologist) {
         this.eventEmitterService.onStatusChangeSubject.next(true);
       }
-      this.eventEmitterService2.oneSignatureChanges.next(this.img);
+      this.eventEmitterService2.oneSignatureChanges.next({img: this.img, date: this.getCurrentDate()});
     }
   }
 
@@ -350,7 +359,7 @@ export class SignatureComponent implements OnInit {
     if (this.printBtnClicked){
       this.img = this.sigPadElement.toDataURL("image/png");
       this.eventEmitterService.onStatusChangeSubject.next(true);
-      this.eventEmitterService2.oneSignatureChanges.next(this.img);
+      this.eventEmitterService2.oneSignatureChanges.next({img: this.img, date: this.getCurrentDate()});
     }
   }
 
@@ -411,6 +420,19 @@ export class SignatureComponent implements OnInit {
         this.toastrService.error(errorMessage.error);
       }
     );
+  }
+
+  getCurrentDate(){
+    const d = new Date();
+    const dformat = [ d.getDate(),
+     				          (d.getMonth()+1),
+                      d.getFullYear()].join('-')+
+                      ' ' +
+                      [ d.getHours(),
+                      d.getMinutes(),
+                      d.getSeconds()].join(':');
+    return dformat;
+      
   }
 
 }

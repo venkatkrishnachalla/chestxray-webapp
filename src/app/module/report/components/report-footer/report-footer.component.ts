@@ -8,6 +8,7 @@ import { EventEmitterService2 } from '../../../../service/event-emitter.service2
 // ReportFooterComponent class implementation
 export class ReportFooterComponent implements OnInit {
   signature: any;
+  signedDate: any;
   @Output() printEvent = new EventEmitter();
   /*
    * constructor for ReportFooterComponent class
@@ -17,7 +18,8 @@ export class ReportFooterComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
   ) {
     this.eventEmitterService2.oneSignatureChanges.subscribe((data) => {
-      this.signature = data;
+      this.signature = data.img;
+      this.signedDate = data.date;
       this.changeDetector.markForCheck();
       this.printEvent.emit(true);
     });

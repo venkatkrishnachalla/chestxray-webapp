@@ -302,38 +302,38 @@ export class AuthService {
    */
 
   private handleAuthError(errorResponse: HttpErrorResponse) {
-    let errorMessage = 'Unknown error occurred';
+    // let errorMessage = 'Unknown error occurred';
     if (errorResponse.status === 0) {
       return throwError('Server not reachable');
     } else if (!errorResponse.error || !errorResponse.error.error) {
-      return throwError(errorMessage);
+      return throwError(errorResponse);
     }
 
-    switch (errorResponse.error.error.message) {
-      case 'EMAIL_NOT_FOUND':
-        errorMessage = 'This email does not exist';
-        break;
-      case 'INVALID_PASSWORD':
-        errorMessage = 'Invalid Password';
-        break;
-      case 'USER_DISABLED':
-        errorMessage = 'User Disabled';
-        break;
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email exists already';
-        break;
-      case 'OPERATION_NOT_ALLOWED':
-        errorMessage = 'Password sign-in is disabled';
-        break;
-      case 'TOO_MANY_ATTEMPTS_TRY_LATER':
-        errorMessage =
-          'We have blocked all requests from this device due to unusual activity. Try again later';
-        break;
+    // switch (errorResponse.error.error.message) {
+    //   case 'EMAIL_NOT_FOUND':
+    //     errorMessage = 'This email does not exist';
+    //     break;
+    //   case 'INVALID_PASSWORD':
+    //     errorMessage = 'Invalid Password';
+    //     break;
+    //   case 'USER_DISABLED':
+    //     errorMessage = 'User Disabled';
+    //     break;
+    //   case 'EMAIL_EXISTS':
+    //     errorMessage = 'This email exists already';
+    //     break;
+    //   case 'OPERATION_NOT_ALLOWED':
+    //     errorMessage = 'Password sign-in is disabled';
+    //     break;
+    //   case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+    //     errorMessage =
+    //       'We have blocked all requests from this device due to unusual activity. Try again later';
+    //     break;
 
-      default:
-        break;
-    }
-    return throwError(errorMessage);
+    //   default:
+    //     break;
+    // }
+    // return throwError(errorMessage);
   }
   
 }
