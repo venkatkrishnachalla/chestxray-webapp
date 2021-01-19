@@ -5,6 +5,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
 import { SpinnerService } from '../shared/UI/spinner/spinner.service';
 import { Router } from '@angular/router';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
+import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
 import { CanvasImageComponent } from './component/canvas-image/canvas-image.component';
 import { ImpressionComponent } from './component/impression/impression.component';
 import { FindingsComponent } from './component/findings/findings.component';
@@ -59,6 +60,7 @@ export class XRayComponent implements OnInit, OnDestroy {
     private spinnerService: SpinnerService,
     private router: Router,
     private eventEmitterService: EventEmitterService,
+    private eventEmitterService2: EventEmitterService2,
     private anotatedXrayService: XRayService,
     private authService: AuthService,
     private toastrService: ToastrService,
@@ -72,7 +74,18 @@ export class XRayComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit(): void {
-    this.disableSubmitBtn = false;
+    this.disableSubmitBtn = true;
+    this.disableReportBtn = true;
+    this.eventEmitterService2.invokeEnableSubmitBtn.subscribe((check) => {
+      if (check === 'true'){
+        this.disableSubmitBtn = false;
+        this.disableReportBtn = false;
+      }
+      else{
+        this.disableSubmitBtn = true;
+        this.disableReportBtn = true;
+      }
+    });
     this.eventEmitterService.invokeReportFunction.subscribe((impressions) => {
       this.eventEmitterService.onReportDataShared(impressions);
     });

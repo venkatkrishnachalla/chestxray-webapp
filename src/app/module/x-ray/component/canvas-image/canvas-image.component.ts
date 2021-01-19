@@ -1215,6 +1215,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   mlApiEllipseLoop(mlList: any, check: string) {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
+    if (mLArray.diseases.length === 0){
+      this.eventEmitterService2.enableSubmitBtn('false');
+    }
+    else{
+      this.eventEmitterService2.enableSubmitBtn('true');
+    }
     this.ellipseList = [];
     this.findingsList = [];
     mLArray.Impression.forEach((impression: any) => {
@@ -1471,7 +1477,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       } else if (disease.freeHandDrawing) {
         this.eventEmitterService.onComponentEllipseDataShared({
           name: disease.name,
-          index: disease.idx ? disease.idx : disease.index,
+          id: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
+          index: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
           source: 'DR',
           isUpdated: false,
         });
@@ -1479,8 +1486,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const selectedObject = {
           title: 'impression',
           isMLApi: false,
-          id: disease.idx ? disease.idx : disease.index,
-          index: disease.index,
+          id: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
+          index: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
           // index: check !== 'session' ? random : disease.idx,
           name: disease.name,
           color: disease.color,
@@ -1526,8 +1533,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             originX: 'center',
             originY: 'center',
             opacity: 0.8,
-            id: disease.idx ? disease.idx : disease.index,
-            index: disease.idx ? disease.idx : disease.index,
+            id: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
+            index: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
           })
         );
         this.coordinateList = [];
@@ -1535,7 +1542,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         if (disease.contours.length !== 0) {
           this.eventEmitterService.onComponentEllipseDataShared({
             name: disease.name,
-            index: disease.idx ? disease.idx : disease.index,
+            id: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
+            index: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
             source: 'DR',
             isUpdated: false,
           });
@@ -1543,7 +1551,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           const selectedObject = {
             title: 'impression',
             isMLApi: false,
-            index: disease.idx ? disease.idx : disease.index,
+            id: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
+            index: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
             // index: check !== 'session' ? random : disease.idx,
             name: disease.name,
             color: disease.color,
@@ -1585,8 +1594,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 originX: 'center',
                 originY: 'center',
                 opacity: 0.8,
-                id: disease.idx ? disease.idx : disease.index,
-                index: disease.idx ? disease.idx : disease.index,
+                id: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
+                index: disease.idx !== 0 ? (disease.idx ? disease.idx : disease.index) : disease.idx,
               })
             );
             this.coordinateList = [];
@@ -2049,6 +2058,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
     this.canvas.discardActiveObject();
     this.canvas.renderAll();
+    this.eventEmitterService2.enableSubmitBtn('true');
   }
 
   /**
@@ -2178,6 +2188,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     }
     this.toastrService.success('Annotation deleted successfully');
+    if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
+      this.eventEmitterService2.enableSubmitBtn('false');
+    }
+    else{
+      this.eventEmitterService2.enableSubmitBtn('true');
+    }
   }
 
   /**

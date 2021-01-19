@@ -87,13 +87,16 @@ export class SignInComponent implements OnInit {
           this.spinnerService.hide();
           this.router.navigate(['/home/dashboard']);
         },
-        (errorMessage: HttpErrorResponse) => {
+        (errorMessage) => {
           this.spinnerService.hide();
           if (networkStatus === false) {
             this.toastrService.error(
               'Please check your network connections and try again.'
             );
           } 
+          else if(!errorMessage.error){
+            this.toastrService.error(errorMessage);
+          }
           else{
             this.toastrService.error(errorMessage.error);
           }
