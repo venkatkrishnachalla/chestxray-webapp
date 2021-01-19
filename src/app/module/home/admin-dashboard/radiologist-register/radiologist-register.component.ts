@@ -93,6 +93,16 @@ export class RadiologistRegisterComponent implements OnInit {
     this.matdialougeref.close(this.isClose);
     this.matdialouge.closeAll();
   }
+  /**
+   * This is a get today date to disable future dates in date picker.
+   * @param '{void}' empty - A empty param
+   * @example
+   * getToday();
+   */
+
+  getToday(): string {
+    return new Date().toISOString().split('T')[0];
+  }
 }
 
 // custom validator to check that two fields match
