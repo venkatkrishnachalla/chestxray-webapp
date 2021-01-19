@@ -19,12 +19,12 @@
     <cxr-impression></cxr-impression>
     <cxr-findings></cxr-findings>
     <!-- <cxr-image-sliding></cxr-image-sliding> -->
-    <button mat-flat-button (click)="generateReport()"  type="submit" [disabled]="disableReportBtn">
+    <button mat-flat-button (click)="generateReport()"  type="submit" title="Add annotation to Enable" [disabled]="disableReportBtn">
       <span>REPORT</span>
       <img src="../../../assets/images/report icon@2x.png" alt="report" />
     </button>
 
-    <button mat-flat-button (click)="submitReport()" type="submit" [disabled]="disableSubmitBtn" *ngIf="isHospitalRadiologist">
+    <button mat-flat-button (click)="submitReport()" type="submit" title="Add annotation to Enable" [disabled]="disableSubmitBtn" *ngIf="isHospitalRadiologist">
       <span>SUBMIT</span>
       <img src="../../../assets/images/submit icon@2x.png" alt="submit" />
     </button>

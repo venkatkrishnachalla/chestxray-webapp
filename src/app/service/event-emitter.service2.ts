@@ -12,6 +12,7 @@ export class EventEmitterService2 {
   oneSignatureChanges = new BehaviorSubject({img: '', date: ''});
   invokerefreshRadiologistList = new EventEmitter();
   invokeshareEvent = new EventEmitter();
+  invokeEnableSubmitBtn = new EventEmitter();
 
 
   constructor() {}
@@ -41,5 +42,9 @@ export class EventEmitterService2 {
   }
   shareEvent(filename, sign, signedDate){
     this.invokeshareEvent.emit({filename, sign, signedDate});
+  }
+
+  enableSubmitBtn(check){
+    this.invokeEnableSubmitBtn.emit(check);
   }
 }
