@@ -151,7 +151,7 @@ export class XRayComponent implements OnInit, OnDestroy {
   generateReport() {
     this.disableReportBtn = true;
     // tslint:disable-next-line: no-string-literal
-    const annotationData = this.canvas.savedInfo['data'].ndarray[0];
+    const annotationData = JSON.parse(JSON.stringify(this.canvas.savedInfo['data'].ndarray[0]));;
     this.findings.findings.forEach((input) => {
       const output = input.split(':');
       let outputSub;
@@ -224,7 +224,7 @@ export class XRayComponent implements OnInit, OnDestroy {
     let indexValueDisease = 0;
     let mainSource = '';
     // tslint:disable-next-line:no-string-literal
-    const annotationData = this.canvas.savedInfo['data'].ndarray[0];
+    const annotationData = JSON.parse(JSON.stringify(this.canvas.savedInfo['data'].ndarray[0]));
     annotationData.Impression.forEach((element) => {
       element.index = indexValue;
       if (element.source === 'ML' && mainSource !== 'ML+DR') {

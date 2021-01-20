@@ -200,7 +200,7 @@ export class XRayPatientImageComponent implements OnInit, OnDestroy {
     const data = sessionStorage.getItem('x-ray_Data');
     if (data) {
       // tslint:disable-next-line: no-string-literal
-      annotationData = JSON.parse(data)['data'].ndarray[0];
+      annotationData = JSON.parse(JSON.stringify(JSON.parse(data)['data'].ndarray[0]));
       annotationData.Impression.forEach((element) => {
         element.index = indexValue;
         if (element.source === 'ML' && mainSource !== 'ML+DR') {
