@@ -70,15 +70,19 @@
           type="date"
           formControlName="confirmExpiry"
           placeholder="DD/MM/YYYY"
-          name="confirmExpiry"
+          name="confirmExpiry" 
+          [min]='getToday()'
+          onkeydown="return false"
           autocomplete="off"
         />
         <label for="confirmPassword"><b>Date Of Birth</b></label>
         <input
           type="date"
           formControlName="confirmDob"
-          placeholder="DD/MM/YYYY"
+          placeholder="DD/MM/YYYY" 
+          [max]="getToday()"
           name="confirmDOB"
+          onkeydown="return false"
           autocomplete="off"
         />
 

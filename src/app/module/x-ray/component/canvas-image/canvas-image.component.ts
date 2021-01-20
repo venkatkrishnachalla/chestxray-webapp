@@ -2077,11 +2077,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line:no-string-literal
       this.savedInfo['data'].ndarray[0].Impression.forEach((element, index) => {
         const compare = this.diffuseObject.obj.id;
-        if (element.index === compare) {
+        const compareIndex = element.index ? element.index  : element.idx;
+        if (compareIndex === compare) {
           // tslint:disable-next-line:no-string-literal
           this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
           // tslint:disable-next-line:no-string-literal
           this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
+          if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
+            this.eventEmitterService2.enableSubmitBtn('false');
+          }
+          else{
+            this.eventEmitterService2.enableSubmitBtn('true');
+          }
           // } else if (element.sentence === this.diffuseObject.obj.name) {
         } else if (
           this.savedInfo['data'].ndarray[0].diseases[index].name ===
@@ -2090,10 +2097,15 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           // tslint:disable-next-line: no-string-literal
           this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
           // tslint:disable-next-line: no-string-literal
-          this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
+          this.savedInfo['data'].ndarray[0].diseases.splice(index, 1)
+        }
+        if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
+          this.eventEmitterService2.enableSubmitBtn('false');
+        }
+        else{
+          this.eventEmitterService2.enableSubmitBtn('true');
         }
       });
-
       sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
       const selectedObject = {
         id: this.diffuseObject.obj.id,
@@ -2117,6 +2129,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
             // tslint:disable-next-line: no-string-literal
             this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
+            if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
+              this.eventEmitterService2.enableSubmitBtn('false');
+            }
+            else{
+              this.eventEmitterService2.enableSubmitBtn('true');
+            }
           }
         } else if (element.source === 'ML' && element.ellipses.length > 1) {
           let indexVal = 0;
@@ -2138,6 +2156,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 this.savedInfo['data'].ndarray[0].diseases[
                   index
                 ].ellipses.splice(indexVal, 1);
+                if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
+                  this.eventEmitterService2.enableSubmitBtn('false');
+                }
+                else{
+                  this.eventEmitterService2.enableSubmitBtn('true');
+                }
                 return;
               }
             } else {
@@ -2156,6 +2180,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                 this.savedInfo['data'].ndarray[0].diseases[
                   index
                 ].ellipses.splice(indexVal, 1);
+                if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
+                  this.eventEmitterService2.enableSubmitBtn('false');
+                }
+                else{
+                  this.eventEmitterService2.enableSubmitBtn('true');
+                }
                 return;
               }
             }
@@ -2167,6 +2197,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.savedInfo['data'].ndarray[0].Impression.splice(index, 1);
             // tslint:disable-next-line: no-string-literal
             this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
+            if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
+              this.eventEmitterService2.enableSubmitBtn('false');
+            }
+            else{
+              this.eventEmitterService2.enableSubmitBtn('true');
+            }
           }
         }
         sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
@@ -2188,12 +2224,6 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     }
     this.toastrService.success('Annotation deleted successfully');
-    if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
-      this.eventEmitterService2.enableSubmitBtn('false');
-    }
-    else{
-      this.eventEmitterService2.enableSubmitBtn('true');
-    }
   }
 
   /**
@@ -2424,7 +2454,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                         indexId
                       ],
                     ],
-                    index: this.canvas._activeObject.id,
+                    index: this.canvas._activeObject.id ? this.canvas._activeObject.id : this.canvas._activeObject.index,
                     name: selectedObject.name,
                     isMlAi: activeObj.isMLAi,
                     source: activeObj.isMLAi ? 'ML' : 'DR',
@@ -2458,7 +2488,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                         indexId
                       ],
                     ],
-                    index: this.canvas._activeObject.id,
+                    index: this.canvas._activeObject.id ? this.canvas._activeObject.id : this.canvas._activeObject.index,
                     name: selectedObject.name,
                     isMlAi: activeObj.isMLAi,
                     source: activeObj.isMLAi ? 'ML' : 'DR',
@@ -2768,8 +2798,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         color: colorName,
         freeHandDrawing: true,
         coordinatevalues: newArrayValues,
-        index: this.canvas._activeObject.id
-          ? this.canvas._activeObject.id
+        index: this.canvas._activeObject.index
+          ? this.canvas._activeObject.index
           : Math.floor(Math.random() * 300 + 1),
         name: diseases,
         type: 'ellipse',
