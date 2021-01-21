@@ -24,7 +24,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   radiologistName: string;
   emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   @ViewChild(DragDropComponent) dragAndDrop: DragDropComponent;
-  isOtherPhysician: boolean;
+  isOtherPhysician: boolean = false;
 
   /*
    * constructor for LocalFilesystemComponent class
@@ -54,8 +54,7 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
       gender: ['MALE', Validators.required],
       referringPhysician: ['SELF', Validators.required],
       referringPhysicianName: [
-        '',
-        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]*$/)],
+        ''
       ],
       email: [
         '',
@@ -126,11 +125,15 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
   refPhysicianChange(value: string) {
     this.isOtherPhysician = false;
     if (value === 'OTHERS') {
+      this.uploadImageForm.controls["referringPhysicianName"].setValidators([Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]*$/)]);
+      this.uploadImageForm.controls["referringPhysicianName"].updateValueAndValidity();
       this.isOtherPhysician = true;
       this.uploadImageForm.patchValue({
         referringPhysicianName: '',
       });
     } else {
+      this.uploadImageForm.controls["referringPhysicianName"].setValidators(null);
+      this.uploadImageForm.controls["referringPhysicianName"].updateValueAndValidity();
       this.uploadImageForm.patchValue({
         referringPhysicianName: this.doctorName,
       });

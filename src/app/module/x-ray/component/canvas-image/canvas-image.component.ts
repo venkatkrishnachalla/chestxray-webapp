@@ -1292,7 +1292,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         } else if (
           mLArray.Findings[info.Name].length === 0 &&
           info.Name !== 'ADDITIONAL' &&
-          this.isAlreadySubmitted
+          this.isAlreadySubmitted && mLArray.source !== 'DR'
         ) {
           const finalFinding = info.Name + ': ' + info.Desc;
           this.eventEmitterService.onComponentFindingsDataShared(finalFinding);
