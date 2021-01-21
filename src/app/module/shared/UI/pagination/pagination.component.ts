@@ -62,6 +62,12 @@ export class PaginationComponent implements OnChanges {
       this.paginationPages = this.pagerService.getPager(this.noOfPages, this.paginationPages.currentPage - 1);
       this.getPatientList(this.paginationPages.currentPage, 10);
     }
+    else if (this.paginationPages.currentPage !== 1){
+      this.currentPage = this.paginationPages.currentPage - 1;
+      this.gridApi.paginationGoToPreviousPage();
+      this.paginationPages = this.pagerService.getPager(this.noOfPages, this.paginationPages.currentPage - 1);
+      this.getPatientList(this.paginationPages.currentPage, 10);
+    }
   }
 
   getPatientList(page, size){
