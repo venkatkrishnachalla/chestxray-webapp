@@ -156,16 +156,17 @@ export const pathology = {
     //   Names: [],
     // },
     {
-      abnormality: 'Support Devices',
+      abnormality: 'Support Device',
       Names: [
-        // 'ET tube',
-        // 'NG tube',
-        // 'IJV',
-        // 'UAC/UVC',
-        // 'Dialysis catheter',
-        // 'Pacemaker',
-        // 'Artificial valves',
-        // 'ICD',
+        'CVC',
+        'ET Tube',
+        'NG Tube',
+        'ICD',
+        'Pacemaker',
+        'Tracheostomy Tube',
+        'UAC/UVC',
+        'Artificial Values',
+        'Support Devices'
       ],
     },
     {
