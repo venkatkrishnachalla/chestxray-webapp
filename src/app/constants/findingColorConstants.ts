@@ -37,11 +37,12 @@ export const DISEASE_COLOR_MAPPING = {
   'calcified nodes': '#f0e68c',
   'et tube': '#2f4f4f',
   'ng tube': '#808080',
-  ijv: '#460075',
+  cvc: '#460075',
   'uac/uvc': '#8fbc8f',
-  'dialysis catheter': '#fafad2',
+  'tracheostomy tube': '#fafad2',
   pacemaker: '#ff3b30',
-  'artificial valves': '#ff6347',
+  'artificial values': '#ff6347',
+  'support devices': '#06b1d6',
   icd: '#f08080',
   'cervical rib': '#B8860B',
   'azygos fissure': '#FFAB00 ',
@@ -61,8 +62,7 @@ export const DISEASE_COLOR_MAPPING = {
   implants: '#ae5e5e',
   scoliosis: '#3E3258',
   kyphosis: '#333B57',
-  fracture: '#12a3b5',
-  'support devices': '#06b1d6'
+  fracture: '#12a3b5'
 };
 
 export const RANDOM_COLOR = '#FFFF00';
