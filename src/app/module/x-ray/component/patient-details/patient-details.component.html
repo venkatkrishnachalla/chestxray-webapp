@@ -1,4 +1,4 @@
-<mat-card class="patient-info">
+<!-- <mat-card class="patient-info">
   <mat-card-title class="patient-info-header">
     <span class="material-icons Patient-info-icon">
       person
@@ -14,4 +14,26 @@
     <tr><td><mat-label>Time</mat-label></td><td>{{ Time | date: 'HH:mm:ss' }}</td></tr>
     <tr><td><mat-label>Clinical History</mat-label></td><td>{{ history || '-' }}</td></tr>
   </table>
-</mat-card>
+</mat-card> -->
+<mat-accordion class="patient-info">
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="patient-info-header">
+        <span class="material-icons Patient-info-icon">
+          person
+        </span>
+        <span class="Patient-content">{{ PatientDetailsText | uppercase }}</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <table mat-table class="mat-elevation-z0"> 
+      <tr><td><mat-label>Name</mat-label></td><td>{{ PatientName }}</td></tr>
+      <tr><td><mat-label>Gender</mat-label></td><td>{{ PatientGender }}</td></tr>
+      <tr><td><mat-label>Age</mat-label></td><td>{{ PatientAge }}</td></tr>
+      <tr><td><mat-label>Ref.Physician</mat-label></td><td>{{ refPhysician }}</td></tr>
+      <tr><td><mat-label>Date Of Creation</mat-label></td><td>{{ Date | date: 'dd-MM-yyyy' }}</td></tr>
+      <tr><td><mat-label>Time</mat-label></td><td>{{ Time | date: 'HH:mm:ss' }}</td></tr>
+      <tr><td><mat-label>Clinical History</mat-label></td><td>{{ history || '-' }}</td></tr>
+    </table>
+  </mat-expansion-panel>
+</mat-accordion>

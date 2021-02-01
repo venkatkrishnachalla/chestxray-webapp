@@ -21,6 +21,7 @@ export class PatientDetailsComponent implements OnInit, OnDestroy {
   patientDetails: PatientDetailData;
   _subscription: Subscription;
   PatientDetailsText: string;
+  panelOpenState:boolean =  false;
   /*
    * constructor for PatientDetailsComponent class
    */

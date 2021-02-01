@@ -56,6 +56,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   @Input() events: Observable<void>;
   @ViewChild('pathologyModal') pathologyModal: TemplateRef<any>;
   @ViewChild('deleteObject') deleteObjectModel: TemplateRef<any>;
+  @ViewChild('deleteAllAnnotations') deleteAllAnnotations: TemplateRef<any>;
+  @ViewChild('proceedToManualDraw') proceedToManualDraw: TemplateRef<any>;
   @ViewChild('MeasureToolDeleteObject')
   measureToolDeleteObjectModel: TemplateRef<any>;
   @ViewChild('controls') controlsModel: TemplateRef<any>;
@@ -167,13 +169,18 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   rangeX: any;
   diffuseObjects: any;
   currentSelectedDesease: string;
-  isAlreadyAnnotated: boolean;
-  isAlreadySubmitted: boolean;
+  isAlreadyAnnotated: boolean = false;
+  isAlreadySubmitted: boolean = false;
   impression: any[];
   innerObject: any;
   random: number;
   point1: any;
   point2: any;
+  enableAdditionalCheck: any;
+  findingsArray: any;
+  unableToDiagnose: boolean = false;
+  actionPanelIcons: any;
+  deleteContent: string = '';
   /*
    * constructor for CanvasImageComponent class
    */
@@ -229,6 +236,45 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit() {
+    this.eventEmitterService2.invokeDeleteAllAnnotations.subscribe((data) => {
+      if (data.check && data.src !== 'ML'){
+        this.dialog.open(this.deleteAllAnnotations, {
+          height: '240px',
+          width: '320px',
+          disableClose: true,
+          closeOnNavigation: true,
+          backdropClass: 'backdropClass',
+        });
+        this.enableAdditionalCheck = data.txt;
+        this.unableToDiagnose = data.check;
+      }
+      else if(data.check && data.src === 'ML'){
+        this.enableAdditionalCheck = data.txt;
+        this.unableToDiagnose = data.check;
+        this.deleteAllPredictions();
+      }
+      else{
+        this.unableToDiagnose = data.check;
+      }
+    })
+    this.eventEmitterService2.invokeMLrejection.subscribe((data) => {
+      this.unableToDiagnose = data.check;
+      if (data.source === 'ML'){
+        this.isAlreadyAnnotated = true;
+      }
+      else{
+        this.isAlreadyAnnotated = false;
+      }
+    })
+    this.eventEmitterService2.invokeNoFindings.subscribe((data) => {
+      this.unableToDiagnose = data.check;
+      if (data.source === 'ML'){
+        this.isAlreadyAnnotated = true;
+      }
+      else{
+        this.isAlreadyAnnotated = false;
+      }
+    })
     this.random = Math.floor(Math.random() * 100 + 1);
     this.isChangeable = true;
     this.shiftKeyDown = false;
@@ -274,51 +320,70 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
-        switch (data.title) {
-          case 'Draw Ellipse':
-            if (
-              this.activeIcon &&
-              this.activeIcon.title === 'Measure Length' &&
-              this.activeIcon.point1 === false
-            ) {
-              this.activeIcon.active = true;
+        const active = !this.activeIcon ? true : this.activeIcon.active;
+        if (this.unableToDiagnose && active){
+          if (this.isAlreadyAnnotated){
+            this.deleteContent = 'ML has given No Findings/Unable to diagnose. Please confirm to continue with manual annotations'
+          }
+          else{
+            this.deleteContent = 'You already selected No Findings/Unable to diagnose. Please confirm to continue with manual annotations'
+          }
+          this.dialog.open(this.proceedToManualDraw, {
+            height: '240px',
+            width: '320px',
+            disableClose: true,
+            closeOnNavigation: true,
+            backdropClass: 'backdropClass',
+          });
+          this.actionPanelIcons = data;
+        }
+        else{
+          switch (data.title) {
+            case 'Draw Ellipse':
+              if (
+                this.activeIcon &&
+                this.activeIcon.title === 'Measure Length' &&
+                this.activeIcon.point1 === false
+              ) {
+                this.activeIcon.active = true;
+                this.eventEmitterService.onInActiveIconClick('Measure Length');
+                this.toastrService.error('Please select measure tool end point');
+              } else {
+                this.eventEmitterService.onInActiveIconClick('Draw Ellipse');
+                this.drawEllipse(data);
+                this.isMeasureTool = false;
+              }
+              break;
+            case 'Free Hand Drawing':
+              if (
+                this.activeIcon &&
+                this.activeIcon.title === 'Measure Length' &&
+                this.activeIcon.point1 === false
+              ) {
+                this.eventEmitterService.onInActiveIconClick('Measure Length');
+                this.activeIcon.active = true;
+                this.toastrService.error('Please select measure tool end point');
+              } else {
+                this.eventEmitterService.onInActiveIconClick('Free Hand Drawing');
+                this.freeHandDrawing(data);
+                this.isMeasureTool = false;
+              }
+              break;
+            case 'Measure Length':
               this.eventEmitterService.onInActiveIconClick('Measure Length');
-              this.toastrService.error('Please select measure tool end point');
-            } else {
-              this.eventEmitterService.onInActiveIconClick('Draw Ellipse');
-              this.drawEllipse(data);
-              this.isMeasureTool = false;
-            }
-            break;
-          case 'Free Hand Drawing':
-            if (
-              this.activeIcon &&
-              this.activeIcon.title === 'Measure Length' &&
-              this.activeIcon.point1 === false
-            ) {
-              this.eventEmitterService.onInActiveIconClick('Measure Length');
-              this.activeIcon.active = true;
-              this.toastrService.error('Please select measure tool end point');
-            } else {
-              this.eventEmitterService.onInActiveIconClick('Free Hand Drawing');
-              this.freeHandDrawing(data);
-              this.isMeasureTool = false;
-            }
-            break;
-          case 'Measure Length':
-            this.eventEmitterService.onInActiveIconClick('Measure Length');
-            this.canvas.isDrawingMode = false;
-            this.enableDrawEllipseMode = false;
-            this.enableFreeHandDrawing = false;
-            this.measureTool(data);
-            break;
-          case 'pathology':
-            this.diffusePathology(data);
-            break;
-          case 'Delete':
-            break;
-          default:
-            break;
+              this.canvas.isDrawingMode = false;
+              this.enableDrawEllipseMode = false;
+              this.enableFreeHandDrawing = false;
+              this.measureTool(data);
+              break;
+            case 'pathology':
+              this.diffusePathology(data);
+              break;
+            case 'Delete':
+              break;
+            default:
+              break;
+          }
         }
       }
     );
@@ -1215,11 +1280,17 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   mlApiEllipseLoop(mlList: any, check: string) {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
-    if (mLArray.diseases.length === 0){
-      this.eventEmitterService2.enableSubmitBtn('false');
+    if (mLArray.noFindings){
+      this.eventEmitterService2.nofindingsFromML(true, mLArray.source)
+    }
+    else if(mLArray.nonChestXRay || mLArray.poorImageQuality ){
+      this.eventEmitterService2.mlRejection(true, mLArray.source)
+    }
+    if (mLArray.diseases.length === 0 && !mLArray.noFindings && !mLArray.nonChestXRay){
+      this.eventEmitterService2.enableSubmitBtn('false', '');
     }
     else{
-      this.eventEmitterService2.enableSubmitBtn('true');
+      this.eventEmitterService2.enableSubmitBtn('true', '');
     }
     this.ellipseList = [];
     this.findingsList = [];
@@ -1949,6 +2020,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * savePrediction();
    */
   savePrediction() {
+    this.unableToDiagnose = false;
     const random = Math.floor(Math.random() * 100 + 1);
     this.random = this.random + 1;
     let emptyObject;
@@ -2058,7 +2130,35 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     }
     this.canvas.discardActiveObject();
     this.canvas.renderAll();
-    this.eventEmitterService2.enableSubmitBtn('true');
+    this.eventEmitterService2.enableSubmitBtn('true', '');
+  }
+
+  deleteAllPredictions(){
+    this.dialog.closeAll();
+    this.canvas._objects.length = 0;
+    sessionStorage.removeItem('x-ray_Data');
+    this.savedInfo = {
+      data: {
+        names: [],
+        ndarray: [
+          {
+            Findings: {},
+            Impression: [],
+            diseases: [],
+          },
+        ],
+      },
+      meta: {},
+    };
+    this.eventEmitterService2.resetImpression();
+    this.eventEmitterService2.resetFindings();
+    sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
+    this.eventEmitterService2.deleteConfirmation(true, this.enableAdditionalCheck);
+  }
+
+  cancelDeleteAll(){
+    this.unableToDiagnose = false;
+    this.dialog.closeAll();
   }
 
   /**
@@ -2084,10 +2184,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           // tslint:disable-next-line:no-string-literal
           this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
           if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
-            this.eventEmitterService2.enableSubmitBtn('false');
+            this.eventEmitterService2.enableSubmitBtn('false', '');
           }
           else{
-            this.eventEmitterService2.enableSubmitBtn('true');
+            this.eventEmitterService2.enableSubmitBtn('true', '');
           }
           // } else if (element.sentence === this.diffuseObject.obj.name) {
         } else if (
@@ -2100,10 +2200,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           this.savedInfo['data'].ndarray[0].diseases.splice(index, 1)
         }
         if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
-          this.eventEmitterService2.enableSubmitBtn('false');
+          this.eventEmitterService2.enableSubmitBtn('false', '');
         }
         else{
-          this.eventEmitterService2.enableSubmitBtn('true');
+          this.eventEmitterService2.enableSubmitBtn('true', '');
         }
       });
       sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
@@ -2130,10 +2230,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             // tslint:disable-next-line: no-string-literal
             this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
             if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
-              this.eventEmitterService2.enableSubmitBtn('false');
+              this.eventEmitterService2.enableSubmitBtn('false', '');
             }
             else{
-              this.eventEmitterService2.enableSubmitBtn('true');
+              this.eventEmitterService2.enableSubmitBtn('true', '');
             }
           }
         } else if (element.source === 'ML' && element.ellipses.length > 1) {
@@ -2157,10 +2257,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   index
                 ].ellipses.splice(indexVal, 1);
                 if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
-                  this.eventEmitterService2.enableSubmitBtn('false');
+                  this.eventEmitterService2.enableSubmitBtn('false', '');
                 }
                 else{
-                  this.eventEmitterService2.enableSubmitBtn('true');
+                  this.eventEmitterService2.enableSubmitBtn('true', '');
                 }
                 return;
               }
@@ -2181,10 +2281,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
                   index
                 ].ellipses.splice(indexVal, 1);
                 if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
-                  this.eventEmitterService2.enableSubmitBtn('false');
+                  this.eventEmitterService2.enableSubmitBtn('false', '');
                 }
                 else{
-                  this.eventEmitterService2.enableSubmitBtn('true');
+                  this.eventEmitterService2.enableSubmitBtn('true', '');
                 }
                 return;
               }
@@ -2198,10 +2298,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             // tslint:disable-next-line: no-string-literal
             this.savedInfo['data'].ndarray[0].diseases.splice(index, 1);
             if (this.savedInfo['data'].ndarray[0].diseases.length === 0){
-              this.eventEmitterService2.enableSubmitBtn('false');
+              this.eventEmitterService2.enableSubmitBtn('false', '');
             }
             else{
-              this.eventEmitterService2.enableSubmitBtn('true');
+              this.eventEmitterService2.enableSubmitBtn('true', '');
             }
           }
         }
@@ -3440,6 +3540,64 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * cancelDelete();
    */
   cancelDelete() {
+    this.clear();
+    this.activeIcon.active = false;
+    this.canvas.isDrawingMode = false;
+    this.enableDrawEllipseMode = false;
+    this.eventEmitterService2.deleteConfirmation(false, this.enableAdditionalCheck);
     this.dialog.closeAll();
+  }
+
+  proceedWithManualDrawing(){
+    this.dialog.closeAll();
+    this.eventEmitterService2.nofindingsFromML(false, this.isAlreadyAnnotated ? 'ML' : 'Manual');
+    this.eventEmitterService2.mlRejection(false, this.isAlreadyAnnotated ? 'ML' : 'Manual');
+    const data  = this.actionPanelIcons;
+    switch (data.title) {
+      case 'Draw Ellipse':
+        if (
+          this.activeIcon &&
+          this.activeIcon.title === 'Measure Length' &&
+          this.activeIcon.point1 === false
+        ) {
+          this.activeIcon.active = true;
+          this.eventEmitterService.onInActiveIconClick('Measure Length');
+          this.toastrService.error('Please select measure tool end point');
+        } else {
+          this.eventEmitterService.onInActiveIconClick('Draw Ellipse');
+          this.drawEllipse(data);
+          this.isMeasureTool = false;
+        }
+        break;
+      case 'Free Hand Drawing':
+        if (
+          this.activeIcon &&
+          this.activeIcon.title === 'Measure Length' &&
+          this.activeIcon.point1 === false
+        ) {
+          this.eventEmitterService.onInActiveIconClick('Measure Length');
+          this.activeIcon.active = true;
+          this.toastrService.error('Please select measure tool end point');
+        } else {
+          this.eventEmitterService.onInActiveIconClick('Free Hand Drawing');
+          this.freeHandDrawing(data);
+          this.isMeasureTool = false;
+        }
+        break;
+      case 'Measure Length':
+        this.eventEmitterService.onInActiveIconClick('Measure Length');
+        this.canvas.isDrawingMode = false;
+        this.enableDrawEllipseMode = false;
+        this.enableFreeHandDrawing = false;
+        this.measureTool(data);
+        break;
+      case 'pathology':
+        this.diffusePathology(data);
+        break;
+      case 'Delete':
+        break;
+      default:
+        break;
+    }
   }
 }

@@ -46,6 +46,8 @@ export class XRayComponent implements OnInit, OnDestroy {
   disableReportBtn = false;
   userSubscription: Subscription;
   disableSubmitBtn: boolean;
+  noFindings: boolean;
+  unableToDiagnose: boolean;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
@@ -76,14 +78,33 @@ export class XRayComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.disableSubmitBtn = true;
     this.disableReportBtn = true;
-    this.eventEmitterService2.invokeEnableSubmitBtn.subscribe((check) => {
-      if (check === 'true'){
+    this.eventEmitterService2.invokeMLrejection.subscribe((data) => {
+      this.unableToDiagnose = data.check;
+    })
+    this.eventEmitterService2.invokeNoFindings.subscribe((data) => {
+      this.noFindings = data.check;
+    })
+    this.eventEmitterService2.invokeEnableSubmitBtn.subscribe((data) => {
+      if (data.check === 'true'){
         this.disableSubmitBtn = false;
         this.disableReportBtn = false;
+        if (data.txt === 'unableToDiagnose'){
+          this.unableToDiagnose = true;
+          this.noFindings = false;
+        }
+        else if (data.txt === 'noFindings'){
+          this.noFindings = true;
+          this.unableToDiagnose = false;
+        }
       }
       else{
-        this.disableSubmitBtn = true;
-        this.disableReportBtn = true;
+        this.noFindings = false;
+        this.unableToDiagnose = false;
+        const annotationData = JSON.parse(JSON.stringify(this.canvas.savedInfo['data'].ndarray[0]));
+        if (annotationData.diseases.length === 0){
+          this.disableSubmitBtn = true;
+          this.disableReportBtn = true;
+        }
       }
     });
     this.eventEmitterService.invokeReportFunction.subscribe((impressions) => {
@@ -113,19 +134,28 @@ export class XRayComponent implements OnInit, OnDestroy {
         .subscribe(
           (mLResponse: MlApiData) => {
             this.mLResponse = mLResponse;
-            if (this.mLResponse.data.ndarray[0].rejected){
-              this.spinnerService.hide();
-              this.toastrService.warning(this.mLResponse.data.ndarray[0]['rejection-reason']);
-              return false;
-            }
             const mLArray = this.mLResponse.data.ndarray[0].diseases;
             this.eventsSubject.next(mLResponse);
             this.eventEmitterService.onAskAiButtonClick('success');
             this.eventEmitterService.onNoAbnormalitiesClick('success');
-            this.spinnerService.hide();
+            if (this.mLResponse.data.ndarray[0].rejected){
+              this.eventEmitterService2.deleteAllAnnotations('unableToDiagnose', true, 'ML');
+              this.eventEmitterService2.mlRejection(true, 'ML');
+              this.eventEmitterService2.resetImpression();
+              this.eventEmitterService2.resetFindings();
+              this.spinnerService.hide();
+              this.toastrService.warning(this.mLResponse.data.ndarray[0]['rejection-reason']);
+              return false;
+            }
             if (mLArray.length === 0 || mLArray === undefined) {
+              this.eventEmitterService2.deleteAllAnnotations('noFindings', true, 'ML');
+              this.eventEmitterService2.nofindingsFromML(true, 'ML');
+              this.eventEmitterService2.resetImpression();
+              this.eventEmitterService2.resetFindings();
+              this.spinnerService.hide();
               this.toastrService.info('No significant abnormality detected');
             } else {
+              this.spinnerService.hide();
               this.toastrService.success('ML Annotations updated successfully');
             }
           },
@@ -340,6 +370,9 @@ export class XRayComponent implements OnInit, OnDestroy {
             updatedBy: this.canvas.patientDetail.xRayList[0].assignedTo,
             updatedOn: new Date().toJSON().slice(0, 10),
             Source: mainSource === '' ? 'DR' : mainSource,
+            noFindings: this.noFindings,
+            poorImageQuality: this.unableToDiagnose,
+            nonChestXRay: this.unableToDiagnose
           },
         ],
       },

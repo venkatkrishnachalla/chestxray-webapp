@@ -18,6 +18,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const materialModules = [
   MatCardModule,
@@ -39,7 +40,8 @@ const materialModules = [
   MatAutocompleteModule,
   MatTooltipModule,
   MatSortModule,
-  MatRadioModule
+  MatRadioModule,
+  MatExpansionModule
 ];
 
 @NgModule({

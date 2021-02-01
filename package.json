@@ -1,6 +1,6 @@
 {
   "name": "cxr-web-app",
-  "version": "0.0.42",
+  "version": "0.0.44",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",

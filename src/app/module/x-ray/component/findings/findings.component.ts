@@ -4,6 +4,7 @@ import { XRayService } from 'src/app/service/x-ray.service';
 import { pathology } from 'src/app/constants/pathologyConstants';
 import { EllipseData } from 'src/app/module/auth/interface.modal';
 import { Subscription } from 'rxjs';
+import { EventEmitterService2 } from '../../../../service/event-emitter.service2';
 
 @Component({
   selector: 'cxr-findings',
@@ -25,7 +26,8 @@ export class FindingsComponent implements OnInit, OnDestroy {
 
   constructor(
     private eventEmitterService: EventEmitterService,
-    private xrayAnnotatedService: XRayService
+    private xrayAnnotatedService: XRayService,
+    private eventEmitterService2: EventEmitterService2,
   ) {
     this._subscription = this.eventEmitterService.invokePrevNextButtonDataFunction.subscribe(
       (patientId: string) => {
@@ -46,6 +48,9 @@ export class FindingsComponent implements OnInit, OnDestroy {
     this.findingsText = 'Findings';
     this.findings = [];
     this.getFindings();
+    this.eventEmitterService2.invokeResetFindings.subscribe(() => {
+      this.getFindings();
+    })
   }
 
   /**
@@ -80,6 +85,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
         }
       }
     );
+    sessionStorage.setItem('findings', JSON.stringify(this.findings));
     // this.eventEmitterService.invokeFindingsDataFunction.subscribe((data) => {
     //   const uniqueImpressions = [];
     //   data.filter((item) => {
