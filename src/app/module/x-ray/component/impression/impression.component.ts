@@ -30,6 +30,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   reverse = false;
   isAlreadyAskAiClicked: boolean;
   hideNoAbnormalityText: boolean;
+  unableToDiagnose: boolean = false;
+  noFindings: boolean = false;
 
   /*
    * constructor for ImpressionComponent class
@@ -99,6 +101,39 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       const event = { target: { checked: data } };
       this.hideorShowAllFun(event);
     });
+    this.eventEmitterService2.invokeDeleteConfirmation.subscribe((data) => {
+      if (data.check === true){
+        if (data.txt === 'unableToDiagnose'){
+          this.eventEmitterService2.enableSubmitBtn('true', 'unableToDiagnose');
+          this.unableToDiagnose = true;
+          this.impression = [];
+          this.uniqueImpressions = [];
+        }
+        else if (data.txt === 'noFindings'){
+          this.eventEmitterService2.enableSubmitBtn('true', 'noFindings');
+          this.noFindings = true;
+          this.impression = [];
+          this.uniqueImpressions = [];
+        }
+      }
+      else{
+        this.unableToDiagnose = false;
+        this.noFindings = false;
+      }
+      this.hideorShowAllFun(event);
+    });
+    this.eventEmitterService2.invokeMLrejection.subscribe((data) => {
+      this.unableToDiagnose = data.check;
+      this.eventEmitterService2.enableSubmitBtn('true', '');
+    })
+    this.eventEmitterService2.invokeNoFindings.subscribe((data) => {
+      this.noFindings = data.check;
+      this.eventEmitterService2.enableSubmitBtn('true', '');
+    })
+    this.eventEmitterService2.invokeResetImpression.subscribe(() => {
+      this.impression = [];
+      this.uniqueImpressions = [];
+    })
   }
 
   /**
@@ -344,5 +379,40 @@ export class ImpressionComponent implements OnInit, OnDestroy {
       obj: data,
       title: 'Delete Diffuse Impression',
     });
+  }
+
+  checkBoxAdditional(e, check){
+    if (check === 'unableToDiagnose' && e.target.checked){
+      if (JSON.parse(sessionStorage.getItem('x-ray_Data')) && JSON.parse(sessionStorage.getItem('x-ray_Data')).data.ndarray[0].diseases.length !== 0){
+        e.preventDefault();
+        this.noFindings = false;
+        this.eventEmitterService2.deleteAllAnnotations('unableToDiagnose', e.target.checked, 'Manual');
+      }
+      else{
+        this.noFindings = false;
+        this.unableToDiagnose = true;
+        this.eventEmitterService2.mlRejection(true, 'Manual')
+        this.eventEmitterService2.enableSubmitBtn('true', 'unableToDiagnose');
+      }
+    }
+    else if(check === 'noFindings' && e.target.checked){
+      if (JSON.parse(sessionStorage.getItem('x-ray_Data')) && JSON.parse(sessionStorage.getItem('x-ray_Data')).data.ndarray[0].diseases.length !== 0){
+        e.preventDefault();
+        this.unableToDiagnose = false;
+        this.eventEmitterService2.deleteAllAnnotations('noFindings', e.target.checked, 'Manual');
+      }
+      else{
+        this.unableToDiagnose = false;
+        this.noFindings = true;
+        this.eventEmitterService2.nofindingsFromML(true, 'Manual');
+        this.eventEmitterService2.enableSubmitBtn('true', 'noFindings');
+      }
+    }
+    else{
+      this.unableToDiagnose = false;
+      this.noFindings = false;
+      this.eventEmitterService2.deleteAllAnnotations(check, e.target.checked, 'Manual');
+      this.eventEmitterService2.enableSubmitBtn('false', '');
+    }
   }
 }

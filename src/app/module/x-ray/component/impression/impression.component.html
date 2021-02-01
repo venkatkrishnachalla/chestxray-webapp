@@ -40,7 +40,7 @@
   <mat-card-content
     *ngIf="
       (!uniqueImpressions || uniqueImpressions.length === 0) &&
-      isAlreadyAskAiClicked &&
+      (isAlreadyAskAiClicked && noFindings)  &&
       hideNoAbnormalityText
     "
   >
@@ -49,3 +49,27 @@
     </div>
   </mat-card-content>
 </mat-card>
+
+<mat-card class="Additional">
+  <mat-card-title class="patient-info-header">
+    OTHER OPTIONS
+  </mat-card-title>
+  <mat-card-content
+  >
+  <div class='m-b-7'>
+    <input class='m-r-7'
+    (click)="checkBoxAdditional($event, 'unableToDiagnose')"
+    type="checkbox"
+    [checked]="unableToDiagnose"
+    />Unable to Diagnose
+  </div>
+  <div>
+    <input class='m-r-7'
+      (click)="checkBoxAdditional($event, 'noFindings')"
+      type="checkbox"
+      [checked]="noFindings"
+    />No Findings
+  </div>
+  </mat-card-content>
+</mat-card>
+

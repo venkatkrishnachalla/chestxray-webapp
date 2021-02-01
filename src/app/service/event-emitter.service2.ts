@@ -13,6 +13,12 @@ export class EventEmitterService2 {
   invokerefreshRadiologistList = new EventEmitter();
   invokeshareEvent = new EventEmitter();
   invokeEnableSubmitBtn = new EventEmitter();
+  invokeDeleteAllAnnotations = new EventEmitter();
+  invokeDeleteConfirmation = new EventEmitter();
+  invokeResetFindings = new EventEmitter();
+  invokeMLrejection = new EventEmitter();
+  invokeResetImpression = new EventEmitter();
+  invokeNoFindings = new EventEmitter();
 
 
   constructor() {}
@@ -44,7 +50,29 @@ export class EventEmitterService2 {
     this.invokeshareEvent.emit({filename, sign, signedDate});
   }
 
-  enableSubmitBtn(check){
-    this.invokeEnableSubmitBtn.emit(check);
+  enableSubmitBtn(check, txt){
+    this.invokeEnableSubmitBtn.emit({check, txt});
+  }
+  deleteAllAnnotations(txt, check, src){
+    this.invokeDeleteAllAnnotations.emit({txt, check, src});
+  }
+
+  deleteConfirmation(check, txt){
+    this.invokeDeleteConfirmation.emit({check, txt});
+  }
+
+  resetFindings(){
+    this.invokeResetFindings.emit();
+  }
+
+  resetImpression(){
+    this.invokeResetImpression.emit();
+  }
+
+  mlRejection(check, source){
+    this.invokeMLrejection.emit({check, source});
+  }
+  nofindingsFromML(check, source){
+    this.invokeNoFindings.emit({check, source});
   }
 }

@@ -236,3 +236,51 @@
 </ng-template>
 
 <p id="target">Rotation is restricted at the corner</p>
+
+<ng-template #deleteAllAnnotations>
+  <h2 class="deleteImpression"></h2>
+  <mat-dialog-content id="deleteImpression" align="center">
+    <h2>Are you sure ?</h2>
+    <div class="sub-delete-title">
+      Selecting this option will delete all drawn annotations. Please confirm!
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions id="deleteImpression" align="center">
+    <button
+      class="deleteDisease"
+      mat-raised-button
+      (click)="deleteAllPredictions()"
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+    >
+      DELETE
+    </button>
+    <button (click)="cancelDeleteAll()" class="cancelDisease" mat-raised-button mat-dialog-close>
+      CANCEL
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #proceedToManualDraw>
+  <h2 class="deleteImpression"></h2>
+  <mat-dialog-content id="deleteImpression" align="center">
+    <h2>Are you sure ?</h2>
+    <div class="sub-delete-title">
+      {{deleteContent}}
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions id="deleteImpression" align="center">
+    <button
+      class="deleteDisease"
+      mat-raised-button
+      (click)="proceedWithManualDrawing()"
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+    >
+      CONTINUE
+    </button>
+    <button (click)="cancelDelete()" class="cancelDisease" mat-raised-button mat-dialog-close>
+      CANCEL
+    </button>
+  </mat-dialog-actions>
+</ng-template>
