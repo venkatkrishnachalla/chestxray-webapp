@@ -158,6 +158,7 @@ export class XRayComponent implements OnInit, OnDestroy {
               this.spinnerService.hide();
               this.eventEmitterService2.deleteAllAnnotations('unableToDiagnose', false, 'ML');
               this.eventEmitterService2.mlRejection(false, 'ML');
+              this.eventEmitterService2.nofindingsFromML(false, 'ML');
               this.toastrService.success('ML Annotations updated successfully');
             }
           },

@@ -10,6 +10,7 @@ import User from 'src/app/module/auth/user.modal';
 import { EventEmitterService } from 'src/app/service/event-emitter.service';
 import { ArrayType } from '@angular/compiler';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
 
 @Component({
   selector: 'cxr-x-ray-header',
@@ -50,7 +51,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     public router: Router,
     private authService: AuthService,
     private eventEmitterService: EventEmitterService,
-    private dbService: NgxIndexedDBService
+    private dbService: NgxIndexedDBService,
+    private eventEmitterService2: EventEmitterService2,
   ) {}
 
   /**
@@ -124,6 +126,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    */
 
   nextPatient() {
+    this.eventEmitterService2.nofindingsFromML(false, 'Manual');
+    this.eventEmitterService2.mlRejection(false, 'Manual');
     const currIndex = this.currentIndex + 1;
     const filterData = this.patientRows[currIndex];
     const patientDetail = JSON.stringify(filterData);
@@ -151,6 +155,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
    */
 
   previousPatient() {
+    this.eventEmitterService2.nofindingsFromML(false, 'Manual');
+    this.eventEmitterService2.mlRejection(false, 'Manual');
     const currIndex = this.currentIndex - 1;
     const filterData = this.patientRows[currIndex];
     const patientDetail = JSON.stringify(filterData);

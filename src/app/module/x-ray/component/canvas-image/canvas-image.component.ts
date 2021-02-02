@@ -247,18 +247,20 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           backdropClass: 'backdropClass',
         });
         this.enableAdditionalCheck = data.txt;
-        this.unableToDiagnose = data.check;
+        // this.unableToDiagnose = data.check;
       }
       else if(data.check && data.src === 'ML'){
         this.enableAdditionalCheck = data.txt;
-        this.unableToDiagnose = data.check;
+        // this.unableToDiagnose = data.check;
         this.deleteAllPredictions();
       }
       else{
-        this.unableToDiagnose = data.check;
+        // this.unableToDiagnose = data.check;
       }
     })
     this.eventEmitterService2.invokeMLrejection.subscribe((data) => {
+      this.canvas.isDrawingMode = false;
+      this.enableDrawEllipseMode = false;
       this.unableToDiagnose = data.check;
       if (data.source === 'ML'){
         this.isAlreadyAnnotated = true;
@@ -268,6 +270,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     })
     this.eventEmitterService2.invokeNoFindings.subscribe((data) => {
+      this.canvas.isDrawingMode = false;
+      this.enableDrawEllipseMode = false;
       this.unableToDiagnose = data.check;
       if (data.source === 'ML'){
         this.isAlreadyAnnotated = true;
@@ -323,6 +327,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       (data: InvokeComponentData) => {
         const active = !this.activeIcon ? true : this.activeIcon.active;
         if (this.unableToDiagnose && active){
+          this.activeIcon = {'active': active};
           if (this.isAlreadyAnnotated){
             this.deleteContent = 'ML has given No Findings/Unable to diagnose. Please confirm to continue with manual annotations'
           }
@@ -2135,6 +2140,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   }
 
   deleteAllPredictions(){
+    this.unableToDiagnose = true;
     this.dialog.closeAll();
     this.canvas._objects.length = 0;
     sessionStorage.removeItem('x-ray_Data');
@@ -2153,12 +2159,13 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     };
     this.eventEmitterService2.resetImpression();
     this.eventEmitterService2.resetFindings();
+    this.canvas.renderAll();
     sessionStorage.setItem('x-ray_Data', JSON.stringify(this.savedInfo));
     this.eventEmitterService2.deleteConfirmation(true, this.enableAdditionalCheck);
   }
 
   cancelDeleteAll(){
-    this.unableToDiagnose = false;
+    this.unableToDiagnose = this.unableToDiagnose ? this.unableToDiagnose : false;
     this.dialog.closeAll();
   }
 
@@ -3541,11 +3548,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * cancelDelete();
    */
   cancelDelete() {
-    this.clear();
-    this.activeIcon.active = false;
+    this.eventEmitterService.onInActiveIconClick('Measure Length');
     this.canvas.isDrawingMode = false;
     this.enableDrawEllipseMode = false;
-    this.eventEmitterService2.deleteConfirmation(false, this.enableAdditionalCheck);
     this.dialog.closeAll();
   }
 

@@ -382,6 +382,7 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   }
 
   checkBoxAdditional(e, check){
+    this.eventEmitterService.onInActiveIconClick('Measure Length');
     if (check === 'unableToDiagnose' && e.target.checked){
       if (JSON.parse(sessionStorage.getItem('x-ray_Data')) && JSON.parse(sessionStorage.getItem('x-ray_Data')).data.ndarray[0].diseases.length !== 0){
         e.preventDefault();
@@ -411,6 +412,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     else{
       this.unableToDiagnose = false;
       this.noFindings = false;
+      this.eventEmitterService2.mlRejection(false, 'Manual');
+      this.eventEmitterService2.nofindingsFromML(false, 'Manual');
       this.eventEmitterService2.deleteAllAnnotations(check, e.target.checked, 'Manual');
       this.eventEmitterService2.enableSubmitBtn('false', '');
     }
