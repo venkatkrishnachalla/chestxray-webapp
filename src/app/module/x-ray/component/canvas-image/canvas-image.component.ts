@@ -236,6 +236,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit() {
+    this.unableToDiagnose = false;
     this.eventEmitterService2.invokeDeleteAllAnnotations.subscribe((data) => {
       if (data.check && data.src !== 'ML'){
         this.dialog.open(this.deleteAllAnnotations, {
