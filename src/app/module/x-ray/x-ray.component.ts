@@ -156,6 +156,9 @@ export class XRayComponent implements OnInit, OnDestroy {
               this.toastrService.info('No significant abnormality detected');
             } else {
               this.spinnerService.hide();
+              this.eventEmitterService2.deleteAllAnnotations('unableToDiagnose', false, 'ML');
+              this.eventEmitterService2.mlRejection(false, 'ML');
+              this.eventEmitterService2.nofindingsFromML(false, 'ML');
               this.toastrService.success('ML Annotations updated successfully');
             }
           },
