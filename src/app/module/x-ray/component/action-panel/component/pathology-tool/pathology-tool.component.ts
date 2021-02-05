@@ -29,7 +29,7 @@ export class PathologyToolComponent implements OnInit {
 
   pathologyClicked() {
     const data = {
-      active: !this.buttonActive,
+      active: true,
       alt: '',
       image: '',
       implemented: true,

@@ -326,7 +326,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
         const active = !this.activeIcon ? true : this.activeIcon.active;
-        if (this.unableToDiagnose && active){
+        if (this.unableToDiagnose && (data.title === 'pathology' ? true : active)){
           this.activeIcon = {'active': active};
           if (this.isAlreadyAnnotated){
             this.deleteContent = 'ML has given No Findings/Unable to diagnose. Please confirm to continue with manual annotations'
@@ -334,6 +334,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
           else{
             this.deleteContent = 'You already selected No Findings/Unable to diagnose. Please confirm to continue with manual annotations'
           }
+          this.dialog.closeAll();
           this.dialog.open(this.proceedToManualDraw, {
             height: '240px',
             width: '320px',
