@@ -73,6 +73,7 @@ export interface ImpressionDataItems extends Array<ImpressionData> {}
 export interface InvokeComponentData {
   title: string;
   data: any[];
+  active: boolean;
 }
 
 export interface InvokeReportData {

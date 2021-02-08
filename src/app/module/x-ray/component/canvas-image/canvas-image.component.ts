@@ -326,7 +326,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.eventEmitterService.invokeComponentFunction.subscribe(
       (data: InvokeComponentData) => {
         const active = !this.activeIcon ? true : this.activeIcon.active;
-        if (this.unableToDiagnose && (data.title === 'pathology' ? true : active)){
+        if (this.unableToDiagnose && data.active && data.title !== 'Measure Length'){
           this.activeIcon = {'active': active};
           if (this.isAlreadyAnnotated){
             this.deleteContent = 'ML has given No Findings/Unable to diagnose. Please confirm to continue with manual annotations'

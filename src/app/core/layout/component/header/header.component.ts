@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import User from 'src/app/module/auth/user.modal';
 import { MatDialog } from '@angular/material/dialog';
 import { RadiologistRegisterComponent } from 'src/app/module/home/admin-dashboard/radiologist-register/radiologist-register.component';
-
+import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
 @Component({
   selector: 'cxr-header',
   templateUrl: './header.component.html',
@@ -33,7 +33,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     public router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private eventEmitterService2: EventEmitterService2
   ) {
     this.authService.addRadiologist.next(false);
   }
@@ -121,6 +122,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   addRadiologists() {
     this.authService.addRadiologist.next(true);
+  }
+
+  clearEvent(){
+    this.eventEmitterService2.mlRejection(false, 'Manual');
+    this.eventEmitterService2.nofindingsFromML(false, 'Manual');
   }
 
   /**
