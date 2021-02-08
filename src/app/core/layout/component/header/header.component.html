@@ -43,6 +43,7 @@
 </button>
   <button
     class="icon-styles"
+    (click)='clearEvent()'
     [routerLink]="['/home/dashboard']"
     routerLinkActive="router-link-active"
     *ngIf="router.url == '/x-ray' || router.url == '/report'"
