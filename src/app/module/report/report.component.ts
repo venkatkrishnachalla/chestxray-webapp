@@ -132,6 +132,7 @@ export class ReportComponent implements OnInit {
       this.spinnerService.hide();
     }, 2500);
     sessionStorage.setItem('reportPageSelection', 'true');
+    sessionStorage.setItem('nextAndPrevCheck', 'true');
   }
 
   getSignature(){

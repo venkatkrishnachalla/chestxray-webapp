@@ -117,9 +117,12 @@ export class AdminDashboardComponent implements OnInit {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
+    sessionStorage.removeItem('noFindings');
+    sessionStorage.removeItem('unableToDiagnose');
     sessionStorage.removeItem('ellipse');
     this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.setItem('reportPageSelection', 'false');
+    sessionStorage.setItem('nextAndPrevCheck', 'false');
     this.overlayNoRowsTemplate = 'No Data Available';
     this.showError = false;
     this.defaultColDef = { width: 200, lockPosition: true };

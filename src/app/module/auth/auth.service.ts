@@ -102,6 +102,8 @@ export class AuthService {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
+    sessionStorage.removeItem('noFindings');
+    sessionStorage.removeItem('unableToDiagnose');
     sessionStorage.removeItem('patientRows');
     sessionStorage.removeItem('accessToken');
     sessionStorage.removeItem('findingsData');

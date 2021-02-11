@@ -181,6 +181,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   unableToDiagnose: boolean = false;
   actionPanelIcons: any;
   deleteContent: string = '';
+  nextAndPrevCheck: boolean = false;
+  diablePathologyBtn: boolean = true;
   /*
    * constructor for CanvasImageComponent class
    */
@@ -236,6 +238,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit() {
+    this.nextAndPrevCheck = false;
     this.unableToDiagnose = false;
     this.eventEmitterService2.invokeDeleteAllAnnotations.subscribe((data) => {
       if (data.check && data.src !== 'ML'){
@@ -279,6 +282,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       else{
         this.isAlreadyAnnotated = false;
       }
+    })
+    this.eventEmitterService2.invokeDisablePathologyBtns.subscribe((data) => {
+      this.diablePathologyBtn = data;
     })
     this.random = Math.floor(Math.random() * 100 + 1);
     this.isChangeable = true;
@@ -669,6 +675,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * prevNextPatientChange(patientId);
    */
   prevNextPatientChange(patientId) {
+    sessionStorage.setItem('nextAndPrevCheck', 'false');
+    this.nextAndPrevCheck = true;
+    this.patientId = patientId;
     this.savedAnnotations = {
       data: {
         names: [],
@@ -708,9 +717,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     };
     const patientDetail = JSON.parse(sessionStorage.getItem('patientDetail'));
     this.patientDetail = patientDetail;
-    this.getPatientInstanceId(patientId);
     if (this.patientDetail.xRayList[0].isAnnotated) {
       this.getStoredAnnotations(this.patientDetail.xRayList[0].xRayId);
+    }
+    else{
+      this.getPatientInstanceId(this.patientId);
     }
   }
 
@@ -1091,6 +1102,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.selectedDiseases = false;
     this.selectedMainDisease = false;
     this.selectedSubDisease = false;
+    this.diablePathologyBtn = false;
   }
 
   /**
@@ -1112,6 +1124,11 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * getPatientInstanceId(id);
    */
   getPatientInstanceId(id) {
+    if (!id){
+      this.patientId = this.patientDetail
+      ? this.patientDetail.xRayList[0].xRayId
+      : '';
+    }
     this.xRayService.getPatientInstanceId(id).subscribe(
       (patientInstanceIdResponse: any) => {
         // this.instanceId =
@@ -1207,6 +1224,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       } else {
         if (xrayData) {
           this.savedInfo = xrayData;
+          this.spinnerService.hide();
         }
         if (
           xrayData !== null &&
@@ -1274,7 +1292,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       }
     );
     this.canvas.renderAll();
-    this.spinnerService.hide();
+    if (!this.patientDetail.xRayList[0].isAnnotated) {
+      this.spinnerService.hide();
+    }
   }
 
   /**
@@ -1288,10 +1308,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.mlArray = mlList;
     const mLArray = mlList.data.ndarray[0];
     if (mLArray.noFindings){
-      this.eventEmitterService2.nofindingsFromML(true, mLArray.source)
+      this.eventEmitterService2.nofindingsFromML(true, mLArray.source);
+      this.spinnerService.hide();
     }
     else if(mLArray.nonChestXRay || mLArray.poorImageQuality ){
-      this.eventEmitterService2.mlRejection(true, mLArray.source)
+      this.eventEmitterService2.mlRejection(true, mLArray.source);
+      this.spinnerService.hide();
     }
     if (mLArray.diseases.length === 0 && !mLArray.noFindings && !mLArray.nonChestXRay){
       this.eventEmitterService2.enableSubmitBtn('false', '');
@@ -1680,6 +1702,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
             this.canvas.renderAll();
           }
           this.dialog.closeAll();
+          this.spinnerService.hide();
         }
       }
     });
@@ -1846,6 +1869,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         });
       }
     }
+    this.spinnerService.hide();
   }
 
   /**
@@ -3372,6 +3396,12 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.spinnerService.show();
     this.annotatedXrayService.getAnnotatedData(xRayId).subscribe(
       (response) => {
+        const nextAndPrevCheck = sessionStorage.getItem('nextAndPrevCheck');
+        if (nextAndPrevCheck === 'true'){
+          this.nextAndPrevCheck = false;
+        }
+        if (this.nextAndPrevCheck)
+        this.getPatientInstanceId(this.patientId);
         this.savedAnnotations = response;
         if (this.savedAnnotations.data.ndarray[0].source !== 'DR') {
           this.eventEmitterService.onAskAiButtonClick('success');

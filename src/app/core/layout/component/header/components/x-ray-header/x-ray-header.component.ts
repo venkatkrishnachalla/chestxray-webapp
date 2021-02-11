@@ -135,6 +135,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
+    sessionStorage.removeItem('noFindings');
+    sessionStorage.removeItem('unableToDiagnose');
     this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');
@@ -163,6 +165,8 @@ export class XRayHeaderComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
+    sessionStorage.removeItem('noFindings');
+    sessionStorage.removeItem('unableToDiagnose');
     this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
     sessionStorage.setItem('patientDetail', patientDetail);
     sessionStorage.setItem('askAiSelection', 'false');

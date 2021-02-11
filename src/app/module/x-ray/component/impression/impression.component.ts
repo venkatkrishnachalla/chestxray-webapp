@@ -73,6 +73,13 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit(): void {
+    this.unableToDiagnose = JSON.parse(sessionStorage.getItem('unableToDiagnose'));
+    this.noFindings = JSON.parse(sessionStorage.getItem('noFindings'));
+    if (this.unableToDiagnose){
+      this.eventEmitterService2.enableSubmitBtn('true', 'unableToDiagnose');
+    }else if (this.noFindings){
+      this.eventEmitterService2.enableSubmitBtn('true', 'noFindings');
+    }
     this.impression = [];
     this.uniqueImpressions = [];
     this.hideShowAll = true;
