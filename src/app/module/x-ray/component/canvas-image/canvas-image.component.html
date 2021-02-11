@@ -112,11 +112,11 @@
       mat-raised-button
       [ngStyle]="{
         'background-color':
-          selectedDisease === '' || selectedDisease == undefined
+        selectedDisease === '' || selectedDisease == undefined || diablePathologyBtn
             ? '#5d5f64'
             : '#25b865'
       }"
-      [disabled]="selectedDisease == '' || selectedDisease == undefined"
+      [disabled]="selectedDisease == '' || selectedDisease == undefined || diablePathologyBtn"
       (click)="savePrediction()"
       [mat-dialog-close]="true"
       *ngIf="!updateDisease"
@@ -128,11 +128,11 @@
       mat-raised-button
       [ngStyle]="{
         'background-color':
-          selectedDisease === '' || selectedDisease == undefined
+        selectedDisease === '' || selectedDisease == undefined || diablePathologyBtn
             ? '#5d5f64'
             : '#25b865'
       }"
-      [disabled]="selectedDisease == '' || selectedDisease == undefined"
+      [disabled]="selectedDisease == '' || selectedDisease == undefined || diablePathologyBtn"
       (click)="updatePrediction()"
       [mat-dialog-close]="true"
       *ngIf="updateDisease"
@@ -144,7 +144,7 @@
       mat-raised-button
       [ngStyle]="{
         'background-color':
-          selectedDisease === '' || selectedDisease == undefined
+          selectedDisease === '' || selectedDisease == undefined || diablePathologyBtn
             ? '#5d5f64'
             : '#ff4d4d'
       }"

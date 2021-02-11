@@ -263,6 +263,8 @@ export class LocalFilesystemComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');
+    sessionStorage.removeItem('noFindings');
+    sessionStorage.removeItem('unableToDiagnose');
     sessionStorage.removeItem('findingsData');
     sessionStorage.removeItem('reportComments');
     this.router.navigate(['/x-ray'], {

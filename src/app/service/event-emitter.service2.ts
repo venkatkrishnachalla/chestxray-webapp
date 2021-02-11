@@ -19,6 +19,7 @@ export class EventEmitterService2 {
   invokeMLrejection = new EventEmitter();
   invokeResetImpression = new EventEmitter();
   invokeNoFindings = new EventEmitter();
+  invokeDisablePathologyBtns = new EventEmitter();
 
 
   constructor() {}
@@ -74,5 +75,8 @@ export class EventEmitterService2 {
   }
   nofindingsFromML(check, source){
     this.invokeNoFindings.emit({check, source});
+  }
+  disablePathologyButtons(check){
+    this.invokeDisablePathologyBtns.emit(check);
   }
 }

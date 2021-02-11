@@ -182,6 +182,8 @@ export class XRayComponent implements OnInit, OnDestroy {
    */
 
   generateReport() {
+    sessionStorage.setItem('noFindings', JSON.stringify(this.noFindings));
+    sessionStorage.setItem('unableToDiagnose', JSON.stringify(this.unableToDiagnose));
     this.disableReportBtn = true;
     // tslint:disable-next-line: no-string-literal
     const annotationData = JSON.parse(JSON.stringify(this.canvas.savedInfo['data'].ndarray[0]));;
