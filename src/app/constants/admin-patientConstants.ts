@@ -5,6 +5,7 @@ export const adminPatientsConstants = {
           headerName: '',
           field: 'xRayList',
           maxWidth: 50,
+          check: '',
           cellRenderer: (data) => {
             return '';
           },
@@ -34,26 +35,32 @@ export const adminPatientsConstants = {
         {
           headerName: 'Patient Id',
           field: 'hospitalPatientId',
+          check: 'PatientId',
           sortable: true,
+          sort: 'desc',
           minWidth: 200
         },
         {
           headerName: 'Patient Name',
           field: 'name',
           sortable: true,
-          minWidth: 200
+          minWidth: 200,
+          check: 'PatientName',
         },
         {
           headerName: 'Gender',
           field: 'sex',
+          check: 'Gender',
           sortable: true,
           minWidth: 200
+          
         },
         { headerName: 'Age', field: 'age', sortable: true, minWidth: 200 },
         {
           headerName: 'Assigned Radiologist',
           field: 'xRayList',
           sortable: true,
+          check: 'assignRadiologist',
           cellRenderer: (data) => {
             return data.value[0].assignedTo;
           },

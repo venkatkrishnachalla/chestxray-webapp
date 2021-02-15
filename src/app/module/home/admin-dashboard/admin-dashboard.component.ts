@@ -107,9 +107,9 @@ export class AdminDashboardComponent implements OnInit {
         }
       }
     );
-    this.getPatientList(1, 10);
+    this.getPatientList(1, 10, 'All','', 'patientName','Asc' );
     this.eventEmitterService2.invokePageNumberClick.subscribe((data: any) => {
-      this.getPatientList(data.page, data.size);
+      this.getPatientList(data.page, data.size,'All',this.searchValue, 'patientName','Asc');
     });
     this.rowModelType = 'serverSide';
     this.paginationPageSize = 10;
@@ -166,13 +166,13 @@ export class AdminDashboardComponent implements OnInit {
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
   }
-  getPatientList(page, size) {
+  getPatientList(page, size, userName,  search, sortBy , orderBy) {
     if (this.gridApi){
       this.gridApi.showLoadingOverlay();
     }
     // this.showloader = true;
      this.showTable = false;
-    this.dashboardService.getAdminPatientList('NotAnnotated', page, size).subscribe( (patientsList: PatientListData) => {
+    this.dashboardService.getAdminPatientList('NotAnnotated', page, size, userName,  search, sortBy , orderBy).subscribe( (patientsList: PatientListData) => {
       console.log(patientsList)
       this.showloader = false;
       this.showTable = true;
@@ -205,5 +205,12 @@ export class AdminDashboardComponent implements OnInit {
       });
     }
     );
+  }
+  search(input){
+    const sortBy = this.gridApi.getSortModel()[0].colId === 'hospitalPatientId' ? 'PatientId' : 
+                  (this.gridApi.getSortModel()[0].colId === 'name' ? 'PatientName': 'PatientId');
+    const orderBy = this.gridApi.getSortModel()[0].sort;
+
+    this.getPatientList(1, 100, 'All', input , sortBy, orderBy);
   }
 }
