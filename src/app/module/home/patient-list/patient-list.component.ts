@@ -120,7 +120,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.showError = false;
     this.defaultColDef = { width: 200, lockPosition: true };
     this.columnDefs = this.constants.patientDashboard.headers;
-    this.getPatientList(1, 10);
+    this.getPatientList(1, 10, 'All','', 'patientName','Asc' );
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         const UserInfo = JSON.parse(JSON.stringify(user));
@@ -133,7 +133,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
       }
     );
     this.eventEmitterService2.invokePageNumberClick.subscribe((data: any) => {
-      this.getPatientList(data.page, data.size);
+      this.getPatientList(data.page, data.size,'All',this.searchValue, 'patientName','Asc' );
     });
   }
 
@@ -173,12 +173,12 @@ export class PatientListComponent implements OnInit, OnDestroy {
    * @example
    * getPatientList();
    */
-  getPatientList(page, size) {
+  getPatientList(page, size, userName,  search, sortBy , orderBy) {
     if (this.gridApi) {
       this.gridApi.showLoadingOverlay();
     }
     this.showTable = false;
-    this.dashboardService.getPatientList(page, size).subscribe(
+    this.dashboardService.getPatientList(page, size, userName,  search, sortBy , orderBy).subscribe(
       (patientsList: PatientListData) => {
         this.showloader = false;
         this.showTable = true;
@@ -288,6 +288,14 @@ export class PatientListComponent implements OnInit, OnDestroy {
    */
   toggleMenu() {
     this.showPatientInfo = !this.showPatientInfo;
+  }
+
+  search(input){
+    const sortBy = this.gridApi.getSortModel()[0].colId === 'hospitalPatientId' ? 'PatientId' : 
+                  (this.gridApi.getSortModel()[0].colId === 'name' ? 'PatientName': 'PatientId');
+    const orderBy = this.gridApi.getSortModel()[0].sort;
+
+    this.getPatientList(1, 100, 'All', input , sortBy, orderBy);
   }
   /**
    * This is on ngOnDestroy function

@@ -140,7 +140,7 @@ this.setForm();
 
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.getPatientList(1, 10);
+      this.getPatientList(1, 10, 'All','', 'patientName','Asc' );
     },
     (errorMessage: string) => {
       this.eventEmitterService.onErrorMessage({
@@ -166,9 +166,9 @@ get f() { return this.form.controls; }
     
   selected = [];
  
-  getPatientList(page,size) {
+  getPatientList(page,size, userName,  search, sortBy , orderBy) {
     this.showloader = true;
-    this.dashboardService.getAdminPatientList('NotAnnotated',page,size).subscribe( data => {
+    this.dashboardService.getAdminPatientList('NotAnnotated',page,size,  userName,  search, sortBy , orderBy).subscribe( data => {
       this.loading = false;
       this.spinnerService.hide();
 

@@ -4,6 +4,7 @@ export const homeConstants = {
       {
         headerName: '',
         field: 'xRayList',
+        check: '',
         maxWidth: 15,
         cellRenderer: (data) => {
           return '';
@@ -33,6 +34,7 @@ export const homeConstants = {
       {
         headerName: 'Report Status',
         field: 'xRayList',
+        check: 'ReportStatus',
         sortable: true,
         sort: 'desc',
         cellRenderer: (params) => {
@@ -57,23 +59,27 @@ export const homeConstants = {
       {
         headerName: 'Patient Id',
         field: 'hospitalPatientId',
+        check: 'PatientId',
         sortable: true,
       },
       {
         headerName: 'Patient Name',
         field: 'name',
+        check: 'PatientName',
         sortable: true,
       },
       {
         headerName: 'Gender',
         field: 'sex',
+        check: 'Gender',
         sortable: true,
       },
       { headerName: 'Age', field: 'age', sortable: true, minWidth: 72 },
       {
         headerName: 'Ref. Physician',
         field: 'xRayList',
-        sortable: true,
+        check: 'refPhysician',
+        sortable: false,
         cellRenderer: (data) => {
           return data.value[0].assignedTo;
         },
@@ -81,6 +87,7 @@ export const homeConstants = {
       {
         headerName: 'Date & Time',
         field: 'xRayList',
+        check: 'Date',
         sortable: true,
         cellRenderer: (data) => {
           return data.value[0].lastUpdate ? new Date(data.value[0].lastUpdate).toLocaleString('es-CL') : '';
@@ -106,6 +113,7 @@ export const homeConstants = {
         field: 'action',
         pinned: 'right',
         resizable: true,
+        sortable: false,
         cellStyle: (params) => {
           return { width: 'auto !important' };
         },

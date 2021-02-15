@@ -35,9 +35,9 @@ export class DashboardService {
    * @example
    * getPatientList();
    */
-  getPatientList(page, size) {
+  getPatientList(page, size, userName, search, sortBy, orderBy) {
     return this.http
-      .get<PatientData>(this.endpoint.getPatientList(page, size))
+      .get<PatientData>(this.endpoint.getPatientList(page, size, userName, search, sortBy, orderBy))
       .pipe(
         catchError(this.handleError),
         tap((responseData) => {
@@ -46,9 +46,9 @@ export class DashboardService {
       );
   }
 
-  getAdminPatientList(status: string, page, size) {
+  getAdminPatientList(status: string, page, size, userName, search, sortBy, orderBy) {
     return this.http
-      .get<PatientData>(this.endpoint.getAdminPatientList(page, size), {
+      .get<PatientData>(this.endpoint.getAdminPatientList(page, size, userName, search, sortBy, orderBy), {
         params: { status: status },
       })
       .pipe(

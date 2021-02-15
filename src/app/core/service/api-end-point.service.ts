@@ -99,11 +99,12 @@ export class ApiEndPointService {
    * getPatientList();
    */
 
-  public getPatientList(page, size): string {
+  public getPatientList(page, size, userName, search, sortBy, orderBy): string {
     // if (environment.isMockAPI) {
     //   return environment.mockApiEndPoint + '/patients';
     // }
-    return environment.patientList + '?page=' + page + '&size=' + size;
+    return environment.patientList + '?page=' + page + '&size=' + size+ '&userName=' 
+            + userName + '&search=' + search + '&sortBy=' + sortBy + '&orderBy=' + orderBy;
   }
   /**
    * This is a getPatientList function.
@@ -112,11 +113,12 @@ export class ApiEndPointService {
    * getPatientList();
    */
 
-  public getAdminPatientList(page, size): string {
+  public getAdminPatientList(page, size, userName, search, sortBy, orderBy): string {
     // if (environment.isMockAPI) {
     //   return environment.mockApiEndPoint + '/patients';
     // }
-    return environment.patientList + '?page=' + page + '&size=' + size;
+    return environment.patientList + '?page=' + page + '&size=' + size+ '&userName=' 
+    + userName + '&search=' + search + '&sortBy=' + sortBy + '&orderBy=' + orderBy;
   }
 
   /**
