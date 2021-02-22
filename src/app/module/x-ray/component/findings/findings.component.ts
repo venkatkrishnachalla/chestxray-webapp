@@ -85,7 +85,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
         }
       }
     );
-    sessionStorage.setItem('findings', JSON.stringify(this.findings));
+    // sessionStorage.setItem('findings', JSON.stringify(this.findings));
     // this.eventEmitterService.invokeFindingsDataFunction.subscribe((data) => {
     //   const uniqueImpressions = [];
     //   data.filter((item) => {

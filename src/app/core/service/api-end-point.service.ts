@@ -92,6 +92,10 @@ export class ApiEndPointService {
     return environment.RefreshToken;
   }
 
+  public getRevokeToken(): string {
+    return environment.RevokeToken;
+  }
+
   /**
    * This is a getPatientList function.
    * @param '{void}' empty - A empty param

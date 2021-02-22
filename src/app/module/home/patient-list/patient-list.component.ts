@@ -62,7 +62,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
   rowData: PatientListData;
   readonly constants = homeConstants;
   domLayout: string;
-  searchValue: string;
+  searchValue: string = '';
   errorStatus: string;
   showError: boolean;
   showloader: boolean;
@@ -124,12 +124,14 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         const UserInfo = JSON.parse(JSON.stringify(user));
-        sessionStorage.setItem('accessToken', UserInfo._token);
-        if (UserInfo._token) {
-          const tokenNew = window.btoa(UserInfo._token);
-          UserInfo._token = tokenNew;
+        if (UserInfo) {
+          sessionStorage.setItem('accessToken', UserInfo._token);
+          if (UserInfo._token) {
+            const tokenNew = window.btoa(UserInfo._token);
+            UserInfo._token = tokenNew;
+          }
+          sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
         }
-        sessionStorage.setItem('userAuthData', JSON.stringify(UserInfo));
       }
     );
     this.eventEmitterService2.invokePageNumberClick.subscribe((data: any) => {
@@ -290,12 +292,22 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.showPatientInfo = !this.showPatientInfo;
   }
 
-  search(input){
-    const sortBy = this.gridApi.getSortModel()[0].colId === 'hospitalPatientId' ? 'PatientId' : 
-                  (this.gridApi.getSortModel()[0].colId === 'name' ? 'PatientName': 'PatientId');
-    const orderBy = this.gridApi.getSortModel()[0].sort;
+  omit_special_char(event)
+  {    
+    const k = event.charCode;
+    return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+  }
 
-    this.getPatientList(1, 100, 'All', input , sortBy, orderBy);
+  search(input){
+    if (this.gridApi.getSortModel().length ===0){
+      this.getPatientList(1, 10, 'All', input , 'PatientId', 'Asc');
+    }
+    else{
+      const sortBy = this.gridApi.getSortModel()[0].colId === 'hospitalPatientId' ? 'PatientId' : 
+                  (this.gridApi.getSortModel()[0].colId === 'name' ? 'PatientName': 'PatientId');
+      const orderBy = this.gridApi.getSortModel()[0].sort;
+      this.getPatientList(1, 10, 'All', input , sortBy, orderBy);
+    }
   }
   /**
    * This is on ngOnDestroy function

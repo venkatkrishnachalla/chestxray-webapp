@@ -11,7 +11,7 @@ const signature = window.cxrDomain + '/identity-test/v1/Account/DigitalSignature
 
 window ["login"] = authLogin;
 window ["refreshToken"] = authRefreshToken;
-window ["refreshToken"] = authRevokeToken;
+window ["revokeToken"] = authRevokeToken;
 window ["patientList"] = patientList ;
 window ["patientInstanceId"] = patientInstanceId;
 window ["patientImage"]= PatientImage;

@@ -164,6 +164,36 @@ export class AuthService {
     }
   }
 
+    /**
+   * This is a refreshToken function.
+   * @param '{string}' value - A string param
+   * @example
+   * refreshToken(token);
+   */
+
+  public revokeToken(
+    accessToken: string,
+    refreshToken: string,
+    username: string,
+    userroles: any,
+    _tokenExpirationDate: Date
+  ) {
+    const token = {
+      // tslint:disable-next-line: object-literal-shorthand
+      accessToken: accessToken,
+      // tslint:disable-next-line: object-literal-shorthand
+      refreshToken: refreshToken,
+    };
+    return this.http.post(this.endpoint.getRevokeToken(), token).subscribe(
+      (data: any) => {
+        sessionStorage.removeItem('userAuthData');
+        sessionStorage.clear();
+      },
+      (error) => {
+      }
+    );
+  }
+
   /**
    * This is a refreshToken function.
    * @param '{string}' value - A string param

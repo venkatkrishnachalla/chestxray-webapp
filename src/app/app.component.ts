@@ -64,7 +64,7 @@ export class AppComponent implements OnInit {
       this.isLoading = response;
     });
   }
-
+  
   /**
    * This is a loginOnBrowserRefresh function.
    * @param '{void}' empty - A empty param

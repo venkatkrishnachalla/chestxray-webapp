@@ -84,6 +84,8 @@ export class SignInComponent implements OnInit {
       this.spinnerService.show();
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
         (authResponse: SignInResponse) => {
+          sessionStorage.setItem('unableToDiagnose', JSON.stringify(false));
+          sessionStorage.setItem('noFindings', JSON.stringify(false));
           this.spinnerService.hide();
           this.router.navigate(['/home/dashboard']);
         },
