@@ -14,7 +14,7 @@ export const environment = {
   // tslint:disable-next-line: no-string-literal
   RefreshToken: window['refreshToken'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/RefreshToken',
   // tslint:disable-next-line: no-string-literal
-  RevokeToken: window['refreshToken'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/RevokeToken',
+  RevokeToken: window['revokeToken'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/identity-test/v1/Account/RevokeToken',
   // tslint:disable-next-line: no-string-literal
   patientList: window['patientList'] || 'https://chestxrayqa.southindia.cloudapp.azure.com/api-test/v1/Patient',
   // tslint:disable-next-line: no-string-literal

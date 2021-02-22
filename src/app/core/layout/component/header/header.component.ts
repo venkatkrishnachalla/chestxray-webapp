@@ -1,5 +1,6 @@
 import {
   Component,
+  HostListener,
   OnInit,
   EventEmitter,
   Output,
@@ -29,6 +30,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   /*
    * constructor for HeaderComponent class
    */
+
+   /**
+   * This is a host listener when resizing window.
+   * @param '{string}' value - A string param
+   * @param' {any}' array - A array param
+   * @example
+   * HostListener('window:resize', []);
+   */
+  // @HostListener('window:close', ['$event'])
+  //  onWindowClose(event: any) {
+  //   this.onLogout();
+  //   setTimeout(() => {
+  //     console.log('window closed');
+  //   }, 10000);
+  // }
+
 
   constructor(
     private authService: AuthService,
@@ -99,14 +116,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout() {
     const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
     const token = sessionStorage.getItem('accessToken');
-    this.authService.refreshToken(
+    this.authService.revokeToken(
       token,
       accessToken.refreshToken,
       accessToken.username,
       accessToken.userroles,
       accessToken._tokenExpirationDate
     );
-    sessionStorage.clear();
     this.authService.logOut();
   }
 

@@ -11,10 +11,11 @@
       [(ngModel)]="searchValue"
       placeholder="Search Patient"
       class="search-patient"
-      (keydown.space)="$event.preventDefault()"
+      (keypress)="omit_special_char($event)"
+      (keyup.enter)="search(searchVal.value)"
     />
   </mat-form-field>
-  <button mat-raised-button color="primary" class="search" (click)="search(searchVal.value)">Search</button>
+  <button mat-raised-button color="primary" class="search"  (click)="search(searchVal.value)">Search</button>
   <cxr-pagination *ngIf="showPagination"
     [pageSize]="PaginationPageSize" 
     [gridApi]="gridApi" 

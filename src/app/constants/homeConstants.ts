@@ -36,7 +36,6 @@ export const homeConstants = {
         field: 'xRayList',
         check: 'ReportStatus',
         sortable: true,
-        sort: 'desc',
         cellRenderer: (params) => {
           if (params.value[0].isAnnotated === false) {
             return (
@@ -89,6 +88,7 @@ export const homeConstants = {
         field: 'xRayList',
         check: 'Date',
         sortable: true,
+        // sort: 'desc',
         cellRenderer: (data) => {
           return data.value[0].lastUpdate ? new Date(data.value[0].lastUpdate).toLocaleString('es-CL') : '';
         },
