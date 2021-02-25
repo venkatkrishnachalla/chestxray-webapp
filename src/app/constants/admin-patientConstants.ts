@@ -64,6 +64,13 @@ export const adminPatientsConstants = {
           cellRenderer: (data) => {
             return data.value[0].assignedTo;
           },
+          comparator: (valueA, valueB) => {
+            if (valueA[0].assignedTo === valueB[0].assignedTo) {
+                return 0;
+            } else {
+                return (valueA[0].assignedTo < valueB[0].assignedTo) ? 1 : -1;
+            }
+        }
         },
       ],
     },

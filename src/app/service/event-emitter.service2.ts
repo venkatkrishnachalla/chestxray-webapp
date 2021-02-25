@@ -80,3 +80,4 @@ export class EventEmitterService2 {
     this.invokeDisablePathologyBtns.emit(check);
   }
 }
+
