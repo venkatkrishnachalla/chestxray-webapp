@@ -5,6 +5,8 @@ import { environment } from '../../../../environments/environment';
 import { staticContentHTML } from 'src/app/constants/staticContentHTML';
 import { AuthService } from 'src/app/module/auth/auth.service';
 import User from 'src/app/module/auth/user.modal';
+import { EventEmitterService2 } from 'src/app/service/event-emitter.service2';
+import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'cxr-main-layout',
@@ -17,6 +19,7 @@ export class MainLayoutComponent implements OnInit {
   sideNavToggle: boolean;
   readonly constants = sideNavConstants;
   readonly staticContents = staticContentHTML;
+  mlVerion: any;
 
   @ViewChild('sidenavbar') sidenav: MatSidenav;
 
@@ -43,7 +46,8 @@ export class MainLayoutComponent implements OnInit {
    * constructor for MainLayoutComponent class
    */
 
-  constructor(private authService:AuthService) {}
+  constructor(private authService:AuthService, 
+              private eventEmitterService: EventEmitterService2) {}
 
   /**
    * This is a init function.
@@ -57,15 +61,17 @@ export class MainLayoutComponent implements OnInit {
     this.sidenavLabels = this.staticContents.dashboardPage;
     this.socialMediaImages = this.staticContents.socialMedia;
     this.copyRightText = this.staticContents.copyRight;
-this.authService.userSubject.subscribe(
- (user: User) => {​​​​​​​​
-if (user) {​​​​​​​​
-this.isAdmin = user.userroles[0] === 'Admin' ? true : false;
- }​​​​​​​​
- }​​​​​​​​
- );
-
-
+    const MLVerion = sessionStorage.getItem('MLversion');
+    if (MLVerion){
+      this.mlVerion = sessionStorage.getItem('MLversion');
+    }
+    this.authService.userSubject.subscribe(
+      (user: User) => {​​​​​​​​
+      if (user) {​​​​​​​​
+      this.isAdmin = user.userroles[0] === 'Admin' ? true : false;
+      }​​​​​​​​
+      }​​​​​​​​
+    );
   }
 
   /**

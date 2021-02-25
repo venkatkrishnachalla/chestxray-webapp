@@ -135,12 +135,14 @@ export class XRayComponent implements OnInit, OnDestroy {
           (mLResponse: MlApiData) => {
             this.mLResponse = mLResponse;
             const mLArray = this.mLResponse.data.ndarray[0].diseases;
+            sessionStorage.setItem('MLversion', this.mLResponse.data.ndarray[0].version);
             this.eventsSubject.next(mLResponse);
             this.eventEmitterService.onAskAiButtonClick('success');
             this.eventEmitterService.onNoAbnormalitiesClick('success');
             if (this.mLResponse.data.ndarray[0].rejected){
               this.eventEmitterService2.deleteAllAnnotations('unableToDiagnose', true, 'ML');
               this.eventEmitterService2.mlRejection(true, 'ML');
+              this.eventEmitterService2.nofindingsFromML(false, 'ML');
               this.eventEmitterService2.resetImpression();
               this.eventEmitterService2.resetFindings();
               this.spinnerService.hide();
@@ -150,6 +152,7 @@ export class XRayComponent implements OnInit, OnDestroy {
             if (mLArray.length === 0 || mLArray === undefined) {
               this.eventEmitterService2.deleteAllAnnotations('noFindings', true, 'ML');
               this.eventEmitterService2.nofindingsFromML(true, 'ML');
+              this.eventEmitterService2.mlRejection(false, 'ML');
               this.eventEmitterService2.resetImpression();
               this.eventEmitterService2.resetFindings();
               this.spinnerService.hide();

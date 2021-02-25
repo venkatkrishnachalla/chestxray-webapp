@@ -93,6 +93,7 @@ export class AuthService {
   logOut() {
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
+    sessionStorage.removeItem('MLversion');
     sessionStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
     this.dbService.clear('PatientImage').subscribe((successDeleted) => {});
