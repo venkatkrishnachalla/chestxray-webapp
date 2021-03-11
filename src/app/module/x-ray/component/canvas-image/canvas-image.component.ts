@@ -182,7 +182,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   actionPanelIcons: any;
   deleteContent: string = '';
   nextAndPrevCheck: boolean = false;
-  diablePathologyBtn: boolean = true;
+  disablePathologyBtn: boolean = true;
   /*
    * constructor for CanvasImageComponent class
    */
@@ -283,9 +283,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         this.isAlreadyAnnotated = false;
       }
     })
-    this.eventEmitterService2.invokeDisablePathologyBtns.subscribe((data) => {
-      this.diablePathologyBtn = data;
-    })
+    // this.eventEmitterService2.invokeDisablePathologyBtns.subscribe((data) => {
+    //   this.disablePathologyBtn = data;
+    // })
     this.random = Math.floor(Math.random() * 100 + 1);
     this.isChangeable = true;
     this.shiftKeyDown = false;
@@ -1098,11 +1098,27 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * updateSearchModel(value);
    */
   updateSearchModel(value) {
+    if (this.pathologyNames.findIndex( x => x.abnormality === value) === -1){
+      if (this.pathologyNames.findIndex( x => (x.Names.indexOf(value) !== -1)) !== -1){
+        this.disablePathologyBtn = false;
+      }
+      else{
+        this.disablePathologyBtn = true;
+      }
+    }
+    else{
+      const index = this.pathologyNames.findIndex( x => x.abnormality === value);
+      if (this.pathologyNames[index].Name.length === 0){
+        this.disablePathologyBtn = false;
+      }
+      else{
+        this.disablePathologyBtn = true;
+      }
+    }
     this.searchModel = value;
     this.selectedDiseases = false;
     this.selectedMainDisease = false;
     this.selectedSubDisease = false;
-    this.diablePathologyBtn = false;
   }
 
   /**
@@ -1112,6 +1128,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * clear();
    */
   clear() {
+    this.disablePathologyBtn = true;
     this.selectedDisease = '';
     this.selectedMainDisease = false;
     this.selectedSubDisease = false;
@@ -1129,13 +1146,22 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       ? this.patientDetail.xRayList[0].xRayId
       : '';
     }
-    this.xRayService.getPatientInstanceId(id).subscribe(
+    const check = JSON.parse(sessionStorage.getItem('annotationTool'));
+    this.xRayService.getPatientInstanceId(id, check).subscribe(
       (patientInstanceIdResponse: any) => {
         // this.instanceId =
         //   patientInstanceIdResponse.seriesList[0].instanceList[0].id;
         this.instanceId = history.state.xRayList
           ? history.state.xRayList[0].xRayId
           : '';
+        if (patientInstanceIdResponse.reportFindings){
+          sessionStorage.setItem('reportFindings', JSON.stringify(patientInstanceIdResponse.reportFindings.abnormalities));
+          this.eventEmitterService2.shareReportFindings(patientInstanceIdResponse.reportFindings.abnormalities);
+        }
+        else{
+          sessionStorage.setItem('reportFindings', JSON.stringify([]));
+          this.eventEmitterService2.shareReportFindings([]);
+        }
         if (this.instanceId === '') {
           const patient = JSON.parse(sessionStorage.getItem('patientDetail'));
           this.instanceId = patient.xRayList[0].xRayId;
@@ -1972,6 +1998,8 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * openPathologyModal();
    */
   openPathologyModal() {
+    this.selectedDisease = '';
+    this.disablePathologyBtn = true;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.restoreFocus = false;
     dialogConfig.autoFocus = true;
@@ -1993,6 +2021,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
    * onSelect(event, item);
    */
   onSelect(event, item) {
+    this.disablePathologyBtn = false;
     this.selectedDiseases = true;
     if (item.length === 0) {
       this.selectedDisease = event.target.textContent.replace(
@@ -2004,6 +2033,9 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         /[^a-zA-Z/ ]/g,
         ''
       );
+    }
+    else{
+      this.disablePathologyBtn = true;
     }
     const abnormality = [];
     const names = [];

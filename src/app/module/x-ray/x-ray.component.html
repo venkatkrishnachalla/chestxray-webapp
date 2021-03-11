@@ -19,7 +19,7 @@
     <cxr-impression></cxr-impression>
     <cxr-findings></cxr-findings>
     <!-- <cxr-image-sliding></cxr-image-sliding> -->
-    <button mat-flat-button (click)="generateReport()"  type="submit" [attr.title]="(disableReportBtn) ? 'Add annotations/Select additional options to enable' : ''" [disabled]="disableReportBtn">
+    <button mat-flat-button *ngIf='annotationToolCheck' (click)="generateReport()"  type="submit" [attr.title]="(disableReportBtn) ? 'Add annotations/Select additional options to enable' : ''" [disabled]="disableReportBtn">
       <span>REPORT</span>
       <img src="../../../assets/images/report icon@2x.png" alt="report" />
     </button>

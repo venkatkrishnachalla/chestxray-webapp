@@ -24,6 +24,8 @@ interface AuthResponseData {
   registered?: boolean;
   username: string;
   userroles: any[];
+  askAI: boolean;
+  staticReport: boolean;
 }
 @Injectable({
   providedIn: 'root',
@@ -93,6 +95,7 @@ export class AuthService {
   logOut() {
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
+    sessionStorage.removeItem('logged');
     sessionStorage.removeItem('MLversion');
     sessionStorage.removeItem('userAuthData');
     sessionStorage.removeItem('patientDetail');
@@ -110,6 +113,7 @@ export class AuthService {
     sessionStorage.removeItem('findingsData');
     sessionStorage.removeItem('reportComments');
     sessionStorage.removeItem('isManualFindingsAdded');
+    sessionStorage.removeItem('annotationTool');
     sessionStorage.clear();
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);

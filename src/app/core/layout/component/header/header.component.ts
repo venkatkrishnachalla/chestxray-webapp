@@ -26,27 +26,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleActive: boolean;
   userroles: string;
   disabled: boolean;
+  browerRefresh: boolean = false;
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
   /*
    * constructor for HeaderComponent class
    */
-
-   /**
-   * This is a host listener when resizing window.
-   * @param '{string}' value - A string param
-   * @param' {any}' array - A array param
-   * @example
-   * HostListener('window:resize', []);
-   */
-  // @HostListener('window:close', ['$event'])
-  //  onWindowClose(event: any) {
-  //   this.onLogout();
-  //   setTimeout(() => {
-  //     console.log('window closed');
-  //   }, 10000);
-  // }
-
-
+  
   constructor(
     private authService: AuthService,
     public router: Router,

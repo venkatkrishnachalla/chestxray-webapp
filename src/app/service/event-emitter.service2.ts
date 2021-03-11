@@ -20,6 +20,7 @@ export class EventEmitterService2 {
   invokeResetImpression = new EventEmitter();
   invokeNoFindings = new EventEmitter();
   invokeDisablePathologyBtns = new EventEmitter();
+  invokeShareReportFindings = new EventEmitter();
 
 
   constructor() {}
@@ -78,6 +79,10 @@ export class EventEmitterService2 {
   }
   disablePathologyButtons(check){
     this.invokeDisablePathologyBtns.emit(check);
+  }
+
+  shareReportFindings(data){
+    this.invokeShareReportFindings.emit(data);
   }
 }
 

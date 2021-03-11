@@ -48,6 +48,7 @@ export class XRayComponent implements OnInit, OnDestroy {
   disableSubmitBtn: boolean;
   noFindings: boolean;
   unableToDiagnose: boolean;
+  annotationToolCheck: boolean;
   @ViewChild(CanvasImageComponent) canvas: CanvasImageComponent;
   @ViewChild(ImpressionComponent) impressions: ImpressionComponent;
   @ViewChild(FindingsComponent) findings: FindingsComponent;
@@ -76,6 +77,7 @@ export class XRayComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit(): void {
+    this.annotationToolCheck = JSON.parse(sessionStorage.getItem('annotationTool'));
     this.disableSubmitBtn = true;
     this.disableReportBtn = true;
     this.eventEmitterService2.invokeMLrejection.subscribe((data) => {
@@ -190,55 +192,57 @@ export class XRayComponent implements OnInit, OnDestroy {
     this.disableReportBtn = true;
     // tslint:disable-next-line: no-string-literal
     const annotationData = JSON.parse(JSON.stringify(this.canvas.savedInfo['data'].ndarray[0]));;
-    this.findings.findings.forEach((input) => {
-      const output = input.split(':');
-      let outputSub;
-      let outputMain;
-      if (input.indexOf(':') !== -1) {
-        outputSub = output[1].split('.');
-        outputMain = output[0];
-      } else {
-        outputSub = input.split('.');
-        outputMain = 'ADDITIONAL';
-      }
-      const length = annotationData.Impression.length;
-      if (outputSub.length > 0 && length !== 0) {
-        outputSub.forEach((finalOutput) => {
-          finalOutput = finalOutput.replace(/\//g, '').trim();
-          let index = annotationData.Impression.findIndex(
-            (x) => finalOutput.toLowerCase().indexOf(x.sentence.toLowerCase()) !== -1
-          );
-          if (index === -1) {
-            index = annotationData.diseases.findIndex(
-              (x) => finalOutput.toLowerCase().indexOf(x.name.toLowerCase()) !== -1
+    if (this.annotationToolCheck){
+      this.findings.findings.forEach((input) => {
+        const output = input.split(':');
+        let outputSub;
+        let outputMain;
+        if (input.indexOf(':') !== -1) {
+          outputSub = output[1].split('.');
+          outputMain = output[0];
+        } else {
+          outputSub = input.split('.');
+          outputMain = 'ADDITIONAL';
+        }
+        const length = annotationData.Impression.length;
+        if (outputSub.length > 0 && length !== 0) {
+          outputSub.forEach((finalOutput) => {
+            finalOutput = finalOutput.replace(/\//g, '').trim();
+            let index = annotationData.Impression.findIndex(
+              (x) => finalOutput.toLowerCase().indexOf(x.sentence.toLowerCase()) !== -1
             );
-          }
-          if (index === -1) {
-            if (
-              finalOutput !== '' &&
-              annotationData.diseases.findIndex(
+            if (index === -1) {
+              index = annotationData.diseases.findIndex(
                 (x) => finalOutput.toLowerCase().indexOf(x.name.toLowerCase()) !== -1
-              ) !== -1
-            ) {
-              const impressionIndex =
-                annotationData.Impression[length - 1].index;
-              const newImpression = {
-                index: impressionIndex + 1,
-                sentence: finalOutput,
-                source: 'DR',
-              };
-              annotationData.Impression.push(newImpression);
-              annotationData.Findings[outputMain].push(impressionIndex + 1);
+              );
             }
-          } else if (index !== -1) {
-            if (annotationData.Findings[outputMain]) {
-              annotationData.Impression[index].sentence = finalOutput;
-              annotationData.Findings[outputMain].push(index);
+            if (index === -1) {
+              if (
+                finalOutput !== '' &&
+                annotationData.diseases.findIndex(
+                  (x) => finalOutput.toLowerCase().indexOf(x.name.toLowerCase()) !== -1
+                ) !== -1
+              ) {
+                const impressionIndex =
+                  annotationData.Impression[length - 1].index;
+                const newImpression = {
+                  index: impressionIndex + 1,
+                  sentence: finalOutput,
+                  source: 'DR',
+                };
+                annotationData.Impression.push(newImpression);
+                annotationData.Findings[outputMain].push(impressionIndex + 1);
+              }
+            } else if (index !== -1) {
+              if (annotationData.Findings[outputMain]) {
+                annotationData.Impression[index].sentence = finalOutput;
+                annotationData.Findings[outputMain].push(index);
+              }
             }
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    }
     sessionStorage.setItem('ellipsePositionCheck', 'false');
     this.canvas.onSubmitPatientDetails();
     this.impressions.getImpressionsToReport();

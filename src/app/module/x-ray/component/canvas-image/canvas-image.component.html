@@ -112,11 +112,11 @@
       mat-raised-button
       [ngStyle]="{
         'background-color':
-        selectedDisease === '' || selectedDisease == undefined || diablePathologyBtn
+        disablePathologyBtn
             ? '#5d5f64'
             : '#25b865'
       }"
-      [disabled]="selectedDisease == '' || selectedDisease == undefined || diablePathologyBtn"
+      [disabled]="disablePathologyBtn"
       (click)="savePrediction()"
       [mat-dialog-close]="true"
       *ngIf="!updateDisease"
@@ -128,11 +128,11 @@
       mat-raised-button
       [ngStyle]="{
         'background-color':
-        selectedDisease === '' || selectedDisease == undefined || diablePathologyBtn
+        disablePathologyBtn
             ? '#5d5f64'
             : '#25b865'
       }"
-      [disabled]="selectedDisease == '' || selectedDisease == undefined || diablePathologyBtn"
+      [disabled]="disablePathologyBtn"
       (click)="updatePrediction()"
       [mat-dialog-close]="true"
       *ngIf="updateDisease"
@@ -144,7 +144,7 @@
       mat-raised-button
       [ngStyle]="{
         'background-color':
-          selectedDisease === '' || selectedDisease == undefined || diablePathologyBtn
+          disablePathologyBtn
             ? '#5d5f64'
             : '#ff4d4d'
       }"

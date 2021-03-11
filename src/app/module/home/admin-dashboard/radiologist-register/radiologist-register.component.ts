@@ -33,7 +33,8 @@ export class RadiologistRegisterComponent implements OnInit {
       confirmPassword: ['', [Validators.required]],
       roles: ['', Validators.required],
       confirmExpiry: [],
-      confirmDob: []
+      confirmDob: [],
+      tool: ['CompleteTool', [Validators.required]]
     },
     {
       validator: MustMatch('password', 'confirmPassword')
@@ -55,6 +56,8 @@ export class RadiologistRegisterComponent implements OnInit {
       ],
       expiryDate: this.addRadiologistForm.value.confirmExpiry,
       dateOfBirth: this.addRadiologistForm.value.confirmDob,
+      askAI: this.addRadiologistForm.value.tool === 'CompleteTool' ? true: false,
+      staticReport: this.addRadiologistForm.value.tool === 'CompleteTool' ? true: false,
     };
     this.adminManagment.addRadiologist(request).subscribe(
       (response) => {
