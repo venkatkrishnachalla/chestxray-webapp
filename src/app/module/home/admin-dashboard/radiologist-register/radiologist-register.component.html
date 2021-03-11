@@ -72,7 +72,7 @@
           placeholder="DD/MM/YYYY"
           name="confirmExpiry" 
           [min]='getToday()'
-          onkeydown="return false"
+          (keypress)="allowTab($event)"
           autocomplete="off"
         />
         <label for="confirmPassword"><b>Date Of Birth</b></label>
@@ -82,7 +82,7 @@
           placeholder="DD/MM/YYYY" 
           [max]="getToday()"
           name="confirmDOB"
-          onkeydown="return false"
+          (keypress)="allowTab($event)"
           autocomplete="off"
         />
 

@@ -68,23 +68,24 @@ export class RadiologistRegisterComponent implements OnInit {
         this.matdialouge.closeAll();
       },
       (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.error.ConfirmPassword) {
-          this.matdialougeref.close(this.isClose);
-          this.toastrService.error(errorResponse.error.ConfirmPassword[0]);
-          } else if (errorResponse.error.Email) {
-            this.matdialougeref.close(this.isClose);
+        this.toastrService.error(errorResponse.error);
+        // if (errorResponse.error.ConfirmPassword) {
+        //   this.matdialougeref.close(this.isClose);
+        //   this.toastrService.error(errorResponse.error.ConfirmPassword[0]);
+        //   } else if (errorResponse.error.Email) {
+        //     this.matdialougeref.close(this.isClose);
 
-          this.toastrService.error(errorResponse.error.Email);
-          } 
-          else if (errorResponse.error) {
-            if(errorResponse.error !== "Username is already taken."){
-              this.matdialougeref.close(this.isClose);
-            }
-          this.toastrService.error(errorResponse.error);
-          } else {
-            this.matdialougeref.close(this.isClose);
-            return;
-          }
+        //   this.toastrService.error(errorResponse.error.Email);
+        //   } 
+        //   else if (errorResponse.error) {
+        //     if(errorResponse.error !== "Username is already taken."){
+        //       this.matdialougeref.close(this.isClose);
+        //     }
+        //   this.toastrService.error(errorResponse.error);
+        //   } else {
+        //     this.matdialougeref.close(this.isClose);
+        //     return;
+        //   }
       });
   }
 
@@ -105,6 +106,15 @@ export class RadiologistRegisterComponent implements OnInit {
 
   getToday(): string {
     return new Date().toISOString().split('T')[0];
+  }
+
+  allowTab(e){
+    if (e.keyCode == 9){
+        return true;
+    }
+    else{
+        return false;
+    }
   }
 }
 
