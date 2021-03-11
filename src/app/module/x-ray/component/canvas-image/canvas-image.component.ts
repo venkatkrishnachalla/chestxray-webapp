@@ -183,6 +183,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
   deleteContent: string = '';
   nextAndPrevCheck: boolean = false;
   disablePathologyBtn: boolean = true;
+  source: string = 'Manual';
   /*
    * constructor for CanvasImageComponent class
    */
@@ -265,6 +266,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
       this.canvas.isDrawingMode = false;
       this.enableDrawEllipseMode = false;
       this.unableToDiagnose = data.check;
+      this.source = data.source; 
       if (data.source === 'ML'){
         this.isAlreadyAnnotated = true;
       }
@@ -275,6 +277,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
     this.eventEmitterService2.invokeNoFindings.subscribe((data) => {
       this.canvas.isDrawingMode = false;
       this.enableDrawEllipseMode = false;
+      this.source = data.source; 
       this.unableToDiagnose = data.check;
       if (data.source === 'ML'){
         this.isAlreadyAnnotated = true;
@@ -334,7 +337,7 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
         const active = !this.activeIcon ? true : this.activeIcon.active;
         if (this.unableToDiagnose && data.active && data.title !== 'Measure Length'){
           this.activeIcon = {'active': active};
-          if (this.isAlreadyAnnotated){
+          if (this.source === 'ML'){
             this.deleteContent = 'ML has given No Findings/Unable to diagnose. Please confirm to continue with manual annotations'
           }
           else{
