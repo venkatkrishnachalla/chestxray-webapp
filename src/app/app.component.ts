@@ -6,6 +6,7 @@ import { IdleSessionTimeout } from 'idle-session-timeout';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { timer, Subscription } from 'rxjs';
+import { tokenName } from '@angular/compiler';
 @Component({
   selector: 'cxr-root',
   templateUrl: './app.component.html',
@@ -133,4 +134,23 @@ export class AppComponent implements OnInit {
     this.session.start();
     this.authService.logOut();
   }
+//   doBeforeUnload() {
+//       return false;
+//   }
+
+// doUnload() {
+//     const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
+//     const token = sessionStorage.getItem('accessToken');
+//     this.authService.revokeToken(
+//       token,
+//       accessToken.refreshToken,
+//       accessToken.username,
+//       accessToken.userroles,
+//       accessToken._tokenExpirationDate
+//     );
+//     this.authService.logOut();
+//     for(let i = 0; i < 10000000; i++){
+//       console.log(i);
+//     }
+//   }
 }

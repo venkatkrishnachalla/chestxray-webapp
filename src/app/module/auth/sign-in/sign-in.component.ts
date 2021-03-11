@@ -84,8 +84,10 @@ export class SignInComponent implements OnInit {
       this.spinnerService.show();
       this.authService.signIn(this.auth.email, this.auth.password).subscribe(
         (authResponse: SignInResponse) => {
+          sessionStorage.setItem('logged', JSON.stringify(true));
           sessionStorage.setItem('unableToDiagnose', JSON.stringify(false));
           sessionStorage.setItem('noFindings', JSON.stringify(false));
+          sessionStorage.setItem('annotationTool', JSON.stringify(authResponse.askAI));
           this.spinnerService.hide();
           this.router.navigate(['/home/dashboard']);
         },

@@ -1,4 +1,4 @@
-<div matTooltip="{{ askAiTitle }}" [matTooltipDisabled]="!disableAskAI">
+<div *ngIf='annotationToolCheck' matTooltip="{{ askAiTitle }}" [matTooltipDisabled]="!disableAskAI">
   <button
     mat-button
     (click)="askAI()"

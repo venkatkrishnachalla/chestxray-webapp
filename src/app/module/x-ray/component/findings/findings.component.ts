@@ -18,6 +18,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
   findings: any[];
   findingsText: string;
   item0: any;
+  annotationToolCheck:boolean;
   _subscription: Subscription;
 
   /*
@@ -45,6 +46,7 @@ export class FindingsComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit(): void {
+    this.annotationToolCheck = JSON.parse(sessionStorage.getItem('annotationTool'));
     this.findingsText = 'Findings';
     this.findings = [];
     this.getFindings();

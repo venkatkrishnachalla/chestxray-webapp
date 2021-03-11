@@ -2,6 +2,8 @@ import { ArrayType } from '@angular/compiler';
 
 export interface SignInResponse {
   expiration: string;
+  askAI: boolean;
+  staticReport: boolean;
   token: string;
   username: string;
   userroles: any[];

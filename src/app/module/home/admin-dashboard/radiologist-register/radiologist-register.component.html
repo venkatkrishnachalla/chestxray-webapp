@@ -100,6 +100,11 @@
           [control]="addRadiologistForm.controls.roles"
           [isFormSubmit]="isFormSubmit"
         ></cxr-control-message>
+        <label for="confirmPassword"><b>Access To</b></label><br />
+        <mat-radio-group aria-label="Select an option" formControlName="tool">
+          <mat-radio-button value="CompleteTool" class='m-r-large'>Complete Tool</mat-radio-button>
+          <mat-radio-button value="Annotation">Annotation Tool</mat-radio-button>
+        </mat-radio-group>
       </div>
     </form>
   </mat-dialog-content>

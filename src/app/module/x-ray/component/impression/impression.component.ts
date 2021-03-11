@@ -32,6 +32,8 @@ export class ImpressionComponent implements OnInit, OnDestroy {
   hideNoAbnormalityText: boolean;
   unableToDiagnose: boolean = false;
   noFindings: boolean = false;
+  reportFindings = [];
+  annotationToolCheck: boolean;
 
   /*
    * constructor for ImpressionComponent class
@@ -73,6 +75,10 @@ export class ImpressionComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit(): void {
+    if ( JSON.parse(sessionStorage.getItem('reportFindings'))){
+      this.reportFindings =  JSON.parse(sessionStorage.getItem('reportFindings'));
+    }
+    this.annotationToolCheck = JSON.parse(sessionStorage.getItem('annotationTool'));
     this.unableToDiagnose = JSON.parse(sessionStorage.getItem('unableToDiagnose'));
     this.noFindings = JSON.parse(sessionStorage.getItem('noFindings'));
     if (this.unableToDiagnose){
@@ -140,6 +146,9 @@ export class ImpressionComponent implements OnInit, OnDestroy {
     this.eventEmitterService2.invokeResetImpression.subscribe(() => {
       this.impression = [];
       this.uniqueImpressions = [];
+    })
+    this.eventEmitterService2.invokeShareReportFindings.subscribe((data) => {
+      this.reportFindings = data;
     })
   }
 

@@ -19,6 +19,7 @@ export class AskAiToolComponent implements OnInit, OnDestroy {
   @Output() askAiEvent = new EventEmitter();
   askAiTitle = 'Already ML Annotations updated';
   disableAskAI: boolean;
+  annotationToolCheck: boolean;
   _subscription: Subscription;
 
   /*
@@ -47,6 +48,7 @@ export class AskAiToolComponent implements OnInit, OnDestroy {
    * ngOnInit();
    */
   ngOnInit(): void {
+    this.annotationToolCheck = JSON.parse(sessionStorage.getItem('annotationTool'));
     const askAiSelection = sessionStorage.getItem('askAiSelection');
     if (askAiSelection === 'true') {
       this.disableAskAI = true;

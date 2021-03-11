@@ -104,7 +104,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.rowModelType = 'serverSide';
     this.paginationPageSize = 10;
     this.cacheBlockSize = 10;
-    sessionStorage.removeItem('findingsData');
+    sessionStorage.removeItem('reportFindings');
     sessionStorage.removeItem('x-ray_Data');
     sessionStorage.removeItem('impression');
     sessionStorage.removeItem('findings');

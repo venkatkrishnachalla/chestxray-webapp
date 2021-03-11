@@ -132,8 +132,8 @@ export class ApiEndPointService {
    * getPatientInstanceId(id);
    */
 
-  getPatientInstanceId(xRayId): any {
-    return environment.patientInstanceId + xRayId + '/Study';
+  getPatientInstanceId(xRayId, check): any {
+    return environment.patientInstanceId + xRayId + '/Study'+ '?includeStaticFindings='+ !check
   }
   public getRadiologistList(): string {
     return environment.hospitalRadiologistList;

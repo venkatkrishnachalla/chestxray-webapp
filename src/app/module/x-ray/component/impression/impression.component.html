@@ -73,3 +73,26 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card class="impression" *ngIf='!annotationToolCheck'>
+  <mat-card-title class="patient-info-header">
+    REPORT FINDINGS
+  </mat-card-title>
+  <mat-card-content
+    class="impression-content"
+    *ngFor="
+      let rFinding of reportFindings;
+      let i = index
+    "
+  >
+    <button></button>
+    <span class="impression-text-width">{{ rFinding }}</span>
+  </mat-card-content>
+  <mat-card-content
+    *ngIf="(!reportFindings || reportFindings.length === 0)"
+  >
+    <div align="center">
+      No Report Findings detected.
+    </div>
+  </mat-card-content>
+</mat-card>
+

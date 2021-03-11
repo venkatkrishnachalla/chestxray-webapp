@@ -41,12 +41,12 @@ export class XRayImageService {
    * @example
    * getPatientInstanceId(id);
    */
-  getPatientInstanceId(id: string) {
+  getPatientInstanceId(id: string, check: boolean) {
     const body = {
       'content-type': 'application/json',
     };
     return this.http
-      .get(this.endpoint.getPatientInstanceId(id), {
+      .get(this.endpoint.getPatientInstanceId(id, check), {
         headers: body,
         responseType: 'json',
       })
