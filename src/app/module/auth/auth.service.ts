@@ -30,6 +30,7 @@ interface AuthResponseData {
 @Injectable({
   providedIn: 'root',
 })
+
 // AuthService class implementation
 export class AuthService {
   public userSubject: BehaviorSubject<User>;
@@ -40,19 +41,20 @@ export class AuthService {
   /*
    * constructor for AuthService class
    */
-
   constructor(
     private http: HttpClient,
     private endpoint: ApiEndPointService,
     private router: Router,
     private dbService: NgxIndexedDBService
   ) {
-    this.userSubject = new BehaviorSubject<User>(null);
+    this.userSubject = new BehaviorSubject<User>(null)
   }
 
   public get user(): User {
     return this.userSubject.value;
   }
+
+  
 
   /**
    * This is a signIn click function.
@@ -257,7 +259,7 @@ export class AuthService {
    */
 
   autoSessionTimeOut(expirationDuration: number) {
-    const expireTime = expirationDuration - 60000;
+    const expireTime = expirationDuration - 600000;
     this.tokenExpirationTimer = setTimeout(() => {
       const accessToken = JSON.parse(sessionStorage.getItem('userAuthData'));
       const token = sessionStorage.getItem('accessToken');
@@ -279,15 +281,15 @@ export class AuthService {
    * refreshTokenTimeOut(token, expirationDuration);
    */
 
-  refreshTokenTimeOut(
-    token: string,
-    refreshToken: string,
-    expirationDuration: number
-  ) {
-    this.refreshTokenTimer = setTimeout(() => {
-      // this.refreshToken(token, refreshToken);
-    }, expirationDuration - 60 * 1000);
-  }
+  // refreshTokenTimeOut(
+  //   token: string,
+  //   refreshToken: string,
+  //   expirationDuration: number
+  // ) {
+  //   this.refreshTokenTimer = setTimeout(() => {
+  //     // this.refreshToken(token, refreshToken);
+  //   }, expirationDuration - 60 * 1000);
+  // }
 
   /**
    * This is a handleAuthentication function.

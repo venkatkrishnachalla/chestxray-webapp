@@ -30,7 +30,8 @@ export class AuthInterceptor implements HttpInterceptor {
           return next.handle(request);
         }
         // Below example - adding token to url as query parameter.
-        const reqWithToken = this.addTokenToHeader(request, user.token);
+        const reqWithToken = this.addTokenToHeader(request,user.token ? user.token : JSON.parse(sessionStorage.getItem('userAuthData'))._token
+        );
         // Enable either above or below.
         // Below example - adding token to Headers
         // const reqWithToken = this.addTokenToHeader(request, user.token);

@@ -3622,9 +3622,10 @@ export class CanvasImageComponent implements OnInit, OnDestroy {
 
   proceedWithManualDrawing(){
     this.dialog.closeAll();
-    this.eventEmitterService2.nofindingsFromML(false, this.isAlreadyAnnotated ? 'ML' : 'Manual');
-    this.eventEmitterService2.mlRejection(false, this.isAlreadyAnnotated ? 'ML' : 'Manual');
+    this.eventEmitterService2.nofindingsFromML(false, this.source === 'ML' ? 'ML' : 'Manual');
+    this.eventEmitterService2.mlRejection(false, this.source === 'ML'  ? 'ML' : 'Manual');
     const data  = this.actionPanelIcons;
+    this.eventEmitterService2.enableSubmitBtn('false', '');
     switch (data.title) {
       case 'Draw Ellipse':
         if (
