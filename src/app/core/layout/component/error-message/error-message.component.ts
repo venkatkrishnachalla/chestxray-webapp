@@ -70,7 +70,7 @@ export class ErrorMessageComponent implements OnInit {
             this.errorMessage = 'Unknown Error Occurred';
             break;
         }
-        return (this.errorMessage = errorResponse.error.error.message);
+        return (this.errorMessage = errorResponse.data.message);
       }
     );
   }

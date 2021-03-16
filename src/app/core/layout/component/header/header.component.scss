@@ -110,3 +110,53 @@ mat-toolbar {
   position: relative;
     top: 22px;
 }
+
+::ng-deep {
+  mat-dialog-container {  
+      mat-dialog-content {
+          margin: 0px;
+          padding: 0px;
+          max-height: 42vh;
+          width: 100% !important;
+          background-color: black !important;
+          color: #ffffff;
+          border-radius: 1rem;
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+      }
+      mat-dialog-content#idleTimeoutModel {
+          display: table-cell;
+          padding: 16px 12px 0px 20px;
+          border-radius: 7px;
+          h2 {
+              font-weight: 400;
+              padding-bottom: 1rem;
+          }
+          .sub-delete-title {
+              font-size: 1.3rem;
+          }
+      }
+      mat-dialog-actions#idleTimeoutModel {
+          justify-content: space-between;
+          margin-top: 0.8rem;
+          .staySignedIn {
+              cursor: pointer;
+              width: 122px;
+              height: 35px;
+              color: #ffffff;
+              font-size: 1.5rem;
+              background-color:  #28a745 !important;
+              border-radius: 5px;
+          }
+          .logOut {
+              cursor: pointer;
+              width: 110px;
+              height: 35px;
+              color: #ffffff;
+              font-size: 1.5rem;
+              background-color: #ff4d4d !important;
+              border-radius: 5px;
+          }
+      }
+  }
+}

@@ -102,10 +102,14 @@ export class XRayComponent implements OnInit, OnDestroy {
       else{
         this.noFindings = false;
         this.unableToDiagnose = false;
-        const annotationData = JSON.parse(JSON.stringify(this.canvas.savedInfo['data'].ndarray[0]));
+        const annotationData = this.canvas.savedInfo['data'].ndarray[0];
         if (annotationData.diseases.length === 0){
           this.disableSubmitBtn = true;
           this.disableReportBtn = true;
+        }
+        else{
+          this.disableSubmitBtn = false;
+          this.disableReportBtn = false;
         }
       }
     });
@@ -143,8 +147,8 @@ export class XRayComponent implements OnInit, OnDestroy {
             this.eventEmitterService.onNoAbnormalitiesClick('success');
             if (this.mLResponse.data.ndarray[0].rejected){
               this.eventEmitterService2.deleteAllAnnotations('unableToDiagnose', true, 'ML');
-              this.eventEmitterService2.mlRejection(true, 'ML');
               this.eventEmitterService2.nofindingsFromML(false, 'ML');
+              this.eventEmitterService2.mlRejection(true, 'ML');
               this.eventEmitterService2.resetImpression();
               this.eventEmitterService2.resetFindings();
               this.spinnerService.hide();
@@ -153,8 +157,8 @@ export class XRayComponent implements OnInit, OnDestroy {
             }
             if (mLArray.length === 0 || mLArray === undefined) {
               this.eventEmitterService2.deleteAllAnnotations('noFindings', true, 'ML');
-              this.eventEmitterService2.nofindingsFromML(true, 'ML');
               this.eventEmitterService2.mlRejection(false, 'ML');
+              this.eventEmitterService2.nofindingsFromML(true, 'ML');
               this.eventEmitterService2.resetImpression();
               this.eventEmitterService2.resetFindings();
               this.spinnerService.hide();
